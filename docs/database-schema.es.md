@@ -18,6 +18,7 @@ erDiagram
 
     AMIGURUMIS {
         integer id PK "INTEGER AUTOINCREMENT"
+        integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 caracteres)"
         string categoria "TEXT NOT NULL (Lista blanca de la app)"
         string material "TEXT NOT NULL (3-80 caracteres)"
@@ -44,6 +45,7 @@ erDiagram
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
+    USUARIOS ||--o{ AMIGURUMIS : "confecciona / registra"
     AMIGURUMIS ||--o{ PEDIDOS : "referenciado en pedidos"
 ```
 
@@ -71,6 +73,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- ========================================================
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
@@ -82,7 +85,8 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    actualizado_en TEXT DEFAULT NULL
+    actualizado_en TEXT DEFAULT NULL,
+    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- ========================================================
@@ -110,6 +114,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 -- Índices para Optimización de Consultas
 -- ========================================================
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
@@ -133,6 +138,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | Campo | Tipo Lógico | Clase SQLite | Nulable | Valor por Defecto | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `id` | Identificador | `INTEGER` | **No** | *Autoincremental* | `PRIMARY KEY AUTOINCREMENT` | Identificador único de la pieza de amigurumi. |
+| `artesano_id` | Clave Foránea | `INTEGER` | **No** | *Ninguno* | `REFERENCES usuarios(id)` | Usuario artesano creador de la pieza. Protegido con `ON DELETE RESTRICT`. |
 | `nombre` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-100 | Nombre de la creación o personaje tejido. |
 | `categoria` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-50 | Clasificación temática (validada en lista blanca de la app). |
 | `material` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 3-80 | Tipo de hilo o fibra principal (ej. 100% Algodón, Chenille). |
@@ -163,6 +169,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 ## 4. Reglas de Integridad Referencial y Negocio
 - **Activación Forzosa de Claves Foráneas:** Ejecución de `PRAGMA foreign_keys = ON;` al inicializar cualquier conexión PDO.
+- **Atribución de Autoría (`artesano_id`):** Cada amigurumi está vinculado al artesano que lo registró. Un usuario no puede eliminarse si tiene creaciones registradas en el catálogo (`ON DELETE RESTRICT`).
 - **Protección contra Eliminaciones Accidentales (`ON DELETE RESTRICT`):** Un amigurumi no se puede eliminar de la base de datos si existen encargos (activos o históricos) asociados a su ID.
 - **Inmutabilidad de Precios (`precio_final`):** El precio acordado con el cliente queda congelado en el registro del pedido, garantizando que futuras actualizaciones de precios en el catálogo no alteren el histórico contable.
 - **Control de Cantidades (`cantidad`):** Cada pedido puede registrar múltiples unidades de un mismo diseño, permitiendo el cálculo exacto de ingresos e insumos requeridos.

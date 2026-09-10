@@ -71,6 +71,7 @@ All JSON responses follow a predictable envelope structure:
 - **Query Parameters:**
   - `id` (optional, integer): Returns a single amigurumi object.
   - `categoria` (optional, string): Filter by category.
+  - `artesano_id` (optional, integer): Filter by specific artisan creator.
   - `stock` (optional, string): Filter by availability (`in_stock` for `cantidad_stock > 0`).
 
 #### Response: Catalog Collection (200 OK)
@@ -80,6 +81,8 @@ All JSON responses follow a predictable envelope structure:
   "data": [
     {
       "id": 1,
+      "artesano_id": 1,
+      "artesano_nombre": "admin",
       "nombre": "Totoro Clásico",
       "categoria": "Pop Culture / Anime",
       "material": "100% Algodón Mercerizado",
@@ -98,6 +101,8 @@ All JSON responses follow a predictable envelope structure:
     },
     {
       "id": 2,
+      "artesano_id": 1,
+      "artesano_nombre": "admin",
       "nombre": "Axolotl Rosado",
       "categoria": "Animales",
       "material": "Chenille / Terciopelo",
@@ -124,6 +129,8 @@ All JSON responses follow a predictable envelope structure:
   "success": true,
   "data": {
     "id": 1,
+    "artesano_id": 1,
+    "artesano_nombre": "admin",
     "nombre": "Totoro Clásico",
     "categoria": "Pop Culture / Anime",
     "material": "100% Algodón Mercerizado",
@@ -145,6 +152,7 @@ All JSON responses follow a predictable envelope structure:
 
 ### `POST /api/crear.php`
 - **Access:** Protected (Session required: `admin` or `artesano`)
+- **Security & Identity Binding:** The backend automatically extracts the authenticated artisan's ID from `$_SESSION['user_id']` and injects it into `artesano_id`. The client **MUST NOT** include `artesano_id` in the request body; any client-provided ID will be ignored to prevent identity spoofing.
 - **Request Body (JSON or multipart/form-data):**
   ```json
   {
@@ -170,7 +178,7 @@ All JSON responses follow a predictable envelope structure:
   ```
 
 ### `POST /api/actualizar.php`
-- **Access:** Protected (Session required: `admin` or `artesano`)
+- **Access:** Protected (Session required: `admin` or original artisan owner)
 - **Request Body (JSON):**
   ```json
   {

@@ -26,6 +26,7 @@ erDiagram
 
     AMIGURUMIS {
         integer id PK "INTEGER AUTOINCREMENT"
+        integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 caracteres)"
         string categoria "TEXT NOT NULL (Lista blanca de la app)"
         string material "TEXT NOT NULL (3-80 caracteres)"
@@ -52,6 +53,7 @@ erDiagram
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
+    USUARIOS ||--o{ AMIGURUMIS : "confecciona / registra"
     AMIGURUMIS ||--o{ PEDIDOS : "referenciado en pedidos"
 ```
 
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- 2. Tabla: amigurumis (Catálogo e Inventario de Productos)
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
@@ -85,7 +88,8 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    actualizado_en TEXT DEFAULT NULL
+    actualizado_en TEXT DEFAULT NULL,
+    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- 3. Tabla: pedidos (Encargos y Ventas Personalizadas)
@@ -109,6 +113,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 
 -- Índices para Optimización de Consultas
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);

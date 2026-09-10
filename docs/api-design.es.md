@@ -71,6 +71,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
 - **Parámetros de Consulta (Query Params):**
   - `id` (opcional, entero): Retorna un único objeto de amigurumi.
   - `categoria` (opcional, texto): Filtra por categoría temática.
+  - `artesano_id` (opcional, entero): Filtra creaciones de un artesano específico.
   - `stock` (opcional, texto): Filtra por disponibilidad (`in_stock` para `cantidad_stock > 0`).
 
 #### Respuesta: Colección de Catálogo (200 OK)
@@ -80,6 +81,8 @@ Todas las respuestas del backend siguen una estructura homogénea:
   "data": [
     {
       "id": 1,
+      "artesano_id": 1,
+      "artesano_nombre": "admin",
       "nombre": "Totoro Clásico",
       "categoria": "Pop Culture / Anime",
       "material": "100% Algodón Mercerizado",
@@ -98,6 +101,8 @@ Todas las respuestas del backend siguen una estructura homogénea:
     },
     {
       "id": 2,
+      "artesano_id": 1,
+      "artesano_nombre": "admin",
       "nombre": "Axolotl Rosado",
       "categoria": "Animales",
       "material": "Chenille / Terciopelo",
@@ -124,6 +129,8 @@ Todas las respuestas del backend siguen una estructura homogénea:
   "success": true,
   "data": {
     "id": 1,
+    "artesano_id": 1,
+    "artesano_nombre": "admin",
     "nombre": "Totoro Clásico",
     "categoria": "Pop Culture / Anime",
     "material": "100% Algodón Mercerizado",
@@ -145,6 +152,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
 
 ### `POST /api/crear.php`
 - **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
+- **Seguridad y Atribución de Identidad:** El backend extrae automáticamente el ID del artesano autenticado desde `$_SESSION['user_id']` y lo asigna al campo `artesano_id`. El cliente **NO DEBE** enviar `artesano_id` en el cuerpo de la solicitud JSON; cualquier valor enviado por el cliente será ignorado para evitar suplantación de identidad.
 - **Cuerpo de la Solicitud (JSON o multipart/form-data):**
   ```json
   {
@@ -170,7 +178,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```
 
 ### `POST /api/actualizar.php`
-- **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
+- **Acceso:** Protegido (Sesión requerida: `admin` o el artesano autor de la pieza)
 - **Cuerpo de la Solicitud (JSON):**
   ```json
   {

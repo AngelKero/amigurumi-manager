@@ -18,6 +18,7 @@ erDiagram
 
     AMIGURUMIS {
         integer id PK "INTEGER AUTOINCREMENT"
+        integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 chars)"
         string categoria "TEXT NOT NULL (App whitelist)"
         string material "TEXT NOT NULL (3-80 chars)"
@@ -44,6 +45,7 @@ erDiagram
         string creado_en "TEXT (ISO 8601 timestamp)"
     }
 
+    USUARIOS ||--o{ AMIGURUMIS : "crafts / registers"
     AMIGURUMIS ||--o{ PEDIDOS : "referenced by orders"
 ```
 
@@ -56,7 +58,7 @@ erDiagram
 PRAGMA foreign_keys = ON;
 
 -- ========================================================
--- Table: usuarios (Authentication & Role-Based Access)
+-- 1. Table: usuarios (Authentication & Role-Based Access)
 -- ========================================================
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,10 +69,11 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- ========================================================
--- Table: amigurumis (Core Catalog & Inventory)
+-- 2. Table: amigurumis (Core Catalog & Inventory)
 -- ========================================================
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
@@ -82,11 +85,12 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    actualizado_en TEXT DEFAULT NULL
+    actualizado_en TEXT DEFAULT NULL,
+    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- ========================================================
--- Table: pedidos (Order & Commission Tracking)
+-- 3. Table: pedidos (Order & Commission Tracking)
 -- ========================================================
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -110,6 +114,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 -- Indexes for Query Optimization
 -- ========================================================
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
@@ -133,6 +138,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | Field | Type | SQLite Class | Nullable | Default | Constraints | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `id` | Identifier | `INTEGER` | **No** | *Autoincrement* | `PRIMARY KEY AUTOINCREMENT` | Unique amigurumi ID. |
+| `artesano_id` | Foreign Key | `INTEGER` | **No** | *None* | `REFERENCES usuarios(id)` | Artisan user who crafted/registered this item. Protected via `ON DELETE RESTRICT`. |
 | `nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Creation / character name. |
 | `categoria` | Text | `TEXT` | **No** | *None* | Length 2-50 | Thematic grouping (app-level whitelist). |
 | `material` | Text | `TEXT` | **No** | *None* | Length 3-80 | Primary yarn composition. |
@@ -163,6 +169,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 ## 4. Referential Integrity Rules
 - **Foreign Key Enforcement:** Enforced dynamically on every PDO connection via `PRAGMA foreign_keys = ON;`.
-- **Delete Protection (`ON DELETE RESTRICT`):** An amigurumi cannot be deleted if active or past orders reference its ID. This protects financial integrity and transaction history.
+- **Artisan Attribution (`artesano_id`):** Every piece of amigurumi is tied to the artisan who created it. A user account cannot be deleted if active amigurumis reference it (`ON DELETE RESTRICT`).
+- **Order Delete Protection (`ON DELETE RESTRICT`):** An amigurumi cannot be deleted if active or past orders reference its ID. This protects financial integrity and transaction history.
 - **Price Immutability (`precio_final`):** Even if an artisan updates the catalog price of an amigurumi in `amigurumis.precio`, existing orders in `pedidos.precio_final` retain their historical purchase amount.
 - **Quantity Tracking (`cantidad`):** A single order can track multiple units of an amigurumi, allowing accurate calculation of total revenue and material consumption.

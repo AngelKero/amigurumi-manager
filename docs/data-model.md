@@ -6,9 +6,9 @@ This directory contains the modular architectural documentation for the Handmade
 
 ## 1. Modular Documentation Index
 
-- **[database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md):** Complete 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), full DDL with foreign keys, data dictionaries, indexes, and referential integrity constraints.
-- **[auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md):** Authentication lifecycle, password hashing via native PHP `password_hash()`, PHP session guards, and role-based endpoint protection matrix.
-- **[api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md):** REST-like endpoint contracts, standard JSON payload format, error handling rules, and CRUD specifications for catalog items and orders.
+- **[database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md):** Complete 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), full DDL with foreign keys, data dictionaries, indexes, and referential integrity constraints. (Spanish: [database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md))
+- **[auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md):** Authentication lifecycle, password hashing via native PHP `password_hash()`, PHP session guards, and role-based endpoint protection matrix. (Spanish: [auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md))
+- **[api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md):** REST-like endpoint contracts, standard JSON payload format, error handling rules, and CRUD specifications for catalog items and orders. (Spanish: [api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md))
 
 ---
 
@@ -26,6 +26,7 @@ erDiagram
 
     AMIGURUMIS {
         integer id PK "INTEGER AUTOINCREMENT"
+        integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 chars)"
         string categoria "TEXT NOT NULL (App whitelist)"
         string material "TEXT NOT NULL (3-80 chars)"
@@ -52,6 +53,7 @@ erDiagram
         string creado_en "TEXT (ISO 8601 timestamp)"
     }
 
+    USUARIOS ||--o{ AMIGURUMIS : "crafts / registers"
     AMIGURUMIS ||--o{ PEDIDOS : "referenced by orders"
 ```
 
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- 2. Table: amigurumis (Product Catalog & Inventory)
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
@@ -85,7 +88,8 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    actualizado_en TEXT DEFAULT NULL
+    actualizado_en TEXT DEFAULT NULL,
+    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- 3. Table: pedidos (Orders & Commissions)
@@ -109,6 +113,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 
 -- Query Performance Indexes
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
