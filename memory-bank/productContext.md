@@ -18,12 +18,13 @@ Independent crochet artisans and craft businesses need more than a static portfo
 2. **Creation Management (`formulario.html` - Authenticated):**
    - Artisan registers a new design or modifies an existing piece.
    - Real-time client-side calculation visualizes the profit margin ($) and effective hourly rate ($/hr) based on `precio`, `costo_materiales`, and `horas_tejido`.
-3. **Product Inspection (`detalle.html`):**
+3. **Product Inspection & Public Checkout (`detalle.html`):**
    - High-fidelity visual showcase of the amigurumi with technical specifications, materials, and artisan business metrics.
+   - Public Client Checkout: Customers can directly purchase or commission an item using an interactive modal, with real-time stock deduction.
 4. **Order & Commission Tracking (`pedidos.html` - Authenticated):**
-   - Artisan logs custom commissions with client name, target delivery date, agreed price, and fulfillment stage (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
-5. **Authentication & Session (`login.html`):**
-   - Artisan logs in securely using encrypted credentials, establishing an authenticated session cookie for administrative actions.
+   - Artisan logs custom commissions, monitors public orders, updates fulfillment stages (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`), and triggers automatic inventory restocking upon cancellation.
+5. **Authentication & Session (Dynamic Navbar Modal):**
+   - Artisan logs in seamlessly via a modal in the navbar without page disruption, unlocking role-based management tools.
 
 ## Design Principles
 - **Warm, Crafted Aesthetic:** Harmonious color palette suitable for handmade arts, soft accents, and rounded cards.

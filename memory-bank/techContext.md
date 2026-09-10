@@ -2,9 +2,9 @@
 
 ## Technology Stack
 - **Frontend Presentation:** Semantic HTML5, Bootstrap 5.3 (CDN), Bootstrap Icons (CDN).
-- **Custom Styling:** Minimal custom CSS (`css/styles.css`) for warm craft aesthetic accents and status badge styling.
-- **Frontend Scripting:** Vanilla JavaScript (`js/app.js`) for DOM manipulation, profit margin preview math, pre-flight validation, and modal dialogues.
-- **Backend Language:** PHP 8.x (Native standard library, PDO, session management, native `password_hash`).
+- **Custom Styling:** Minimal custom CSS (`css/styles.css`) for warm craft aesthetic accents, image previews, and status badge styling.
+- **Frontend Scripting:** Vanilla JavaScript (`js/app.js`) for DOM manipulation, dynamic Navbar Login Modal, profit margin calculations, checkout modals, and AJAX operations.
+- **Backend Language:** PHP 8.x (Native standard library, PDO, session management, native `password_hash`, file upload processing).
 - **Database:** SQLite 3 (`database.sqlite`) with `PRAGMA foreign_keys = ON;` and `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`.
 - **Local Server:** PHP Built-in development server (`php -S localhost:8000`).
 
@@ -68,16 +68,16 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
 
-## Modular Documentation Structure (`docs/` / `.docs/`)
+## Project Directory Layout
 ```
 proyecto-web/
 ├── docs/ (symlinked to .docs/)
-│   ├── data-model.md           (Master Architecture & ERD Index - English)
-│   ├── data-model.es.md        (Índice Maestro y ERD - Español)
+│   ├── data-model.md           (Master Architecture Index - English)
+│   ├── data-model.es.md        (Índice Maestro - Español)
 │   ├── database-schema.md      (Relational DDL, Data Dictionaries - English)
 │   ├── database-schema.es.md   (Esquema DDL, Diccionario de Datos - Español)
-│   ├── auth-flow.md            (Session Lifecycle, Identity Attribution - English)
-│   ├── auth-flow.es.md         (Ciclo de Sesión y Atribución de Autoría - Español)
+│   ├── auth-flow.md            (Session Lifecycle, Modal Flow - English)
+│   ├── auth-flow.es.md         (Ciclo de Sesión y Flujo Modal - Español)
 │   ├── api-design.md           (REST-like Endpoint Contracts & JSON - English)
 │   └── api-design.es.md        (Contratos de Endpoints REST y JSON - Español)
 ├── memory-bank/
@@ -87,38 +87,38 @@ proyecto-web/
 │   ├── activeContext.md
 │   └── progress.md
 ├── css/
-│   └── styles.css              (Artisan styling & badge indicators)
+│   └── styles.css              (Artisan styling, preview frames, badge indicators)
 ├── js/
-│   └── app.js                  (Client-side validation, calculations, event handlers)
+│   └── app.js                  (Client-side validation, Navbar Modal, calculations)
+├── uploads/                    (Local directory storing uploaded product images)
 ├── api/
 │   ├── conexion.php            (PDO SQLite connection with PRAGMA foreign_keys = ON)
-│   ├── auth_guard.php          (Session verification helper)
+│   ├── auth_guard.php          (Session and role authorization helper)
 │   ├── login.php               (Credential verification & session_start)
 │   ├── logout.php              (Session termination)
 │   ├── setup.php               (Schema creation & initial admin seeder)
-│   ├── crear.php               (Insert amigurumi binding session user_id to artesano_id)
+│   ├── usuarios.php            (User Management CRUD - Admin only)
+│   ├── crear.php               (Insert amigurumi, file upload to /uploads, binds session artesano_id)
 │   ├── leer.php                (Fetch catalog items with joined artisan username)
-│   ├── actualizar.php          (Update amigurumi)
+│   ├── actualizar.php          (Update amigurumi & replace local image)
 │   ├── eliminar.php            (Delete amigurumi with foreign key safeguard)
-│   ├── pedidos.php             (Orders query & creation with atomic stock deduction)
+│   ├── solicitar_pedido.php    (Public checkout with atomic stock deduction)
+│   ├── pedidos.php             (Protected orders dashboard & query)
 │   └── actualizar_pedido.php   (Update order status & restocking on cancellation)
-├── index.html                  (Catalog & list view)
-├── formulario.html             (Add / Edit view)
-├── detalle.html                (Detailed item view)
+├── index.html                  (Catalog & inventory view + Navbar Login Modal)
+├── formulario.html             (Add / Edit view with real file upload)
+├── detalle.html                (Detailed item view with Public Checkout trigger)
 ├── pedidos.html                (Orders & commission tracking view)
-├── login.html                  (Admin login interface)
 ├── database.sqlite             (SQLite DB file - created in Phase 2)
 └── README.md                   (Execution and setup documentation)
 ```
 
 ## Technical Constraints & Safety
 - **Foreign Key Enforcement:** Explicit `PRAGMA foreign_keys = ON;` executed on every PDO connection.
-- **Artisan Identity Binding:** `artesano_id` is automatically injected from `$_SESSION['user_id']` on creation. Client-side input is ignored.
-- **Server Price Calculation:** `pedidos.precio_final` is calculated on the server (`precio * cantidad`) and locked into the database. Client input is not trusted.
-- **Atomic Stock Deduction:** Creating an order requires an atomic transaction (`BEGIN TRANSACTION`). The backend validates that `cantidad <= amigurumis.cantidad_stock` and decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
-- **Restocking on Cancellation:** Updating an order to `'Cancelado'` via `actualizar_pedido.php` restores reserved units to `amigurumis.cantidad_stock`.
-- **Financial Exactness:** Cents storage (`INTEGER`) across `precio`, `costo_materiales`, and `precio_final`.
-- **Order Quantity Tracking:** `cantidad INTEGER NOT NULL DEFAULT 1` allows multiple units per order.
-- **Session Protection:** All mutating endpoints require valid PHP session with `session_regenerate_id(true)` and `HttpOnly` cookie flags.
+- **Server-Side Price Calculation:** `pedidos.precio_final` is calculated on the server (`precio * cantidad`). Client input is never trusted.
+- **Atomic Stock Transactions:** Creating an order (`solicitar_pedido.php` or `pedidos.php`) requires `BEGIN TRANSACTION`, checking available stock and updating `cantidad_stock`.
+- **Restocking on Cancellation:** Updating an order to `'Cancelado'` via `actualizar_pedido.php` restores units to `cantidad_stock`.
+- **Role-Based Protection:** `/api/usuarios.php` is strictly locked to `admin`. Non-admin requests receive HTTP 403.
+- **Secure Image Uploads:** Binary files validated by MIME type, size limit ($\le 5\text{MB}$), unique file naming, stored in `/uploads/`.
+- **Dynamic Navbar Modal Authentication:** Login is embedded as a reusable modal dialog in the header, streamlining navigation without page reloads.
 - **SQL Injection Prevention:** 100% parameterized PDO prepared statements.
-- **Input Sanitization:** Multi-tier validation via HTML5, Vanilla JS, and server-side PHP filters.

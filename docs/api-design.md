@@ -31,7 +31,7 @@ All JSON responses follow a predictable envelope structure:
 ## 2. Authentication Endpoints
 
 ### `POST /api/login.php`
-- **Access:** Public
+- **Access:** Public (Triggered via the Dynamic Navbar Modal)
 - **Request Body (JSON):**
   ```json
   {
@@ -64,7 +64,100 @@ All JSON responses follow a predictable envelope structure:
 
 ---
 
-## 3. Amigurumis Endpoints
+## 3. User Management Endpoints (`/api/usuarios.php`)
+
+> [!IMPORTANT]
+> All endpoints under `/api/usuarios.php` are strictly protected and require an authenticated session with role `'admin'`. Non-admin users receive **HTTP 403 Forbidden**.
+
+### `GET /api/usuarios.php`
+- **Access:** Protected (`admin` role required)
+- **Query Parameters:** `id` (optional, integer)
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": 1,
+        "username": "admin",
+        "rol": "admin",
+        "creado_en": "2026-09-10 14:00:00"
+      },
+      {
+        "id": 2,
+        "username": "artesana_ana",
+        "rol": "artesano",
+        "creado_en": "2026-09-10 15:00:00"
+      }
+    ]
+  }
+  ```
+
+### `POST /api/usuarios.php`
+- **Access:** Protected (`admin` role required)
+- **Request Body (JSON):**
+  ```json
+  {
+    "username": "artesano_carlos",
+    "password": "SecurePassword2026",
+    "rol": "artesano"
+  }
+  ```
+- **Response (201 Created):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario creado exitosamente",
+    "id": 3
+  }
+  ```
+
+### `PUT /api/usuarios.php`
+- **Access:** Protected (`admin` role required)
+- **Request Body (JSON):**
+  ```json
+  {
+    "id": 3,
+    "username": "carlos_crochet",
+    "password": "NewOptionalPassword123",
+    "rol": "artesano"
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario actualizado exitosamente"
+  }
+  ```
+
+### `DELETE /api/usuarios.php`
+- **Access:** Protected (`admin` role required)
+- **Request Body (JSON):**
+  ```json
+  {
+    "id": 3
+  }
+  ```
+- **Constraint Handling:** SQLite's `ON DELETE RESTRICT` raises a foreign key violation if the user has created amigurumis.
+- **Success Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario eliminado correctamente"
+  }
+  ```
+- **Conflict Response (409 Conflict):**
+  ```json
+  {
+    "success": false,
+    "error": "No se puede eliminar el usuario porque tiene piezas de amigurumi asociadas. Reasigne o elimine las piezas primero."
+  }
+  ```
+
+---
+
+## 4. Amigurumis Endpoints
 
 ### `GET /api/leer.php`
 - **Access:** Public
@@ -95,7 +188,7 @@ All JSON responses follow a predictable envelope structure:
       "cantidad_stock": 4,
       "horas_tejido": 5.5,
       "descripcion": "Tejido con hilo de algodón mercerizado, relleno siliconado hipoalergénico y ojos de seguridad.",
-      "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0",
+      "imagen_url": "uploads/amigurumi_66e01a2b.jpg",
       "creado_en": "2026-09-10 14:00:00",
       "actualizado_en": null
     },
@@ -115,7 +208,7 @@ All JSON responses follow a predictable envelope structure:
       "cantidad_stock": 0,
       "horas_tejido": 6.0,
       "descripcion": "Textura ultrasuave con branquias en relieve y detalles bordados a mano.",
-      "imagen_url": "https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+      "imagen_url": "uploads/amigurumi_66e01a3f.jpg",
       "creado_en": "2026-09-10 14:15:00",
       "actualizado_en": null
     }
@@ -123,78 +216,38 @@ All JSON responses follow a predictable envelope structure:
 }
 ```
 
-#### Response: Single Item (200 OK via `?id=1`)
-```json
-{
-  "success": true,
-  "data": {
-    "id": 1,
-    "artesano_id": 1,
-    "artesano_nombre": "admin",
-    "nombre": "Totoro Clásico",
-    "categoria": "Pop Culture / Anime",
-    "material": "100% Algodón Mercerizado",
-    "tamano_cm": 18.5,
-    "precio": 35000,
-    "precio_formato": "$350.00",
-    "costo_materiales": 8500,
-    "costo_formato": "$85.00",
-    "margen_ganancia": "$265.00",
-    "cantidad_stock": 4,
-    "horas_tejido": 5.5,
-    "descripcion": "Tejido con hilo de algodón mercerizado, relleno siliconado hipoalergénico y ojos de seguridad.",
-    "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0",
-    "creado_en": "2026-09-10 14:00:00",
-    "actualizado_en": null
-  }
-}
-```
-
 ### `POST /api/crear.php`
 - **Access:** Protected (Session required: `admin` or `artesano`)
-- **Security & Identity Binding:** The backend automatically extracts the authenticated artisan's ID from `$_SESSION['user_id']` and injects it into `artesano_id`. The client **MUST NOT** include `artesano_id` in the request body; any client-provided ID will be ignored to prevent identity spoofing.
-- **Request Body (JSON or multipart/form-data):**
-  ```json
-  {
-    "nombre": "Baby Yoda Crochet",
-    "categoria": "Pop Culture / Anime",
-    "material": "Acrílico Premium",
-    "tamano_cm": 15.0,
-    "precio": 38000,
-    "costo_materiales": 9000,
-    "cantidad_stock": 3,
-    "horas_tejido": 4.5,
-    "descripcion": "Incluye túnica removible y vasito tejido.",
-    "imagen_url": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f"
-  }
-  ```
+- **Security & Identity Binding:** The backend automatically extracts `$_SESSION['user_id']` and assigns it to `artesano_id`. Client-provided IDs are discarded.
+- **Image Upload Handling (`multipart/form-data`):**
+  - Accepts a binary file upload under field `imagen`.
+  - Backend verifies MIME type (`image/jpeg`, `image/png`, `image/webp`), enforces size limit ($\le 5\text{MB}$), generates a unique filename (`amig_UUID.jpg`), moves it to the local `/uploads` directory, and writes the relative path `uploads/amig_UUID.jpg` into `imagen_url`.
+  - If no file is uploaded, falls back to a default placeholder path.
+- **Request Form-Data Fields:**
+  - `nombre` (text)
+  - `categoria` (text)
+  - `material` (text)
+  - `tamano_cm` (number)
+  - `precio` (decimal)
+  - `costo_materiales` (decimal)
+  - `cantidad_stock` (integer)
+  - `horas_tejido` (number)
+  - `descripcion` (text)
+  - `imagen` (file, optional)
 - **Response (201 Created):**
   ```json
   {
     "success": true,
-    "message": "Amigurumi registrado exitosamente",
-    "id": 3
+    "message": "Amigurumi registrado exitosamente con imagen local",
+    "id": 3,
+    "imagen_url": "uploads/amig_66e01b8a9c.jpg"
   }
   ```
 
 ### `POST /api/actualizar.php`
 - **Access:** Protected (Session required: `admin` or original artisan owner)
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 1,
-    "nombre": "Totoro Clásico Gigante",
-    "categoria": "Pop Culture / Anime",
-    "material": "100% Algodón Mercerizado",
-    "tamano_cm": 28.0,
-    "precio": 55000,
-    "costo_materiales": 14000,
-    "cantidad_stock": 2,
-    "horas_tejido": 8.0,
-    "descripcion": "Edición ampliada con hoja paraguas incluida.",
-    "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0"
-  }
-  ```
+- **Image Upload Handling:**
+  - Can accept `multipart/form-data` with an updated `imagen` file. If a new image is provided, the backend saves it to `/uploads`, replaces `imagen_url`, and unlinks the previous local file.
 - **Response (200 OK):**
   ```json
   {
@@ -211,8 +264,7 @@ All JSON responses follow a predictable envelope structure:
     "id": 1
   }
   ```
-- **Constraint Handling:** If the item is referenced by orders in `pedidos`, SQLite's `ON DELETE RESTRICT` raises a foreign key violation.
-- **Success Response (200 OK):**
+- **Response (200 OK):**
   ```json
   {
     "success": true,
@@ -229,10 +281,49 @@ All JSON responses follow a predictable envelope structure:
 
 ---
 
-## 4. Orders & Commissions Endpoints (`pedidos`)
+## 5. Orders & Commissions Endpoints (`pedidos`)
+
+### `POST /api/solicitar_pedido.php` (Public Client Checkout)
+- **Access:** **Public** (Allows customers to purchase directly from `detalle.html`)
+- **Security & Integrity:**
+  - The client does NOT provide `precio_final` or `estado_pedido`.
+  - The backend automatically queries `amigurumis.precio` and computes `precio_final = amigurumis.precio * cantidad`.
+  - Defaults `estado_pedido` to `'Pendiente'`.
+- **Atomic Inventory Transaction:** Wrapped in a database transaction (`BEGIN TRANSACTION`):
+  1. Validates that requested `cantidad` $\le \text{amigurumis.cantidad\_stock}$. If stock is insufficient, rolls back and returns **HTTP 422**.
+  2. Decrements physical stock: `UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id`.
+  3. Inserts order into `pedidos`.
+  4. Commits transaction.
+- **Request Body (JSON):**
+  ```json
+  {
+    "cliente_nombre": "Mariana Gómez",
+    "amigurumi_id": 1,
+    "cantidad": 1,
+    "fecha_entrega": "2026-09-25",
+    "notas": "Empaque de regalo con moño rosa"
+  }
+  ```
+- **Success Response (201 Created):**
+  ```json
+  {
+    "success": true,
+    "message": "Su pedido ha sido recibido y el stock ha sido reservado",
+    "pedido_id": 5,
+    "precio_total": 35000,
+    "precio_total_formato": "$350.00"
+  }
+  ```
+- **Error Response: Insufficient Stock (422 Unprocessable Entity):**
+  ```json
+  {
+    "success": false,
+    "error": "Stock insuficiente para satisfacer su pedido. Stock disponible: 0 unidad(es)."
+  }
+  ```
 
 ### `GET /api/pedidos.php`
-- **Access:** Protected (Session required)
+- **Access:** Protected (Session required: `admin` or `artesano`)
 - **Query Parameters:** `estado` (optional: `Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
 - **Response (200 OK):**
   ```json
@@ -256,64 +347,17 @@ All JSON responses follow a predictable envelope structure:
   }
   ```
 
-### `POST /api/pedidos.php`
-- **Access:** Protected (Session required)
-- **Anti-Tampering Price Calculation:** The client **MUST NOT** send `precio_final`. The PHP backend queries the current unit price (`amigurumis.precio`) from the database and calculates the total locked price:
-  $$\text{precio\_final} = \text{amigurumi.precio} \times \text{cantidad}$$
-- **Atomic Transaction & Inventory Deduction:** The operation is wrapped in a PDO database transaction (`BEGIN TRANSACTION`):
-  1. Checks if the requested `cantidad` is $\le \text{amigurumis.cantidad\_stock}$. If stock is insufficient, rolls back and returns **HTTP 422 Unprocessable Entity**.
-  2. Deducts physical inventory:
-     ```sql
-     UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id;
-     ```
-  3. Inserts the order record into `pedidos` with the server-calculated `precio_final`.
-  4. Commits the transaction.
-- **Request Body (JSON):**
-  ```json
-  {
-    "cliente_nombre": "Carlos Mendoza",
-    "amigurumi_id": 2,
-    "cantidad": 3,
-    "fecha_entrega": "2026-10-15",
-    "estado_pedido": "Pendiente",
-    "notas": "Pedido para regalo corporativo, empaque individual"
-  }
-  ```
-- **Success Response (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Pedido registrado exitosamente y stock descontado del inventario",
-    "id": 2,
-    "precio_final": 126000,
-    "precio_final_formato": "$1,260.00",
-    "stock_restante": 1
-  }
-  ```
-- **Error Response: Insufficient Stock (422 Unprocessable Entity):**
-  ```json
-  {
-    "success": false,
-    "error": "Stock insuficiente para completar el pedido. Stock disponible: 1 unidad(es)."
-  }
-  ```
-
 ### `POST /api/actualizar_pedido.php`
 - **Access:** Protected (Session required: `admin` or `artesano`)
-- **Order State Transitions:** Allows updating `estado_pedido` (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
-- **Inventory Restocking Rule on Cancellation:** Wrapped in a database transaction (`BEGIN TRANSACTION`):
-  - If the new state is `'Cancelado'` and the previous state was not `'Cancelado'`, the backend restores the reserved units back into the inventory:
-    ```sql
-    UPDATE amigurumis SET cantidad_stock = cantidad_stock + :cantidad WHERE id = :amigurumi_id;
-    ```
+- **Cancellation & Restocking:** If `estado_pedido` transitions to `'Cancelado'`, the backend executes a transaction restoring `cantidad` back into `amigurumis.cantidad_stock`.
 - **Request Body (JSON):**
   ```json
   {
-    "id": 2,
+    "id": 1,
     "estado_pedido": "Cancelado"
   }
   ```
-- **Success Response (200 OK):**
+- **Response (200 OK):**
   ```json
   {
     "success": true,

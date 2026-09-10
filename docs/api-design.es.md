@@ -31,7 +31,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
 ## 2. Endpoints de Autenticación
 
 ### `POST /api/login.php`
-- **Acceso:** Público
+- **Acceso:** Público (Activado desde el Modal Dinámico del Navbar)
 - **Cuerpo de la Solicitud (JSON):**
   ```json
   {
@@ -64,7 +64,100 @@ Todas las respuestas del backend siguen una estructura homogénea:
 
 ---
 
-## 3. Endpoints del Catálogo de Amigurumis
+## 3. Endpoints de Gestión de Usuarios (`/api/usuarios.php`)
+
+> [!IMPORTANT]
+> Todos los endpoints bajo `/api/usuarios.php` están estrictamente protegidos y restringidos exclusivamente al rol `'admin'`. Usuarios no administradores reciben **HTTP 403 Forbidden**.
+
+### `GET /api/usuarios.php`
+- **Acceso:** Protegido (Exclusivo rol `admin`)
+- **Parámetros de Consulta:** `id` (opcional, entero)
+- **Respuesta (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": 1,
+        "username": "admin",
+        "rol": "admin",
+        "creado_en": "2026-09-10 14:00:00"
+      },
+      {
+        "id": 2,
+        "username": "artesana_ana",
+        "rol": "artesano",
+        "creado_en": "2026-09-10 15:00:00"
+      }
+    ]
+  }
+  ```
+
+### `POST /api/usuarios.php`
+- **Acceso:** Protegido (Exclusivo rol `admin`)
+- **Cuerpo de la Solicitud (JSON):**
+  ```json
+  {
+    "username": "artesano_carlos",
+    "password": "SecurePassword2026",
+    "rol": "artesano"
+  }
+  ```
+- **Respuesta (201 Created):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario creado exitosamente",
+    "id": 3
+  }
+  ```
+
+### `PUT /api/usuarios.php`
+- **Acceso:** Protegido (Exclusivo rol `admin`)
+- **Cuerpo de la Solicitud (JSON):**
+  ```json
+  {
+    "id": 3,
+    "username": "carlos_crochet",
+    "password": "NewOptionalPassword123",
+    "rol": "artesano"
+  }
+  ```
+- **Respuesta (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario actualizado exitosamente"
+  }
+  ```
+
+### `DELETE /api/usuarios.php`
+- **Acceso:** Protegido (Exclusivo rol `admin`)
+- **Cuerpo de la Solicitud (JSON):**
+  ```json
+  {
+    "id": 3
+  }
+  ```
+- **Manejo de Restricción:** La regla `ON DELETE RESTRICT` de SQLite detiene la eliminación si el usuario tiene piezas de amigurumi asociadas.
+- **Respuesta Exitosa (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Usuario eliminado correctamente"
+  }
+  ```
+- **Respuesta de Conflicto (409 Conflict):**
+  ```json
+  {
+    "success": false,
+    "error": "No se puede eliminar el usuario porque tiene piezas de amigurumi asociadas. Reasigne o elimine las piezas primero."
+  }
+  ```
+
+---
+
+## 4. Endpoints del Catálogo de Amigurumis
 
 ### `GET /api/leer.php`
 - **Acceso:** Público
@@ -95,7 +188,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
       "cantidad_stock": 4,
       "horas_tejido": 5.5,
       "descripcion": "Tejido con hilo de algodón mercerizado, relleno siliconado hipoalergénico y ojos de seguridad.",
-      "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0",
+      "imagen_url": "uploads/amigurumi_66e01a2b.jpg",
       "creado_en": "2026-09-10 14:00:00",
       "actualizado_en": null
     },
@@ -115,7 +208,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
       "cantidad_stock": 0,
       "horas_tejido": 6.0,
       "descripcion": "Textura ultrasuave con branquias en relieve y detalles bordados a mano.",
-      "imagen_url": "https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+      "imagen_url": "uploads/amigurumi_66e01a3f.jpg",
       "creado_en": "2026-09-10 14:15:00",
       "actualizado_en": null
     }
@@ -123,78 +216,37 @@ Todas las respuestas del backend siguen una estructura homogénea:
 }
 ```
 
-#### Respuesta: Pieza Individual (200 OK vía `?id=1`)
-```json
-{
-  "success": true,
-  "data": {
-    "id": 1,
-    "artesano_id": 1,
-    "artesano_nombre": "admin",
-    "nombre": "Totoro Clásico",
-    "categoria": "Pop Culture / Anime",
-    "material": "100% Algodón Mercerizado",
-    "tamano_cm": 18.5,
-    "precio": 35000,
-    "precio_formato": "$350.00",
-    "costo_materiales": 8500,
-    "costo_formato": "$85.00",
-    "margen_ganancia": "$265.00",
-    "cantidad_stock": 4,
-    "horas_tejido": 5.5,
-    "descripcion": "Tejido con hilo de algodón mercerizado, relleno siliconado hipoalergénico y ojos de seguridad.",
-    "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0",
-    "creado_en": "2026-09-10 14:00:00",
-    "actualizado_en": null
-  }
-}
-```
-
 ### `POST /api/crear.php`
 - **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
-- **Seguridad y Atribución de Identidad:** El backend extrae automáticamente el ID del artesano autenticado desde `$_SESSION['user_id']` y lo asigna al campo `artesano_id`. El cliente **NO DEBE** enviar `artesano_id` en el cuerpo de la solicitud JSON; cualquier valor enviado por el cliente será ignorado para evitar suplantación de identidad.
-- **Cuerpo de la Solicitud (JSON o multipart/form-data):**
-  ```json
-  {
-    "nombre": "Baby Yoda Crochet",
-    "categoria": "Pop Culture / Anime",
-    "material": "Acrílico Premium",
-    "tamano_cm": 15.0,
-    "precio": 38000,
-    "costo_materiales": 9000,
-    "cantidad_stock": 3,
-    "horas_tejido": 4.5,
-    "descripcion": "Incluye túnica removible y vasito tejido.",
-    "imagen_url": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f"
-  }
-  ```
+- **Seguridad y Atribución:** El backend extrae automáticamente `$_SESSION['user_id']` y lo asigna a `artesano_id`.
+- **Carga Real de Archivos de Imagen (`multipart/form-data`):**
+  - Acepta un archivo binario en el campo `imagen`.
+  - El backend valida tipo MIME (`image/jpeg`, `image/png`, `image/webp`), peso máximo ($\le 5\text{MB}$), genera un nombre único (`amig_UUID.jpg`), lo traslada al directorio local `/uploads` y almacena la ruta relativa `uploads/amig_UUID.jpg` en la base de datos.
+  - Si no se envía archivo, utiliza la imagen por defecto del sistema.
+- **Campos en Form-Data:**
+  - `nombre` (texto)
+  - `categoria` (texto)
+  - `material` (texto)
+  - `tamano_cm` (número)
+  - `precio` (decimal)
+  - `costo_materiales` (decimal)
+  - `cantidad_stock` (entero)
+  - `horas_tejido` (número)
+  - `descripcion` (texto)
+  - `imagen` (archivo binario, opcional)
 - **Respuesta (201 Created):**
   ```json
   {
     "success": true,
-    "message": "Amigurumi registrado exitosamente",
-    "id": 3
+    "message": "Amigurumi registrado exitosamente con imagen local",
+    "id": 3,
+    "imagen_url": "uploads/amig_66e01b8a9c.jpg"
   }
   ```
 
 ### `POST /api/actualizar.php`
-- **Acceso:** Protegido (Sesión requerida: `admin` o el artesano autor de la pieza)
-- **Cuerpo de la Solicitud (JSON):**
-  ```json
-  {
-    "id": 1,
-    "nombre": "Totoro Clásico Gigante",
-    "categoria": "Pop Culture / Anime",
-    "material": "100% Algodón Mercerizado",
-    "tamano_cm": 28.0,
-    "precio": 55000,
-    "costo_materiales": 14000,
-    "cantidad_stock": 2,
-    "horas_tejido": 8.0,
-    "descripcion": "Edición ampliada con hoja paraguas incluida.",
-    "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0"
-  }
-  ```
+- **Acceso:** Protegido (Sesión requerida: `admin` o autor artesano)
+- **Manejo de Imagen:** Acepta `multipart/form-data`. Si se adjunta un nuevo archivo en `imagen`, se sube a `/uploads/`, se actualiza la ruta y se elimina el archivo anterior en disco.
 - **Respuesta (200 OK):**
   ```json
   {
@@ -211,7 +263,6 @@ Todas las respuestas del backend siguen una estructura homogénea:
     "id": 1
   }
   ```
-- **Manejo de Restricción Referencial:** Si la pieza está asociada a encargos en `pedidos`, la regla `ON DELETE RESTRICT` de SQLite detiene la eliminación.
 - **Respuesta Exitosa (200 OK):**
   ```json
   {
@@ -219,20 +270,52 @@ Todas las respuestas del backend siguen una estructura homogénea:
     "message": "Amigurumi eliminado correctamente"
   }
   ```
-- **Respuesta de Conflicto (409 Conflict):**
-  ```json
-  {
-    "success": false,
-    "error": "No se puede eliminar el amigurumi porque tiene pedidos asociados. Debe cancelar o archivar los pedidos primero."
-  }
-  ```
 
 ---
 
-## 4. Endpoints de Pedidos y Encargos (`pedidos`)
+## 5. Endpoints de Pedidos y Encargos (`pedidos`)
+
+### `POST /api/solicitar_pedido.php` (Checkout Público de Clientes)
+- **Acceso:** **Público** (Permite a cualquier cliente realizar compras desde `detalle.html`)
+- **Seguridad e Integridad:**
+  - El cliente NO proporciona `precio_final` ni `estado_pedido`.
+  - El backend consulta `amigurumis.precio` y calcula `precio_final = precio * cantidad`.
+  - Asigna por defecto `estado_pedido = 'Pendiente'`.
+- **Transacción Atómica y Descuento de Inventario:** Ejecutado en transacción PDO (`BEGIN TRANSACTION`):
+  1. Verifica que `cantidad <= amigurumis.cantidad_stock`. Si el inventario no alcanza, revierte y devuelve **HTTP 422**.
+  2. Descuenta el inventario: `UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id`.
+  3. Inserta el pedido con el precio total verificado.
+  4. Confirma la transacción (`COMMIT`).
+- **Cuerpo de la Solicitud (JSON):**
+  ```json
+  {
+    "cliente_nombre": "Mariana Gómez",
+    "amigurumi_id": 1,
+    "cantidad": 1,
+    "fecha_entrega": "2026-09-25",
+    "notas": "Empaque de regalo con moño rosa"
+  }
+  ```
+- **Respuesta Exitosa (201 Created):**
+  ```json
+  {
+    "success": true,
+    "message": "Su pedido ha sido recibido y el stock ha sido reservado",
+    "pedido_id": 5,
+    "precio_total": 35000,
+    "precio_total_formato": "$350.00"
+  }
+  ```
+- **Respuesta de Error: Stock Insuficiente (422 Unprocessable Entity):**
+  ```json
+  {
+    "success": false,
+    "error": "Stock insuficiente para satisfacer su pedido. Stock disponible: 0 unidad(es)."
+  }
+  ```
 
 ### `GET /api/pedidos.php`
-- **Acceso:** Protegido (Sesión requerida)
+- **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
 - **Parámetros de Consulta:** `estado` (opcional: `Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
 - **Respuesta (200 OK):**
   ```json
@@ -256,60 +339,13 @@ Todas las respuestas del backend siguen una estructura homogénea:
   }
   ```
 
-### `POST /api/pedidos.php`
-- **Acceso:** Protegido (Sesión requerida)
-- **Cálculo Anti-Manipulación de Precios:** El cliente **NO DEBE** enviar `precio_final`. El backend en PHP consulta el precio unitario vigente (`amigurumis.precio`) en la base de datos y calcula el total bloqueado:
-  $$\text{precio\_final} = \text{amigurumi.precio} \times \text{cantidad}$$
-- **Transacción Atómica y Descuento de Inventario:** La operación se ejecuta en una transacción PDO (`BEGIN TRANSACTION`):
-  1. Verifica que la `cantidad` solicitada sea $\le \text{amigurumis.cantidad\_stock}$. Si el stock es insuficiente, se cancela la transacción y devuelve **HTTP 422 Unprocessable Entity**.
-  2. Descuenta el inventario físico:
-     ```sql
-     UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id;
-     ```
-  3. Inserta el pedido en `pedidos` con el `precio_final` calculado por el servidor.
-  4. Confirma la transacción (`COMMIT`).
-- **Cuerpo de la Solicitud (JSON):**
-  ```json
-  {
-    "cliente_nombre": "Carlos Mendoza",
-    "amigurumi_id": 2,
-    "cantidad": 3,
-    "fecha_entrega": "2026-10-15",
-    "estado_pedido": "Pendiente",
-    "notas": "Pedido para regalo corporativo, empaque individual"
-  }
-  ```
-- **Respuesta Exitosa (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Pedido registrado exitosamente y stock descontado del inventario",
-    "id": 2,
-    "precio_final": 126000,
-    "precio_final_formato": "$1,260.00",
-    "stock_restante": 1
-  }
-  ```
-- **Respuesta de Error: Stock Insuficiente (422 Unprocessable Entity):**
-  ```json
-  {
-    "success": false,
-    "error": "Stock insuficiente para completar el pedido. Stock disponible: 1 unidad(es)."
-  }
-  ```
-
 ### `POST /api/actualizar_pedido.php`
 - **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
-- **Transiciones de Estado de Pedidos:** Permite actualizar `estado_pedido` (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
-- **Regla de Reintegro de Inventario por Cancelación:** Envuelto en una transacción de base de datos (`BEGIN TRANSACTION`):
-  - Si el nuevo estado es `'Cancelado'` y el estado anterior no era `'Cancelado'`, el backend restituye automáticamente las unidades reservadas al stock:
-    ```sql
-    UPDATE amigurumis SET cantidad_stock = cantidad_stock + :cantidad WHERE id = :amigurumi_id;
-    ```
+- **Reintegro por Cancelación:** Si `estado_pedido` cambia a `'Cancelado'`, se restituye automáticamente la `cantidad` a `amigurumis.cantidad_stock`.
 - **Cuerpo de la Solicitud (JSON):**
   ```json
   {
-    "id": 2,
+    "id": 1,
     "estado_pedido": "Cancelado"
   }
   ```

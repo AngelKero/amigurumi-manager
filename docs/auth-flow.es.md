@@ -10,31 +10,33 @@ Este documento describe el ciclo de vida de autenticación de usuarios, la estra
 sequenceDiagram
     autonumber
     actor Usuario as Artesano / Admin
-    participant UI as Navegador (login.html)
+    participant UI as Modal Navbar (Modal de Login)
     participant Auth as Backend (api/login.php)
     participant DB as SQLite (usuarios)
     participant Guard as Guardia de Sesión (auth_guard.php)
-    participant API as Endpoints CRUD (api/crear.php, etc.)
+    participant API as Endpoints (api/crear.php, api/usuarios.php)
 
-    Usuario->>UI: Ingresa nombre de usuario y contraseña
-    UI->>Auth: Envía credenciales vía POST (JSON / form-data)
+    Usuario->>UI: Clic en "Iniciar Sesión" en barra superior (abre modal)
+    Usuario->>UI: Ingresa usuario y contraseña, envía formulario modal
+    UI->>Auth: Envía credenciales vía POST (JSON por fetch)
     Auth->>DB: SELECT * FROM usuarios WHERE username = ?
     DB-->>Auth: Retorna registro con password_hash
     Auth->>Auth: password_verify(contrasenaPlana, password_hash)
     alt Credenciales Inválidas
         Auth-->>UI: HTTP 401 Unauthorized ("Credenciales inválidas")
+        UI->>UI: Muestra alerta en el modal sin recargar página
     else Credenciales Válidas
         Auth->>Auth: session_start() y session_regenerate_id(true)
         Auth->>Auth: Almacena user_id, username, rol en $_SESSION
         Auth-->>UI: HTTP 200 OK (Cookie de sesión establecida)
-        UI->>UI: Redirige al catálogo o panel de administración
+        UI->>UI: Cierra modal y transforma el Navbar mostrando controles de Admin/Artesano
     end
 
-    Note over UI,API: Solicitud de Creación de Amigurumi
+    Note over UI,API: Operaciones Protegidas (Crear Amigurumi / Gestión de Usuarios)
     UI->>API: POST /api/crear.php (payload sin ID de usuario)
     API->>Guard: check_authenticated()
     alt Sesión No Iniciada / Expirada
-        Guard-->>UI: HTTP 401 Unauthorized (Redirige al login)
+        Guard-->>UI: HTTP 401 Unauthorized (Despliega modal de login)
     else Autenticado Exitosamente
         Guard-->>API: Permite ejecución
         API->>API: Extrae artesano_id desde $_SESSION['user_id']
@@ -87,12 +89,15 @@ if (session_status() === PHP_SESSION_NONE) {
 | Recurso / Endpoint | Nivel de Acceso | Requisito de Autenticación | Propósito |
 | :--- | :--- | :--- | :--- |
 | `index.html` (Vista de Catálogo) | **Público** | Ninguno | Permite a clientes y visitantes explorar creaciones. |
-| `detalle.html` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones completas, autoría e inventario. |
+| `detalle.html` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones, autoría, stock y botón de compra directa. |
+| `api/solicitar_pedido.php` | **Público** | Ninguno | Checkout de clientes; descuenta stock y fija precio atómicamente. |
 | `api/leer.php` | **Público** | Ninguno | Retorna el catálogo o una pieza en formato JSON con nombre de artesano. |
-| `api/login.php` | **Público** | Solo invitados | Valida credenciales e inicia la sesión del usuario. |
+| `api/login.php` | **Público** | Solo invitados (Modal en Navbar) | Valida credenciales e inicia la sesión del usuario. |
 | `api/logout.php` | **Protegido** | Autenticado | Destruye la sesión activa y limpia las cookies. |
-| `formulario.html` (Crear / Editar) | **Protegido** | Sesión requerida | Impide que visitantes no autorizados modifiquen el catálogo. |
-| `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra un nuevo amigurumi vinculando `artesano_id = $_SESSION['user_id']`. |
-| `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o autor) | Modifica datos, costos e inventario del catálogo. |
+| `formulario.html` (Crear / Editar) | **Protegido** | Sesión requerida | Creación y edición con subida de imágenes a `/uploads/`. |
+| `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra amigurumi, guarda imagen en `/uploads`, asigna `artesano_id`. |
+| `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o autor) | Modifica catálogo, costos, inventario y actualiza archivo de imagen. |
 | `api/eliminar.php` | **Protegido** | Sesión requerida (`admin`) | Elimina una pieza (sujeto a la restricción de pedidos). |
-| `pedidos.html` y `api/pedidos.php`| **Protegido** | Sesión requerida | Gestión integral de pedidos, cambios de estado y encargos. |
+| `api/usuarios.php` | **Protegido** | Exclusivo rol `admin` | CRUD completo de gestión de usuarios (ver, crear, editar, eliminar). |
+| `pedidos.html` y `api/pedidos.php`| **Protegido** | Sesión requerida (`admin`, `artesano`) | Gestión de pedidos, cambios de estado y encargos. |
+| `api/actualizar_pedido.php` | **Protegido** | Sesión requerida (`admin`, `artesano`) | Actualiza estado; reintegra stock si se marca como `'Cancelado'`. |

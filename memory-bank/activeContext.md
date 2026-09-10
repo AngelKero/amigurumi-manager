@@ -1,21 +1,25 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: Order Security, Inventory Sync, and Lifecycle Controls Applied
-- **Critical Business Logic & Security Flaws Resolved:**
-  1. **Anti-Price Spoofing:** In `POST /api/pedidos.php`, `precio_final` was completely eliminated from the client payload. The PHP backend dynamically queries `amigurumis.precio` and calculates `precio_final = precio * cantidad`.
-  2. **Atomic Inventory Synchronization (Stock Deduction):** Documented that creating an order runs inside a PDO database transaction (`BEGIN TRANSACTION`). It validates that `cantidad <= amigurumis.cantidad_stock` (returning HTTP 422 if insufficient) and automatically decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
-  3. **Order Management & Restocking Endpoint:** Added protected endpoint `POST /api/actualizar_pedido.php` to manage status changes (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`). If an order transitions to `'Cancelado'`, the backend executes a transaction restoring the reserved units back to `amigurumis.cantidad_stock`.
+## Current State: User Management CRUD, Public Checkout, Image Uploads, and Navbar Modal
+- **New Functional Requirements Integrated:**
+  1. **User Management CRUD (`/api/usuarios.php`):** Added endpoints (`GET`, `POST`, `PUT`, `DELETE`) for administrative user management, strictly restricted to authenticated sessions with the `admin` role.
+  2. **Public Client Checkout (`/api/solicitar_pedido.php`):** Created a public-facing order creation endpoint for customers browsing `detalle.html`. Operates without requiring an account/session, while enforcing the identical atomic database transaction (`cantidad_stock` validation and deduction, server-calculated `precio_final`, and default `'Pendiente'` status).
+  3. **Real Image File Uploads (`/uploads`):** Upgraded `POST /api/crear.php` and `POST /api/actualizar.php` to handle `multipart/form-data` image uploads, verifying MIME types and size limits, generating unique filenames, storing files locally in `/uploads/`, and persisting relative paths in `imagen_url`.
+  4. **UI Navigation Refinement (Navbar Login Modal):** Converted the login interface from a standalone `login.html` page into a dynamic Bootstrap Modal component shared across the navbar of all views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`).
 - **Files Synchronized (Bilingual Suite):**
   - `docs/api-design.md` & `docs/api-design.es.md`
+  - `docs/auth-flow.md` & `docs/auth-flow.es.md`
   - `docs/database-schema.md` & `docs/database-schema.es.md`
   - `memory-bank/techContext.md`
   - `memory-bank/progress.md`
-- **Phase Gate Status:** Phase 0 architecture, security models, and business logic are fully addressed. Awaiting final user approval before starting Phase 1 (Layout & UI).
+- **Phase Gate Status:** Phase 0 architecture, API contracts, and security specifications are fully updated and validated. Awaiting final user approval before starting Phase 1 (Layout & UI).
 
 ## Immediate Focus: Phase 1 (Layout & UI)
 Upon user approval:
-- Proceed to Phase 1: Build semantic HTML5 views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`, `login.html`) with Bootstrap 5 CDN.
-- Ensure cross-page navigation works seamlessly.
+- Proceed to Phase 1: Build semantic HTML5 views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`) with Bootstrap 5 CDN.
+- Integrate the dynamic Login Modal into the shared header/navbar.
+- Integrate the Public Checkout Modal into `detalle.html`.
+- Incorporate `enctype="multipart/form-data"` and file inputs into `formulario.html`.
 - Halt at Phase 1 completion for review.
 
 ## Next Steps Upon Sign-Off

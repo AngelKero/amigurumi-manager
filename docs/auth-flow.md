@@ -10,31 +10,33 @@ This document details the user authentication lifecycle, password hashing strate
 sequenceDiagram
     autonumber
     actor User as Artisan / Admin
-    participant UI as Browser (login.html)
+    participant UI as Browser Navbar Modal (Login Modal)
     participant Auth as Backend (api/login.php)
     participant DB as SQLite (usuarios)
     participant Guard as Session Guard (auth_guard.php)
-    participant API as CRUD Endpoints (api/crear.php, etc.)
+    participant API as Endpoints (api/crear.php, api/usuarios.php)
 
-    User->>UI: Enters username & password
-    UI->>Auth: POST credentials (JSON / form-data)
+    User->>UI: Clicks "Iniciar Sesión" in navbar (opens modal)
+    User->>UI: Enters username & password, submits modal form
+    UI->>Auth: POST credentials (JSON via fetch)
     Auth->>DB: SELECT * FROM usuarios WHERE username = ?
     DB-->>Auth: Returns user record with password_hash
     Auth->>Auth: password_verify(rawPassword, password_hash)
     alt Invalid Credentials
         Auth-->>UI: HTTP 401 Unauthorized ("Credenciales inválidas")
+        UI->>UI: Shows alert inside modal without page reload
     else Valid Credentials
         Auth->>Auth: session_start() & session_regenerate_id(true)
         Auth->>Auth: Store user_id, username, rol in $_SESSION
         Auth-->>UI: HTTP 200 OK (Auth token/cookie established)
-        UI->>UI: Redirect to catalog / admin dashboard
+        UI->>UI: Closes modal, transforms navbar to show Admin/Artisan controls
     end
 
-    Note over UI,API: Creation Request (Catalog Amigurumi Item)
+    Note over UI,API: Protected Operations (Create Amigurumi / Manage Users)
     UI->>API: POST /api/crear.php (payload without user ID)
     API->>Guard: check_authenticated()
     alt Session Not Set / Expired
-        Guard-->>UI: HTTP 401 Unauthorized (Redirect to login)
+        Guard-->>UI: HTTP 401 Unauthorized (Prompts login modal)
     else Authenticated
         Guard-->>API: Allow execution
         API->>API: Extract artesano_id from $_SESSION['user_id']
@@ -87,12 +89,15 @@ if (session_status() === PHP_SESSION_NONE) {
 | Resource / Endpoint | Access Tier | Authentication Requirement | Purpose |
 | :--- | :--- | :--- | :--- |
 | `index.html` (Catalog View) | **Public** | None | Allows potential customers to browse amigurumi creations. |
-| `detalle.html` (Item Details) | **Public** | None | Displays detailed specifications and availability. |
+| `detalle.html` (Item Details) | **Public** | None | Displays detailed specifications, availability, and checkout trigger. |
+| `api/solicitar_pedido.php` | **Public** | None | Public client checkout; deducts stock and locks price atomically. |
 | `api/leer.php` | **Public** | None | Returns JSON catalog list or single item with artisan attribution. |
-| `api/login.php` | **Public** | Guest only | Authenticates credentials and starts user session. |
+| `api/login.php` | **Public** | Guest only (Navbar Modal) | Authenticates credentials and starts user session. |
 | `api/logout.php` | **Protected** | Authenticated | Destroys current session and clears cookies. |
-| `formulario.html` (Add / Edit) | **Protected** | Session required | Prevents unauthorized visitors from modifying catalog. |
-| `api/crear.php` | **Protected** | Session required (`admin` or `artesano`) | Inserts new amigurumi, binding `artesano_id = $_SESSION['user_id']`. |
-| `api/actualizar.php` | **Protected** | Session required (`admin` or creator) | Modifies catalog details, costs, and stock. |
+| `formulario.html` (Add / Edit) | **Protected** | Session required | Creation and editing interface with image uploads. |
+| `api/crear.php` | **Protected** | Session required (`admin` or `artesano`) | Inserts new amigurumi, saves image to `/uploads`, binds `artesano_id`. |
+| `api/actualizar.php` | **Protected** | Session required (`admin` or creator) | Modifies catalog details, costs, stock, and local image file. |
 | `api/eliminar.php` | **Protected** | Session required (`admin`) | Deletes an amigurumi (subject to order constraint). |
-| `pedidos.html` & `api/pedidos.php`| **Protected** | Session required | Full order management, status updates, and commissions. |
+| `api/usuarios.php` | **Protected** | Session required (`admin` strictly) | Full User Management CRUD (view, create, update, delete artisans). |
+| `pedidos.html` & `api/pedidos.php`| **Protected** | Session required (`admin`, `artesano`) | Full order dashboard, commission tracking, and delivery log. |
+| `api/actualizar_pedido.php` | **Protected** | Session required (`admin`, `artesano`) | Updates order state; restocks units if marked `'Cancelado'`. |

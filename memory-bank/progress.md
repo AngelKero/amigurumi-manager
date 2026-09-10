@@ -4,21 +4,21 @@
 
 | Phase | Milestone | Status | Description |
 | :--- | :--- | :--- | :--- |
-| **Phase 0** | Relational Micro-ERP Architecture | **Fully Corrected & Awaiting Sign-off** | Implemented anti-spoofing price calculation, atomic inventory transactions (`BEGIN TRANSACTION`), order lifecycle endpoint (`actualizar_pedido.php`), and automated restocking on cancellation across bilingual docs. |
-| **Phase 1** | Layout & UI | **Pending (Blocked by Phase 0)** | Build `index.html`, `formulario.html`, `detalle.html`, `pedidos.html`, and `login.html` with Bootstrap 5 CDN and working navigation. |
-| **Phase 2** | Database Setup | **Pending** | Create `setup.php` and initialize relational SQLite schema (`database.sqlite`) with foreign keys and admin seeder. |
+| **Phase 0** | Relational Micro-ERP Architecture | **Fully Corrected & Awaiting Sign-off** | Integrated User Management CRUD (Admin only), Public Client Checkout (`solicitar_pedido.php`), Local Image Uploads (`/uploads`), and Navbar Login Modal across bilingual documentation. |
+| **Phase 1** | Layout & UI | **Pending (Blocked by Phase 0)** | Build `index.html`, `formulario.html`, `detalle.html`, and `pedidos.html` with Bootstrap 5 CDN, Navbar Login Modal, and working navigation. |
+| **Phase 2** | Database Setup | **Pending** | Create `setup.php`, initialize SQLite schema with foreign keys, and create local `/uploads` directory. |
 | **Phase 3** | Backend & Connection | **Pending** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
-| **Phase 4** | CRUD Operations & JS | **Pending** | Implement modular endpoints (`login.php`, `crear.php`, `leer.php`, `actualizar.php`, `eliminar.php`, `pedidos.php`, `actualizar_pedido.php`) and `app.js`. |
+| **Phase 4** | CRUD Operations & JS | **Pending** | Implement modular endpoints (`login.php`, `usuarios.php`, `crear.php`, `leer.php`, `actualizar.php`, `eliminar.php`, `solicitar_pedido.php`, `pedidos.php`, `actualizar_pedido.php`) and `app.js`. |
 | **Phase 5** | Documentation | **Pending** | Write comprehensive `README.md` with setup and local server instructions (`php -S localhost:8000`). |
 
 ## What Works
 - Memory Bank completely synchronized across all 5 core files.
 - Modular architecture documentation in `docs/` (`.docs/`) in both English and Spanish.
-- Fully connected ERD: `USUARIOS` 1-to-many `AMIGURUMIS` 1-to-many `PEDIDOS`.
-- Anti-price spoofing: server calculates `precio_final = precio * cantidad`.
-- Atomic stock deduction upon order placement, with HTTP 422 for insufficient stock.
-- Dynamic restocking upon cancellation via `POST /api/actualizar_pedido.php`.
-- All JSON blocks and SQLite DDL scripts tested and validated.
+- User Management CRUD (`api/usuarios.php`) restricted strictly to `'admin'`.
+- Public Client Checkout (`api/solicitar_pedido.php`) with atomic stock deduction and anti-price spoofing.
+- Real file upload specifications to `/uploads` with MIME/size validation.
+- Transition of login interface to a reusable Navbar Modal.
+- All 24 JSON blocks across bilingual API docs tested and validated.
 
 ## What's Left to Build
 - Final sign-off on Phase 0 relational architecture.
