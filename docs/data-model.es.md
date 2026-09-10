@@ -1,68 +1,68 @@
-# Amigurumi Micro-ERP: Master Data & Architecture Index
+# Micro-ERP de Amigurumis: Índice Maestro de Datos y Arquitectura
 
-This directory contains the modular architectural documentation for the Handmade Amigurumi Micro-ERP and Inventory Management System.
-
----
-
-## 1. Modular Documentation Index
-
-- **[database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md):** Complete 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), full DDL with foreign keys, data dictionaries, indexes, and referential integrity constraints.
-- **[auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md):** Authentication lifecycle, password hashing via native PHP `password_hash()`, PHP session guards, and role-based endpoint protection matrix.
-- **[api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md):** REST-like endpoint contracts, standard JSON payload format, error handling rules, and CRUD specifications for catalog items and orders.
+Este directorio contiene la documentación modular de la arquitectura del sistema Micro-ERP para Catálogo, Inventario y Gestión de Pedidos de Creaciones de Amigurumi.
 
 ---
 
-## 2. Core Relational ERD
+## 1. Índice de Documentación Modular
+
+- **[database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md):** Esquema relacional completo de 3 tablas (`usuarios`, `amigurumis`, `pedidos`), DDL detallado con claves foráneas, diccionarios de datos, índices y reglas de integridad referencial. (Versión en inglés: [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md))
+- **[auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md):** Ciclo de vida de autenticación, hashing de contraseñas con PHP nativo `password_hash()`, control de sesiones y matriz de protección de endpoints. (Versión en inglés: [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md))
+- **[api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md):** Contratos de endpoints REST, formato estándar de respuestas JSON, gestión de errores y operaciones CRUD para catálogo y pedidos. (Versión en inglés: [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md))
+
+---
+
+## 2. Diagrama Entidad-Relación Central (ERD)
 
 ```mermaid
 erDiagram
     USUARIOS {
         integer id PK "INTEGER AUTOINCREMENT"
-        string username UK "TEXT UNIQUE (3-50 chars)"
+        string username UK "TEXT UNIQUE (3-50 caracteres)"
         string password_hash "TEXT (bcrypt/argon2)"
         string rol "TEXT (admin, artesano, asistente)"
-        string creado_en "TEXT (ISO 8601 timestamp)"
+        string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
     AMIGURUMIS {
         integer id PK "INTEGER AUTOINCREMENT"
-        string nombre "TEXT NOT NULL (2-100 chars)"
-        string categoria "TEXT NOT NULL (App whitelist)"
-        string material "TEXT NOT NULL (3-80 chars)"
+        string nombre "TEXT NOT NULL (2-100 caracteres)"
+        string categoria "TEXT NOT NULL (Lista blanca de la app)"
+        string material "TEXT NOT NULL (3-80 caracteres)"
         real tamano_cm "REAL NOT NULL (> 0.0, <= 250.0)"
-        integer precio "INTEGER NOT NULL (Retail cents)"
-        integer costo_materiales "INTEGER NOT NULL (Cost cents)"
-        integer cantidad_stock "INTEGER NOT NULL (Units count >= 0)"
-        real horas_tejido "REAL (Labor hours >= 0.0)"
-        string descripcion "TEXT (Max 2000 chars)"
-        string imagen_url "TEXT (Max 500 chars)"
-        string creado_en "TEXT (ISO 8601 timestamp)"
-        string actualizado_en "TEXT (ISO 8601 timestamp)"
+        integer precio "INTEGER NOT NULL (Precio en centavos)"
+        integer costo_materiales "INTEGER NOT NULL (Costo en centavos)"
+        integer cantidad_stock "INTEGER NOT NULL (Unidades físicas >= 0)"
+        real horas_tejido "REAL (Horas de labor >= 0.0)"
+        string descripcion "TEXT (Máx 2000 caracteres)"
+        string imagen_url "TEXT (Máx 500 caracteres)"
+        string creado_en "TEXT (Marca de tiempo ISO 8601)"
+        string actualizado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
     PEDIDOS {
         integer id PK "INTEGER AUTOINCREMENT"
-        string cliente_nombre "TEXT NOT NULL (2-100 chars)"
+        string cliente_nombre "TEXT NOT NULL (2-100 caracteres)"
         integer amigurumi_id FK "REFERENCES amigurumis(id)"
-        integer cantidad "INTEGER NOT NULL (Units count >= 1)"
+        integer cantidad "INTEGER NOT NULL (Unidades solicitadas >= 1)"
         string fecha_entrega "TEXT (YYYY-MM-DD)"
         string estado_pedido "TEXT (Pendiente, En Proceso, Entregado, Cancelado)"
-        integer precio_final "INTEGER NOT NULL (Locked cents)"
-        string notas "TEXT (Max 1000 chars)"
-        string creado_en "TEXT (ISO 8601 timestamp)"
+        integer precio_final "INTEGER NOT NULL (Precio pactado en centavos)"
+        string notas "TEXT (Máx 1000 caracteres)"
+        string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
-    AMIGURUMIS ||--o{ PEDIDOS : "referenced by orders"
+    AMIGURUMIS ||--o{ PEDIDOS : "referenciado en pedidos"
 ```
 
 ---
 
-## 3. SQLite DDL Specification
+## 3. Especificación DDL de SQLite
 
 ```sql
 PRAGMA foreign_keys = ON;
 
--- 1. Table: usuarios (Authentication & Roles)
+-- 1. Tabla: usuarios (Autenticación y Roles)
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
--- 2. Table: amigurumis (Product Catalog & Inventory)
+-- 2. Tabla: amigurumis (Catálogo e Inventario de Productos)
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     actualizado_en TEXT DEFAULT NULL
 );
 
--- 3. Table: pedidos (Orders & Commissions)
+-- 3. Tabla: pedidos (Encargos y Ventas Personalizadas)
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- Query Performance Indexes
+-- Índices para Optimización de Consultas
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);

@@ -50,6 +50,7 @@ sequenceDiagram
 - **Verification:** Secure timing-attack resistant `password_verify($password, $stored_hash)`.
 - **Default Seeding:** In `setup.php`, default administrative credentials will be automatically generated with a secure hash:
   ```php
+  <?php
   $adminHash = password_hash('admin123', PASSWORD_DEFAULT);
   $stmt = $pdo->prepare("INSERT OR IGNORE INTO usuarios (username, password_hash, rol) VALUES (?, ?, 'admin')");
   $stmt->execute(['admin', $adminHash]);
@@ -60,6 +61,7 @@ sequenceDiagram
 ## 3. Session Security Configuration
 Every script requiring session verification must initialize sessions with strict security flags:
 ```php
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 86400, // 24 hours

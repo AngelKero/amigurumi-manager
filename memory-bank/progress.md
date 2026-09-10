@@ -4,7 +4,7 @@
 
 | Phase | Milestone | Status | Description |
 | :--- | :--- | :--- | :--- |
-| **Phase 0** | Relational Micro-ERP Architecture | **Completed (Awaiting Sign-off)** | Designed 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), modular documentation (`.docs/`), ERD, session authentication flow, and DDL. |
+| **Phase 0** | Relational Micro-ERP Architecture | **Completed (Bilingual Docs & Awaiting Sign-off)** | Designed 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), modular English and Spanish documentation (`.es.md`), tested valid JSON, and verified SQLite DDL. |
 | **Phase 1** | Layout & UI | **Pending (Blocked by Phase 0)** | Build `index.html`, `formulario.html`, `detalle.html`, `pedidos.html`, and `login.html` with Bootstrap 5 CDN and working navigation. |
 | **Phase 2** | Database Setup | **Pending** | Create `setup.php` and initialize relational SQLite schema (`database.sqlite`) with foreign keys and admin seeder. |
 | **Phase 3** | Backend & Connection | **Pending** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
@@ -12,13 +12,13 @@
 | **Phase 5** | Documentation | **Pending** | Write comprehensive `README.md` with setup and local server instructions (`php -S localhost:8000`). |
 
 ## What Works
-- Memory Bank synchronized across all 5 core files.
-- Modular architecture documentation created inside `.docs/`:
-  - [data-model.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.docs/data-model.md)
-  - [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.docs/database-schema.md)
-  - [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.docs/auth-flow.md)
-  - [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.docs/api-design.md)
-- Micro-ERP relational design with foreign key constraints, price immutability, and session security.
+- Memory Bank completely synchronized across all 5 core files.
+- Modular architecture documentation in `docs/` (`.docs/`) in both English and Spanish:
+  - English: [data-model.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.md), [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md), [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md), [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md)
+  - Spanish: [data-model.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md), [database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md), [auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md), [api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md)
+- All JSON blocks tested and validated.
+- SQLite DDL schema tested in memory with 100% success.
+- PHP session syntax tested via CLI with zero errors.
 
 ## What's Left to Build
 - Final sign-off on Phase 0 relational architecture.
@@ -29,4 +29,4 @@
 - Phase 5 Project documentation (`README.md`).
 
 ## Known Issues / Blockers
-- Awaiting final user approval of relational schema before generating Phase 1 application files.
+- Awaiting final user approval of Phase 0 deliverables before generating Phase 1 application files.

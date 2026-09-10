@@ -12,7 +12,7 @@
 ```sql
 PRAGMA foreign_keys = ON;
 
--- 1. Table: usuarios (Authentication)
+-- 1. Table: usuarios (Authentication & Access Control)
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
     amigurumi_id INTEGER NOT NULL,
+    cantidad INTEGER NOT NULL DEFAULT 1 CHECK(cantidad >= 1 AND cantidad <= 1000),
     fecha_entrega TEXT CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente' CHECK(estado_pedido IN (
         'Pendiente', 
@@ -64,10 +65,10 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
 
-## Modular Documentation Structure (`.docs/`)
+## Modular Documentation Structure (`docs/` / `.docs/`)
 ```
 proyecto-web/
-├── .docs/
+├── docs/ (symlinked to .docs/)
 │   ├── data-model.md           (Master Architecture & ERD Index)
 │   ├── database-schema.md      (Relational DDL, Data Dictionaries, Foreign Keys)
 │   ├── auth-flow.md            (Session Lifecycle, Password Hashing, Endpoint Protection)
@@ -105,6 +106,7 @@ proyecto-web/
 ## Technical Constraints & Safety
 - **Foreign Key Enforcement:** Explicit `PRAGMA foreign_keys = ON;` executed on every PDO connection.
 - **Financial Exactness:** Cents storage (`INTEGER`) across `precio`, `costo_materiales`, and `precio_final`.
+- **Order Quantity Tracking:** `cantidad INTEGER NOT NULL DEFAULT 1` allows multiple units per order.
 - **Order Immutability:** Historical customer agreed price locked in `pedidos.precio_final`.
 - **Session Protection:** All mutating endpoints require valid PHP session with `session_regenerate_id(true)` and `HttpOnly` cookie flags.
 - **SQL Injection Prevention:** 100% parameterized PDO prepared statements.

@@ -1,14 +1,14 @@
-# API Design & Endpoint Specifications
+# Diseño de API y Especificaciones de Endpoints
 
-This document outlines the modular REST-like PHP endpoints, HTTP status conventions, JSON response schemas, and error contracts for the Amigurumi Micro-ERP.
+Este documento describe los endpoints modulares de estilo REST en PHP, las convenciones de códigos de estado HTTP, los esquemas de respuesta JSON y el manejo estándar de errores para el Micro-ERP de Amigurumis.
 
 ---
 
-## 1. Response Standard
+## 1. Estándar de Respuestas JSON
 
-All JSON responses follow a predictable envelope structure:
+Todas las respuestas del backend siguen una estructura homogénea:
 
-### Standard Success Envelope
+### Estructura de Respuesta Exitosa
 ```json
 {
   "success": true,
@@ -17,7 +17,7 @@ All JSON responses follow a predictable envelope structure:
 }
 ```
 
-### Standard Error Envelope (HTTP 400, 401, 403, 404, 409, 422, 500)
+### Estructura Estándar de Error (HTTP 400, 401, 403, 404, 409, 422, 500)
 ```json
 {
   "success": false,
@@ -28,18 +28,18 @@ All JSON responses follow a predictable envelope structure:
 
 ---
 
-## 2. Authentication Endpoints
+## 2. Endpoints de Autenticación
 
 ### `POST /api/login.php`
-- **Access:** Public
-- **Request Body (JSON):**
+- **Acceso:** Público
+- **Cuerpo de la Solicitud (JSON):**
   ```json
   {
     "username": "admin",
     "password": "password123"
   }
   ```
-- **Response (200 OK):**
+- **Respuesta (200 OK):**
   ```json
   {
     "success": true,
@@ -53,8 +53,8 @@ All JSON responses follow a predictable envelope structure:
   ```
 
 ### `POST /api/logout.php`
-- **Access:** Protected (Session required)
-- **Response (200 OK):**
+- **Acceso:** Protegido (Requiere sesión activa)
+- **Respuesta (200 OK):**
   ```json
   {
     "success": true,
@@ -64,16 +64,16 @@ All JSON responses follow a predictable envelope structure:
 
 ---
 
-## 3. Amigurumis Endpoints
+## 3. Endpoints del Catálogo de Amigurumis
 
 ### `GET /api/leer.php`
-- **Access:** Public
-- **Query Parameters:**
-  - `id` (optional, integer): Returns a single amigurumi object.
-  - `categoria` (optional, string): Filter by category.
-  - `stock` (optional, string): Filter by availability (`in_stock` for `cantidad_stock > 0`).
+- **Acceso:** Público
+- **Parámetros de Consulta (Query Params):**
+  - `id` (opcional, entero): Retorna un único objeto de amigurumi.
+  - `categoria` (opcional, texto): Filtra por categoría temática.
+  - `stock` (opcional, texto): Filtra por disponibilidad (`in_stock` para `cantidad_stock > 0`).
 
-#### Response: Catalog Collection (200 OK)
+#### Respuesta: Colección de Catálogo (200 OK)
 ```json
 {
   "success": true,
@@ -118,7 +118,7 @@ All JSON responses follow a predictable envelope structure:
 }
 ```
 
-#### Response: Single Item (200 OK via `?id=1`)
+#### Respuesta: Pieza Individual (200 OK vía `?id=1`)
 ```json
 {
   "success": true,
@@ -144,8 +144,8 @@ All JSON responses follow a predictable envelope structure:
 ```
 
 ### `POST /api/crear.php`
-- **Access:** Protected (Session required: `admin` or `artesano`)
-- **Request Body (JSON or multipart/form-data):**
+- **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
+- **Cuerpo de la Solicitud (JSON o multipart/form-data):**
   ```json
   {
     "nombre": "Baby Yoda Crochet",
@@ -160,7 +160,7 @@ All JSON responses follow a predictable envelope structure:
     "imagen_url": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f"
   }
   ```
-- **Response (201 Created):**
+- **Respuesta (201 Created):**
   ```json
   {
     "success": true,
@@ -170,8 +170,8 @@ All JSON responses follow a predictable envelope structure:
   ```
 
 ### `POST /api/actualizar.php`
-- **Access:** Protected (Session required: `admin` or `artesano`)
-- **Request Body (JSON):**
+- **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
+- **Cuerpo de la Solicitud (JSON):**
   ```json
   {
     "id": 1,
@@ -187,7 +187,7 @@ All JSON responses follow a predictable envelope structure:
     "imagen_url": "https://images.unsplash.com/photo-1615486511484-92e172cc4fe0"
   }
   ```
-- **Response (200 OK):**
+- **Respuesta (200 OK):**
   ```json
   {
     "success": true,
@@ -196,22 +196,22 @@ All JSON responses follow a predictable envelope structure:
   ```
 
 ### `POST /api/eliminar.php`
-- **Access:** Protected (Session required: `admin`)
-- **Request Body (JSON):**
+- **Acceso:** Protegido (Sesión requerida: `admin`)
+- **Cuerpo de la Solicitud (JSON):**
   ```json
   {
     "id": 1
   }
   ```
-- **Constraint Handling:** If the item is referenced by orders in `pedidos`, SQLite's `ON DELETE RESTRICT` raises a foreign key violation.
-- **Success Response (200 OK):**
+- **Manejo de Restricción Referencial:** Si la pieza está asociada a encargos en `pedidos`, la regla `ON DELETE RESTRICT` de SQLite detiene la eliminación.
+- **Respuesta Exitosa (200 OK):**
   ```json
   {
     "success": true,
     "message": "Amigurumi eliminado correctamente"
   }
   ```
-- **Conflict Response (409 Conflict):**
+- **Respuesta de Conflicto (409 Conflict):**
   ```json
   {
     "success": false,
@@ -221,12 +221,12 @@ All JSON responses follow a predictable envelope structure:
 
 ---
 
-## 4. Orders & Commissions Endpoints (`pedidos`)
+## 4. Endpoints de Pedidos y Encargos (`pedidos`)
 
 ### `GET /api/pedidos.php`
-- **Access:** Protected (Session required)
-- **Query Parameters:** `estado` (optional: `Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
-- **Response (200 OK):**
+- **Acceso:** Protegido (Sesión requerida)
+- **Parámetros de Consulta:** `estado` (opcional: `Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
+- **Respuesta (200 OK):**
   ```json
   {
     "success": true,
@@ -249,8 +249,8 @@ All JSON responses follow a predictable envelope structure:
   ```
 
 ### `POST /api/pedidos.php`
-- **Access:** Protected (Session required)
-- **Request Body (JSON):**
+- **Acceso:** Protegido (Sesión requerida)
+- **Cuerpo de la Solicitud (JSON):**
   ```json
   {
     "cliente_nombre": "Carlos Mendoza",
@@ -262,7 +262,7 @@ All JSON responses follow a predictable envelope structure:
     "notas": "Pedido para regalo corporativo, empaque individual"
   }
   ```
-- **Response (201 Created):**
+- **Respuesta (201 Created):**
   ```json
   {
     "success": true,
