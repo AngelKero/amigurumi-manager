@@ -1,19 +1,16 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: Full Relational Linkage (Artisan Attribution Added)
-- **Artisan Linkage Integrated:**
-  1. Added `artesano_id INTEGER NOT NULL` with `FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE` to `amigurumis`.
-  2. Created index `idx_amigurumis_artesano ON amigurumis(artesano_id)`.
-  3. Updated Mermaid ERDs across English and Spanish docs to illustrate `USUARIOS ||--o{ AMIGURUMIS` and `AMIGURUMIS ||--o{ PEDIDOS`.
-  4. Updated API specifications: `POST /api/crear.php` automatically extracts `$_SESSION['user_id']` and maps it to `artesano_id`. Client cannot supply or spoof this value.
-- **Files Synchronized:**
-  - `docs/database-schema.md` & `docs/database-schema.es.md`
-  - `docs/data-model.md` & `docs/data-model.es.md`
+## Current State: Order Security, Inventory Sync, and Lifecycle Controls Applied
+- **Critical Business Logic & Security Flaws Resolved:**
+  1. **Anti-Price Spoofing:** In `POST /api/pedidos.php`, `precio_final` was completely eliminated from the client payload. The PHP backend dynamically queries `amigurumis.precio` and calculates `precio_final = precio * cantidad`.
+  2. **Atomic Inventory Synchronization (Stock Deduction):** Documented that creating an order runs inside a PDO database transaction (`BEGIN TRANSACTION`). It validates that `cantidad <= amigurumis.cantidad_stock` (returning HTTP 422 if insufficient) and automatically decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
+  3. **Order Management & Restocking Endpoint:** Added protected endpoint `POST /api/actualizar_pedido.php` to manage status changes (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`). If an order transitions to `'Cancelado'`, the backend executes a transaction restoring the reserved units back to `amigurumis.cantidad_stock`.
+- **Files Synchronized (Bilingual Suite):**
   - `docs/api-design.md` & `docs/api-design.es.md`
-  - `docs/auth-flow.md` & `docs/auth-flow.es.md`
+  - `docs/database-schema.md` & `docs/database-schema.es.md`
   - `memory-bank/techContext.md`
   - `memory-bank/progress.md`
-- **Phase Gate Status:** Ready for final user sign-off on Phase 0 before starting Phase 1 (Layout & UI).
+- **Phase Gate Status:** Phase 0 architecture, security models, and business logic are fully addressed. Awaiting final user approval before starting Phase 1 (Layout & UI).
 
 ## Immediate Focus: Phase 1 (Layout & UI)
 Upon user approval:

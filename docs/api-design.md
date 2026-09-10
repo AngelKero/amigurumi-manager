@@ -258,6 +258,16 @@ All JSON responses follow a predictable envelope structure:
 
 ### `POST /api/pedidos.php`
 - **Access:** Protected (Session required)
+- **Anti-Tampering Price Calculation:** The client **MUST NOT** send `precio_final`. The PHP backend queries the current unit price (`amigurumis.precio`) from the database and calculates the total locked price:
+  $$\text{precio\_final} = \text{amigurumi.precio} \times \text{cantidad}$$
+- **Atomic Transaction & Inventory Deduction:** The operation is wrapped in a PDO database transaction (`BEGIN TRANSACTION`):
+  1. Checks if the requested `cantidad` is $\le \text{amigurumis.cantidad\_stock}$. If stock is insufficient, rolls back and returns **HTTP 422 Unprocessable Entity**.
+  2. Deducts physical inventory:
+     ```sql
+     UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id;
+     ```
+  3. Inserts the order record into `pedidos` with the server-calculated `precio_final`.
+  4. Commits the transaction.
 - **Request Body (JSON):**
   ```json
   {
@@ -266,15 +276,47 @@ All JSON responses follow a predictable envelope structure:
     "cantidad": 3,
     "fecha_entrega": "2026-10-15",
     "estado_pedido": "Pendiente",
-    "precio_final": 126000,
     "notas": "Pedido para regalo corporativo, empaque individual"
   }
   ```
-- **Response (201 Created):**
+- **Success Response (201 Created):**
   ```json
   {
     "success": true,
-    "message": "Pedido registrado exitosamente",
-    "id": 2
+    "message": "Pedido registrado exitosamente y stock descontado del inventario",
+    "id": 2,
+    "precio_final": 126000,
+    "precio_final_formato": "$1,260.00",
+    "stock_restante": 1
+  }
+  ```
+- **Error Response: Insufficient Stock (422 Unprocessable Entity):**
+  ```json
+  {
+    "success": false,
+    "error": "Stock insuficiente para completar el pedido. Stock disponible: 1 unidad(es)."
+  }
+  ```
+
+### `POST /api/actualizar_pedido.php`
+- **Access:** Protected (Session required: `admin` or `artesano`)
+- **Order State Transitions:** Allows updating `estado_pedido` (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
+- **Inventory Restocking Rule on Cancellation:** Wrapped in a database transaction (`BEGIN TRANSACTION`):
+  - If the new state is `'Cancelado'` and the previous state was not `'Cancelado'`, the backend restores the reserved units back into the inventory:
+    ```sql
+    UPDATE amigurumis SET cantidad_stock = cantidad_stock + :cantidad WHERE id = :amigurumi_id;
+    ```
+- **Request Body (JSON):**
+  ```json
+  {
+    "id": 2,
+    "estado_pedido": "Cancelado"
+  }
+  ```
+- **Success Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Estado del pedido actualizado a Cancelado y stock reintegrado al catálogo exitosamente"
   }
   ```

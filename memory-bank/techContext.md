@@ -100,7 +100,8 @@ proyecto-web/
 │   ├── leer.php                (Fetch catalog items with joined artisan username)
 │   ├── actualizar.php          (Update amigurumi)
 │   ├── eliminar.php            (Delete amigurumi with foreign key safeguard)
-│   └── pedidos.php             (Orders CRUD & status management)
+│   ├── pedidos.php             (Orders query & creation with atomic stock deduction)
+│   └── actualizar_pedido.php   (Update order status & restocking on cancellation)
 ├── index.html                  (Catalog & list view)
 ├── formulario.html             (Add / Edit view)
 ├── detalle.html                (Detailed item view)
@@ -113,9 +114,11 @@ proyecto-web/
 ## Technical Constraints & Safety
 - **Foreign Key Enforcement:** Explicit `PRAGMA foreign_keys = ON;` executed on every PDO connection.
 - **Artisan Identity Binding:** `artesano_id` is automatically injected from `$_SESSION['user_id']` on creation. Client-side input is ignored.
+- **Server Price Calculation:** `pedidos.precio_final` is calculated on the server (`precio * cantidad`) and locked into the database. Client input is not trusted.
+- **Atomic Stock Deduction:** Creating an order requires an atomic transaction (`BEGIN TRANSACTION`). The backend validates that `cantidad <= amigurumis.cantidad_stock` and decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
+- **Restocking on Cancellation:** Updating an order to `'Cancelado'` via `actualizar_pedido.php` restores reserved units to `amigurumis.cantidad_stock`.
 - **Financial Exactness:** Cents storage (`INTEGER`) across `precio`, `costo_materiales`, and `precio_final`.
 - **Order Quantity Tracking:** `cantidad INTEGER NOT NULL DEFAULT 1` allows multiple units per order.
-- **Order Immutability:** Historical customer agreed price locked in `pedidos.precio_final`.
 - **Session Protection:** All mutating endpoints require valid PHP session with `session_regenerate_id(true)` and `HttpOnly` cookie flags.
 - **SQL Injection Prevention:** 100% parameterized PDO prepared statements.
 - **Input Sanitization:** Multi-tier validation via HTML5, Vanilla JS, and server-side PHP filters.

@@ -171,5 +171,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 - **Foreign Key Enforcement:** Enforced dynamically on every PDO connection via `PRAGMA foreign_keys = ON;`.
 - **Artisan Attribution (`artesano_id`):** Every piece of amigurumi is tied to the artisan who created it. A user account cannot be deleted if active amigurumis reference it (`ON DELETE RESTRICT`).
 - **Order Delete Protection (`ON DELETE RESTRICT`):** An amigurumi cannot be deleted if active or past orders reference its ID. This protects financial integrity and transaction history.
-- **Price Immutability (`precio_final`):** Even if an artisan updates the catalog price of an amigurumi in `amigurumis.precio`, existing orders in `pedidos.precio_final` retain their historical purchase amount.
+- **Price Immutability (`precio_final`):** Calculated securely by the backend (`amigurumis.precio * pedidos.cantidad`) and locked in `pedidos.precio_final` at order creation time. Subsequent price changes in the catalog do not alter historical orders.
 - **Quantity Tracking (`cantidad`):** A single order can track multiple units of an amigurumi, allowing accurate calculation of total revenue and material consumption.
+- **Atomic Stock Deduction:** Creating an order requires an atomic transaction (`BEGIN TRANSACTION`). The backend validates that `cantidad <= amigurumis.cantidad_stock` and decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
+- **Restocking on Order Cancellation:** Updating an order to `'Cancelado'` via `POST /api/actualizar_pedido.php` automatically executes a transaction restoring the reserved units back to `amigurumis.cantidad_stock`.
