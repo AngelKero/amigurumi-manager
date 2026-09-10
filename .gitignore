@@ -1,0 +1,47 @@
+# ==============================================================================
+# Git Ignore Configuration - Amigurumi Micro-ERP & Catalog System
+# ==============================================================================
+
+# Sistema Operativo (macOS / Windows / Linux)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editores de Código e IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Base de Datos SQLite y Archivos de Bloqueo / Transacción WAL
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+database.sqlite
+
+# Archivos Subidos por Usuarios (Conserva la carpeta mediante .gitkeep)
+/uploads/*
+!/uploads/.gitkeep
+
+# Registros y Logs de Errores
+*.log
+error_log
+php_errors.log
+
+# Archivos de Entorno y Temporales
+.env
+.env.local
+*.tmp
+*.bak

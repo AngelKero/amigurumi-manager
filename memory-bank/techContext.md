@@ -15,48 +15,65 @@ PRAGMA foreign_keys = ON;
 -- 1. Table: usuarios (Authentication & Access Control)
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
+    username TEXT NOT NULL,
     password_hash TEXT NOT NULL,
-    rol TEXT NOT NULL DEFAULT 'admin' CHECK(rol IN ('admin', 'artesano', 'asistente')),
-    creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+    rol TEXT NOT NULL DEFAULT 'admin',
+    creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    -- Table Constraints
+    CONSTRAINT uq_usuarios_username UNIQUE (username),
+    CONSTRAINT chk_usuarios_username CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
+    CONSTRAINT chk_usuarios_rol CHECK(rol IN ('admin', 'artesano', 'asistente'))
 );
 
 -- 2. Table: amigurumis (Core Catalog & Inventory)
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     artesano_id INTEGER NOT NULL,
-    nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
-    categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
-    material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
-    tamano_cm REAL NOT NULL CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
-    precio INTEGER NOT NULL CHECK(precio >= 1 AND precio <= 9999999),
-    costo_materiales INTEGER NOT NULL DEFAULT 0 CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
-    cantidad_stock INTEGER NOT NULL DEFAULT 0 CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
-    horas_tejido REAL DEFAULT 0.0 CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
-    descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
-    imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+    nombre TEXT NOT NULL,
+    categoria TEXT NOT NULL,
+    material TEXT NOT NULL,
+    tamano_cm REAL NOT NULL,
+    precio INTEGER NOT NULL,
+    costo_materiales INTEGER NOT NULL DEFAULT 0,
+    cantidad_stock INTEGER NOT NULL DEFAULT 0,
+    horas_tejido REAL DEFAULT 0.0,
+    descripcion TEXT,
+    imagen_url TEXT,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
-    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
+    -- Table Constraints
+    CONSTRAINT fk_amigurumis_artesano FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_amigurumis_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
+    CONSTRAINT chk_amigurumis_categoria CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
+    CONSTRAINT chk_amigurumis_material CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
+    CONSTRAINT chk_amigurumis_tamano CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
+    CONSTRAINT chk_amigurumis_precio CHECK(precio >= 1 AND precio <= 9999999),
+    CONSTRAINT chk_amigurumis_costo_materiales CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
+    CONSTRAINT chk_amigurumis_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
+    CONSTRAINT chk_amigurumis_horas_tejido CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
+    CONSTRAINT chk_amigurumis_descripcion CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
+    CONSTRAINT chk_amigurumis_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500)
 );
 
 -- 3. Table: pedidos (Orders & Commissions)
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
+    cliente_nombre TEXT NOT NULL,
     amigurumi_id INTEGER NOT NULL,
-    cantidad INTEGER NOT NULL DEFAULT 1 CHECK(cantidad >= 1 AND cantidad <= 1000),
-    fecha_entrega TEXT CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
-    estado_pedido TEXT NOT NULL DEFAULT 'Pendiente' CHECK(estado_pedido IN (
-        'Pendiente', 
-        'En Proceso', 
-        'Entregado', 
-        'Cancelado'
-    )),
-    precio_final INTEGER NOT NULL CHECK(precio_final >= 1 AND precio_final <= 9999999),
-    notas TEXT CHECK(notas IS NULL OR length(notas) <= 1000),
+    cantidad INTEGER NOT NULL DEFAULT 1,
+    fecha_entrega TEXT,
+    estado_pedido TEXT NOT NULL DEFAULT 'Pendiente',
+    precio_final INTEGER NOT NULL,
+    notas TEXT,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) ON DELETE RESTRICT ON UPDATE CASCADE
+    -- Table Constraints
+    CONSTRAINT fk_pedidos_amigurumi FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_pedidos_cliente_nombre CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
+    CONSTRAINT chk_pedidos_cantidad CHECK(cantidad >= 1 AND cantidad <= 1000),
+    CONSTRAINT chk_pedidos_fecha_entrega CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
+    CONSTRAINT chk_pedidos_estado CHECK(estado_pedido IN ('Pendiente', 'En Proceso', 'Entregado', 'Cancelado')),
+    CONSTRAINT chk_pedidos_precio_final CHECK(precio_final >= 1 AND precio_final <= 9999999),
+    CONSTRAINT chk_pedidos_notas CHECK(notas IS NULL OR length(notas) <= 1000)
 );
 
 -- Performance Indexes
@@ -95,6 +112,7 @@ proyecto-web/
 ├── js/
 │   └── app.js                  (Client-side validation, Navbar Modal, calculations)
 ├── uploads/                    (Local directory storing uploaded product images)
+│   └── .gitkeep                (Git retention marker for uploads directory)
 ├── api/
 │   ├── conexion.php            (PDO SQLite connection with PRAGMA foreign_keys = ON)
 │   ├── auth_guard.php          (Session and role authorization helper)
@@ -114,6 +132,7 @@ proyecto-web/
 ├── detalle.html                (Detailed item view with Public Checkout trigger)
 ├── pedidos.html                (Orders & commission tracking view)
 ├── database.sqlite             (SQLite DB file - created in Phase 1)
+├── .gitignore                  (Git exclusions for binaries, OS artifacts, and uploads)
 └── README.md                   (Execution and setup documentation)
 ```
 

@@ -18,7 +18,7 @@
 
 ## Immediate Focus: Phase 1 (Database Implementation, Seeding & Testing)
 Executing Phase 1 deliverables:
-1. `database/seed.sql`: Complete executable SQLite schema DDL (3 tables with constraints, indexes) and rich initial mock seed data (1 admin user with verified hash for `admin123`, 3 crafted amigurumis, 2 commission orders).
+1. `database/seed.sql`: Complete executable SQLite schema DDL with cleanly separated column definitions and named table-level constraints (`CONSTRAINT ... UNIQUE/CHECK/FOREIGN KEY`), each fully documented with its technical purpose and business justification. Seeded with 1 admin user, 3 distinct amigurumis, and 2 orders.
 2. `setup.php`: Automated initialization script creating root `database.sqlite`, enforcing `PRAGMA foreign_keys = ON;`, and executing `seed.sql`.
 3. `.docs/database-testing.md` & `database-testing.es.md`: CLI verification manual with reproducible `sqlite3` terminal commands testing foreign key violations, price calculations, and stock limits.
 
