@@ -79,13 +79,17 @@ proyecto-web/
 │   ├── auth-flow.md            (Session Lifecycle, Modal Flow - English)
 │   ├── auth-flow.es.md         (Ciclo de Sesión y Flujo Modal - Español)
 │   ├── api-design.md           (REST-like Endpoint Contracts & JSON - English)
-│   └── api-design.es.md        (Contratos de Endpoints REST y JSON - Español)
+│   ├── api-design.es.md        (Contratos de Endpoints REST y JSON - Español)
+│   ├── database-testing.md     (SQLite Terminal Verification Guide - English)
+│   └── database-testing.es.md  (Guía de Verificación en Terminal SQLite - Español)
 ├── memory-bank/
 │   ├── projectbrief.md
 │   ├── productContext.md
 │   ├── techContext.md
 │   ├── activeContext.md
 │   └── progress.md
+├── database/
+│   └── seed.sql                (Full SQLite DDL schema and initial seed data)
 ├── css/
 │   └── styles.css              (Artisan styling, preview frames, badge indicators)
 ├── js/
@@ -96,7 +100,6 @@ proyecto-web/
 │   ├── auth_guard.php          (Session and role authorization helper)
 │   ├── login.php               (Credential verification & session_start)
 │   ├── logout.php              (Session termination)
-│   ├── setup.php               (Schema creation & initial admin seeder)
 │   ├── usuarios.php            (User Management CRUD - Admin only)
 │   ├── crear.php               (Insert amigurumi, file upload to /uploads, binds session artesano_id)
 │   ├── leer.php                (Fetch catalog items with joined artisan username)
@@ -105,11 +108,12 @@ proyecto-web/
 │   ├── solicitar_pedido.php    (Public checkout with atomic stock deduction)
 │   ├── pedidos.php             (Protected orders dashboard & query)
 │   └── actualizar_pedido.php   (Update order status & restocking on cancellation)
+├── setup.php                   (Database initialization script executing seed.sql)
 ├── index.html                  (Catalog & inventory view + Navbar Login Modal)
 ├── formulario.html             (Add / Edit view with real file upload)
 ├── detalle.html                (Detailed item view with Public Checkout trigger)
 ├── pedidos.html                (Orders & commission tracking view)
-├── database.sqlite             (SQLite DB file - created in Phase 2)
+├── database.sqlite             (SQLite DB file - created in Phase 1)
 └── README.md                   (Execution and setup documentation)
 ```
 

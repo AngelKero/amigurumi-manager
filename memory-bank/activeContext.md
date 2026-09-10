@@ -14,17 +14,15 @@
   - `memory-bank/techContext.md`
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
-- **Phase Gate Status:** Phase 0 architecture, API contracts, and security specifications are fully updated and validated. Awaiting final user approval before starting Phase 1 (Layout & UI).
+- **Phase Gate Status:** Phase 0 concluded and signed off. Roadmap restructured to strict Database-First approach. Now executing **Phase 1: Database Implementation, Seeding & Testing**.
 
-## Immediate Focus: Phase 1 (Layout & UI)
-Upon user approval:
-- Proceed to Phase 1: Build semantic HTML5 views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`) with Bootstrap 5 CDN.
-- Integrate the dynamic Login Modal into the shared header/navbar.
-- Integrate the Public Checkout Modal into `detalle.html`.
-- Incorporate `enctype="multipart/form-data"` and file inputs into `formulario.html`.
-- Halt at Phase 1 completion for review.
+## Immediate Focus: Phase 1 (Database Implementation, Seeding & Testing)
+Executing Phase 1 deliverables:
+1. `database/seed.sql`: Complete executable SQLite schema DDL (3 tables with constraints, indexes) and rich initial mock seed data (1 admin user with verified hash for `admin123`, 3 crafted amigurumis, 2 commission orders).
+2. `setup.php`: Automated initialization script creating root `database.sqlite`, enforcing `PRAGMA foreign_keys = ON;`, and executing `seed.sql`.
+3. `.docs/database-testing.md` & `database-testing.es.md`: CLI verification manual with reproducible `sqlite3` terminal commands testing foreign key violations, price calculations, and stock limits.
 
-## Next Steps Upon Sign-Off
-1. Obtain final user approval on Phase 0 deliverables.
-2. Advance to Phase 1 (Layout & UI) implementation without generating backend/database files.
-3. Halt after Phase 1 completion for review.
+## Next Steps
+1. Execute `setup.php` to generate and populate `database.sqlite`.
+2. Verify all tables, constraints, and mock data using `sqlite3`.
+3. Halt upon Phase 1 completion and present deliverables for user review before proceeding to Phase 2 (Layout & UI).

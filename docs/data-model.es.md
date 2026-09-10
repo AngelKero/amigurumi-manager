@@ -9,6 +9,7 @@ Este directorio contiene la documentación modular de la arquitectura del sistem
 - **[database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md):** Esquema relacional completo de 3 tablas (`usuarios`, `amigurumis`, `pedidos`), DDL detallado con claves foráneas, diccionarios de datos, índices y reglas de integridad referencial. (Versión en inglés: [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md))
 - **[auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md):** Ciclo de vida de autenticación, hashing de contraseñas con PHP nativo `password_hash()`, control de sesiones y matriz de protección de endpoints. (Versión en inglés: [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md))
 - **[api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md):** Contratos de endpoints REST, formato estándar de respuestas JSON, gestión de errores y operaciones CRUD para catálogo y pedidos. (Versión en inglés: [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md))
+- **[database-testing.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.es.md):** Guía de verificación CLI y consultas reproducibles en terminal con `sqlite3` para validar claves foráneas, cálculo de precios y límites de inventario. (Versión en inglés: [database-testing.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.md))
 
 ---
 

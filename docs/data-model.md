@@ -9,6 +9,7 @@ This directory contains the modular architectural documentation for the Handmade
 - **[database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md):** Complete 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), full DDL with foreign keys, data dictionaries, indexes, and referential integrity constraints. (Spanish: [database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md))
 - **[auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md):** Authentication lifecycle, password hashing via native PHP `password_hash()`, PHP session guards, and role-based endpoint protection matrix. (Spanish: [auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md))
 - **[api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md):** REST-like endpoint contracts, standard JSON payload format, error handling rules, and CRUD specifications for catalog items and orders. (Spanish: [api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md))
+- **[database-testing.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.md):** CLI verification guide and reproducible `sqlite3` terminal queries to validate foreign keys, price calculations, and stock limits. (Spanish: [database-testing.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.es.md))
 
 ---
 
