@@ -106,7 +106,9 @@ proyecto-web/
 │   ├── activeContext.md
 │   └── progress.md
 ├── database/
-│   └── seed.sql                (Full SQLite DDL schema and initial seed data)
+│   ├── seed.sql                (Full SQLite DDL schema and initial seed data)
+│   ├── database.sqlite         (Physical SQLite DB file - created in Phase 1)
+│   └── .htaccess               (Internal folder protection denying all direct web access)
 ├── css/
 │   └── styles.css              (Artisan styling, preview frames, badge indicators)
 ├── js/
@@ -114,7 +116,7 @@ proyecto-web/
 ├── uploads/                    (Local directory storing uploaded product images)
 │   └── .gitkeep                (Git retention marker for uploads directory)
 ├── api/
-│   ├── conexion.php            (PDO SQLite connection with PRAGMA foreign_keys = ON)
+│   ├── conexion.php            (PDO SQLite connection to database/database.sqlite with foreign keys ON)
 │   ├── auth_guard.php          (Session and role authorization helper)
 │   ├── login.php               (Credential verification & session_start)
 │   ├── logout.php              (Session termination)
@@ -126,17 +128,19 @@ proyecto-web/
 │   ├── solicitar_pedido.php    (Public checkout with atomic stock deduction)
 │   ├── pedidos.php             (Protected orders dashboard & query)
 │   └── actualizar_pedido.php   (Update order status & restocking on cancellation)
-├── setup.php                   (Database initialization script executing seed.sql)
+├── setup.php                   (CLI-only database initialization script executing seed.sql)
 ├── index.html                  (Catalog & inventory view + Navbar Login Modal)
 ├── formulario.html             (Add / Edit view with real file upload)
 ├── detalle.html                (Detailed item view with Public Checkout trigger)
 ├── pedidos.html                (Orders & commission tracking view)
-├── database.sqlite             (SQLite DB file - created in Phase 1)
+├── .htaccess                   (Root Apache security blocking .sqlite, .sql, .md, database/, memory-bank/)
 ├── .gitignore                  (Git exclusions for binaries, OS artifacts, and uploads)
 └── README.md                   (Execution and setup documentation)
 ```
 
 ## Technical Constraints & Safety
+- **Multi-Layered Web & Database Security:** SQLite database relocated to `database/database.sqlite`. Direct HTTP/browser access to `database/`, `memory-bank/`, `.sqlite`, `.sql`, and `.md` files is strictly blocked via Apache `.htaccess`.
+- **CLI-Only Database Setup:** `setup.php` is strictly restricted to CLI execution (`php_sapi_name() === 'cli'`), completely preventing remote browser-driven database resets or data loss.
 - **Foreign Key Enforcement:** Explicit `PRAGMA foreign_keys = ON;` executed on every PDO connection.
 - **Server-Side Price Calculation:** `pedidos.precio_final` is calculated on the server (`precio * cantidad`). Client input is never trusted.
 - **Atomic Stock Transactions:** Creating an order (`solicitar_pedido.php` or `pedidos.php`) requires `BEGIN TRANSACTION`, checking available stock and updating `cantidad_stock`.

@@ -1,28 +1,28 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: User Management CRUD, Public Checkout, Image Uploads, Navbar Modal & Orphaned Files Management
-- **New Functional Requirements Integrated:**
-  1. **User Management CRUD (`/api/usuarios.php`):** Added endpoints (`GET`, `POST`, `PUT`, `DELETE`) for administrative user management, strictly restricted to authenticated sessions with the `admin` role.
-  2. **Public Client Checkout (`/api/solicitar_pedido.php`):** Created a public-facing order creation endpoint for customers browsing `detalle.html`. Operates without requiring an account/session, while enforcing the identical atomic database transaction (`cantidad_stock` validation and deduction, server-calculated `precio_final`, and default `'Pendiente'` status).
-  3. **Real Image File Uploads (`/uploads`):** Upgraded `POST /api/crear.php` and `POST /api/actualizar.php` to handle `multipart/form-data` image uploads, verifying MIME types and size limits, generating unique filenames, storing files locally in `/uploads/`, and persisting relative paths in `imagen_url`.
-  4. **UI Navigation Refinement (Navbar Login Modal):** Converted the login interface from a standalone `login.html` page into a dynamic Bootstrap Modal component shared across the navbar of all views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`).
-  5. **Orphaned File Deletion Policy (`POST /api/eliminar.php`):** Mandated that before removing an amigurumi record from SQLite, the backend must retrieve `imagen_url` and delete the associated physical file from `/uploads/` using PHP's `unlink()`, preventing orphaned files on disk while respecting `ON DELETE RESTRICT` constraints.
+## Current State: Multi-Layered Security Hardening & Database-First Phase 1 Execution
+- **Multi-Layered Security Architecture Implemented:**
+  1. **Data Loss Prevention (CLI-Only Setup):** Hardened `setup.php` to immediately abort with `Access Denied` if requested via HTTP/browser (`php_sapi_name() !== 'cli'`). Removed all HTML rendering to enforce command-line execution only.
+  2. **Data Leak Mitigation (Relocated Database):** Moved physical database file to `database/database.sqlite`, out of the web server document root.
+  3. **Apache Direct Access Blocking (.htaccess):** Generated root `.htaccess` and `database/.htaccess` strictly denying direct HTTP requests to `.sqlite`, `.sql`, and `.md` files, and blocking web access to `database/` and `memory-bank/`.
+  4. **Orphaned File Deletion Policy:** Fully specified in `docs/api-design.md` and `docs/api-design.es.md` (`POST /api/eliminar.php`), requiring `unlink()` of local image files before database record deletion.
 - **Files Synchronized (Bilingual Suite):**
   - `docs/api-design.md` & `docs/api-design.es.md`
-  - `docs/auth-flow.md` & `docs/auth-flow.es.md`
   - `docs/database-schema.md` & `docs/database-schema.es.md`
+  - `docs/database-testing.md` & `docs/database-testing.es.md`
+  - `memory-bank/projectbrief.md`
   - `memory-bank/techContext.md`
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
-- **Phase Gate Status:** Phase 0 concluded and signed off. Roadmap restructured to strict Database-First approach. Now executing **Phase 1: Database Implementation, Seeding & Testing**.
+- **Phase Gate Status:** Phase 0 concluded. Executed **Phase 1: Database Implementation, Seeding & Testing** with hardened security infrastructure.
 
 ## Immediate Focus: Phase 1 (Database Implementation, Seeding & Testing)
-Executing Phase 1 deliverables:
-1. `database/seed.sql`: Complete executable SQLite schema DDL with cleanly separated column definitions and named table-level constraints (`CONSTRAINT ... UNIQUE/CHECK/FOREIGN KEY`), each fully documented with its technical purpose and business justification. Seeded with 1 admin user, 3 distinct amigurumis, and 2 orders.
-2. `setup.php`: Automated initialization script creating root `database.sqlite`, enforcing `PRAGMA foreign_keys = ON;`, and executing `seed.sql`.
-3. `.docs/database-testing.md` & `database-testing.es.md`: CLI verification manual with reproducible `sqlite3` terminal commands testing foreign key violations, price calculations, and stock limits.
+Phase 1 deliverables generated and verified:
+1. `database/seed.sql`: DDL schema with separated, documented table-level constraints (`CONSTRAINT ... UNIQUE/CHECK/FOREIGN KEY`) and seed data (1 admin user with verified hash for `admin123`, 3 distinct amigurumis, 2 orders).
+2. `setup.php`: Hardened CLI-only script creating `database/database.sqlite` with `PRAGMA foreign_keys = ON;` and executing `seed.sql`.
+3. `.htaccess` (Root & `database/`): Web protection denying access to `.sqlite`, `.sql`, `.md`, `database/`, and `memory-bank/`.
+4. `.docs/database-testing.md` & `database-testing.es.md`: Updated CLI verification manual targeting `database/database.sqlite`.
 
 ## Next Steps
-1. Execute `setup.php` to generate and populate `database.sqlite`.
-2. Verify all tables, constraints, and mock data using `sqlite3`.
-3. Halt upon Phase 1 completion and present deliverables for user review before proceeding to Phase 2 (Layout & UI).
+1. Await user review and explicit approval of Phase 1 deliverables.
+2. Advance to Phase 2 (Layout & UI) upon approval without generating PHP endpoint logic yet.

@@ -13,8 +13,10 @@ An academic web development project to build a responsive, dynamic web applicati
 ## Scope & Deliverables
 - **Backend & Database Services:**
   - `database/seed.sql`: Complete SQLite DDL schema with relational constraints and seed data.
-  - `setup.php`: Database initialization script executing `seed.sql` to generate `database.sqlite`.
-  - `conexion.php`: PDO SQLite instance with `PRAGMA foreign_keys = ON;` and `ERRMODE_EXCEPTION`.
+  - `database/database.sqlite`: Physical SQLite database file located safely inside the protected `database/` directory.
+  - `setup.php`: CLI-only database initialization script executing `seed.sql` to generate `database/database.sqlite`.
+  - `.htaccess`: Root Apache security configuration blocking web access to `.sqlite`, `.sql`, `.md`, `database/`, and `memory-bank/`.
+  - `conexion.php`: PDO SQLite instance connecting to `database/database.sqlite` with `PRAGMA foreign_keys = ON;` and `ERRMODE_EXCEPTION`.
   - `auth_guard.php`: Session-based middleware for protecting mutating operations and role enforcement.
   - Modular API endpoints: `api/login.php`, `api/logout.php`, `api/usuarios.php`, `api/crear.php`, `api/leer.php`, `api/actualizar.php`, `api/eliminar.php`, `api/solicitar_pedido.php`, `api/pedidos.php`, `api/actualizar_pedido.php`.
 - **Static & Dynamic User Interfaces:**
@@ -30,7 +32,7 @@ An academic web development project to build a responsive, dynamic web applicati
   - `README.md`: Architecture overview and local execution instructions.
 
 ## Development Roadmap (Database-First Approach)
-1. **Phase 1: Database Implementation, Seeding & Testing** (`database/seed.sql`, `setup.php`, SQLite constraints testing).
+1. **Phase 1: Database Implementation, Seeding & Testing** (`database/seed.sql`, CLI-only `setup.php`, `database/database.sqlite`, `.htaccess`, SQLite constraints testing).
 2. **Phase 2: Layout & UI** (HTML5, Bootstrap 5 CDN views, modals).
 3. **Phase 3: Backend Connection & Auth Guard** (`conexion.php`, `auth_guard.php`).
 4. **Phase 4: API Endpoints & DOM JS** (CRUD operations, `app.js`).

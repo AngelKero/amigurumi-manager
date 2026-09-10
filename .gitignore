@@ -30,6 +30,8 @@ desktop.ini
 *.sqlite-shm
 *.sqlite-journal
 database.sqlite
+database/*.sqlite
+database/database.sqlite
 
 # Archivos Subidos por Usuarios (Conserva la carpeta mediante .gitkeep)
 /uploads/*

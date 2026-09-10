@@ -1,0 +1,57 @@
+# ==============================================================================
+# Apache Web Server Security Configuration - Amigurumi Micro-ERP
+# ==============================================================================
+
+# 1. Disable Directory Indexing / Directory Browsing
+Options -Indexes
+
+# ------------------------------------------------------------------------------
+# 2. Strictly Block Direct Web Access to Sensitive Directories
+#    (database/ and memory-bank/)
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Return 403 Forbidden for any request attempting to access database/ or memory-bank/
+    RewriteRule ^(database|memory-bank)(/.*)?$ - [F,L,NC]
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    <DirectoryMatch "^.*/(database|memory-bank)(/.*)?$">
+        Require all denied
+    </DirectoryMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    <DirectoryMatch "^.*/(database|memory-bank)(/.*)?$">
+        Order allow,deny
+        Deny from all
+    </DirectoryMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 3. Strictly Deny Web Access to Sensitive File Extensions
+#    (.sqlite, .sqlite3, .sql, .md)
+# ------------------------------------------------------------------------------
+<FilesMatch "\.(sqlite|sqlite3|sql|md)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ------------------------------------------------------------------------------
+# 4. Block Hidden Files, Configuration, and Version Control Artifacts
+#    (.git, .env, .htaccess, etc.)
+# ------------------------------------------------------------------------------
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

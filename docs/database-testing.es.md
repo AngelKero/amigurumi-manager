@@ -1,6 +1,6 @@
 # Guía de Pruebas de Base de Datos y Verificación de Restricciones SQLite
 
-Esta guía proporciona comandos CLI de `sqlite3` y consultas reproducibles para la terminal de macOS con el objetivo de verificar que la base de datos física SQLite (`database.sqlite`), sus claves foráneas, restricciones CHECK y métricas de negocio funcionen exactamente según las especificaciones.
+Esta guía proporciona comandos CLI de `sqlite3` y consultas reproducibles para la terminal de macOS con el objetivo de verificar que la base de datos física SQLite (`database/database.sqlite`), sus claves foráneas, restricciones CHECK y métricas de negocio funcionen exactamente según las especificaciones.
 
 ---
 
@@ -10,7 +10,7 @@ Abra su terminal en el directorio raíz del proyecto (`/Users/angelzaragoza/Desk
 
 ```bash
 # Iniciar sesión interactiva de SQLite con encabezados y formato columnar
-sqlite3 database.sqlite
+sqlite3 database/database.sqlite
 ```
 
 Dentro del prompt interactivo, **siempre active primero las claves foráneas**:
@@ -233,14 +233,14 @@ Ejecute estos comandos directamente desde su terminal bash/zsh sin ingresar a la
 
 ```bash
 # 1. Comprobar protección por clave foránea
-sqlite3 database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
+sqlite3 database/database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
 
 # 2. Listar catálogo e inventario
-sqlite3 -column -header database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
+sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
 
 # 3. Listar pedidos activos
-sqlite3 -column -header database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
+sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
 
-# 4. Restaurar base de datos a estado inicial limpio
+# 4. Restaurar base de datos a estado inicial limpio (Solo CLI)
 php setup.php
 ```

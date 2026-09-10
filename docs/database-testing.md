@@ -1,6 +1,6 @@
 # SQLite Database Testing & Constraint Verification Guide
 
-This guide provides reproducible `sqlite3` CLI commands and queries for macOS terminal to verify that the physical SQLite database (`database.sqlite`), relational foreign keys, CHECK constraints, and business metrics are working as specified.
+This guide provides reproducible `sqlite3` CLI commands and queries for macOS terminal to verify that the physical SQLite database (`database/database.sqlite`), relational foreign keys, CHECK constraints, and business metrics are working as specified.
 
 ---
 
@@ -10,7 +10,7 @@ Open your macOS terminal in the project root directory (`/Users/angelzaragoza/De
 
 ```bash
 # Launch interactive SQLite session with headers and column formatting
-sqlite3 database.sqlite
+sqlite3 database/database.sqlite
 ```
 
 Inside the interactive prompt, **always activate foreign keys first**:
@@ -233,14 +233,14 @@ Run these standalone commands from your terminal shell to verify functionality w
 
 ```bash
 # 1. Check foreign key enforcement
-sqlite3 database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
+sqlite3 database/database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
 
 # 2. Check catalog stock list
-sqlite3 -column -header database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
+sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
 
 # 3. Check active orders
-sqlite3 -column -header database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
+sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
 
-# 4. Re-run setup anytime to restore pristine seed data
+# 4. Re-run setup anytime to restore pristine seed data (CLI only)
 php setup.php
 ```

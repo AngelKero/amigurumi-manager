@@ -4,10 +4,8 @@
 
 | Phase | Milestone | Status | Description |
 | :--- | :--- | :--- | :--- |
-| Phase | Milestone | Status | Description |
-| :--- | :--- | :--- | :--- |
 | **Phase 0** | Relational Micro-ERP Architecture | **Completed & Signed Off** | Integrated User Management CRUD, Public Client Checkout, Image Uploads, Navbar Login Modal, and Orphaned File Cleanup across bilingual docs. |
-| **Phase 1** | Database Implementation, Seeding & Testing | **In Progress** | Create `database/seed.sql`, `setup.php`, initialize `database.sqlite`, verify SQLite constraints, and provide `.docs/database-testing.md`. |
+| **Phase 1** | Database Implementation, Seeding & Testing | **Completed & Awaiting Sign-off** | Implemented `database/seed.sql`, CLI-only `setup.php`, `database/database.sqlite`, Apache `.htaccess` protection, and `.docs/database-testing.md`. |
 | **Phase 2** | Layout & UI | **Pending (Next)** | Build `index.html`, `formulario.html`, `detalle.html`, and `pedidos.html` with Bootstrap 5 CDN, Navbar Login Modal, and working navigation. |
 | **Phase 3** | Backend & Connection | **Pending** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
 | **Phase 4** | CRUD Operations & JS | **Pending** | Implement modular endpoints (`login.php`, `usuarios.php`, `crear.php`, `leer.php`, `actualizar.php`, `eliminar.php`, `solicitar_pedido.php`, `pedidos.php`, `actualizar_pedido.php`) and `app.js`. |
@@ -21,6 +19,7 @@
 - Real file upload specifications to `/uploads` with MIME/size validation.
 - Physical asset cleanup policy on deletion (`POST /api/eliminar.php`) using PHP `unlink()` to eliminate orphaned files.
 - Transition of login interface to a reusable Navbar Modal.
+- Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.
 - All 24 JSON blocks across bilingual API docs tested and validated.
 
 ## What's Left to Build
