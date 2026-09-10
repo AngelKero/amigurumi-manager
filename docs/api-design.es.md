@@ -257,6 +257,10 @@ Todas las respuestas del backend siguen una estructura homogénea:
 
 ### `POST /api/eliminar.php`
 - **Acceso:** Protegido (Sesión requerida: `admin`)
+- **Política de Gestión de Archivos Huérfanos:**
+  - Antes de eliminar el registro de la base de datos, el backend DEBE consultar el campo `imagen_url` del amigurumi.
+  - Si `imagen_url` está presente, apunta a un archivo local en `/uploads/` y el archivo existe físicamente en disco, el backend DEBE eliminarlo físicamente utilizando `unlink()` de PHP antes de ejecutar el `DELETE` en la base de datos.
+  - Si fallan las comprobaciones de integridad referencial (por ejemplo, si existen pedidos asociados en `pedidos` protegidos por `ON DELETE RESTRICT`), la eliminación se interrumpe retornando HTTP 409, garantizando que no se eliminen registros de la base de datos ni archivos físicos por error.
 - **Cuerpo de la Solicitud (JSON):**
   ```json
   {
@@ -267,7 +271,14 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```json
   {
     "success": true,
-    "message": "Amigurumi eliminado correctamente"
+    "message": "Amigurumi y archivo de imagen eliminados correctamente"
+  }
+  ```
+- **Respuesta de Conflicto (409 Conflict):**
+  ```json
+  {
+    "success": false,
+    "error": "No se puede eliminar el amigurumi porque tiene pedidos asociados. Debe cancelar o archivar los pedidos primero."
   }
   ```
 

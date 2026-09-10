@@ -101,7 +101,7 @@ proyecto-web/
 │   ├── crear.php               (Insert amigurumi, file upload to /uploads, binds session artesano_id)
 │   ├── leer.php                (Fetch catalog items with joined artisan username)
 │   ├── actualizar.php          (Update amigurumi & replace local image)
-│   ├── eliminar.php            (Delete amigurumi with foreign key safeguard)
+│   ├── eliminar.php            (Delete amigurumi with foreign key safeguard & physical image unlink)
 │   ├── solicitar_pedido.php    (Public checkout with atomic stock deduction)
 │   ├── pedidos.php             (Protected orders dashboard & query)
 │   └── actualizar_pedido.php   (Update order status & restocking on cancellation)
@@ -119,6 +119,6 @@ proyecto-web/
 - **Atomic Stock Transactions:** Creating an order (`solicitar_pedido.php` or `pedidos.php`) requires `BEGIN TRANSACTION`, checking available stock and updating `cantidad_stock`.
 - **Restocking on Cancellation:** Updating an order to `'Cancelado'` via `actualizar_pedido.php` restores units to `cantidad_stock`.
 - **Role-Based Protection:** `/api/usuarios.php` is strictly locked to `admin`. Non-admin requests receive HTTP 403.
-- **Secure Image Uploads:** Binary files validated by MIME type, size limit ($\le 5\text{MB}$), unique file naming, stored in `/uploads/`.
+- **Secure Image Uploads & Asset Lifecycle:** Binary files validated by MIME type, size limit ($\le 5\text{MB}$), unique file naming, stored in `/uploads/`. When updating or deleting an amigurumi (`POST /api/eliminar.php`), previous or associated image files are unlinked from `/uploads/` using PHP `unlink()` to eliminate orphaned files.
 - **Dynamic Navbar Modal Authentication:** Login is embedded as a reusable modal dialog in the header, streamlining navigation without page reloads.
 - **SQL Injection Prevention:** 100% parameterized PDO prepared statements.

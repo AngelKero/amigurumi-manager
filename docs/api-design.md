@@ -258,6 +258,10 @@ All JSON responses follow a predictable envelope structure:
 
 ### `POST /api/eliminar.php`
 - **Access:** Protected (Session required: `admin`)
+- **Orphaned File Management Policy:**
+  - Before removing the record from the database, the backend MUST query the amigurumi's `imagen_url`.
+  - If `imagen_url` is present, points to a local file in `/uploads/`, and the file exists on disk, the backend MUST physically delete the file using PHP's `unlink()` before executing the database `DELETE`.
+  - If foreign key checks fail (e.g. because of associated orders in `pedidos` via `ON DELETE RESTRICT`), the deletion is aborted, returning HTTP 409, ensuring neither database records nor physical images are erroneously removed.
 - **Request Body (JSON):**
   ```json
   {
@@ -268,7 +272,7 @@ All JSON responses follow a predictable envelope structure:
   ```json
   {
     "success": true,
-    "message": "Amigurumi eliminado correctamente"
+    "message": "Amigurumi y archivo de imagen eliminados correctamente"
   }
   ```
 - **Conflict Response (409 Conflict):**
