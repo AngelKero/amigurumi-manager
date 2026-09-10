@@ -1,6 +1,6 @@
 # Arquitectura de Autenticación y Seguridad de Sesiones
 
-Este documento describe el ciclo de vida de autenticación de usuarios, la estrategia de cifrado de contraseñas y el control de acceso basado en sesiones de PHP para el sistema Micro-ERP.
+Este documento describe el ciclo de vida de autenticación de usuarios, la estrategia de cifrado de contraseñas, el control de acceso basado en sesiones de PHP y la vinculación de autoría para el sistema Micro-ERP.
 
 ---
 
@@ -30,16 +30,17 @@ sequenceDiagram
         UI->>UI: Redirige al catálogo o panel de administración
     end
 
-    Note over UI,API: Solicitudes Mutables Posteriores (Crear/Actualizar/Eliminar/Pedidos)
-    UI->>API: Solicitud POST / PUT / DELETE
+    Note over UI,API: Solicitud de Creación de Amigurumi
+    UI->>API: POST /api/crear.php (payload sin ID de usuario)
     API->>Guard: check_authenticated()
     alt Sesión No Iniciada / Expirada
         Guard-->>UI: HTTP 401 Unauthorized (Redirige al login)
     else Autenticado Exitosamente
         Guard-->>API: Permite ejecución
-        API->>DB: Ejecuta transacción autorizada
-        DB-->>API: Resultado de la transacción
-        API-->>UI: Respuesta HTTP 200/201 Exitosa
+        API->>API: Extrae artesano_id desde $_SESSION['user_id']
+        API->>DB: INSERT INTO amigurumis (artesano_id, ...) VALUES (?, ...)
+        DB-->>API: ID del registro creado
+        API-->>UI: Respuesta HTTP 201 Created Exitosa
     end
 ```
 
@@ -58,7 +59,7 @@ sequenceDiagram
 
 ---
 
-## 3. Configuración de Seguridad de Sesiones
+## 3. Configuración de Seguridad de Sesiones y Vinculación de Autoría
 Todo script que valide sesiones debe inicializarlas aplicando directivas de seguridad para cookies:
 ```php
 <?php
@@ -75,6 +76,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ```
 
+### Regla de Atribución de Identidad:
+- Al registrar una pieza mediante `POST /api/crear.php`, el backend toma `$_SESSION['user_id']` y lo asigna de forma obligatoria a `artesano_id`.
+- El cliente no puede proporcionar `artesano_id` en el cuerpo de la solicitud JSON; cualquier valor enviado por el cliente es ignorado para evitar la suplantación de autoría.
+
 ---
 
 ## 4. Matriz de Endpoints Públicos vs. Protegidos
@@ -82,12 +87,12 @@ if (session_status() === PHP_SESSION_NONE) {
 | Recurso / Endpoint | Nivel de Acceso | Requisito de Autenticación | Propósito |
 | :--- | :--- | :--- | :--- |
 | `index.html` (Vista de Catálogo) | **Público** | Ninguno | Permite a clientes y visitantes explorar creaciones. |
-| `detalle.html` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones completas e inventario. |
-| `api/leer.php` | **Público** | Ninguno | Retorna el catálogo o una pieza en formato JSON. |
+| `detalle.html` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones completas, autoría e inventario. |
+| `api/leer.php` | **Público** | Ninguno | Retorna el catálogo o una pieza en formato JSON con nombre de artesano. |
 | `api/login.php` | **Público** | Solo invitados | Valida credenciales e inicia la sesión del usuario. |
 | `api/logout.php` | **Protegido** | Autenticado | Destruye la sesión activa y limpia las cookies. |
 | `formulario.html` (Crear / Editar) | **Protegido** | Sesión requerida | Impide que visitantes no autorizados modifiquen el catálogo. |
-| `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra un nuevo amigurumi. |
-| `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Modifica datos, costos e inventario del catálogo. |
+| `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra un nuevo amigurumi vinculando `artesano_id = $_SESSION['user_id']`. |
+| `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o autor) | Modifica datos, costos e inventario del catálogo. |
 | `api/eliminar.php` | **Protegido** | Sesión requerida (`admin`) | Elimina una pieza (sujeto a la restricción de pedidos). |
 | `pedidos.html` y `api/pedidos.php`| **Protegido** | Sesión requerida | Gestión integral de pedidos, cambios de estado y encargos. |

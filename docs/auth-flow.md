@@ -1,6 +1,6 @@
 # Authentication & Session Security Architecture
 
-This document details the user authentication lifecycle, password hashing strategy, and PHP session access control for the Micro-ERP system.
+This document details the user authentication lifecycle, password hashing strategy, session access control, and identity attribution for the Micro-ERP system.
 
 ---
 
@@ -30,16 +30,17 @@ sequenceDiagram
         UI->>UI: Redirect to catalog / admin dashboard
     end
 
-    Note over UI,API: Subsequent Mutating Requests (Create/Update/Delete/Orders)
-    UI->>API: POST / PUT / DELETE request
+    Note over UI,API: Creation Request (Catalog Amigurumi Item)
+    UI->>API: POST /api/crear.php (payload without user ID)
     API->>Guard: check_authenticated()
     alt Session Not Set / Expired
         Guard-->>UI: HTTP 401 Unauthorized (Redirect to login)
     else Authenticated
         Guard-->>API: Allow execution
-        API->>DB: Execute authorized transaction
-        DB-->>API: Transaction result
-        API-->>UI: HTTP 200/201 Success Response
+        API->>API: Extract artesano_id from $_SESSION['user_id']
+        API->>DB: INSERT INTO amigurumis (artesano_id, ...) VALUES (?, ...)
+        DB-->>API: Created record ID
+        API-->>UI: HTTP 201 Created
     end
 ```
 
@@ -58,7 +59,7 @@ sequenceDiagram
 
 ---
 
-## 3. Session Security Configuration
+## 3. Session Security & Identity Binding
 Every script requiring session verification must initialize sessions with strict security flags:
 ```php
 <?php
@@ -75,6 +76,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ```
 
+### Identity Attribution Rule:
+- When a user creates a new creation via `POST /api/crear.php`, the backend reads `$_SESSION['user_id']` and directly sets `artesano_id`.
+- The client cannot supply `artesano_id` in the request body; any client-provided ID is discarded to prevent privilege escalation.
+
 ---
 
 ## 4. Protected vs. Public Endpoints Matrix
@@ -83,11 +88,11 @@ if (session_status() === PHP_SESSION_NONE) {
 | :--- | :--- | :--- | :--- |
 | `index.html` (Catalog View) | **Public** | None | Allows potential customers to browse amigurumi creations. |
 | `detalle.html` (Item Details) | **Public** | None | Displays detailed specifications and availability. |
-| `api/leer.php` | **Public** | None | Returns JSON catalog list or single item. |
+| `api/leer.php` | **Public** | None | Returns JSON catalog list or single item with artisan attribution. |
 | `api/login.php` | **Public** | Guest only | Authenticates credentials and starts user session. |
 | `api/logout.php` | **Protected** | Authenticated | Destroys current session and clears cookies. |
 | `formulario.html` (Add / Edit) | **Protected** | Session required | Prevents unauthorized visitors from modifying catalog. |
-| `api/crear.php` | **Protected** | Session required (`admin` or `artesano`) | Inserts new amigurumi record. |
-| `api/actualizar.php` | **Protected** | Session required (`admin` or `artesano`) | Modifies catalog details, costs, and stock. |
+| `api/crear.php` | **Protected** | Session required (`admin` or `artesano`) | Inserts new amigurumi, binding `artesano_id = $_SESSION['user_id']`. |
+| `api/actualizar.php` | **Protected** | Session required (`admin` or creator) | Modifies catalog details, costs, and stock. |
 | `api/eliminar.php` | **Protected** | Session required (`admin`) | Deletes an amigurumi (subject to order constraint). |
 | `pedidos.html` & `api/pedidos.php`| **Protected** | Session required | Full order management, status updates, and commissions. |

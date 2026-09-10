@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- 2. Table: amigurumis (Core Catalog & Inventory)
 CREATE TABLE IF NOT EXISTS amigurumis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    actualizado_en TEXT DEFAULT NULL
+    actualizado_en TEXT DEFAULT NULL,
+    FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- 3. Table: pedidos (Orders & Commissions)
@@ -59,6 +61,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 
 -- Performance Indexes
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
 CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
@@ -69,10 +72,14 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
 proyecto-web/
 ├── docs/ (symlinked to .docs/)
-│   ├── data-model.md           (Master Architecture & ERD Index)
-│   ├── database-schema.md      (Relational DDL, Data Dictionaries, Foreign Keys)
-│   ├── auth-flow.md            (Session Lifecycle, Password Hashing, Endpoint Protection)
-│   └── api-design.md           (REST-like Endpoint Contracts & JSON Schemas)
+│   ├── data-model.md           (Master Architecture & ERD Index - English)
+│   ├── data-model.es.md        (Índice Maestro y ERD - Español)
+│   ├── database-schema.md      (Relational DDL, Data Dictionaries - English)
+│   ├── database-schema.es.md   (Esquema DDL, Diccionario de Datos - Español)
+│   ├── auth-flow.md            (Session Lifecycle, Identity Attribution - English)
+│   ├── auth-flow.es.md         (Ciclo de Sesión y Atribución de Autoría - Español)
+│   ├── api-design.md           (REST-like Endpoint Contracts & JSON - English)
+│   └── api-design.es.md        (Contratos de Endpoints REST y JSON - Español)
 ├── memory-bank/
 │   ├── projectbrief.md
 │   ├── productContext.md
@@ -89,8 +96,8 @@ proyecto-web/
 │   ├── login.php               (Credential verification & session_start)
 │   ├── logout.php              (Session termination)
 │   ├── setup.php               (Schema creation & initial admin seeder)
-│   ├── crear.php               (Insert amigurumi)
-│   ├── leer.php                (Fetch catalog items)
+│   ├── crear.php               (Insert amigurumi binding session user_id to artesano_id)
+│   ├── leer.php                (Fetch catalog items with joined artisan username)
 │   ├── actualizar.php          (Update amigurumi)
 │   ├── eliminar.php            (Delete amigurumi with foreign key safeguard)
 │   └── pedidos.php             (Orders CRUD & status management)
@@ -105,6 +112,7 @@ proyecto-web/
 
 ## Technical Constraints & Safety
 - **Foreign Key Enforcement:** Explicit `PRAGMA foreign_keys = ON;` executed on every PDO connection.
+- **Artisan Identity Binding:** `artesano_id` is automatically injected from `$_SESSION['user_id']` on creation. Client-side input is ignored.
 - **Financial Exactness:** Cents storage (`INTEGER`) across `precio`, `costo_materiales`, and `precio_final`.
 - **Order Quantity Tracking:** `cantidad INTEGER NOT NULL DEFAULT 1` allows multiple units per order.
 - **Order Immutability:** Historical customer agreed price locked in `pedidos.precio_final`.

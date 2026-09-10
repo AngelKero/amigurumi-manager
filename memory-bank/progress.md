@@ -4,7 +4,7 @@
 
 | Phase | Milestone | Status | Description |
 | :--- | :--- | :--- | :--- |
-| **Phase 0** | Relational Micro-ERP Architecture | **Completed (Bilingual Docs & Awaiting Sign-off)** | Designed 3-table relational schema (`usuarios`, `amigurumis`, `pedidos`), modular English and Spanish documentation (`.es.md`), tested valid JSON, and verified SQLite DDL. |
+| **Phase 0** | Relational Micro-ERP Architecture | **Completed (Awaiting Final Sign-off)** | Designed 3-table relational schema with full foreign keys (`usuarios -> amigurumis -> pedidos`), bilingual documentation (`.es.md`), tested valid JSON, and verified SQLite DDL. |
 | **Phase 1** | Layout & UI | **Pending (Blocked by Phase 0)** | Build `index.html`, `formulario.html`, `detalle.html`, `pedidos.html`, and `login.html` with Bootstrap 5 CDN and working navigation. |
 | **Phase 2** | Database Setup | **Pending** | Create `setup.php` and initialize relational SQLite schema (`database.sqlite`) with foreign keys and admin seeder. |
 | **Phase 3** | Backend & Connection | **Pending** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
@@ -13,12 +13,10 @@
 
 ## What Works
 - Memory Bank completely synchronized across all 5 core files.
-- Modular architecture documentation in `docs/` (`.docs/`) in both English and Spanish:
-  - English: [data-model.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.md), [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md), [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md), [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md)
-  - Spanish: [data-model.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md), [database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md), [auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md), [api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md)
-- All JSON blocks tested and validated.
-- SQLite DDL schema tested in memory with 100% success.
-- PHP session syntax tested via CLI with zero errors.
+- Modular architecture documentation in `docs/` (`.docs/`) in both English and Spanish.
+- Fully connected ERD: `USUARIOS` 1-to-many `AMIGURUMIS` 1-to-many `PEDIDOS`.
+- SQLite DDL schema with foreign key constraints, indexes, and precision rules tested with 100% success.
+- Session-based artisan identity attribution (`artesano_id = $_SESSION['user_id']`) preventing tampering.
 
 ## What's Left to Build
 - Final sign-off on Phase 0 relational architecture.

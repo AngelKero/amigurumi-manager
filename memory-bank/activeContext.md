@@ -1,13 +1,19 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: Spanish Documentation & Full Relational Architecture
-- **Spanish Documentation Created (`.es.md`):**
-  - Generated complete, synchronized Spanish versions for all modular architecture documents in `docs/`:
-    - [database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md) (Esquema relacional, DDL y diccionario de datos en español)
-    - [auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md) (Ciclo de autenticación, seguridad de sesiones y roles)
-    - [api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) (Contratos de endpoints REST, esquemas JSON y gestión de pedidos)
-    - [data-model.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md) (Índice maestro de datos y arquitectura)
-- **Phase Gate Status:** Phase 0 is complete, validated, bilingual, and ready for final user approval before starting Phase 1 (Layout & UI).
+## Current State: Full Relational Linkage (Artisan Attribution Added)
+- **Artisan Linkage Integrated:**
+  1. Added `artesano_id INTEGER NOT NULL` with `FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE` to `amigurumis`.
+  2. Created index `idx_amigurumis_artesano ON amigurumis(artesano_id)`.
+  3. Updated Mermaid ERDs across English and Spanish docs to illustrate `USUARIOS ||--o{ AMIGURUMIS` and `AMIGURUMIS ||--o{ PEDIDOS`.
+  4. Updated API specifications: `POST /api/crear.php` automatically extracts `$_SESSION['user_id']` and maps it to `artesano_id`. Client cannot supply or spoof this value.
+- **Files Synchronized:**
+  - `docs/database-schema.md` & `docs/database-schema.es.md`
+  - `docs/data-model.md` & `docs/data-model.es.md`
+  - `docs/api-design.md` & `docs/api-design.es.md`
+  - `docs/auth-flow.md` & `docs/auth-flow.es.md`
+  - `memory-bank/techContext.md`
+  - `memory-bank/progress.md`
+- **Phase Gate Status:** Ready for final user sign-off on Phase 0 before starting Phase 1 (Layout & UI).
 
 ## Immediate Focus: Phase 1 (Layout & UI)
 Upon user approval:
@@ -16,6 +22,6 @@ Upon user approval:
 - Halt at Phase 1 completion for review.
 
 ## Next Steps Upon Sign-Off
-1. Obtain user approval on Phase 0 deliverables.
+1. Obtain final user approval on Phase 0 deliverables.
 2. Advance to Phase 1 (Layout & UI) implementation without generating backend/database files.
 3. Halt after Phase 1 completion for review.
