@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframes de Baja Fidelidad | Amigurumi Micro-ERP</title>
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* Estilos de Baja Fidelidad (Wireframe Grayscale) */
+    :root {
+      --wf-bg: #f8f9fa;
+      --wf-card-bg: #ffffff;
+      --wf-border: #adb5bd;
+      --wf-border-dashed: #6c757d;
+      --wf-placeholder-bg: #e9ecef;
+      --wf-text-muted: #6c757d;
+      --wf-text-dark: #343a40;
+    }
+
+    body {
+      background-color: #f1f3f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--wf-text-dark);
+    }
+
+    /* Barra Superior del Visor de Wireframes */
+    .wireframe-control-bar {
+      background: #212529;
+      color: #f8f9fa;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid #495057;
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+    }
+
+    .badge-blueprint {
+      background-color: #495057;
+      border: 1px dashed #ced4da;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+
+    /* Contenedores y Cajas de Wireframe */
+    .wf-box {
+      border: 2px dashed var(--wf-border-dashed);
+      background-color: var(--wf-placeholder-bg);
+      color: var(--wf-text-muted);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+
+    .wf-card {
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .wf-card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+    }
+
+    .wf-badge {
+      font-family: monospace;
+      font-size: 0.75rem;
+      padding: 0.35em 0.65em;
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+      background-color: #e9ecef;
+      color: #495057;
+    }
+
+    /* Navbar Simulado */
+    .wf-navbar {
+      background-color: #ffffff;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Modal Wireframe Styling */
+    .modal-content.wf-modal {
+      border: 2px solid #495057;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .sticky-summary {
+      position: sticky;
+      top: 5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- BARRA DE CONTROL DEL VISOR DE WIREFRAMES (Para revisión del usuario)      -->
+  <!-- ========================================================================= -->
+  <header class="wireframe-control-bar">
+    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-grid-1x2 text-warning fs-5"></i>
+        <strong class="me-2">Amigurumi Micro-ERP &bull; Galería de Wireframes (Baja Fidelidad)</strong>
+        <span class="badge badge-blueprint">FASE 2: LAYOUT SIGN-OFF</span>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <!-- Simulación de Estado de Sesión -->
+        <div class="btn-group btn-group-sm" role="group" aria-label="Simulación de Sesión">
+          <span class="btn btn-sm btn-secondary disabled text-light">Simular Sesión:</span>
+          <button type="button" class="btn btn-sm btn-outline-light active" id="btnSimGuest" onclick="setSessionState('guest')">
+            <i class="bi bi-eye me-1"></i> Público (Invitado)
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-warning" id="btnSimArtisan" onclick="setSessionState('artisan')">
+            <i class="bi bi-shield-check me-1"></i> Artesano (Autenticado)
+          </button>
+        </div>
+
+        <!-- Triggers de Modales -->
+        <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModalWireframe">
+          <i class="bi bi-person-lock me-1"></i> Probar Modal Login
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+          <i class="bi bi-cart-check me-1"></i> Probar Modal Checkout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pestañas de Vistas -->
+  <div class="bg-white border-bottom shadow-sm">
+    <div class="container-fluid py-2">
+      <ul class="nav nav-pills" id="wireframeTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-semibold" id="tab-catalog-btn" data-bs-toggle="tab" data-bs-target="#tab-catalog" type="button" role="tab">
+            <i class="bi bi-shop me-1"></i> 1. index.html (Catálogo Público)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold" id="tab-detail-btn" data-bs-toggle="tab" data-bs-target="#tab-detail" type="button" role="tab">
+            <i class="bi bi-card-text me-1"></i> 2. detalle.html (Ficha y Checkout)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-dark" id="tab-form-btn" data-bs-toggle="tab" data-bs-target="#tab-form" type="button" role="tab">
+            <i class="bi bi-tools text-primary me-1"></i> 3. formulario.html (Panel Artesano: Alta/Edición)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-dark" id="tab-orders-btn" data-bs-toggle="tab" data-bs-target="#tab-orders" type="button" role="tab">
+            <i class="bi bi-tools text-primary me-1"></i> 4. pedidos.html (Panel Artesano: Gestión Pedidos)
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Contenido de las Vistas Wireframe -->
+  <main class="tab-content container-fluid py-4" id="wireframeTabContent">
+
+    <!-- ======================================================================= -->
+    <!-- 1. VISTA: index.html (Catálogo e Inventario - Vista Pública)             -->
+    <!-- ======================================================================= -->
+    <div class="tab-pane fade show active" id="tab-catalog" role="tabpanel">
+      <!-- Encabezado Informativo del Wireframe -->
+      <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <span class="badge bg-dark me-2">Vista: index.html</span>
+          <strong>Catálogo Público con Filtros e Indicadores de Stock</strong>
+          <span class="text-muted d-block small">
+            En la vista pública, la barra de navegación contiene <strong>únicamente el Catálogo y el Acceso de Usuario</strong>.
+            Las opciones de administración (<em>Nuevo Amigurumi</em> y <em>Gestión de Pedidos</em>) están ubicadas exclusivamente dentro del <strong>Panel del Artesano</strong>.
+          </span>
+        </div>
+        <span class="text-muted small font-monospace">Bootstrap Grid: col-12 / col-md-6 / col-lg-4</span>
+      </div>
+
+      <!-- NAVBAR REUTILIZABLE (Estado Dinámico: Público vs Autenticado) -->
+      <nav class="navbar navbar-expand-lg wf-navbar rounded mb-4 px-3">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold text-dark" href="#">
+            <i class="bi bi-box-seam me-2"></i>Amigurumi Manager
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCatalogWireframe">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCatalogWireframe">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <!-- Enlace Público Único -->
+              <li class="nav-item">
+                <a class="nav-link active fw-bold text-dark" href="#"><i class="bi bi-grid me-1"></i>Catálogo</a>
+              </li>
+
+              <!-- MENÚ DEL PANEL DEL ARTESANO (Visible únicamente cuando está autenticado) -->
+              <li class="nav-item dropdown d-none" id="navArtisanMenu">
+                <a class="nav-link dropdown-toggle fw-bold text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-tools me-1"></i>Panel del Artesano
+                </a>
+                <ul class="dropdown-menu shadow-sm">
+                  <li>
+                    <a class="dropdown-item py-2" href="#tab-form" onclick="cambiarTab('tab-form-btn')">
+                      <i class="bi bi-plus-circle text-success me-2"></i>Nuevo Amigurumi
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item py-2" href="#tab-orders" onclick="cambiarTab('tab-orders-btn')">
+                      <i class="bi bi-box-seam text-info me-2"></i>Gestión de Pedidos
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item py-2 text-muted" href="#">
+                      <i class="bi bi-people me-2"></i>Gestión de Usuarios (Admin)
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <!-- ACCIONES DE SESIÓN DEL NAVBAR -->
+            <div class="d-flex align-items-center gap-2">
+              <!-- Botón Invitado / Iniciar Sesión -->
+              <button class="btn btn-outline-dark btn-sm" id="navBtnLogin" data-bs-toggle="modal" data-bs-target="#loginModalWireframe">
+                <i class="bi bi-person-circle me-1"></i> Iniciar Sesión
+              </button>
+
+              <!-- Perfil Autenticado (Oculto por defecto en modo Invitado) -->
+              <div class="d-none align-items-center gap-2" id="navAuthBadge">
+                <span class="badge bg-dark font-monospace py-2 px-3 border">
+                  <i class="bi bi-person-badge text-warning me-1"></i>@admin (Artesano)
+                </span>
+                <button class="btn btn-outline-danger btn-sm" onclick="setSessionState('guest')">
+                  <i class="bi bi-box-arrow-right me-1"></i> Salir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- HERO BANNER SKELETON -->
+      <div class="p-4 p-md-5 mb-4 bg-white border rounded text-center">
+        <div class="col-md-8 mx-auto">
+          <div class="wf-box py-1 px-2 d-inline-block mb-3">🏷️ [BADGE: Creaciones Hechas a Mano]</div>
+          <h1 class="display-6 fw-bold text-dark">Catálogo de Amigurumis Artesanales</h1>
+          <p class="lead text-muted">
+            Explora piezas únicas de crochet, consulta existencias en tiempo real y realiza encargos personalizados directamente con el artesano.
+          </p>
+          <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-dark"><i class="bi bi-eye me-1"></i> Explorar Catálogo</button>
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+              <i class="bi bi-envelope-plus me-1"></i> Solicitar Encargo Especial
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER TOOLBAR -->
+      <div class="wf-card p-3 mb-4">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-5">
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control" placeholder="Buscar por nombre, hilo o material..." disabled>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <select class="form-select text-muted" disabled>
+              <option>Categoría: Todas las categorías</option>
+              <option>Fantasía</option>
+              <option>Plantas / Botánica</option>
+              <option>Animales / Fauna</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-2">
+            <select class="form-select text-muted" disabled>
+              <option>Stock: Todos</option>
+              <option>En Stock (> 0)</option>
+              <option>Agotados (0)</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button class="btn btn-outline-secondary btn-sm" disabled><i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD GRID (col-12, col-md-6, col-lg-4) -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+        
+        <!-- Tarjeta 1 -->
+        <div class="col">
+          <div class="card h-100 wf-card">
+            <div class="wf-box" style="height: 220px;">
+              <div>
+                <i class="bi bi-image fs-1 d-block mb-1"></i>
+                <span>[IMAGEN PRINCIPAL (4:3)]</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="wf-badge">Fantasía</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle">
+                  <i class="bi bi-check-circle me-1"></i>En Stock (4 u.)
+                </span>
+              </div>
+              <h5 class="card-title fw-bold text-dark">Dragón Ignis</h5>
+              <p class="card-text text-muted small mb-2">
+                Material: Algodón Mercerizado &bull; Altura: 18.5 cm
+              </p>
+              <div class="d-flex justify-content-between align-items-baseline pt-2 border-top">
+                <span class="fs-5 fw-bold text-dark">$450.00 <small class="text-muted fs-6">MXN</small></span>
+                <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+                  <i class="bi bi-bag-plus me-1"></i> Comprar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="col">
+          <div class="card h-100 wf-card">
+            <div class="wf-box" style="height: 220px;">
+              <div>
+                <i class="bi bi-image fs-1 d-block mb-1"></i>
+                <span>[IMAGEN PRINCIPAL (4:3)]</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="wf-badge">Plantas / Botánica</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle">
+                  <i class="bi bi-check-circle me-1"></i>En Stock (12 u.)
+                </span>
+              </div>
+              <h5 class="card-title fw-bold text-dark">Mini Suculenta Maceta</h5>
+              <p class="card-text text-muted small mb-2">
+                Material: Algodón Rústico &bull; Altura: 10.0 cm
+              </p>
+              <div class="d-flex justify-content-between align-items-baseline pt-2 border-top">
+                <span class="fs-5 fw-bold text-dark">$180.00 <small class="text-muted fs-6">MXN</small></span>
+                <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+                  <i class="bi bi-bag-plus me-1"></i> Comprar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta 3 (Agotado) -->
+        <div class="col">
+          <div class="card h-100 wf-card">
+            <div class="wf-box" style="height: 220px;">
+              <div>
+                <i class="bi bi-image fs-1 d-block mb-1"></i>
+                <span>[IMAGEN PRINCIPAL (4:3)]</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="wf-badge">Animales / Fauna</span>
+                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                  <i class="bi bi-x-circle me-1"></i>Agotado (0 u.)
+                </span>
+              </div>
+              <h5 class="card-title fw-bold text-dark">Ajolote Rosado Pastel</h5>
+              <p class="card-text text-muted small mb-2">
+                Material: Hilo Chenille Soft &bull; Altura: 14.0 cm
+              </p>
+              <div class="d-flex justify-content-between align-items-baseline pt-2 border-top">
+                <span class="fs-5 fw-bold text-dark">$320.00 <small class="text-muted fs-6">MXN</small></span>
+                <button class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+                  <i class="bi bi-clock-history me-1"></i> Encargar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGINACIÓN / RESUMEN -->
+      <div class="d-flex justify-content-between align-items-center py-3 border-top">
+        <span class="text-muted small">Mostrando 3 de 3 creaciones artesanales registradas</span>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+            <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#">»</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 2. VISTA: detalle.html (Ficha Técnica y Checkout Público)                -->
+    <!-- ======================================================================= -->
+    <div class="tab-pane fade" id="tab-detail" role="tabpanel">
+      <!-- Encabezado Informativo del Wireframe -->
+      <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <span class="badge bg-dark me-2">Vista: detalle.html</span>
+          <strong>Ficha Técnica de Creación y Modal de Checkout Público</strong>
+          <span class="text-muted d-block small">Layout: 2 columnas (`col-12 col-lg-6` izquierda: multimedia; derecha: especificaciones y CTA).</span>
+        </div>
+        <span class="text-muted small font-monospace">Bootstrap Grid: col-12 / col-lg-6</span>
+      </div>
+
+      <!-- BREADCRUMB -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-white p-2 border rounded">
+          <li class="breadcrumb-item"><a href="#" onclick="cambiarTab('tab-catalog-btn')" class="text-muted">Catálogo</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Dragón Ignis</li>
+        </ol>
+      </nav>
+
+      <!-- 2-COLUMN DETAIL SPLIT -->
+      <div class="row g-4">
+        <!-- COLUMNA IZQUIERDA: GALERÍA Y AUTORÍA -->
+        <div class="col-12 col-lg-6">
+          <div class="wf-card p-3 mb-3">
+            <div class="wf-box mb-3" style="height: 380px;">
+              <div>
+                <i class="bi bi-camera fs-1 d-block mb-2"></i>
+                <span class="fw-bold">[FOTOGRAFÍA PRINCIPAL EN ALTA RESOLUCIÓN]</span>
+                <div class="small text-muted mt-1">Aspect Ratio: 1:1 o 4:3 con zoom lightbox</div>
+              </div>
+            </div>
+            <!-- Strip de Miniaturas -->
+            <div class="row g-2 mb-3">
+              <div class="col-4"><div class="wf-box py-3">[Miniatura 1]</div></div>
+              <div class="col-4"><div class="wf-box py-3">[Miniatura 2]</div></div>
+              <div class="col-4"><div class="wf-box py-3">[Miniatura 3]</div></div>
+            </div>
+            <!-- Credencial de Autoría Artesanal -->
+            <div class="p-2 border rounded bg-light d-flex align-items-center gap-3">
+              <i class="bi bi-person-badge fs-3 text-secondary"></i>
+              <div>
+                <div class="fw-semibold small">Confeccionado a mano por:</div>
+                <div class="text-dark fw-bold">@admin (Artesano Titular)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: ESPECIFICACIONES Y ACCIONES -->
+        <div class="col-12 col-lg-6">
+          <div class="wf-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="wf-badge">Categoría: Fantasía</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle">
+                  <i class="bi bi-box-seam me-1"></i>En Stock: 4 unidades
+                </span>
+              </div>
+
+              <h2 class="fw-bold text-dark mb-1">Dragón Ignis</h2>
+              <div class="display-6 fw-bold text-dark mb-3">
+                $450.00 <span class="fs-6 text-muted fw-normal">MXN (Impuestos incluidos)</span>
+              </div>
+
+              <h6 class="text-uppercase text-muted fw-bold small border-bottom pb-2 mb-3">
+                <i class="bi bi-card-checklist me-1"></i> Especificaciones Técnicas
+              </h6>
+              <ul class="list-unstyled mb-4">
+                <li class="py-1 d-flex justify-content-between border-bottom">
+                  <span class="text-muted">Material textil:</span>
+                  <span class="fw-semibold">100% Algodón Mercerizado</span>
+                </li>
+                <li class="py-1 d-flex justify-content-between border-bottom">
+                  <span class="text-muted">Tamaño / Altura:</span>
+                  <span class="fw-semibold">18.5 cm</span>
+                </li>
+                <li class="py-1 d-flex justify-content-between border-bottom">
+                  <span class="text-muted">Horas de tejido estimadas:</span>
+                  <span class="fw-semibold">6.5 horas</span>
+                </li>
+                <li class="py-1 d-flex justify-content-between border-bottom">
+                  <span class="text-muted">Tipo de relleno:</span>
+                  <span class="fw-semibold">Fibra siliconada hipoalergénica</span>
+                </li>
+              </ul>
+
+              <h6 class="text-uppercase text-muted fw-bold small border-bottom pb-2 mb-2">
+                <i class="bi bi-chat-left-quote me-1"></i> Descripción de la Obra
+              </h6>
+              <p class="text-muted small mb-4">
+                Amigurumi de dragón fantástico tejido completamente a crochet con técnica punto bajo cerrado. Incluye detalles de escamas en relieve y ojos de seguridad con traba interna.
+              </p>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN (Trigger del Checkout Modal) -->
+            <div class="p-3 bg-light border rounded">
+              <div class="d-grid gap-2">
+                <button class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#checkoutModalWireframe">
+                  <i class="bi bi-cart-check me-2"></i> Encargar / Comprar Ahora
+                </button>
+                <button class="btn btn-outline-secondary" onclick="cambiarTab('tab-catalog-btn')">
+                  <i class="bi bi-arrow-left me-1"></i> Volver al Catálogo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 3. VISTA: formulario.html (Panel del Artesano: Registrar / Editar)      -->
+    <!-- ======================================================================= -->
+    <div class="tab-pane fade" id="tab-form" role="tabpanel">
+      
+      <!-- BARRA DE CABECERA EXCLUSIVA DEL PANEL DEL ARTESANO -->
+      <div class="card mb-4 bg-dark text-white border-0 shadow-sm">
+        <div class="card-body p-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-tools fs-4 text-warning"></i>
+            <div>
+              <h5 class="mb-0 fw-bold">Panel de Administración del Artesano</h5>
+              <small class="text-white-50">Gestión de Catálogo e Inventario &bull; Sesión: @admin</small>
+            </div>
+          </div>
+          <!-- BOTONES DENTRO DEL PANEL DEL ARTESANO -->
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-sm btn-light active fw-semibold">
+              <i class="bi bi-plus-circle text-success me-1"></i>Nuevo Amigurumi
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-light" onclick="cambiarTab('tab-orders-btn')">
+              <i class="bi bi-box-seam me-1"></i>Gestión de Pedidos
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary text-white" onclick="cambiarTab('tab-catalog-btn')">
+              <i class="bi bi-arrow-left me-1"></i>Catálogo Público
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <span class="badge bg-primary me-2">Área Privada: formulario.html</span>
+          <strong>Registrar / Editar Creación Artesanal con Simulador Financiero en Tiempo Real</strong>
+        </div>
+        <span class="text-muted small font-monospace">Bootstrap Grid: col-lg-8 / col-lg-4</span>
+      </div>
+
+      <div class="row g-4">
+        <!-- FORMULARIO PRINCIPAL (col-lg-8) -->
+        <div class="col-12 col-lg-8">
+          <div class="wf-card p-4">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+              <h4 class="fw-bold mb-0">Ficha de Registro de Amigurumi</h4>
+              <span class="badge bg-secondary">Modo: Creación</span>
+            </div>
+
+            <form>
+              <!-- Nombre -->
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Nombre del Amigurumi (*)</label>
+                <input type="text" class="form-control" value="Dragón Ignis" placeholder="Ej. Muñeca Frida">
+                <div class="form-text text-muted">Entre 2 y 100 caracteres.</div>
+              </div>
+
+              <!-- Categoría y Material -->
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label fw-bold small">Categoría (*)</label>
+                  <select class="form-select">
+                    <option selected>Fantasía</option>
+                    <option>Plantas / Botánica</option>
+                    <option>Animales / Fauna</option>
+                    <option>Navidad / Temporada</option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label fw-bold small">Material Textil (*)</label>
+                  <input type="text" class="form-control" value="100% Algodón Mercerizado" placeholder="Ej. Hilo Chenille">
+                </div>
+              </div>
+
+              <!-- Tamaño y Stock -->
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label fw-bold small">Tamaño en cm (*)</label>
+                  <input type="number" step="0.1" class="form-control" value="18.5">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label fw-bold small">Cantidad en Stock Inicial (*)</label>
+                  <input type="number" class="form-control" value="4">
+                </div>
+              </div>
+
+              <!-- Métricas Financieras (Disparan cálculo de margen) -->
+              <div class="row g-3 mb-3 p-3 bg-light border rounded">
+                <div class="col-12 col-md-4">
+                  <label class="form-label fw-bold small">Precio Venta (MXN) (*)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" step="0.01" class="form-control fw-bold" id="inputWfPrecio" value="450.00">
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label fw-bold small">Costo Materiales (MXN) (*)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" step="0.01" class="form-control" id="inputWfCosto" value="120.00">
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label fw-bold small">Horas Tejidas Estimadas</label>
+                  <input type="number" step="0.5" class="form-control" id="inputWfHoras" value="6.5">
+                </div>
+              </div>
+
+              <!-- Descripción -->
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Descripción y Cuidados</label>
+                <textarea class="form-control" rows="3">Amigurumi de dragón fantástico tejido a crochet con técnica minuciosa...</textarea>
+              </div>
+
+              <!-- Carga de Fotografía -->
+              <div class="mb-4">
+                <label class="form-label fw-bold small">Fotografía del Producto (MIME: JPG, PNG, WEBP &bull; Máx: 5MB)</label>
+                <div class="wf-box p-4">
+                  <div>
+                    <i class="bi bi-cloud-arrow-up fs-2 d-block mb-1"></i>
+                    <strong>Arrastre una fotografía aquí o haga clic para seleccionar</strong>
+                    <div class="small text-muted">Se almacenará en /uploads con nombre único sanitizado</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones de Acción -->
+              <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                <button type="button" class="btn btn-outline-secondary" onclick="cambiarTab('tab-orders-btn')">Ir a Pedidos</button>
+                <button type="submit" class="btn btn-dark"><i class="bi bi-check2-circle me-1"></i> Guardar Creación</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- SIMULADOR DE MARGEN FINANCIERO STICKY (col-lg-4) -->
+        <div class="col-12 col-lg-4">
+          <div class="wf-card sticky-summary">
+            <div class="wf-card-header d-flex align-items-center gap-2">
+              <i class="bi bi-calculator fs-5"></i>
+              <span>Simulador de Márgenes (En Vivo)</span>
+            </div>
+            <div class="p-3">
+              <p class="text-muted small mb-3">
+                Calcula automáticamente la viabilidad comercial y la remuneración por hora de trabajo artesanal:
+              </p>
+
+              <div class="d-flex justify-content-between py-1 border-bottom">
+                <span class="text-muted small">Precio Venta:</span>
+                <span class="fw-bold" id="wfSimPrecio">$450.00 MXN</span>
+              </div>
+              <div class="d-flex justify-content-between py-1 border-bottom">
+                <span class="text-muted small">Costo Materiales:</span>
+                <span class="text-danger" id="wfSimCosto">- $120.00 MXN</span>
+              </div>
+              <div class="d-flex justify-content-between py-2 border-bottom bg-light px-2 rounded my-2">
+                <span class="fw-bold small">Ganancia Bruta:</span>
+                <span class="fw-bold text-success" id="wfSimGanancia">$330.00 MXN</span>
+              </div>
+
+              <div class="d-flex justify-content-between py-1">
+                <span class="text-muted small">Margen de Utilidad:</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle" id="wfSimMargen">73.3%</span>
+              </div>
+              <div class="d-flex justify-content-between py-1 border-bottom pb-2">
+                <span class="text-muted small">Retorno por Hora:</span>
+                <span class="fw-bold text-primary" id="wfSimRetorno">$50.77 MXN/hr</span>
+              </div>
+
+              <div class="mt-3 p-2 bg-light border rounded small text-muted text-center">
+                <i class="bi bi-info-circle me-1"></i> Estado: <span class="badge bg-success">Margen Saludable (>60%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 4. VISTA: pedidos.html (Panel del Artesano: Gestión de Pedidos)          -->
+    <!-- ======================================================================= -->
+    <div class="tab-pane fade" id="tab-orders" role="tabpanel">
+
+      <!-- BARRA DE CABECERA EXCLUSIVA DEL PANEL DEL ARTESANO -->
+      <div class="card mb-4 bg-dark text-white border-0 shadow-sm">
+        <div class="card-body p-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-tools fs-4 text-warning"></i>
+            <div>
+              <h5 class="mb-0 fw-bold">Panel de Administración del Artesano</h5>
+              <small class="text-white-50">Control de Encargos, Entregas y Existencias &bull; Sesión: @admin</small>
+            </div>
+          </div>
+          <!-- BOTONES DENTRO DEL PANEL DEL ARTESANO -->
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-sm btn-outline-light" onclick="cambiarTab('tab-form-btn')">
+              <i class="bi bi-plus-circle me-1"></i>Nuevo Amigurumi
+            </button>
+            <button type="button" class="btn btn-sm btn-light active fw-semibold">
+              <i class="bi bi-box-seam text-info me-1"></i>Gestión de Pedidos
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary text-white" onclick="cambiarTab('tab-catalog-btn')">
+              <i class="bi bi-arrow-left me-1"></i>Catálogo Público
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Encabezado Informativo del Wireframe -->
+      <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <span class="badge bg-primary me-2">Área Privada: pedidos.html</span>
+          <strong>Dashboard de Gestión de Pedidos y Encargos</strong>
+          <span class="text-muted d-block small">Incluye KPIs resumidos, filtros por estado y transición del ciclo de vida del pedido.</span>
+        </div>
+        <span class="text-muted small font-monospace">Bootstrap Grid: KPIs col-lg-3 / Table-Responsive</span>
+      </div>
+
+      <!-- TARJETAS DE MÉTRICAS KPI -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
+        <div class="col">
+          <div class="wf-card p-3">
+            <div class="text-muted small fw-bold">TOTAL PEDIDOS</div>
+            <div class="fs-3 fw-bold text-dark">2</div>
+            <div class="text-muted small">Registrados históricamente</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="wf-card p-3">
+            <div class="text-muted small fw-bold">PENDIENTES</div>
+            <div class="fs-3 fw-bold text-warning">1</div>
+            <div class="text-muted small">Por iniciar confección</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="wf-card p-3">
+            <div class="text-muted small fw-bold">EN PROCESO</div>
+            <div class="fs-3 fw-bold text-info">1</div>
+            <div class="text-muted small">En el telar / crochet</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="wf-card p-3">
+            <div class="text-muted small fw-bold">INGRESOS TOTALES</div>
+            <div class="fs-3 fw-bold text-success">$1,090.00</div>
+            <div class="text-muted small">Suma de pedidos activos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR DE FILTRADO Y BÚSQUEDA -->
+      <div class="wf-card p-3 mb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-dark active">Todos (2)</button>
+            <button type="button" class="btn btn-outline-secondary">Pendientes (1)</button>
+            <button type="button" class="btn btn-outline-secondary">En Proceso (1)</button>
+            <button type="button" class="btn btn-outline-secondary">Entregados (0)</button>
+            <button type="button" class="btn btn-outline-secondary">Cancelados (0)</button>
+          </div>
+          <div class="col-12 col-md-4">
+            <input type="text" class="form-control form-control-sm" placeholder="🔍 Filtrar por cliente o producto...">
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLA DE PEDIDOS RESPONSIVE -->
+      <div class="wf-card">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light text-muted small text-uppercase">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Amigurumi Encargado</th>
+                <th scope="col" class="text-center">Cant.</th>
+                <th scope="col">Precio Final</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha Entrega</th>
+                <th scope="col" class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Fila 1 -->
+              <tr>
+                <td class="fw-bold font-monospace">#1</td>
+                <td>
+                  <div class="fw-semibold">Mariana Gómez</div>
+                  <div class="small text-muted">mariana.g@example.com</div>
+                </td>
+                <td>
+                  <div class="fw-semibold">Dragón Ignis</div>
+                  <div class="small text-muted">Fantasía &bull; 18.5 cm</div>
+                </td>
+                <td class="text-center fw-bold">1</td>
+                <td class="fw-bold text-dark">$450.00 MXN</td>
+                <td>
+                  <span class="badge bg-info text-dark border"><i class="bi bi-gear-wide-connected me-1"></i>En Proceso</span>
+                </td>
+                <td><span class="font-monospace small">2026-09-24</span></td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                      Cambiar Estado
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Marcar como En Proceso</a></li>
+                      <li><a class="dropdown-item" href="#">Marcar como Entregado</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item text-danger" href="#">Cancelar Pedido (Restaura Stock)</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <!-- Fila 2 -->
+              <tr>
+                <td class="fw-bold font-monospace">#2</td>
+                <td>
+                  <div class="fw-semibold">Carlos Mendoza</div>
+                  <div class="small text-muted">carlos.m@example.com</div>
+                </td>
+                <td>
+                  <div class="fw-semibold">Ajolote Rosado Pastel</div>
+                  <div class="small text-muted">Animales / Fauna &bull; 14.0 cm</div>
+                </td>
+                <td class="text-center fw-bold">2</td>
+                <td class="fw-bold text-dark">$640.00 MXN</td>
+                <td>
+                  <span class="badge bg-warning text-dark border"><i class="bi bi-clock me-1"></i>Pendiente</span>
+                </td>
+                <td><span class="font-monospace small">2026-09-30</span></td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                      Cambiar Estado
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Marcar como En Proceso</a></li>
+                      <li><a class="dropdown-item" href="#">Marcar como Entregado</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item text-danger" href="#">Cancelar Pedido (Restaura Stock)</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL INTERACTIVO 1: INICIAR SESIÓN (NAVBAR MODAL)                         -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="loginModalWireframe" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content wf-modal">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold" id="loginModalLabel">
+            <i class="bi bi-shield-lock me-2"></i>Acceso al Sistema Amigurumi ERP
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="wireframeLoginForm" onsubmit="event.preventDefault(); loginSimulado();">
+          <div class="modal-body p-4">
+            <p class="text-muted small mb-3">
+              Ingrese sus credenciales de artesano o administrador para acceder al <strong>Panel del Artesano</strong>:
+            </p>
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Nombre de Usuario</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" placeholder="admin" value="admin" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input type="password" class="form-control" placeholder="••••••••••••" value="admin123" required>
+              </div>
+            </div>
+            <div class="alert alert-secondary py-2 small mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle text-primary"></i>
+              <span>Al iniciar sesión, la barra de navegación se transformará para mostrar el acceso al <strong>Panel del Artesano</strong>.</span>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-dark">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión (POST)
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL INTERACTIVO 2: CHECKOUT PÚBLICO (CLIENTE)                           -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="checkoutModalWireframe" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content wf-modal">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold" id="checkoutModalLabel">
+            <i class="bi bi-bag-check me-2"></i>Solicitar Pedido: Dragón Ignis
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="wireframeCheckoutForm" onsubmit="event.preventDefault(); alert('[Wireframe Test] En el backend real se enviará POST a /api/solicitar_pedido.php con transacción atómica de stock.');">
+          <div class="modal-body p-4">
+            <!-- Barra de Resumen del Producto -->
+            <div class="p-2 mb-3 bg-light border rounded d-flex justify-content-between align-items-center">
+              <div>
+                <span class="text-muted small">Precio Unitario:</span>
+                <strong class="text-dark ms-1">$450.00 MXN</strong>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle">
+                Stock Disponible: 4 u.
+              </span>
+            </div>
+
+            <!-- Nombre del Cliente -->
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Nombre Completo del Cliente (*)</label>
+              <input type="text" class="form-control" placeholder="Ej. Mariana Gómez" value="Mariana Gómez" required>
+            </div>
+
+            <!-- Cantidad y Fecha Deseada -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-bold small">Cantidad (*)</label>
+                <input type="number" id="wfCheckoutQty" class="form-control" min="1" max="4" value="1" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-bold small">Fecha de Entrega Deseada</label>
+                <input type="date" class="form-control" value="2026-09-25">
+              </div>
+            </div>
+
+            <!-- Notas / Personalización -->
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Notas o Especificaciones Especiales</label>
+              <textarea class="form-control" rows="2" placeholder="Ej. Envolver para regalo, tonos de color personalizados...">Listón decorativo para obsequio de cumpleaños.</textarea>
+            </div>
+
+            <!-- Resumen Financiero Calculado en Vivo -->
+            <div class="p-3 border rounded bg-light">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted fw-bold">Total a Pagar:</span>
+                <span class="fs-4 fw-bold text-dark" id="wfCheckoutTotal">$450.00 MXN</span>
+              </div>
+              <div class="small text-muted mt-1">
+                <i class="bi bi-shield-check text-success me-1"></i>El precio final se calcula y valida en el servidor para evitar manipulaciones.
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-dark">
+              <i class="bi bi-check2-circle me-1"></i> Confirmar Pedido (Público)
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5.3 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Lógica Interactiva del Wireframe -->
+  <script>
+    // Cambiar de Pestaña Programáticamente
+    function cambiarTab(tabBtnId) {
+      const trigger = document.getElementById(tabBtnId);
+      if (trigger) {
+        bootstrap.Tab.getOrCreateInstance(trigger).show();
+      }
+    }
+
+    // Alternar Estado de Sesión (Público Invitado vs Artesano Autenticado)
+    function setSessionState(state) {
+      const isArtisan = (state === 'artisan');
+      const navArtisanMenu = document.getElementById('navArtisanMenu');
+      const navBtnLogin = document.getElementById('navBtnLogin');
+      const navAuthBadge = document.getElementById('navAuthBadge');
+      const btnSimGuest = document.getElementById('btnSimGuest');
+      const btnSimArtisan = document.getElementById('btnSimArtisan');
+
+      if (isArtisan) {
+        navArtisanMenu.classList.remove('d-none');
+        navBtnLogin.classList.add('d-none');
+        navAuthBadge.classList.remove('d-none');
+        navAuthBadge.classList.add('d-flex');
+
+        btnSimGuest.classList.remove('active');
+        btnSimArtisan.classList.add('active');
+      } else {
+        navArtisanMenu.classList.add('d-none');
+        navBtnLogin.classList.remove('d-none');
+        navAuthBadge.classList.add('d-none');
+        navAuthBadge.classList.remove('d-flex');
+
+        btnSimGuest.classList.add('active');
+        btnSimArtisan.classList.remove('active');
+      }
+    }
+
+    // Login Simulado desde el Modal
+    function loginSimulado() {
+      const modalEl = document.getElementById('loginModalWireframe');
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+      setSessionState('artisan');
+      alert('¡Inicio de sesión exitoso! La barra de navegación ahora muestra el menú "Panel del Artesano" con acceso a Nuevo Amigurumi y Gestión de Pedidos.');
+    }
+
+    // Dinámica del simulador de márgenes en formulario.html
+    const inputPrecio = document.getElementById('inputWfPrecio');
+    const inputCosto = document.getElementById('inputWfCosto');
+    const inputHoras = document.getElementById('inputWfHoras');
+
+    function actualizarSimulador() {
+      if (!inputPrecio || !inputCosto || !inputHoras) return;
+      const precio = parseFloat(inputPrecio.value) || 0;
+      const costo = parseFloat(inputCosto.value) || 0;
+      const horas = parseFloat(inputHoras.value) || 0;
+
+      const ganancia = precio - costo;
+      const margen = precio > 0 ? ((ganancia / precio) * 100).toFixed(1) : 0;
+      const retornoHora = horas > 0 ? (ganancia / horas).toFixed(2) : '0.00';
+
+      document.getElementById('wfSimPrecio').textContent = `$${precio.toFixed(2)} MXN`;
+      document.getElementById('wfSimCosto').textContent = `- $${costo.toFixed(2)} MXN`;
+      document.getElementById('wfSimGanancia').textContent = `$${ganancia.toFixed(2)} MXN`;
+      document.getElementById('wfSimMargen').textContent = `${margen}%`;
+      document.getElementById('wfSimRetorno').textContent = `$${retornoHora} MXN/hr`;
+    }
+
+    if (inputPrecio && inputCosto && inputHoras) {
+      inputPrecio.addEventListener('input', actualizarSimulador);
+      inputCosto.addEventListener('input', actualizarSimulador);
+      inputHoras.addEventListener('input', actualizarSimulador);
+    }
+
+    // Dinámica de cantidad y total en el modal de checkout
+    const qtyInput = document.getElementById('wfCheckoutQty');
+    const totalDisplay = document.getElementById('wfCheckoutTotal');
+    if (qtyInput && totalDisplay) {
+      qtyInput.addEventListener('input', function() {
+        const qty = parseInt(qtyInput.value) || 1;
+        const total = qty * 450;
+        totalDisplay.textContent = `$${total.toFixed(2)} MXN`;
+      });
+    }
+  </script>
+</body>
+</html>

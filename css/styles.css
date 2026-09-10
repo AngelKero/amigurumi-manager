@@ -1,0 +1,422 @@
+/* ==========================================================================
+   AMIGURUMI MICRO-ERP & CATALOG - DESIGN SYSTEM
+   Warm, Crafted Artisan Aesthetic
+   Palette: Terracotta, Warm Cream, Sage Green, Linen, Dark Espresso
+   ========================================================================== */
+
+:root {
+  /* Warm Earthy Artisan Palette */
+  --craft-primary: #c25e3e;          /* Warm Terracotta Clay */
+  --craft-primary-hover: #a84d30;
+  --craft-primary-subtle: #fbeee9;
+  --craft-secondary: #5a7d66;        /* Sage Green */
+  --craft-secondary-hover: #486552;
+  --craft-secondary-subtle: #edf4ef;
+  
+  --craft-bg: #fbf9f5;               /* Soft Linen / Warm Cream */
+  --craft-surface: #ffffff;
+  --craft-surface-muted: #f6f3ed;
+  --craft-border: #e8e2d8;
+  --craft-border-light: #f0ebe2;
+
+  --craft-text-main: #2d2621;        /* Dark Espresso Charcoal */
+  --craft-text-muted: #746c64;
+  --craft-text-light: #9d948a;
+
+  --craft-accent-gold: #c98838;
+  --craft-accent-rose: #b8627d;
+  
+  /* Shadows */
+  --craft-shadow-sm: 0 2px 6px rgba(45, 38, 33, 0.04);
+  --craft-shadow-md: 0 6px 18px rgba(45, 38, 33, 0.07);
+  --craft-shadow-lg: 0 12px 30px rgba(45, 38, 33, 0.1);
+  --craft-radius: 12px;
+  --craft-radius-sm: 8px;
+}
+
+/* Base Document Styles */
+body {
+  background-color: var(--craft-bg);
+  color: var(--craft-text-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--craft-text-main);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* Artisan Navigation Bar */
+.navbar-craft {
+  background-color: var(--craft-surface);
+  border-bottom: 1px solid var(--craft-border);
+  box-shadow: var(--craft-shadow-sm);
+  padding: 0.85rem 1rem;
+}
+
+.navbar-craft .navbar-brand {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--craft-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.navbar-craft .navbar-brand:hover {
+  color: var(--craft-primary-hover);
+}
+
+.navbar-craft .nav-link {
+  color: var(--craft-text-muted);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--craft-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.navbar-craft .nav-link:hover {
+  color: var(--craft-primary);
+  background-color: var(--craft-primary-subtle);
+}
+
+.navbar-craft .nav-link.active {
+  color: var(--craft-primary);
+  font-weight: 700;
+  background-color: var(--craft-primary-subtle);
+}
+
+/* Artisan Administration Top Bar */
+.artisan-panel-banner {
+  background: linear-gradient(135deg, #2b2420 0%, #3e332c 100%);
+  color: #f7f4ef;
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+  border-left: 4px solid var(--craft-accent-gold);
+}
+
+.artisan-panel-banner .btn-panel-action {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.artisan-panel-banner .btn-panel-action:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.artisan-panel-banner .btn-panel-action.active {
+  background-color: #ffffff;
+  color: #2b2420;
+  font-weight: 700;
+  border-color: #ffffff;
+}
+
+/* Hero Section */
+.hero-craft {
+  background: linear-gradient(180deg, #ffffff 0%, var(--craft-surface-muted) 100%);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-craft::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(194, 94, 62, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* Product Cards */
+.card-product {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  overflow: hidden;
+  box-shadow: var(--craft-shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-product:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--craft-shadow-md);
+  border-color: #d8cebf;
+}
+
+.card-product-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--craft-surface-muted);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card-product:hover .card-product-img {
+  transform: scale(1.04);
+}
+
+.card-product-badge-float {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+/* Artisan Custom Badges */
+.badge-category {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-weight: 600;
+  border: 1px solid var(--craft-border);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+}
+
+.badge-stock-in {
+  background-color: var(--craft-secondary-subtle);
+  color: var(--craft-secondary);
+  border: 1px solid rgba(90, 125, 102, 0.25);
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+}
+
+.badge-stock-out {
+  background-color: #f3efe9;
+  color: var(--craft-text-muted);
+  border: 1px solid var(--craft-border);
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+}
+
+/* Custom Buttons */
+.btn-craft-primary {
+  background-color: var(--craft-primary);
+  border-color: var(--craft-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--craft-radius-sm);
+  padding: 0.5rem 1.15rem;
+  transition: all 0.2s ease;
+}
+
+.btn-craft-primary:hover, .btn-craft-primary:focus {
+  background-color: var(--craft-primary-hover);
+  border-color: var(--craft-primary-hover);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(194, 94, 62, 0.25);
+}
+
+.btn-craft-outline {
+  background-color: transparent;
+  border: 1.5px solid var(--craft-border);
+  color: var(--craft-text-main);
+  font-weight: 600;
+  border-radius: var(--craft-radius-sm);
+  padding: 0.5rem 1.15rem;
+  transition: all 0.2s ease;
+}
+
+.btn-craft-outline:hover {
+  background-color: var(--craft-surface-muted);
+  border-color: var(--craft-text-muted);
+  color: var(--craft-text-main);
+}
+
+/* Artisan Guarantee Block on Detail View */
+.artisan-guarantee-block {
+  background-color: var(--craft-surface-muted);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius-sm);
+  padding: 0.85rem 1rem;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+  color: var(--craft-text-muted);
+}
+
+.guarantee-item i {
+  color: var(--craft-secondary);
+  font-size: 1.1rem;
+}
+
+/* Quantity Stepper Control in Checkout Modal */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--craft-border);
+  border-radius: var(--craft-radius-sm);
+  background: var(--craft-surface);
+  overflow: hidden;
+}
+
+.qty-stepper button {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  color: var(--craft-text-main);
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-stepper button:hover:not(:disabled) {
+  background-color: var(--craft-surface-muted);
+}
+
+.qty-stepper button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.qty-stepper input {
+  width: 50px;
+  height: 42px;
+  border: none;
+  text-align: center;
+  font-weight: 700;
+  color: var(--craft-text-main);
+  background: transparent;
+  outline: none;
+}
+
+/* Drag & Drop File Upload Box */
+.upload-dropzone {
+  border: 2px dashed var(--craft-border);
+  background-color: var(--craft-surface-muted);
+  border-radius: var(--craft-radius);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover, .upload-dropzone.dragover {
+  border-color: var(--craft-primary);
+  background-color: var(--craft-primary-subtle);
+}
+
+/* Sticky Margin Calculator Card */
+.sticky-margin-card {
+  position: sticky;
+  top: 5rem;
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+}
+
+.margin-feedback-pill {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Order Management Table */
+.table-craft {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-craft thead th {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--craft-border);
+  padding: 0.85rem 1rem;
+}
+
+.table-craft tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--craft-border-light);
+  vertical-align: middle;
+}
+
+.table-craft tbody tr:hover td {
+  background-color: #faf7f2;
+}
+
+/* Status Badges for Orders */
+.badge-order-pendiente {
+  background-color: #fff4e5;
+  color: #b56c00;
+  border: 1px solid #fed8a5;
+  font-weight: 700;
+}
+
+.badge-order-proceso {
+  background-color: #e8f4fd;
+  color: #0b69a3;
+  border: 1px solid #bce1fa;
+  font-weight: 700;
+}
+
+.badge-order-entregado {
+  background-color: #edf7ed;
+  color: #1e7e34;
+  border: 1px solid #c3e6cb;
+  font-weight: 700;
+}
+
+.badge-order-cancelado {
+  background-color: #fbeae9;
+  color: #b82a20;
+  border: 1px solid #f5c2be;
+  font-weight: 700;
+}
+
+/* Footer */
+.footer-craft {
+  background-color: var(--craft-surface);
+  border-top: 1px solid var(--craft-border);
+  padding: 2rem 0;
+  color: var(--craft-text-muted);
+  font-size: 0.875rem;
+}

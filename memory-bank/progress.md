@@ -5,9 +5,9 @@
 | Phase | Milestone | Status | Description |
 | :--- | :--- | :--- | :--- |
 | **Phase 0** | Relational Micro-ERP Architecture | **Completed & Signed Off** | Integrated User Management CRUD, Public Client Checkout, Image Uploads, Navbar Login Modal, and Orphaned File Cleanup across bilingual docs. |
-| **Phase 1** | Database Implementation, Seeding & Testing | **Completed & Awaiting Sign-off** | Implemented `database/seed.sql`, CLI-only `setup.php`, `database/database.sqlite`, Apache `.htaccess` protection, and `.docs/database-testing.md`. |
-| **Phase 2** | Layout & UI | **Pending (Next)** | Build `index.html`, `formulario.html`, `detalle.html`, and `pedidos.html` with Bootstrap 5 CDN, Navbar Login Modal, and working navigation. |
-| **Phase 3** | Backend & Connection | **Pending** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
+| **Phase 1** | Database Implementation, Seeding & Testing | **Completed & Signed Off** | Implemented `database/seed.sql`, CLI-only `setup.php`, `database/database.sqlite`, Apache `.htaccess` protection, and `.docs/database-testing.md`. |
+| **Phase 2** | Layout & UI | **Completed & Awaiting Sign-off** | Built `index.html`, `detalle.html`, `formulario.html`, `pedidos.html`, `css/styles.css`, and `js/app.js` with all user-requested UX refinements. |
+| **Phase 3** | Backend & Connection | **Pending (Next)** | Implement `conexion.php` with `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION`, and `auth_guard.php`. |
 | **Phase 4** | CRUD Operations & JS | **Pending** | Implement modular endpoints (`login.php`, `usuarios.php`, `crear.php`, `leer.php`, `actualizar.php`, `eliminar.php`, `solicitar_pedido.php`, `pedidos.php`, `actualizar_pedido.php`) and `app.js`. |
 | **Phase 5** | Documentation | **Pending** | Write comprehensive `README.md` with setup and local server instructions (`php -S localhost:8000`). |
 
@@ -20,14 +20,19 @@
 - Physical asset cleanup policy on deletion (`POST /api/eliminar.php`) using PHP `unlink()` to eliminate orphaned files.
 - Transition of login interface to a reusable Navbar Modal.
 - Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.
-- All 24 JSON blocks across bilingual API docs tested and validated.
+- Phase 1 Database completed: `database/seed.sql`, `database/database.sqlite` initialized, verified via `docs/database-testing.md`.
+- Phase 2 Layout & UI completed:
+  - `index.html`: Clickable cards/titles, sorting dropdown, stock=0 disabled button, and stepper modal.
+  - `detalle.html`: Subtle return link, artisan guarantee badge block, specifications table, and stepper checkout modal.
+  - `formulario.html`: Hidden image preview, refined dual-metric live margin calculator, and artisan panel bar.
+  - `pedidos.html`: Orders dashboard, stock restoration cancellation modal, and order inspection modal.
+  - `css/styles.css`: Warm artisan design system with terracotta, sage green, and linen styling.
+  - `js/app.js`: Client-side interactivity for steppers, margin math, image preview, sorting, and modals.
 
 ## What's Left to Build
-- Complete Phase 1: Physical database creation, seed execution, and testing guide.
-- Phase 2: HTML5/Bootstrap 5 UI templates and client navigation.
-- Phase 3: PDO database connection and session authentication middleware.
-- Phase 4: CRUD API endpoints and Vanilla JS DOM logic (`app.js`).
+- Phase 3: PDO database connection (`conexion.php`) and session authentication middleware (`auth_guard.php`).
+- Phase 4: CRUD API endpoints and AJAX integration with `app.js`.
 - Phase 5: Comprehensive project documentation (`README.md`).
 
 ## Known Issues / Blockers
-- None. Proceeding with Phase 1 execution under strict Database-First approach.
+- None. Phase 2 completed. Ready for user inspection and sign-off before commencing Phase 3.
