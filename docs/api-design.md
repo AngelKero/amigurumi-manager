@@ -258,6 +258,10 @@ All JSON responses follow a predictable envelope structure:
 
 ### `POST /api/eliminar.php`
 - **Access:** Protected (Session required: `admin`)
+- **File Management & Orphan Cleanup (Mandatory):**
+  - Before or upon deleting the record from the database, the backend MUST query the item's `imagen_url`.
+  - **Foreign Key Safety:** The backend checks that no orders reference this amigurumi (`pedidos.amigurumi_id`), preventing deletion if active/past orders exist.
+  - **Physical Cleanup (`unlink`):** If the deletion is permitted and `imagen_url` references a file stored in the local `/uploads/` directory (e.g., `uploads/amigurumi_67...jpg`), the backend MUST physically delete the file using PHP's `unlink()` to eliminate orphaned files and conserve disk space.
 - **Request Body (JSON):**
   ```json
   {

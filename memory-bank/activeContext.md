@@ -1,28 +1,26 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: User Management CRUD, Public Checkout, Image Uploads, and Navbar Modal
-- **New Functional Requirements Integrated:**
-  1. **User Management CRUD (`/api/usuarios.php`):** Added endpoints (`GET`, `POST`, `PUT`, `DELETE`) for administrative user management, strictly restricted to authenticated sessions with the `admin` role.
-  2. **Public Client Checkout (`/api/solicitar_pedido.php`):** Created a public-facing order creation endpoint for customers browsing `detalle.html`. Operates without requiring an account/session, while enforcing the identical atomic database transaction (`cantidad_stock` validation and deduction, server-calculated `precio_final`, and default `'Pendiente'` status).
-  3. **Real Image File Uploads (`/uploads`):** Upgraded `POST /api/crear.php` and `POST /api/actualizar.php` to handle `multipart/form-data` image uploads, verifying MIME types and size limits, generating unique filenames, storing files locally in `/uploads/`, and persisting relative paths in `imagen_url`.
-  4. **UI Navigation Refinement (Navbar Login Modal):** Converted the login interface from a standalone `login.html` page into a dynamic Bootstrap Modal component shared across the navbar of all views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`).
-- **Files Synchronized (Bilingual Suite):**
-  - `docs/api-design.md` & `docs/api-design.es.md`
-  - `docs/auth-flow.md` & `docs/auth-flow.es.md`
-  - `docs/database-schema.md` & `docs/database-schema.es.md`
-  - `memory-bank/techContext.md`
-  - `memory-bank/progress.md`
-- **Phase Gate Status:** Phase 0 architecture, API contracts, and security specifications are fully updated and validated. Awaiting final user approval before starting Phase 1 (Layout & UI).
+## Current State: Phase 0 Officially Approved & Phase 1 (Layout & UI) In Progress
+- **Phase 0 Approval:**
+  - The user has officially reviewed and approved all Phase 0 deliverables.
+  - Final architectural requirement integrated: `POST /api/eliminar.php` mandates deleting associated physical image files in `/uploads/` using PHP's `unlink()` before or upon database record removal to prevent orphaned files.
+  - Documentation updated across `docs/api-design.md`, `docs/api-design.es.md`, and `memory-bank/`.
+- **Phase 1 Active (Layout & UI):**
+  - Project directory structure setup: `css/`, `js/`, `uploads/`.
+  - Building semantic HTML5 and Bootstrap 5.3 CDN views:
+    1. `index.html`: Public catalog and inventory showcase, stock badges, statistics banner, category filtering, shared Header/Navbar with Login Modal.
+    2. `formulario.html`: Add / Edit amigurumi form with `enctype="multipart/form-data"`, file input with live preview, real-time margin/hourly rate preview, and shared Header/Navbar.
+    3. `detalle.html`: Comprehensive creation specification, artisan economics table, Public Client Checkout Modal, and shared Header/Navbar.
+    4. `pedidos.html`: Orders & commissions management table with status badges and status update modal.
+    5. `css/styles.css`: Warm craft design system tokens, card hover states, badge accents, and modal styling.
+  - **Constraint:** Do NOT generate backend PHP files (`conexion.php`, `setup.php`, `crear.php`, etc.) or SQLite database files until Phase 1 is officially approved.
 
-## Immediate Focus: Phase 1 (Layout & UI)
-Upon user approval:
-- Proceed to Phase 1: Build semantic HTML5 views (`index.html`, `formulario.html`, `detalle.html`, `pedidos.html`) with Bootstrap 5 CDN.
-- Integrate the dynamic Login Modal into the shared header/navbar.
-- Integrate the Public Checkout Modal into `detalle.html`.
-- Incorporate `enctype="multipart/form-data"` and file inputs into `formulario.html`.
-- Halt at Phase 1 completion for review.
+## Immediate Steps in Phase 1
+1. Update `docs/api-design.md` and `docs/api-design.es.md` with the `unlink()` orphaned file cleanup requirement for `POST /api/eliminar.php`.
+2. Update `memory-bank/progress.md` and `memory-bank/techContext.md`.
+3. Create `css/styles.css` with craft design tokens and utility classes.
+4. Implement semantic HTML5 views: `index.html`, `formulario.html`, `detalle.html`, and `pedidos.html` with working cross-navigation and dynamic Login Modal.
+5. Create sample mock assets in `uploads/` for visual verification.
+6. Verify cross-navigation and responsiveness.
+7. Halt completely and request user review for Phase 1.
 
-## Next Steps Upon Sign-Off
-1. Obtain final user approval on Phase 0 deliverables.
-2. Advance to Phase 1 (Layout & UI) implementation without generating backend/database files.
-3. Halt after Phase 1 completion for review.
