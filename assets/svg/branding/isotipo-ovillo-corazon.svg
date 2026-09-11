@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" role="img" aria-label="Isotipo Ovillo Corazón">
+  <title>Isotipo: Ovillo con Hebra de Corazón y Gancho Crochet</title>
+  <defs>
+    <linearGradient id="isoOvilloGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A56E8A"/>
+      <stop offset="50%" stop-color="#8E5B74"/>
+      <stop offset="100%" stop-color="#6F4258"/>
+    </linearGradient>
+    <linearGradient id="isoGanchoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2C17D"/>
+      <stop offset="100%" stop-color="#D99C52"/>
+    </linearGradient>
+    <filter id="isoDropShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1E252D" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra base suave -->
+  <ellipse cx="50" cy="88" rx="28" ry="5" fill="#1E252D" opacity="0.08"/>
+
+  <!-- Gancho de Crochet cruzado por detrás -->
+  <path d="M22 78 L78 22" stroke="url(#isoGanchoGrad)" stroke-width="5.5" stroke-linecap="round"/>
+  <!-- Cabeza y ranura del gancho de crochet -->
+  <path d="M78 22 Q84 16 82 12 Q80 8 74 12 L72 16" fill="none" stroke="#D99C52" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="23" cy="77" r="3" fill="#52857C"/>
+
+  <!-- Cuerpo Principal del Ovillo de Hilaza -->
+  <g filter="url(#isoDropShadow)">
+    <circle cx="50" cy="54" r="30" fill="url(#isoOvilloGrad)"/>
+    
+    <!-- Hebras texturizadas entrelazadas del ovillo -->
+    <path d="M25 44 C35 34 65 34 75 44" fill="none" stroke="#F7EFF3" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <path d="M22 54 C32 46 68 46 78 54" fill="none" stroke="#FAF3F6" stroke-width="3" opacity="0.65" stroke-linecap="round"/>
+    <path d="M25 64 C35 72 65 72 75 64" fill="none" stroke="#F7EFF3" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <path d="M34 29 C42 42 42 66 34 79" fill="none" stroke="#F7EFF3" stroke-width="2.5" opacity="0.45" stroke-linecap="round"/>
+    <path d="M66 29 C58 42 58 66 66 79" fill="none" stroke="#F7EFF3" stroke-width="2.5" opacity="0.45" stroke-linecap="round"/>
+
+    <!-- Pespunte Textil Circular interno -->
+    <circle cx="50" cy="54" r="25" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.45"/>
+  </g>
+
+  <!-- Hebra que sale del ovillo y forma un corazón en el aire -->
+  <path d="M68 38 C75 28 85 24 82 16 C78 7 68 9 60 18 C52 9 42 7 38 16 C35 24 45 28 52 38" 
+        fill="none" stroke="#8E5B74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Relleno sutil del corazón -->
+  <path d="M60 18 C68 9 78 7 82 16 C85 24 75 28 68 38 C60 28 60 28 60 18 Z" fill="#8E5B74" opacity="0.12"/>
+  <path d="M60 18 C52 9 42 7 38 16 C35 24 45 28 52 38 C60 28 60 28 60 18 Z" fill="#8E5B74" opacity="0.12"/>
+
+  <!-- Brillo artesanal -->
+  <circle cx="40" cy="42" r="2.5" fill="#FFFFFF" opacity="0.75"/>
+</svg>

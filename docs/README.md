@@ -28,11 +28,12 @@ docs/
 │   ├── architecture-refactor-plan.md # Plan Integral de Arquitectura Modular (Clean Code)
 │   └── ui-ux-database-gap-analysis.md # Auditoría de Brechas y Matriz de Cierre (100% Verificado)
 ├── 5. Diseño UI/UX & Heurística
+│   ├── identidad-visual.md        # Manual de Identidad Visual, Arquetipos y Branding SVG
 │   ├── ui-ux-skill-report.md      # Auditoría Heurística y Accesibilidad WCAG (EN)
 │   ├── ui-ux-skill-report.es.md   # Auditoría Heurística y Accesibilidad WCAG (ES)
 │   ├── wireframes.md              # Especificaciones de Wireframes y Flujos (EN)
 │   ├── wireframes.es.md           # Especificaciones de Wireframes y Flujos (ES)
-│   └── svg-assets-and-helper.md   # Catálogo de 22 SVGs y Utilidad SvgHelper (PHP)
+│   └── svg-assets-and-helper.md   # Catálogo de 31 SVGs y Utilidad SvgHelper (PHP)
 └── archive/                       # Archivo histórico de maquetas estáticas (.html)
 ```
 
@@ -63,12 +64,14 @@ docs/
   Informe de correspondencia entre la base de datos y la interfaz, registrando el 100% de cumplimiento de las brechas detectadas.
 
 ### 5. UI/UX & Sistema de Diseño
+- **[identidad-visual.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/identidad-visual.md):**  
+  Manual de Identidad Visual Corporativa, definición formal de los 4 arquetipos marcarios (isotipo, logotipo, imagotipo, isologo), paleta semántica Algodón Nórdico, tipografías maestras y catálogo de assets de branding SVG en `assets/svg/branding/`.
 - **[ui-ux-skill-report.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/ui-ux-skill-report.es.md)** / **[ui-ux-skill-report.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/ui-ux-skill-report.md):**  
   Evaluación contra 19 reglas de diseño UI/UX y estándares de contraste WCAG 2.1 AA (> 4.5:1).
 - **[wireframes.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.es.md)** / **[wireframes.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.md):**  
   Representación textual de alta fidelidad de las vistas y componentes del sistema.
 - **[svg-assets-and-helper.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/svg-assets-and-helper.md):**  
-  Catálogo de 22 gráficos vectoriales SVG temáticos organizados en `assets/svg/` y guía de uso del helper `SvgHelper::render()` / funciones globales `svg()` y `svg_url()`.
+  Catálogo de 31 gráficos vectoriales SVG temáticos organizados en `assets/svg/` (incluyendo la suite de `branding/`) y guía de uso del helper `SvgHelper::render()` / funciones globales `svg()` y `svg_url()`.
 
 ---
 
@@ -81,6 +84,6 @@ docs/
 | **Estilos CSS** | `src/css/` | Arquitectura ITCSS por capas (`01-settings` a `04-components`). |
 | **Lógica JavaScript** | `src/js/`, `src/js/modules/` | Vanilla JS nativo en ES Modules (`main.js` orquestador). |
 | **Helpers de Utilidad** | `src/Utils/` (PHP), `src/js/modules/currency.js` (JS) | `CurrencyHelper.php` (moneda) y `SvgHelper.php` (vector assets). |
-| **Recursos Vectoriales** | `assets/svg/` | 22 SVGs artesanales divididos en `amigurumis`, `tools`, `badges` y `decorations`. |
+| **Recursos Vectoriales** | `assets/svg/` | 31 SVGs artesanales divididos en `branding`, `amigurumis`, `tools`, `badges` y `decorations`. |
 | **Puntos de Entrada** | `index.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php` | Controladores de vista en raíz. |
 | **Base de Datos** | `database/database.sqlite`, `database/seed.sql` | SQLite 3 con `PRAGMA foreign_keys = ON;`. |

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%" role="img" aria-label="Isologo Sello Oficial del Taller">
+  <title>Isologo: Sello Artesanal Circular Indivisible</title>
+  <defs>
+    <!-- Trayectoria circular para el texto superior e inferior -->
+    <path id="textCircleTop" d="M 24, 80 a 56,56 0 1,1 112,0" fill="none"/>
+    <path id="textCircleBottom" d="M 136, 80 a 56,56 0 1,1 -112,0" fill="none"/>
+    
+    <linearGradient id="isologoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF9"/>
+      <stop offset="100%" stop-color="#F7EFF3"/>
+    </linearGradient>
+    <linearGradient id="isologoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2C17D"/>
+      <stop offset="100%" stop-color="#D99C52"/>
+    </linearGradient>
+    <filter id="isologoShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#8E5B74" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <!-- Base Circular del Sello -->
+  <circle cx="80" cy="80" r="76" fill="url(#isologoBg)" stroke="#8E5B74" stroke-width="2.5" filter="url(#isologoShadow)"/>
+
+  <!-- Costura Pespunteada Exterior (Running Stitch) -->
+  <circle cx="80" cy="80" r="71" fill="none" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="4,3.5"/>
+
+  <!-- Anillo Decorativo Dorado Interior -->
+  <circle cx="80" cy="80" r="46" fill="#FFFFFF" stroke="url(#isologoGold)" stroke-width="2"/>
+  <circle cx="80" cy="80" r="43" fill="none" stroke="#52857C" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+
+  <!-- TEXTO EN TRAYECTORIA CIRCULAR (INDIVISIBLE) -->
+  <!-- Texto Superior -->
+  <text font-family="'Outfit', 'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="9" fill="#8E5B74" letter-spacing="0.22em">
+    <textPath href="#textCircleTop" startOffset="50%" text-anchor="middle">
+      AMIGURUMI MANAGER
+    </textPath>
+  </text>
+
+  <!-- Texto Inferior -->
+  <text font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="7.5" fill="#52857C" letter-spacing="0.18em">
+    <textPath href="#textCircleBottom" startOffset="50%" text-anchor="middle">
+      • TALLER DE CONFECCIÓN •
+    </textPath>
+  </text>
+
+  <!-- Estrellas y Puntos Separadores en los Flancos -->
+  <circle cx="24" cy="80" r="2.5" fill="#D99C52"/>
+  <circle cx="136" cy="80" r="2.5" fill="#D99C52"/>
+
+  <!-- MOTIVO GRÁFICO CENTRAL (AMIGURUMI & CORAZÓN) -->
+  <g id="isologoCentro" transform="translate(80, 77)">
+    <!-- Rostro Amigurumi Silueta -->
+    <circle cx="0" cy="3" r="18" fill="#F7EFF3" stroke="#8E5B74" stroke-width="1.8"/>
+    <!-- Orejas de Amigurumi -->
+    <circle cx="-13" cy="-10" r="7" fill="#8E5B74"/>
+    <circle cx="-13" cy="-10" r="4" fill="#FFFFFF"/>
+    <circle cx="13" cy="-10" r="7" fill="#8E5B74"/>
+    <circle cx="13" cy="-10" r="4" fill="#FFFFFF"/>
+
+    <!-- Ojitos de Seguridad -->
+    <circle cx="-6" cy="0" r="2.4" fill="#1E252D"/>
+    <circle cx="-6.8" cy="-0.8" r="0.8" fill="#FFFFFF"/>
+    <circle cx="6" cy="0" r="2.4" fill="#1E252D"/>
+    <circle cx="5.2" cy="-0.8" r="0.8" fill="#FFFFFF"/>
+
+    <!-- Hocico y Nariz -->
+    <ellipse cx="0" cy="6" rx="6.5" ry="4.5" fill="#FFFFFF"/>
+    <path d="M-2 4.5 Q0 3.5 2 4.5 Q1 6.5 0 7.5 Q-1 6.5 -2 4.5 Z" fill="#8E5B74"/>
+    <path d="M-2.5 8.5 Q0 10.5 0 8.5 Q0 10.5 2.5 8.5" fill="none" stroke="#8E5B74" stroke-width="1" stroke-linecap="round"/>
+
+    <!-- Mejillas tejidas -->
+    <circle cx="-11" cy="5" r="2.8" fill="#F0B6C7" opacity="0.6"/>
+    <circle cx="11" cy="5" r="2.8" fill="#F0B6C7" opacity="0.6"/>
+  </g>
+
+  <!-- Cinta o Lema inferior de Año -->
+  <rect x="58" y="105" width="44" height="13" rx="6.5" fill="#8E5B74"/>
+  <text x="80" y="114" 
+        font-family="'Outfit', sans-serif" 
+        font-weight="700" 
+        font-size="6.5" 
+        letter-spacing="0.15em" 
+        text-anchor="middle" 
+        fill="#FFFFFF">
+    EST. 2026
+  </text>
+</svg>

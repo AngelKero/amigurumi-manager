@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%" role="img" aria-label="Isologo Medallón Garantía">
+  <title>Isologo: Medallón de Calidad Artesanal Indivisible</title>
+  <defs>
+    <linearGradient id="medallonBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FAF3F6"/>
+    </linearGradient>
+    <linearGradient id="medallonGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2C17D"/>
+      <stop offset="100%" stop-color="#D99C52"/>
+    </linearGradient>
+    <filter id="medallonShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E252D" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <!-- Festones Dentados Exteriores del Medallón (Roseta Artesanal) -->
+  <g filter="url(#medallonShadow)">
+    <!-- 16 pétalos/festones de la roseta textil -->
+    <path d="M 80 10 
+             L 94 16 L 108 12 L 118 22 L 130 22 L 136 34 L 146 40 L 146 54 L 154 64 L 150 78 L 154 90 L 146 100 L 146 114 L 134 120 L 128 132 L 114 134 L 104 144 L 90 142 L 80 150 L 70 142 L 56 144 L 46 134 L 32 132 L 26 120 L 14 114 L 14 100 L 6 90 L 10 78 L 6 64 L 14 54 L 14 40 L 24 34 L 30 22 L 42 22 L 52 12 L 66 16 Z" 
+          fill="url(#medallonBg)" stroke="#8E5B74" stroke-width="2"/>
+    
+    <!-- Círculo interior con pespunte perimetral -->
+    <circle cx="80" cy="78" r="56" fill="#FFFFFF" stroke="url(#medallonGold)" stroke-width="2"/>
+    <circle cx="80" cy="78" r="52" fill="none" stroke="#8E5B74" stroke-width="1.3" stroke-dasharray="4,3" opacity="0.45"/>
+  </g>
+
+  <!-- Gancho y Ovillo Centrales -->
+  <!-- Gancho en ángulo -->
+  <path d="M54 94 L106 42" stroke="url(#medallonGold)" stroke-width="3.8" stroke-linecap="round"/>
+  <path d="M106 42 Q110 38 108 34 Q105 32 101 35 L100 38" fill="none" stroke="#D99C52" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Ovillo -->
+  <circle cx="76" cy="65" r="18" fill="#8E5B74"/>
+  <path d="M62 59 C68 53 84 53 90 59" fill="none" stroke="#FAF3F6" stroke-width="1.8" opacity="0.7" stroke-linecap="round"/>
+  <path d="M60 65 C67 60 85 60 92 65" fill="none" stroke="#FAF3F6" stroke-width="2.2" opacity="0.8" stroke-linecap="round"/>
+  <path d="M62 71 C68 77 84 77 90 71" fill="none" stroke="#FAF3F6" stroke-width="1.8" opacity="0.7" stroke-linecap="round"/>
+
+  <!-- Estrellitas de Calidad -->
+  <polygon points="60,40 62,45 67,45 63,48 65,53 60,50 55,53 57,48 53,45 58,45" fill="#D99C52"/>
+  <polygon points="100,40 102,45 107,45 103,48 105,53 100,50 95,53 97,48 93,45 98,45" fill="#D99C52"/>
+
+  <!-- Textos de Garantía Integrados -->
+  <text x="80" y="32" 
+        font-family="'Outfit', sans-serif" 
+        font-weight="800" 
+        font-size="8" 
+        letter-spacing="0.16em" 
+        text-anchor="middle" 
+        fill="#52857C">
+    100% HECHO A MANO
+  </text>
+
+  <text x="80" y="93" 
+        font-family="'Plus Jakarta Sans', sans-serif" 
+        font-weight="700" 
+        font-size="7.5" 
+        letter-spacing="0.12em" 
+        text-anchor="middle" 
+        fill="#8E5B74">
+    CALIDAD TEXTIL GARANTIZADA
+  </text>
+
+  <!-- LISTÓN / CINTA BANNER INFERIOR INTEGRADA (INDIVISIBLE) -->
+  <g id="medallonRibbon" transform="translate(80, 122)">
+    <!-- Colas del listón -->
+    <path d="M-66 12 L-76 0 L-66 -12 L-52 -12 L-52 12 Z" fill="#75475E"/>
+    <path d="M66 12 L76 0 L66 -12 L52 -12 L52 12 Z" fill="#75475E"/>
+    <path d="M-52 12 L-52 0 L-42 12 Z" fill="#4B273A"/>
+    <path d="M52 12 L52 0 L42 12 Z" fill="#4B273A"/>
+
+    <!-- Cuerpo principal del listón -->
+    <rect x="-56" y="-14" width="112" height="24" rx="4" fill="#8E5B74" stroke="#FFFDF9" stroke-width="1.2"/>
+    <rect x="-53" y="-11" width="106" height="18" rx="2.5" fill="none" stroke="#FFFFFF" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.6"/>
+
+    <!-- Texto de la Marca en el Listón -->
+    <text x="0" y="1" 
+          font-family="'Fraunces', serif" 
+          font-weight="700" 
+          font-size="8.8" 
+          letter-spacing="0.06em" 
+          text-anchor="middle" 
+          fill="#FFFFFF">
+      AMIGURUMI MANAGER
+    </text>
+  </g>
+</svg>

@@ -13,6 +13,16 @@ Adicionalmente, bajo los principios de **Clean Code & Clean Architecture**, se h
 ```
 assets/
 └── svg/
+    ├── branding/           # Isotipos, logotipos, imagotipos e isologos oficiales
+    │   ├── imagotipo-horizontal.svg
+    │   ├── imagotipo-vertical.svg
+    │   ├── isologo-medallon-garantia.svg
+    │   ├── isologo-sello-taller.svg
+    │   ├── isotipo-hebra-nordica.svg
+    │   ├── isotipo-osito-amigurumi.svg
+    │   ├── isotipo-ovillo-corazon.svg
+    │   ├── logotipo-amigurumi-manager.svg
+    │   └── logotipo-taller-artesanal.svg
     ├── amigurumis/         # Personajes, botánica y piezas de catálogo
     │   ├── ajolote-pastel.svg
     │   ├── dragon-ignis.svg
@@ -43,7 +53,7 @@ assets/
 
 ---
 
-## 3. Catálogo de Recursos Vectoriales (22 Archivos)
+## 3. Catálogo de Recursos Vectoriales (31 Archivos)
 
 ### 3.1. Amigurumis de Catálogo (`assets/svg/amigurumis/`)
 
@@ -86,6 +96,20 @@ assets/
 | `empty-basket` | `0 0 240 220` | Cesta de mimbre tejida con ovillos de lana, ganchillo y etiqueta colgante (utilizada para estado vacío del catálogo). |
 | `aguja-hebra` | `0 0 200 120` | Aguja de costura con hebra ondulada y cruces de pespunte decorativas. |
 | `corazon-lana` | `0 0 160 160` | Corazón tejido a crochet con costuras visibles y relieve textil. |
+
+### 3.5. Identidad Visual y Branding (`assets/svg/branding/`)
+
+| Slug / Nombre | Arquetipo | ViewBox | Temática / Aplicación |
+| :--- | :---: | :---: | :--- |
+| `isotipo-ovillo-corazon` | **Isotipo** | `0 0 100 100` | Ovillo de hilaza con hebra continua que dibuja un corazón y gancho cruzado. Ideal para favicons y avatares. |
+| `isotipo-osito-amigurumi` | **Isotipo** | `0 0 100 100` | Rostro amigurumi bordado con pespunte perimetral y mejillas de hilo rosa. Ideal para badges circulares. |
+| `isotipo-hebra-nordica` | **Isotipo** | `0 0 100 100` | Nube de algodón peinado con aguja botánica y lazo infinito dorado. |
+| `logotipo-amigurumi-manager` | **Logotipo** | `0 0 340 75` | Wordmark estilizado en Fraunces y Outfit con hebra pespunteada y puntos de costura. |
+| `logotipo-taller-artesanal` | **Logotipo** | `0 0 320 65` | Marca verbal institucional enmarcada en cinta textil con ojales de costura. |
+| `imagotipo-horizontal` | **Imagotipo** | `0 0 380 90` | Símbolo de ovillo en píldora a la izquierda + Wordmark y bajada Micro-ERP a la derecha. Ideal para el `navbar`. |
+| `imagotipo-vertical` | **Imagotipo** | `0 0 220 200` | Símbolo de ovillo centrado arriba + Wordmark y píldora de categoría abajo. Ideal para modales y portadas. |
+| `isologo-sello-taller` | **Isologo** | `0 0 160 160` | Sello circular indivisible con texto perimetral sobre trayectoria SVG, año de fundación y amigurumi central. |
+| `isologo-medallon-garantia` | **Isologo** | `0 0 160 160` | Medallón con festones dentados, listón ribbon inferior de garantía y leyenda "100% HECHO A MANO". |
 
 ---
 

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" role="img" aria-label="Isotipo Osito Amigurumi">
+  <title>Isotipo: Rostro Amigurumi con Pespunte Textil</title>
+  <defs>
+    <linearGradient id="isoBearGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FAF5F2"/>
+      <stop offset="100%" stop-color="#EFE6DF"/>
+    </linearGradient>
+    <linearGradient id="isoEarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A56E8A"/>
+      <stop offset="100%" stop-color="#8E5B74"/>
+    </linearGradient>
+    <filter id="isoBearShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1E252D" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra base suave -->
+  <ellipse cx="50" cy="90" rx="30" ry="4.5" fill="#1E252D" opacity="0.08"/>
+
+  <!-- Oreja Izquierda -->
+  <circle cx="26" cy="30" r="14" fill="url(#isoEarGrad)"/>
+  <circle cx="26" cy="30" r="8" fill="#F7EFF3"/>
+  <circle cx="26" cy="30" r="7" fill="none" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="2,2"/>
+
+  <!-- Oreja Derecha -->
+  <circle cx="74" cy="30" r="14" fill="url(#isoEarGrad)"/>
+  <circle cx="74" cy="30" r="8" fill="#F7EFF3"/>
+  <circle cx="74" cy="30" r="7" fill="none" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="2,2"/>
+
+  <!-- Cabeza Principal de Amigurumi -->
+  <g filter="url(#isoBearShadow)">
+    <circle cx="50" cy="56" r="34" fill="url(#isoBearGrad)" stroke="#E4D7CE" stroke-width="1.5"/>
+    <!-- Costura Pespunteada Exterior en Cabeza -->
+    <circle cx="50" cy="56" r="30" fill="none" stroke="#8E5B74" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.45"/>
+  </g>
+
+  <!-- Mejillas Ruborizadas con Hilo Rosa -->
+  <circle cx="30" cy="62" r="5.5" fill="#F0B6C7" opacity="0.55"/>
+  <circle cx="70" cy="62" r="5.5" fill="#F0B6C7" opacity="0.55"/>
+
+  <!-- Hocico Acolchado -->
+  <ellipse cx="50" cy="64" rx="14" ry="10.5" fill="#FFFFFF" stroke="#E4D7CE" stroke-width="1.2"/>
+  <ellipse cx="50" cy="64" rx="11.5" ry="8.5" fill="none" stroke="#D99C52" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+
+  <!-- Nariz Bordada de Triángulo Invertido con Bordes Suaves -->
+  <path d="M46 60 Q50 58 54 60 Q52 64 50 66 Q48 64 46 60 Z" fill="#8E5B74"/>
+  <!-- Boquita Bordada de Crochet -->
+  <path d="M50 66 L50 69" stroke="#8E5B74" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M45 69 Q50 73 50 69 Q50 73 55 69" fill="none" stroke="#8E5B74" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Ojos de Seguridad Brillantes -->
+  <circle cx="36" cy="52" r="4.2" fill="#1E252D"/>
+  <circle cx="34.5" cy="50.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="64" cy="52" r="4.2" fill="#1E252D"/>
+  <circle cx="62.5" cy="50.5" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Detalle artesanal: Hebra de amor en la coronilla -->
+  <path d="M50 22 C48 16 52 14 54 18 C56 14 60 16 58 22 Z" fill="#D99C52" opacity="0.85"/>
+</svg>

@@ -12,7 +12,7 @@
       <div class="col-12 col-lg-4">
         <div class="d-flex align-items-center gap-2 mb-3">
           <div class="brand-craft-badge d-inline-flex align-items-center gap-2 p-2 px-3">
-            <?= svg('badges/sello-taller', ['width' => 28, 'height' => 28]) ?>
+            <?= svg('branding/isologo-sello-taller', ['width' => 30, 'height' => 30]) ?>
             <span class="font-theme-display fw-bold fs-5" style="color: var(--craft-primary);">Amigurumi Manager</span>
           </div>
         </div>

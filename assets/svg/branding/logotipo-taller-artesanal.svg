@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 65" width="100%" height="100%" role="img" aria-label="Logotipo Taller Artesanal">
+  <title>Logotipo: Taller Artesanal de Confección</title>
+  <defs>
+    <linearGradient id="logoTallerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8E5B74"/>
+      <stop offset="100%" stop-color="#52857C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Marco de Cinta Textil Pespunteada -->
+  <rect x="4" y="4" width="312" height="57" rx="8" fill="#FDFBF9" stroke="#E4E8ED" stroke-width="1.2"/>
+  <rect x="8" y="8" width="304" height="49" rx="6" fill="none" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.35"/>
+
+  <!-- Orilla de Costura Textil Izquierda (Care Tag) -->
+  <path d="M4 12 L4 53" stroke="#8E5B74" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Nombre Principal en Caja Alta Cálida -->
+  <text x="24" y="34" 
+        font-family="'Fraunces', serif" 
+        font-weight="700" 
+        font-size="22" 
+        letter-spacing="0.08em" 
+        fill="url(#logoTallerGrad)">
+    AMIGURUMI
+  </text>
+
+  <!-- Descriptor de Oficio -->
+  <text x="180" y="33" 
+        font-family="'Outfit', sans-serif" 
+        font-weight="600" 
+        font-size="14" 
+        letter-spacing="0.04em" 
+        fill="#1E252D">
+    TALLER &amp; ERP
+  </text>
+
+  <!-- Subtítulo inferior de dedicación -->
+  <text x="24" y="48" 
+        font-family="'Plus Jakarta Sans', sans-serif" 
+        font-weight="500" 
+        font-size="8.5" 
+        letter-spacing="0.12em" 
+        fill="#52857C">
+    PIEZAS TEJIDAS A MANO • EDICIONES ARTESANALES
+  </text>
+
+  <!-- Tres ojales textiles bordados a la derecha -->
+  <circle cx="290" cy="32.5" r="2.2" fill="#D99C52"/>
+  <circle cx="298" cy="32.5" r="2.2" fill="#8E5B74"/>
+  <circle cx="306" cy="32.5" r="2.2" fill="#52857C"/>
+</svg>

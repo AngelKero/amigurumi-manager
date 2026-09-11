@@ -17,6 +17,7 @@
 | **Pagination & Footer** | Estación Textil y Master Footer Nórdico | **Completed & Verified** | Rediseñados la paginación (`pagination.css`, `catalogo_content.php`) con botones pill bordados y contador reactivo, y el master footer (`footer.css`, `footer.php`) con 4 columnas, tarjeta de garantía nórdica y WhatsApp. |
 | **Content Decoupling** | Desacoplamiento de Término "Nórdico" | **Completed & Verified** | Eliminadas todas las referencias a "nórdico" de productos, colecciones, talleres, materiales y garantías, preservándolo estrictamente como nombre del tema CSS. |
 | **Panel & Amigurumis CRUD** | Rediseño de Navegación, Sidebar de Panel & Vista CRUD Amigurumis | **Completed & Verified** | Eliminado botón de catálogo y dropdown del header; acceso al panel mediante clic en el badge `@admin (Artesano Titular)`. Creado menú lateral izquierdo (`panel_sidebar.php`) con todas las áreas administrativas y pantalla completa de gestión de Amigurumis (`amigurumis.php`) con KPIs, búsqueda/filtros reactivos, ordenación multieje, ajuste de stock in-situ, toggle de modalidad de encargo, ficha técnica de inspección modal y eliminación con salvaguarda FK. |
+| **Identidad Visual & Branding** | Skills de Marca, Manual de Identidad & Suite SVG de 4 Arquetipos | **Completed & Verified** | Instaladas skills `.agents/skills/brand-identity` y `logo-generator`. Creado manual maestro `docs/identidad-visual.md` con taxonomía de 4 arquetipos (isotipos, logotipos, imagotipos, isologos) y diseñada la suite de 9 vectores en `assets/svg/branding/`. Registrada en `SvgHelper` (31 SVGs totales) e integrada en `navbar.php` y `footer.php`. |
 | **Phase 3** | Backend & Connection (Clean Architecture) | **Awaiting Explicit Approval** | Implement `src/` modular backend (Autoloader, Singleton Database, Repositories/DAO, Services, Middleware) and `api/` controllers. |
 | **Phase 4** | CRUD Operations & Fullstack Wiring | **Pending** | Wire modular frontend with clean backend endpoints via AJAX fetch. |
 | **Phase 5** | Documentation & Final Delivery | **In Progress (README & Docs Hub created)** | Created `README.md` and master documentation hub `docs/README.md`. |
@@ -24,9 +25,12 @@
 ## What Works
 - Memory Bank completely synchronized across all 5 core files.
 - Clean Code Skill installed as auto-discoverable native skill at `.agents/skills/clean-code-architect/SKILL.md`.
-- Master Documentation Hub created at `docs/README.md` with 5 logical domains indexing all 18 documentation files.
-- Vector Asset Library (`assets/svg/`) with 22 handcrafted SVGs across 4 categories (`amigurumis`, `tools`, `badges`, `decorations`).
-- Helper utility `App\Utils\SvgHelper` and global functions `svg($name, $attrs)` / `svg_url($name)` for simple, unified inline SVG rendering and URL generation.
+- Skills de Marca instaladas en `.agents/skills/brand-identity/` y `.agents/skills/logo-generator/`.
+- Manual de Identidad Visual Canónico en `docs/identidad-visual.md` con taxonomía de isotipo, logotipo, imagotipo e isologo.
+- Master Documentation Hub en `docs/README.md` con 5 dominios lógicos indexando los 19 documentos del sistema.
+- Vector Asset Library (`assets/svg/`) con 31 SVGs artesanales divididos en 5 categorías (`branding`, `amigurumis`, `tools`, `badges`, `decorations`).
+- Helper utility `App\Utils\SvgHelper` y funciones globales `svg($name, $attrs)` / `svg_url($name)` con soporte para `branding/` y caché estática en memoria.
+- Componentes clave actualizados con branding vectorial oficial (`navbar.php` con isotipo ovillo-corazón y `footer.php` con isologo sello de taller).
 - Views refactored (`catalogo_content.php`, `detalle_content.php`, `footer.php`) to use `svg()` helper instead of verbose inline strings.
 - Wireframes (`docs/wireframes.md` and `docs/wireframes.es.md`) completely synchronized with PHP views, advanced filters, WhatsApp links, and user management.
 - Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.
