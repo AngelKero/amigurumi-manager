@@ -8,20 +8,22 @@ $activePage = $activePage ?? 'amigurumis';
 ?>
 <aside class="panel-sidebar-card card-stitched">
   <!-- Logotipo Oficial del Taller Artesanal -->
-  <div class="px-2 pt-2 pb-3 mb-2 border-bottom text-center">
-    <?= svg('branding/logotipo-taller-artesanal', ['height' => 38, 'style' => 'max-width: 100%; width: auto; display: inline-block;']) ?>
+  <div class="px-2 pt-2 pb-3 mb-3 border-bottom text-center d-flex justify-content-center align-items-center">
+    <?= svg('branding/logotipo-taller-artesanal', ['height' => 38, 'class' => 'mx-auto', 'style' => 'max-width: 100%; width: auto; display: block;']) ?>
   </div>
 
   <!-- Perfil Mini del Artesano Titular -->
-  <div class="panel-profile-box">
-    <div class="panel-profile-avatar p-1 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
-      <?= svg('branding/isotipo-osito-amigurumi', ['width' => 36, 'height' => 36]) ?>
+  <div class="panel-profile-box text-center">
+    <div class="panel-profile-avatar mx-auto mb-2 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
+      <?= svg('branding/isotipo-osito-amigurumi', ['width' => 42, 'height' => 42]) ?>
     </div>
-    <div class="panel-profile-username">@admin</div>
-    <span class="panel-profile-role d-inline-flex align-items-center gap-1">
-      <i class="bi bi-patch-check-fill text-warning"></i> Artesano Titular
-    </span>
-    <div class="mt-2 text-muted" style="font-size: 0.72rem;">
+    <div class="panel-profile-username text-center">@admin</div>
+    <div class="text-center mb-1">
+      <span class="panel-profile-role d-inline-flex align-items-center gap-1">
+        <i class="bi bi-patch-check-fill text-warning"></i> Artesano Titular
+      </span>
+    </div>
+    <div class="mt-1 text-muted text-center" style="font-size: 0.72rem;">
       <span class="d-inline-block rounded-circle bg-success me-1" style="width: 7px; height: 7px;"></span> En línea en el Taller
     </div>
   </div>
