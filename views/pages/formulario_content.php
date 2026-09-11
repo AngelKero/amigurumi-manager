@@ -62,6 +62,22 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
   'descripcion' => '',
   'imagen_preview' => ''
 ];
+
+// Sanitización de valores numéricos para prevenir TypeErrors en PHP 8
+$valPrecio = (isset($currentItem['precio']) && is_numeric($currentItem['precio'])) ? (float)$currentItem['precio'] : null;
+$valCosto = (isset($currentItem['costo']) && is_numeric($currentItem['costo'])) ? (float)$currentItem['costo'] : null;
+$valHoras = (isset($currentItem['horas']) && is_numeric($currentItem['horas'])) ? (float)$currentItem['horas'] : null;
+$valTamano = (isset($currentItem['tamano_cm']) && is_numeric($currentItem['tamano_cm'])) ? (float)$currentItem['tamano_cm'] : null;
+$valStock = (isset($currentItem['stock']) && is_numeric($currentItem['stock'])) ? (int)$currentItem['stock'] : null;
+
+// Parámetros calculados iniciales para el simulador financiero
+$hasFinancialData = ($valPrecio !== null && $valPrecio > 0);
+$calcPrecio = $valPrecio ?? 0.0;
+$calcCosto = $valCosto ?? 0.0;
+$calcHoras = $valHoras ?? 0.0;
+$calcGanancia = $calcPrecio - $calcCosto;
+$calcMargen = $calcPrecio > 0 ? ($calcGanancia / $calcPrecio) * 100 : 0.0;
+$calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 ?>
 <!-- 2-COLUMN SPLIT: FORMULARIO (col-lg-8) + SIMULADOR FINANCIERO (col-lg-4) -->
 <div class="row g-4 mb-5">
@@ -118,14 +134,14 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
           <div class="col-12 col-md-6">
             <label for="inputTamano" class="form-label fw-bold small">Tamaño / Altura en cm (*)</label>
             <div class="input-group">
-              <input type="number" step="0.1" min="0.1" max="250.0" class="form-control input-craft-pill" id="inputTamano" value="<?= $currentItem['tamano_cm'] ?>" required>
+              <input type="number" step="0.1" min="0.1" max="250.0" class="form-control input-craft-pill" id="inputTamano" value="<?= $valTamano !== null ? number_format($valTamano, 1, '.', '') : '' ?>" required>
               <span class="input-group-text bg-light text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">cm</span>
             </div>
           </div>
           <div class="col-12 col-md-6">
             <label for="inputStock" class="form-label fw-bold small">Cantidad en Stock Físico Inicial (*)</label>
             <div class="input-group">
-              <input type="number" min="0" max="10000" class="form-control input-craft-pill" id="inputStock" value="<?= $currentItem['stock'] ?>" required>
+              <input type="number" min="0" max="10000" class="form-control input-craft-pill" id="inputStock" value="<?= $valStock !== null ? $valStock : '' ?>" required>
               <span class="input-group-text bg-light text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">unidades</span>
             </div>
           </div>
@@ -155,20 +171,20 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
               <label for="inputPrecio" class="form-label fw-bold small">Precio Venta (MXN) (*)</label>
               <div class="input-group">
                 <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">$</span>
-                <input type="number" step="0.01" min="1" max="9999999" class="form-control fw-bold input-craft-pill" id="inputPrecio" value="<?= number_format($currentItem['precio'], 2, '.', '') ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+                <input type="number" step="0.01" min="1" max="9999999" class="form-control fw-bold input-craft-pill" id="inputPrecio" value="<?= $valPrecio !== null ? number_format($valPrecio, 2, '.', '') : '' ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
               </div>
             </div>
             <div class="col-12 col-md-4">
               <label for="inputCosto" class="form-label fw-bold small">Costo Materiales (MXN) (*)</label>
               <div class="input-group">
                 <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">$</span>
-                <input type="number" step="0.01" min="0" max="9999999" class="form-control input-craft-pill" id="inputCosto" value="<?= number_format($currentItem['costo'], 2, '.', '') ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+                <input type="number" step="0.01" min="0" max="9999999" class="form-control input-craft-pill" id="inputCosto" value="<?= $valCosto !== null ? number_format($valCosto, 2, '.', '') : '' ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
               </div>
             </div>
             <div class="col-12 col-md-4">
               <label for="inputHoras" class="form-label fw-bold small">Horas Confeccionadas</label>
               <div class="input-group">
-                <input type="number" step="0.25" min="0" max="500.0" class="form-control input-craft-pill" id="inputHoras" value="<?= $currentItem['horas'] ?>">
+                <input type="number" step="0.25" min="0" max="500.0" class="form-control input-craft-pill" id="inputHoras" value="<?= $valHoras !== null ? number_format($valHoras, 2, '.', '') : '' ?>">
                 <span class="input-group-text bg-white text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">hrs</span>
               </div>
             </div>
@@ -254,15 +270,15 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
       <div class="p-3 rounded mb-3 border" style="background-color: var(--craft-surface-muted);">
         <div class="d-flex justify-content-between py-1 border-bottom">
           <span class="text-muted small">Precio Venta:</span>
-          <span class="fw-bold text-dark font-monospace" id="calcDisplayPrecio">$<?= number_format($currentItem['precio'], 2) ?> MXN</span>
+          <span class="fw-bold text-dark font-monospace" id="calcDisplayPrecio">$<?= number_format($calcPrecio, 2) ?> MXN</span>
         </div>
         <div class="d-flex justify-content-between py-1 border-bottom">
           <span class="text-muted small">Costo Materiales:</span>
-          <span class="text-danger font-monospace" id="calcDisplayCosto">- $<?= number_format($currentItem['costo'], 2) ?> MXN</span>
+          <span class="text-danger font-monospace" id="calcDisplayCosto">- $<?= number_format($calcCosto, 2) ?> MXN</span>
         </div>
         <div class="d-flex justify-content-between py-2 mt-2 bg-white px-2 rounded border">
           <span class="fw-bold small">Ganancia Bruta:</span>
-          <span class="fw-bold text-success font-monospace" id="calcDisplayGanancia">$<?= number_format($currentItem['precio'] - $currentItem['costo'], 2) ?> MXN</span>
+          <span class="fw-bold <?= $calcGanancia >= 0 ? 'text-success' : 'text-danger' ?> font-monospace" id="calcDisplayGanancia">$<?= number_format($calcGanancia, 2) ?> MXN</span>
         </div>
       </div>
 
@@ -272,12 +288,28 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
         <div class="d-flex justify-content-between align-items-center mb-1">
           <span class="small text-muted fw-bold">1. Margen de Ganancia:</span>
           <strong class="fs-5 text-dark font-monospace" id="calcDisplayMargen">
-            <?= number_format((($currentItem['precio'] - $currentItem['costo']) / ($currentItem['precio'] ?: 1)) * 100, 1) ?>%
+            <?= number_format($calcMargen, 1) ?>%
           </strong>
         </div>
-        <div id="badgeMargenStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
-          <i class="bi bi-shield-check"></i> Margen Saludable (>60%)
-        </div>
+        <?php if ($hasFinancialData): ?>
+          <?php if ($calcMargen >= 60): ?>
+            <div id="badgeMargenStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
+              <i class="bi bi-shield-check"></i> Margen Saludable (>60%)
+            </div>
+          <?php elseif ($calcMargen >= 35): ?>
+            <div id="badgeMargenStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+              <i class="bi bi-exclamation-circle"></i> Margen Moderado (35-60%)
+            </div>
+          <?php else: ?>
+            <div id="badgeMargenStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
+              <i class="bi bi-slash-circle"></i> Margen Crítico (<35%)
+            </div>
+          <?php endif; ?>
+        <?php else: ?>
+          <div id="badgeMargenStatus" class="margin-feedback-pill bg-light text-muted border">
+            <i class="bi bi-dash-circle"></i> Esperando precio y costo
+          </div>
+        <?php endif; ?>
       </div>
 
       <!-- Métrica 2: Retorno por Hora de Trabajo -->
@@ -285,12 +317,28 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
         <div class="d-flex justify-content-between align-items-center mb-1">
           <span class="small text-muted fw-bold">2. Retorno Efectivo por Hora:</span>
           <strong class="fs-5 text-primary font-monospace" id="calcDisplayRetorno">
-            $<?= number_format(($currentItem['precio'] - $currentItem['costo']) / ($currentItem['horas'] ?: 1), 2) ?> MXN/hr
+            $<?= number_format($calcRetorno, 2) ?> MXN/hr
           </strong>
         </div>
-        <div id="badgeRetornoStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
-          <i class="bi bi-star"></i> Remuneración Digna (> $50/hr)
-        </div>
+        <?php if ($hasFinancialData && $calcHoras > 0): ?>
+          <?php if ($calcRetorno >= 50): ?>
+            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
+              <i class="bi bi-star"></i> Remuneración Digna (> $50/hr)
+            </div>
+          <?php elseif ($calcRetorno >= 30): ?>
+            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+              <i class="bi bi-dash-circle"></i> Retorno Bajo ($30 - $50/hr)
+            </div>
+          <?php else: ?>
+            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
+              <i class="bi bi-arrow-down-circle"></i> Retorno Crítico (< $30/hr)
+            </div>
+          <?php endif; ?>
+        <?php else: ?>
+          <div id="badgeRetornoStatus" class="margin-feedback-pill bg-light text-muted border">
+            <i class="bi bi-clock"></i> Ingrese horas confeccionadas
+          </div>
+        <?php endif; ?>
       </div>
 
       <!-- Nota Metodológica -->
