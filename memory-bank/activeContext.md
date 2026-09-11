@@ -41,3 +41,12 @@
   - Sintaxis JS: Todos los módulos `.js` validados con `node --check` (0 errores).
   - Base de datos SQLite: Regenerada con `php setup.php` (5 creaciones, 2 pedidos vinculados, 3 usuarios).
   - Servidor HTTP: Todos los endpoints responden correctamente (`index.php`: 200, `creaciones.php`: 200, `amigurumis.php`: 301, `detalle.php`: 200, `formulario.php`: 200, `pedidos.php`: 200, `usuarios.php`: 200).
+
+## Corrección Crítica: Restauración del Menú Lateral en `creaciones.php`
+- **Problema Reportado:** El menú lateral (`aside.panel-sidebar-card`) no aparecía al cargar `creaciones.php`.
+- **Causa Raíz:** En `views/layouts/main.php`, la condición condicional `$isPanelPage = in_array($activePage, ['amigurumis', 'pedidos', 'usuarios']);` aún comprobaba el nombre antiguo `'amigurumis'`, por lo que al recibir `$activePage = 'creaciones'`, evaluaba a `false` e insertaba el contenido en ancho completo sin el contenedor `<div class="col-12 col-lg-3 col-xl-3">` del sidebar.
+- **Solución Aplicada:**
+  1. `views/layouts/main.php`: Actualizada la condición a `$isPanelPage = in_array($activePage, ['creaciones', 'amigurumis', 'pedidos', 'usuarios']);` y actualizados los fallbacks por defecto de título/descripción de la app a "Crochet Manager".
+  2. `views/components/panel_sidebar.php`: Actualizada la clase activa para cubrir tanto `'creaciones'` como el alias retrocompatible `'amigurumis'`.
+- **Verificación:** Probado mediante HTTP curl en `http://localhost:8000/creaciones.php` validando la presencia de `aside.panel-sidebar-card`, estructura de columnas `col-lg-3` + `col-lg-9`, enlace activo en "Inventario & Creaciones", y comprobando que `index.php`, `detalle.php` y `formulario.php` mantienen su ancho completo limpio sin sidebar.
+

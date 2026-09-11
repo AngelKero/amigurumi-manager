@@ -12,8 +12,8 @@
 require_once __DIR__ . '/../../src/Utils/SvgHelper.php';
 require_once __DIR__ . '/../../src/Utils/CurrencyHelper.php';
 
-$pageTitle = $pageTitle ?? 'Amigurumi Manager | Micro-ERP & Catálogo Textil';
-$pageDescription = $pageDescription ?? 'Sistema de gestión de catálogo, inventario físico, costos y pedidos para artesanos de amigurumi.';
+$pageTitle = $pageTitle ?? 'Crochet Manager | Micro-ERP & Catálogo Textil';
+$pageDescription = $pageDescription ?? 'Sistema de gestión de catálogo, inventario físico, costos y pedidos para creaciones en crochet.';
 $activePage = $activePage ?? 'catalogo';
 $modals = $modals ?? [];
 ?>
@@ -52,7 +52,7 @@ $modals = $modals ?? [];
 
   <!-- Main View Container Slot -->
   <?php 
-  $isPanelPage = in_array($activePage, ['amigurumis', 'pedidos', 'usuarios']);
+  $isPanelPage = in_array($activePage, ['creaciones', 'amigurumis', 'pedidos', 'usuarios']);
   ?>
   <main class="py-4">
     <div class="container-xl">
