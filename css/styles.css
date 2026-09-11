@@ -319,6 +319,33 @@ h1, h2, h3, h4, h5, h6, .font-display {
   font-size: 0.775rem;
 }
 
+/* Woven Textile Care Label Tag with Running Stitches (Etiqueta Textil Cosida) */
+.badge-textile-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #FAF5F8;
+  color: var(--craft-primary);
+  font-family: var(--craft-font-display);
+  font-weight: 700;
+  font-size: 0.775rem;
+  border: 1px dashed rgba(142, 91, 116, 0.35);
+  border-left: 3.5px solid var(--craft-primary);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0 2px 6px rgba(142, 91, 116, 0.05);
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.badge-textile-tag::after {
+  content: "•••";
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  margin-left: 0.25rem;
+}
+
 /* Contrast Fix [QW-1]: Dark Spruce on Glacier Mist (>6.2:1 contrast ratio) */
 .badge-stock-in {
   background-color: var(--craft-secondary-subtle);
@@ -338,6 +365,26 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-radius: var(--craft-radius-pill);
 }
 
+/* Craft Stitched Border Effect (Pespunte Artesanal Interior / Hilván) */
+.card-stitched {
+  position: relative;
+}
+
+.card-stitched::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px dashed rgba(142, 91, 116, 0.22);
+  border-radius: calc(var(--craft-radius) - 7px);
+  pointer-events: none;
+  z-index: 1;
+  transition: border-color 0.25s ease;
+}
+
+.card-stitched:hover::before {
+  border-color: rgba(142, 91, 116, 0.48);
+}
+
 /* Custom Buttons */
 .btn-craft-primary {
   background-color: var(--craft-primary);
@@ -348,6 +395,23 @@ h1, h2, h3, h4, h5, h6, .font-display {
   padding: 0.55rem 1.25rem;
   box-shadow: 0 4px 14px rgba(142, 91, 116, 0.25);
   transition: all 0.2s ease;
+}
+
+/* Embroidered Button with Hand-Sewn Running Stitch */
+.btn-craft-stitched {
+  position: relative;
+  outline: 1.5px dashed rgba(255, 255, 255, 0.55);
+  outline-offset: -5px;
+  transition: all 0.25s ease, outline-color 0.25s ease;
+}
+
+.btn-craft-stitched:hover {
+  outline-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 22px rgba(142, 91, 116, 0.4);
+}
+
+.btn-craft-stitched:disabled {
+  outline-color: rgba(255, 255, 255, 0.25);
 }
 
 .btn-craft-primary:hover, .btn-craft-primary:focus {
@@ -376,6 +440,29 @@ h1, h2, h3, h4, h5, h6, .font-display {
   border-radius: var(--craft-radius-pill);
   padding: 0.55rem 1.25rem;
   transition: all 0.2s ease;
+}
+
+/* Running-Stitch Divider Line (Línea de Hilván) */
+.divider-stitched {
+  height: 2px;
+  border: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--craft-border) 0,
+    var(--craft-border) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  margin: 1.25rem 0;
+  width: 100%;
+  opacity: 0.85;
+}
+
+/* Blanket Stitch on Guarantee Block (Costura de Festón Decorativa) */
+.guarantee-stitched {
+  border: 1.5px dashed rgba(82, 133, 124, 0.35) !important;
+  position: relative;
+  background: linear-gradient(135deg, var(--craft-surface-muted) 0%, #FFFFFF 100%);
 }
 
 .btn-craft-outline:hover {

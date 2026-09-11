@@ -20,6 +20,37 @@
 </head>
 <body>
 
+  <!-- Atmospheric Background Decorations (Floating Clouds, Hooks & Yarn SVGs) -->
+  <div class="cloud-yarn-bg-decorations" aria-hidden="true">
+    <div class="bg-float-item bg-cloud-1" style="top: 5%; left: 3%;">
+      <svg viewBox="0 0 120 70" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 60h68a18 18 0 0 0 4-35 25 25 0 0 0-45-7 17 17 0 0 0-27 15 16 16 0 0 0 0 27z"/>
+      </svg>
+    </div>
+    <div class="bg-float-item bg-yarn-1" style="top: 10%; right: 4%;">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="36" stroke-width="2" opacity="0.45"/>
+        <path d="M24 38 C36 24, 64 24, 76 38"/>
+        <path d="M20 50 C34 34, 66 34, 80 50"/>
+        <path d="M24 62 C36 76, 64 76, 76 62"/>
+        <path d="M38 24 C24 36, 24 64, 38 76"/>
+        <path d="M50 20 C34 34, 34 66, 50 80"/>
+        <path d="M62 24 C76 36, 76 64, 62 76"/>
+        <path d="M78 68 Q90 80 84 92 Q78 100 68 90" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="bg-float-item bg-cloud-2" style="top: 48%; left: 1%;">
+      <svg viewBox="0 0 120 70" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 60h68a18 18 0 0 0 4-35 25 25 0 0 0-45-7 17 17 0 0 0-27 15 16 16 0 0 0 0 27z"/>
+      </svg>
+    </div>
+    <div class="bg-float-item bg-cloud-3" style="top: 75%; right: 3%;">
+      <svg viewBox="0 0 120 70" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 60h68a18 18 0 0 0 4-35 25 25 0 0 0-45-7 17 17 0 0 0-27 15 16 16 0 0 0 0 27z"/>
+      </svg>
+    </div>
+  </div>
+
   <!-- ========================================================================= -->
   <!-- BARRA DE NAVEGACIÓN (Panel del Artesano)                                  -->
   <!-- ========================================================================= -->
@@ -119,14 +150,14 @@
 
         <!-- FORMULARIO DE ALTA / EDICIÓN -->
         <div class="col-12 col-lg-8">
-          <div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: var(--craft-radius);">
+          <div class="card border-0 shadow-sm p-4 bg-white card-stitched" style="border-radius: var(--craft-radius);">
             
             <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
               <div>
                 <h3 class="fw-bold mb-1" id="formTitle">Registrar Nueva Creación Artesanal</h3>
                 <p class="text-muted small mb-0">Completa las especificaciones físicas y económicas de la pieza.</p>
               </div>
-              <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill font-monospace" id="modeBadge">
+              <span class="badge badge-textile-tag fs-6" id="modeBadge">
                 Modo: Nuevo Registro
               </span>
             </div>
@@ -241,13 +272,14 @@
               </div>
 
               <!-- BOTONES DE ACCIÓN -->
-              <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+              <hr class="divider-stitched my-3">
+              <div class="d-flex justify-content-between align-items-center pt-2">
                 <a href="pedidos.html" class="btn btn-outline-secondary btn-sm">
                   <i class="bi bi-box-seam me-1"></i> Ver Pedidos
                 </a>
                 <div class="d-flex gap-2">
                   <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
-                  <button type="submit" class="btn btn-craft-primary px-4">
+                  <button type="submit" class="btn btn-craft-primary btn-craft-stitched px-4">
                     <i class="bi bi-check-circle me-1"></i> Guardar Creación
                   </button>
                 </div>
@@ -259,7 +291,7 @@
 
         <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-lg-4) -->
         <div class="col-12 col-lg-4">
-          <div class="card sticky-margin-card p-4">
+          <div class="card sticky-margin-card p-4 card-stitched">
             
             <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-3">
               <div class="bg-warning-subtle text-warning-emphasis p-2 rounded">

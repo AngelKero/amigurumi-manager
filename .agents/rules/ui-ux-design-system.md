@@ -74,3 +74,25 @@ All components, styles, and templates must strictly use the following semantic t
    - All custom commission modals must include the standard lead time note: *"Los pedidos personalizados o sin existencias requieren de 5 a 7 días hábiles de confección artesanal."*
 7. **Artisan Role Isolation:**
    - Public customer view must NEVER reveal administration routes (`Nuevo Amigurumi`, `Gestión de Pedidos`). These are displayed only when an authenticated session (`rol: admin/artesano`) is active.
+
+---
+
+## 5. Craft Border & Textile Detailing System (Mandatory)
+
+To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views must employ the following craft detailing patterns:
+
+1. **Inset Running Seams (`.card-stitched`):**
+   - Implemented via a non-intrusive pseudo-element: `position: absolute; inset: 7px; border: 1.5px dashed rgba(142, 91, 116, 0.22); border-radius: calc(var(--craft-radius) - 7px); pointer-events: none;`.
+   - Used on product cards, specification summaries, KPI blocks, and primary containers.
+2. **Embroidered Action Buttons (`.btn-craft-stitched`):**
+   - Applies an internal dashed stitch line: `outline: 1.5px dashed rgba(255, 255, 255, 0.55); outline-offset: -5px;`.
+   - Used on key purchase CTAs, login submissions, and order confirmation buttons.
+3. **Woven Cloth Care Tags (`.badge-textile-tag`):**
+   - Replaces generic badges for product categories and operational modes.
+   - Features a thick sewn edge (`border-left: 3.5px solid var(--craft-primary)`), dashed textile border (`1px dashed rgba(142, 91, 116, 0.35)`), and simulated thread holes (`::after { content: "•••"; }`).
+4. **Running-Stitch Dividers (`.divider-stitched`):**
+   - Replaces standard `<hr>` with a repeating dashed thread pattern: `repeating-linear-gradient(90deg, var(--craft-border) 0, var(--craft-border) 8px, transparent 8px, transparent 16px)`.
+5. **Blanket Stitch Blocks (`.guarantee-stitched`):**
+   - Used on trust cards, guarantees, and artisan assurances with a distinct spruce-tinted dashed border (`1.5px dashed rgba(82, 133, 124, 0.35)`).
+6. **Atmospheric Background Decorations (`.cloud-yarn-bg-decorations`):**
+   - Ambient, non-obtrusive floating SVG clouds, yarn balls, and crochet hooks in the background canvas (`pointer-events: none`, opacity 0.18–0.22).

@@ -195,7 +195,7 @@
             </p>
             
             <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-              <a href="#productCardGrid" class="btn btn-craft-primary btn-lg d-inline-flex align-items-center gap-2">
+              <a href="#productCardGrid" class="btn btn-craft-primary btn-craft-stitched btn-lg d-inline-flex align-items-center gap-2">
                 <i class="bi bi-bag-heart"></i>
                 <span>Explorar Catálogo</span>
               </a>
@@ -319,7 +319,7 @@
                  data-category="Fantasía" 
                  data-stock="4" 
                  data-price="450">
-          <div class="card card-product h-100">
+          <div class="card card-product card-stitched h-100">
             <!-- Imagen Clicable (Refinamiento Solicitado) -->
             <a href="detalle.html?id=1" class="card-product-img-wrapper text-decoration-none">
               <div class="card-product-badge-float">
@@ -342,9 +342,11 @@
               </svg>
             </a>
 
-            <div class="card-body d-flex flex-column p-4">
+            <div class="card-body d-flex flex-column p-4" style="position: relative; z-index: 2;">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge badge-category">Fantasía</span>
+                <span class="badge-textile-tag">
+                  <i class="bi bi-tag-fill me-1"></i>Fantasía
+                </span>
                 <small class="text-muted"><i class="bi bi-rulers me-1"></i>18.5 cm</small>
               </div>
               
@@ -355,17 +357,20 @@
                 </a>
               </h5>
 
-              <p class="card-text text-muted small flex-grow-1 mb-3">
+              <p class="card-text text-muted small flex-grow-1 mb-2">
                 Dragón mítico con escamas en relieve tejidas con hilo de algodón mercerizado y relleno antialérgico.
               </p>
 
-              <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+              <!-- Divisor de Costura Hilván -->
+              <div class="divider-stitched mb-3"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <span class="fs-4 fw-bold text-dark">$450.00</span>
                   <small class="text-muted d-block" style="font-size: 0.75rem;">MXN / Unidad</small>
                 </div>
-                <!-- Botón de compra / checkout -->
-                <button class="btn btn-craft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                <!-- Botón de compra bordado con hilván blanco -->
+                <button class="btn btn-craft-primary btn-craft-stitched btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
                   <i class="bi bi-cart-plus me-1"></i> Comprar
                 </button>
               </div>
@@ -380,7 +385,7 @@
                  data-category="Plantas / Botánica" 
                  data-stock="12" 
                  data-price="180">
-          <div class="card card-product h-100">
+          <div class="card card-product card-stitched h-100">
             <!-- Imagen Clicable -->
             <a href="detalle.html?id=2" class="card-product-img-wrapper text-decoration-none">
               <div class="card-product-badge-float">
@@ -399,9 +404,11 @@
               </svg>
             </a>
 
-            <div class="card-body d-flex flex-column p-4">
+            <div class="card-body d-flex flex-column p-4" style="position: relative; z-index: 2;">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge badge-category">Plantas / Botánica</span>
+                <span class="badge-textile-tag">
+                  <i class="bi bi-tag-fill me-1"></i>Plantas / Botánica
+                </span>
                 <small class="text-muted"><i class="bi bi-rulers me-1"></i>10.0 cm</small>
               </div>
 
@@ -412,16 +419,19 @@
                 </a>
               </h5>
 
-              <p class="card-text text-muted small flex-grow-1 mb-3">
+              <p class="card-text text-muted small flex-grow-1 mb-2">
                 Suculenta de escritorio que no requiere riego, tejida con algodón rústico en maceta color terracota.
               </p>
 
-              <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+              <!-- Divisor de Costura Hilván -->
+              <div class="divider-stitched mb-3"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <span class="fs-4 fw-bold text-dark">$180.00</span>
                   <small class="text-muted d-block" style="font-size: 0.75rem;">MXN / Unidad</small>
                 </div>
-                <button class="btn btn-craft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                <button class="btn btn-craft-primary btn-craft-stitched btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
                   <i class="bi bi-cart-plus me-1"></i> Comprar
                 </button>
               </div>
@@ -436,7 +446,7 @@
                  data-category="Animales / Fauna" 
                  data-stock="0" 
                  data-price="320">
-          <div class="card card-product h-100 opacity-90">
+          <div class="card card-product card-stitched h-100 opacity-90">
             <!-- Imagen Clicable -->
             <a href="detalle.html?id=3" class="card-product-img-wrapper text-decoration-none">
               <div class="card-product-badge-float">
@@ -460,9 +470,11 @@
               </svg>
             </a>
 
-            <div class="card-body d-flex flex-column p-4">
+            <div class="card-body d-flex flex-column p-4" style="position: relative; z-index: 2;">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge badge-category">Animales / Fauna</span>
+                <span class="badge-textile-tag">
+                  <i class="bi bi-tag-fill me-1"></i>Animales / Fauna
+                </span>
                 <small class="text-muted"><i class="bi bi-rulers me-1"></i>14.0 cm</small>
               </div>
 
@@ -473,11 +485,14 @@
                 </a>
               </h5>
 
-              <p class="card-text text-muted small flex-grow-1 mb-3">
+              <p class="card-text text-muted small flex-grow-1 mb-2">
                 Ajolote mexicano extra suave confeccionado en hilo chenille velvet. Disponible bajo pedido por encargo.
               </p>
 
-              <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+              <!-- Divisor de Costura Hilván -->
+              <div class="divider-stitched mb-3"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <span class="fs-4 fw-bold text-muted">$320.00</span>
                   <small class="text-muted d-block" style="font-size: 0.75rem;">MXN / Unidad</small>
@@ -557,7 +572,7 @@
 
           <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-craft-primary btn-sm" id="btnLoginSubmit">
+            <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm" id="btnLoginSubmit">
               <i class="bi bi-box-arrow-in-right me-1"></i> Acceder al Panel
             </button>
           </div>
@@ -653,7 +668,7 @@
 
           <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-craft-primary btn-sm">
+            <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm">
               <i class="bi bi-check2-circle me-1"></i> Confirmar Encargo
             </button>
           </div>

@@ -15,10 +15,13 @@
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
 
-## Current State: Phase 2 Atmosphere Refinement - Floating Background Clouds & Yarn SVGs
-- **User Request:** Add floating decorative SVG icons of clouds and yarn/threads to the catalog page (`index.html`) background to amplify the soft, dreamy, floating ambiance of "Algodón Nórdico".
-- **Execution Plan:**
-  1. Add atmospheric background decorative container (`.floating-bg-decorations`) in `index.html` featuring high-quality, lightweight inline SVG elements of puffy clouds, yarn balls with thread loops, and delicate craft sparkles.
-  2. Enhance `css/styles.css` with fixed background positioning, non-obstructive pointer events (`pointer-events: none; z-index: 0;`), staggered float animations (`@keyframes floatDrift1`, `@keyframes floatDrift2`), and delicate powdery opacity (15%–30%) matching Nordic Plum and Spruce tints.
-  3. Ensure zero impact on interactivity, performance, and responsive layout.
-- **Phase Gate Status:** In Phase 2 Layout & UI refinement. Delivering background atmosphere and verifying live in browser.
+## Current State: Phase 2 Craft Textures & Stitched Borders Completed
+- **User Request:** Research and implement CSS border styles that evoke stitched, sewn, or knitted textures (pespuntes, hilvanes, etiquetas textiles, bordes acolchados), giving elements a tactile, handmade aesthetic aligned with "Algodón Nórdico".
+- **Execution Completed:**
+  1. **Research & Design:** Researched authentic needlework and craft web design techniques (inset running seams, embroidered outline offsets, woven cloth tags, running-stitch gradients).
+  2. **CSS Token & Utility Implementation (`css/styles.css`):** Integrated `.card-stitched`, `.btn-craft-stitched`, `.badge-textile-tag`, `.divider-stitched`, and `.guarantee-stitched`.
+  3. **Universal View Deployment:** Fully implemented across `index.html`, `detalle.html`, `pedidos.html`, and `formulario.html`.
+  4. **Atmospheric Backgrounds:** Added floating cloud and yarn SVG decorations (`.cloud-yarn-bg-decorations`) to give an ethereal, soft handmade atmosphere.
+  5. **Design System Codification:** Updated `.agents/rules/ui-ux-design-system.md` with Section 5 enshrining these craft border techniques.
+  6. **Visual Browser Verification:** Verified live via browser subagent with screenshots and screen recordings across all views.
+- **Phase Gate Status:** Phase 2 Layout & UI refinement complete. Awaiting user review and sign-off before proceeding to Phase 3.

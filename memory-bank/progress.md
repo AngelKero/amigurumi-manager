@@ -27,7 +27,9 @@
   - `detalle.html`: Out-of-stock guard [CR-1] (`stock === 0` disables checkout CTA), darkened WCAG AA contrast (`#235048` on `#EBF4F2`), lead-time advisory (5-7 business days), and interactive state simulator.
   - `pedidos.html`: Orders dashboard with stacked mobile card view [CR-2] (`#mobileOrdersContainer`), stock restitution confirmation modal [QW-2], and order inspection modal.
   - `formulario.html`: Dual-metric real-time margin simulator with Algodón Nórdico status pills, dropzone image preview, and artisan navigation bar.
-  - `css/styles.css`: Complete Algodón Nórdico token overhaul, keyframe floating animations, pill radiuses (`50px`), and cloud elevation shadows.
+  - `css/styles.css`: Complete Algodón Nórdico token overhaul, keyframe floating animations, pill radiuses (`50px`), cloud elevation shadows, and craft stitched border utilities (`.card-stitched`, `.btn-craft-stitched`, `.badge-textile-tag`, `.divider-stitched`, `.guarantee-stitched`).
+  - Tactile Craft Borders & Atmospheric Decor: Deployed inset dashed running seams, embroidered button stitches, woven cloth care tags, and floating ambient cloud/yarn SVGs across `index.html`, `detalle.html`, `pedidos.html`, and `formulario.html`.
+  - Design Rules Updated: Codified Section 5 in `.agents/rules/ui-ux-design-system.md` to protect craft border aesthetics in all future phases.
   - `js/app.js`: Out-of-stock guard listener, stock-bounded quantity steppers, margin formulas, and modal lifecycle handlers.
 
 ## What's Left to Build
