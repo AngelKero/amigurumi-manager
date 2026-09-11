@@ -9,8 +9,9 @@
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
       <div class="modal-header border-bottom py-3" style="background-color: var(--craft-surface-muted);">
         <div class="d-flex align-items-center gap-2">
-          <span class="badge badge-textile-tag">
-            <i class="bi bi-patch-check-fill text-primary me-1"></i>Ficha Técnica del Taller
+          <span class="badge badge-textile-tag d-inline-flex align-items-center gap-1">
+            <?= svg('branding/isologo-sello-taller', ['width' => 16, 'height' => 16]) ?>
+            <span>Ficha Técnica del Taller</span>
           </span>
           <span class="font-monospace text-muted small" id="inspectAmigurumiId">#1</span>
         </div>

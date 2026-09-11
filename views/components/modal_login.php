@@ -7,18 +7,27 @@
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
-      <div class="modal-header border-bottom py-3" style="background-color: var(--craft-surface-muted);">
-        <h5 class="modal-title fw-bold" id="loginModalTitle">
-          <i class="bi bi-shield-lock me-2 text-primary"></i>Acceso al Sistema Amigurumi ERP
-        </h5>
+      <div class="modal-header border-bottom py-3 align-items-center" style="background-color: var(--craft-surface-muted);">
+        <div class="d-flex align-items-center gap-2">
+          <?= svg('branding/isologo-sello-taller', ['width' => 32, 'height' => 32]) ?>
+          <h5 class="modal-title fw-bold m-0" id="loginModalTitle" style="font-size: 1.05rem;">
+            Acceso al Taller de Confección
+          </h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       
       <form id="loginForm">
         <div class="modal-body p-4">
-          <p class="text-muted small mb-3">
-            Ingresa tus credenciales de artesano o administrador:
-          </p>
+          <div class="text-center mb-3">
+            <div class="d-inline-block p-2 rounded-circle bg-light border shadow-xs mb-2">
+              <?= svg('branding/isotipo-osito-amigurumi', ['width' => 52, 'height' => 52]) ?>
+            </div>
+            <h6 class="fw-bold text-dark font-theme-display mb-1">Portal del Artesano</h6>
+            <p class="text-muted small mb-0">
+              Ingresa tus credenciales para gestionar el catálogo y los pedidos:
+            </p>
+          </div>
           <div id="loginAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
 
           <div class="mb-3">

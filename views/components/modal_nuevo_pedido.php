@@ -8,10 +8,13 @@
 <div class="modal fade" id="modalNuevoPedido" tabindex="-1" aria-labelledby="modalNuevoPedidoTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
-      <div class="modal-header border-bottom py-3" style="background-color: var(--craft-surface-muted);">
-        <h5 class="modal-title fw-bold" id="modalNuevoPedidoTitle">
-          <i class="bi bi-journal-plus me-2 text-primary"></i>Registrar Encargo Manual
-        </h5>
+      <div class="modal-header border-bottom py-3 align-items-center" style="background-color: var(--craft-surface-muted);">
+        <div class="d-flex align-items-center gap-2">
+          <?= svg('branding/isologo-medallon-garantia', ['width' => 28, 'height' => 28]) ?>
+          <h5 class="modal-title fw-bold m-0" id="modalNuevoPedidoTitle" style="font-size: 1.05rem;">
+            Registrar Encargo Manual del Taller
+          </h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
 

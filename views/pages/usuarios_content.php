@@ -37,11 +37,11 @@ $usuariosList = [
 <section class="artisan-panel-banner p-3 p-md-4 mb-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div class="d-flex align-items-center gap-3">
-      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-        <?= svg('badges/garantia-autor', ['width' => 32, 'height' => 32]) ?>
+      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+        <?= svg('branding/isologo-sello-taller', ['width' => 44, 'height' => 44]) ?>
       </div>
       <div>
-        <h4 class="mb-0 fw-bold">Gestión de Artesanos & Equipo del Taller</h4>
+        <h4 class="mb-0 fw-bold">Gestión de Artesanos &amp; Equipo del Taller</h4>
         <small class="text-white-50">Control de cuentas de acceso, roles asignados y autoría de piezas textiles</small>
       </div>
     </div>

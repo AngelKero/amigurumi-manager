@@ -8,8 +8,8 @@
 <section class="artisan-panel-banner p-3 p-md-4 mb-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div class="d-flex align-items-center gap-3">
-      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-        <?= svg('tools/cinta-metrica', ['width' => 32, 'height' => 32]) ?>
+      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+        <?= svg('branding/isologo-sello-taller', ['width' => 44, 'height' => 44]) ?>
       </div>
       <div>
         <h4 class="mb-0 fw-bold">Panel de Administración del Artesano</h4>

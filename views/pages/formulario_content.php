@@ -103,8 +103,8 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom pb-3 mb-4">
         <div>
           <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
-            <i class="bi bi-pencil-fill text-primary"></i>
-            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección' ?></span>
+            <?= svg('branding/isotipo-ovillo-corazon', ['width' => 18, 'height' => 18]) ?>
+            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección Textil' ?></span>
           </div>
           <h3 class="fw-bold font-theme-display text-dark mb-1" id="formTitle">
             <?= $isEditing ? 'Modificar Creación Artesanal' : 'Registrar Nueva Creación Artesanal' ?>
@@ -114,8 +114,9 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
           </p>
         </div>
         <div>
-          <span class="badge badge-artisan-seal" id="modeBadge" style="font-size: 0.8rem;">
-            <?= $isEditing ? 'Modo: Edición #' . $editId : 'Modo: Nuevo Registro' ?>
+          <span class="badge badge-artisan-seal d-inline-flex align-items-center gap-1" id="modeBadge" style="font-size: 0.8rem;">
+            <?= svg('branding/isologo-sello-taller', ['width' => 18, 'height' => 18]) ?>
+            <span><?= $isEditing ? 'Modo: Edición #' . $editId : 'Modo: Nuevo Registro' ?></span>
           </span>
         </div>
       </div>

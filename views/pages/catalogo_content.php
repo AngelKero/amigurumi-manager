@@ -68,7 +68,7 @@ $catalogItems = [
     <!-- Columna Texto y Acciones -->
     <div class="col-lg-6 text-center text-lg-start">
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag fs-6 mb-3">
-        <span class="text-primary"><i class="bi bi-stars"></i></span>
+        <?= svg('branding/isotipo-hebra-nordica', ['width' => 20, 'height' => 20]) ?>
         <span>Colección Textil Artesanal</span>
         <span class="badge bg-white text-muted font-monospace border ms-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">Stock en Vivo</span>
       </div>
@@ -94,17 +94,17 @@ $catalogItems = [
 
       <!-- Micro-indicadores de Confianza en Chips Textiles Hilvanados -->
       <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-2 mt-4 pt-3 border-top" style="border-color: rgba(228, 232, 237, 0.7) !important;">
-        <div class="trust-chip-stitched">
-          <i class="bi bi-patch-check-fill fs-6" style="color: var(--craft-secondary);"></i>
+        <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
+          <?= svg('branding/isologo-medallon-garantia', ['width' => 20, 'height' => 20]) ?>
           <span>100% Hecho a Mano</span>
         </div>
-        <div class="trust-chip-stitched">
-          <i class="bi bi-box2-heart-fill fs-6" style="color: var(--craft-primary);"></i>
+        <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
+          <?= svg('branding/isotipo-ovillo-corazon', ['width' => 16, 'height' => 16]) ?>
           <span>Envío Seguro Acolchado</span>
         </div>
-        <div class="trust-chip-stitched">
-          <i class="bi bi-shield-check fs-6 text-warning"></i>
-          <span>Garantía de Autor Taller TT-001</span>
+        <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
+          <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
+          <span>Garantía Taller Oficial</span>
         </div>
       </div>
     </div>
@@ -124,8 +124,9 @@ $catalogItems = [
           </div>
 
           <!-- Micro-Badge de Autoría Flotante -->
-          <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill shadow-sm border small fw-bold font-monospace" style="color: var(--craft-primary); font-size: 0.78rem; z-index: 4; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.94) !important;">
-            <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller • Colección Artesanal
+          <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill shadow-sm border small fw-bold font-monospace d-inline-flex align-items-center gap-1" style="color: var(--craft-primary); font-size: 0.78rem; z-index: 4; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.94) !important;">
+            <?= svg('branding/isotipo-ovillo-corazon', ['width' => 18, 'height' => 18]) ?>
+            <span>Taller de Creaciones • Colección Artesanal</span>
           </div>
         </div>
       </div>

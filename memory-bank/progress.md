@@ -30,7 +30,7 @@
 - Master Documentation Hub en `docs/README.md` con 5 dominios lógicos indexando los 19 documentos del sistema.
 - Vector Asset Library (`assets/svg/`) con 31 SVGs artesanales divididos en 5 categorías (`branding`, `amigurumis`, `tools`, `badges`, `decorations`).
 - Helper utility `App\Utils\SvgHelper` y funciones globales `svg($name, $attrs)` / `svg_url($name)` con soporte para `branding/` y caché estática en memoria.
-- Componentes clave actualizados con branding vectorial oficial (`navbar.php` con isotipo ovillo-corazón y `footer.php` con isologo sello de taller).
+- Despliegue ubicuo de la suite de branding oficial en toda la web: Favicon SVG (`isotipo-ovillo-corazon`), Navbar con Imagotipo Horizontal oficial, Hero Banner con Isotipo Hebra Nórdica e Isologos de Garantía, Modales de Login, Checkout, Nuevo Pedido, Crear Usuario e Inspección enriquecidos con sus respectivos Isologos e Isotipos, Ficha de Detalle con Sello de Taller Verificado, Sidebar de Administración con Logotipo Taller Artesanal y Avatar Oficial, y Footer Nórdico con Imagotipo Horizontal y Medallón de Calidad.
 - Views refactored (`catalogo_content.php`, `detalle_content.php`, `footer.php`) to use `svg()` helper instead of verbose inline strings.
 - Wireframes (`docs/wireframes.md` and `docs/wireframes.es.md`) completely synchronized with PHP views, advanced filters, WhatsApp links, and user management.
 - Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.

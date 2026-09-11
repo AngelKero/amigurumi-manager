@@ -26,6 +26,9 @@ $modals = $modals ?? [];
   <title><?= htmlspecialchars($pageTitle) ?></title>
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
   
+  <!-- Favicon Vectorial Oficial (Isotipo Ovillo-Corazón) -->
+  <link rel="icon" type="image/svg+xml" href="<?= svg_url('branding/isotipo-ovillo-corazon') ?>">
+  
   <!-- Google Fonts: Fraunces & Fredoka (Artisan Theme Display), Outfit (Modern Display) & Plus Jakarta Sans (Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

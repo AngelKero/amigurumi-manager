@@ -7,8 +7,11 @@ $activePage = $activePage ?? 'catalogo';
 ?>
 <nav class="navbar navbar-expand-lg navbar-craft sticky-top">
   <div class="container-xl">
-    <a class="navbar-brand p-0" href="index.php">
-      <span class="brand-craft-badge">
+    <a class="navbar-brand p-0 d-flex align-items-center" href="index.php" title="Amigurumi Manager - Inicio">
+      <div class="d-none d-sm-block brand-logo-desktop">
+        <?= svg('branding/imagotipo-horizontal', ['height' => 44, 'style' => 'width: auto; max-height: 44px; display: block;']) ?>
+      </div>
+      <span class="brand-craft-badge d-inline-flex d-sm-none">
         <span class="brand-icon"><?= svg('branding/isotipo-ovillo-corazon', ['width' => 20, 'height' => 20, 'style' => 'vertical-align: -3px;']) ?></span>
         <span>Amigurumi Manager</span>
       </span>

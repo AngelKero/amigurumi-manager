@@ -1,48 +1,50 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Identidad Visual, Skills de Branding y Suite de Assets SVG (Completado y Verificado)
+## Current Task: Integración Ubicua de la Suite de Branding (Logos e Isos) en la Web (Completado y Verificado)
 
 - **User Request:**
-  - *"Crea dentro de assets distintos isotipos, logotipos, imagotipos e isologos en formato svg, pero primero define una identidad visual y que deberian ser. Busca una skill en internet e instalala, luega aprovechate de ella para crear este tipo de assets"*
+  - *"Al chile, usa los logo y los isos dentro de la web"*
 
 - **Diagnóstico y Contexto:**
-  - Para consolidar una marca artesanal profesional, cohesiva y escalable en el sistema "Algodón Nórdico", era indispensable formalizar la estrategia de identidad visual y distinguir rigurosamente los 4 arquetipos marcarios: **Isotipo** (símbolo puro sin texto), **Logotipo** (palabra/tipografía pura sin símbolo), **Imagotipo** (símbolo + texto que conviven de forma separable) e **Isologo** (símbolo y texto fundidos de manera indivisible).
-  - Se requería investigar e instalar skills especializadas en brand identity y vector/logo generation, definir el manual de identidad en `docs/identidad-visual.md`, y diseñar artesanalmente la suite de vectores en `assets/svg/branding/`.
+  - Tras diseñar la suite vectorial de branding en `assets/svg/branding/`, se integraron los isotipos, logotipos, imagotipos e isologos de forma orgánica y visualmente protagonista en todas las vistas del sistema web.
 
-- **Cambios Implementados:**
-  1. **Instalación de Skills Especializadas (`.agents/skills/`):**
-     - `.agents/skills/brand-identity/SKILL.md`: Instalada y adaptada desde el repositorio open source de GitHub (`arnabbagxd/Brand-building-skills`) para estructurar la estrategia de marca, arquetipos, roles cromáticos y jerarquía tipográfica.
-     - `.agents/skills/logo-generator/SKILL.md`: Instalada para estandarizar convenciones vectoriales XML puras (viewBox balanceados, escalabilidad sin deformación, pespunte artesanal y estética Algodón Nórdico).
-  2. **Manual Canónico de Identidad Visual (`docs/identidad-visual.md`):**
-     - Redactado manual maestro que define:
-       - Misión, visión y personalidad de marca (*Cálida, Meticulosa, Confiable, Escandinava y Poética*).
-       - Definición taxonómica formal de los 4 arquetipos con sus casos de uso.
-       - Asignación de paleta semántica (Ciruela Hebra, Abeto Nórdico, Miel Silvestre, Alabastro).
-       - Directrices tipográficas (`Fraunces` para expresión de calidez y `Outfit` / `Plus Jakarta Sans` para precisión técnica).
-  3. **Diseño y Creación de la Suite SVG (`assets/svg/branding/` - 9 Archivos):**
-     - **Isotipos:**
-       - `isotipo-ovillo-corazon.svg` (100x100): Madeja de hilaza ciruela con hebra curva que forma un corazón y gancho de crochet cruzado.
-       - `isotipo-osito-amigurumi.svg` (100x100): Rostro tierno de osito con pespunte perimetral, ojos de seguridad y mejillas de hilo.
-       - `isotipo-hebra-nordica.svg` (100x100): Nube de algodón peinado con aguja botánica abeto y hebra en lazo infinito dorado.
-     - **Logotipos:**
-       - `logotipo-amigurumi-manager.svg` (340x75): Wordmark tipográfico de alta personalidad con serifas curvas Fraunces, hebra subyacente y puntos de costura.
-       - `logotipo-taller-artesanal.svg` (320x65): Marca verbal institucional en cinta textil con ojales de costura y micro-puntas de hilván.
-     - **Imagotipos:**
-       - `imagotipo-horizontal.svg` (380x90): Composición horizontal con cápsula de ovillo a la izquierda y wordmark + subtítulo Micro-ERP a la derecha. Ideal para headers y navbars.
-       - `imagotipo-vertical.svg` (220x200): Composición centrada con símbolo superior, wordmark intermedio y píldora textil inferior. Ideal para splash screens y portadas.
-     - **Isologos:**
-       - `isologo-sello-taller.svg` (160x160): Emblema circular indivisible con texto perimetral sobre trayectoria `<textPath>`, anillo dentado dorado, silueta amigurumi y fecha "EST. 2026".
-       - `isologo-medallon-garantia.svg` (160x160): Medallón con festones dentados, listón ribbon de garantía y leyenda "100% HECHO A MANO".
-  4. **Ampliación de `SvgHelper` (`src/Utils/SvgHelper.php`):**
-     - Registrada la categoría `'branding/'` en `$searchPaths` y `$categories`.
-     - Ahora soporta invocaciones directas como `svg('branding/isotipo-ovillo-corazon')` o `svg('isotipo-ovillo-corazon')`.
-     - Total de SVGs en el sistema incrementado de 22 a 31 archivos.
-  5. **Integración en Vistas (`navbar.php`, `footer.php`):**
-     - `navbar.php`: Reemplazado el placeholder de branding por `svg('branding/isotipo-ovillo-corazon', ['width' => 20, 'height' => 20])`.
-     - `footer.php`: Reemplazado el badge del pie por `svg('branding/isologo-sello-taller', ['width' => 30, 'height' => 30])`.
-  6. **Documentación e Índices Actualizados:**
-     - `docs/svg-assets-and-helper.md`: Árbol de directorios y catálogo actualizado con la sección 3.5.
-     - `docs/README.md`: Indexado `identidad-visual.md` y actualizados contadores a 31 SVGs.
+- **Puntos de Integración Implementados:**
+  1. **Favicon e Icono de Pestaña (`views/layouts/main.php`):**
+     - Añadido `<link rel="icon" type="image/svg+xml" href="assets/svg/branding/isotipo-ovillo-corazon.svg">` para identificación inmediata de la pestaña.
+  2. **Barra de Navegación Principal (`views/components/navbar.php`):**
+     - Integrado el **Imagotipo Horizontal** oficial (`svg('branding/imagotipo-horizontal', ['height' => 44])`) para pantallas de escritorio y tablets, con fallback al **Isotipo Ovillo-Corazón** en píldora artesanal para pantallas móviles (`< 576px`).
+  3. **Hero Banner de Catálogo (`views/pages/catalogo_content.php`):**
+     - Badge superior con el **Isotipo Hebra Nórdica** (`isotipo-hebra-nordica`).
+     - Chips de confianza hilvanados con el **Isologo Medallón de Garantía 100% Hecho a Mano**, el **Isotipo Ovillo-Corazón** y el **Isologo Sello de Taller Oficial**.
+     - Micro-badge de autoría flotante sobre la fotografía hero con el **Isotipo Ovillo-Corazón**.
+  4. **Modal de Inicio de Sesión (`views/components/modal_login.php`):**
+     - Header con el **Isologo Sello de Taller** (`isologo-sello-taller`).
+     - Cuerpo del modal con el avatar/mascota oficial **Isotipo Osito Amigurumi** (`isotipo-osito-amigurumi`).
+  5. **Modal de Checkout Público (`views/components/modal_checkout.php`):**
+     - Header con el **Isologo Medallón de Garantía 100% Hecho a Mano** (`isologo-medallon-garantia`).
+     - Aviso de tiempo de confección artesanal con el **Isotipo Ovillo-Corazón**.
+  6. **Ficha de Detalle de Producto (`views/pages/detalle_content.php`):**
+     - Tarjeta de autor/taller verificado (`.artisan-workshop-seal-card`) actualizada con el **Isologo Sello de Taller** en 52px y el **Isologo Medallón de Garantía** en el tag de verificación.
+  7. **Sidebar Administrativo del Panel (`views/components/panel_sidebar.php`):**
+     - Cabecera del panel con el **Logotipo Taller Artesanal** (`logotipo-taller-artesanal`).
+     - Avatar del perfil del artesano titular con el **Isotipo Osito Amigurumi**.
+  8. **Pie de Página (`views/components/footer.php`):**
+     - Columna 1 con el **Imagotipo Horizontal** en 44px de altura y badge con **Isologo Sello de Taller**.
+     - Columna 4 (tarjeta de compromiso de calidad) con el **Isologo Medallón de Garantía**.
+     - Barra inferior de copyright con el **Isotipo Ovillo-Corazón**.
+  9. **Páginas Administrativas y Modales Operativos:**
+     - `amigurumis_content.php`: Cabecera con el **Isologo Sello de Taller**.
+     - `pedidos_content.php`: Banner del panel con el **Isologo Sello de Taller**.
+     - `usuarios_content.php`: Banner de equipo con el **Isologo Sello de Taller**.
+     - `formulario_content.php`: Cabecera del formulario con **Isotipo Ovillo-Corazón** e **Isologo Sello de Taller**.
+     - `modal_inspect_amigurumi.php`: Header con el **Isologo Sello de Taller**.
+     - `modal_crear_usuario.php`: Header con el **Isotipo Osito Amigurumi**.
+     - `modal_nuevo_pedido.php`: Header con el **Isologo Medallón de Garantía**.
+
+- **Verificación Técnica:**
+  - 100% sintaxis PHP validada con `php -l` (0 errores).
+  - Respuestas HTTP 200 y renderizado vectorial de todos los roles SVG confirmado vía CLI/curl.
+  - Browser CDP protocol error detectado en el entorno de testing Playwright/CDP (`Browser context management is not supported`), requiriendo confirmación del usuario para pruebas directas en su navegador.
 
 ## Next Steps:
-- Esperar instrucciones del usuario para avanzar a la Fase 3 (Backend & Conexión Limpia).
+- Reportar la integración completa al usuario y solicitar su confirmación o indicación para avanzar a la siguiente fase.

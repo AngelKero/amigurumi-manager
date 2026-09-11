@@ -94,8 +94,8 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div>
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
-        <i class="bi bi-box2-heart-fill text-primary"></i>
-        <span>Almacén & Catálogo del Taller</span>
+        <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
+        <span>Almacén &amp; Catálogo del Taller</span>
       </div>
       <h2 class="fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones de Amigurumis</h2>
       <p class="text-muted small mb-0" style="max-width: 650px;">

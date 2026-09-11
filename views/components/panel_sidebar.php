@@ -7,11 +7,18 @@
 $activePage = $activePage ?? 'amigurumis';
 ?>
 <aside class="panel-sidebar-card card-stitched">
+  <!-- Logotipo Oficial del Taller Artesanal -->
+  <div class="px-2 pt-2 pb-3 mb-2 border-bottom text-center">
+    <?= svg('branding/logotipo-taller-artesanal', ['height' => 38, 'style' => 'max-width: 100%; width: auto; display: inline-block;']) ?>
+  </div>
+
   <!-- Perfil Mini del Artesano Titular -->
   <div class="panel-profile-box">
-    <div class="panel-profile-avatar">A</div>
+    <div class="panel-profile-avatar p-1 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
+      <?= svg('branding/isotipo-osito-amigurumi', ['width' => 36, 'height' => 36]) ?>
+    </div>
     <div class="panel-profile-username">@admin</div>
-    <span class="panel-profile-role">
+    <span class="panel-profile-role d-inline-flex align-items-center gap-1">
       <i class="bi bi-patch-check-fill text-warning"></i> Artesano Titular
     </span>
     <div class="mt-2 text-muted" style="font-size: 0.72rem;">

@@ -10,18 +10,16 @@
       
       <!-- Columna 1: Identidad del Taller & Micro-ERP -->
       <div class="col-12 col-lg-4">
-        <div class="d-flex align-items-center gap-2 mb-3">
-          <div class="brand-craft-badge d-inline-flex align-items-center gap-2 p-2 px-3">
-            <?= svg('branding/isologo-sello-taller', ['width' => 30, 'height' => 30]) ?>
-            <span class="font-theme-display fw-bold fs-5" style="color: var(--craft-primary);">Amigurumi Manager</span>
-          </div>
+        <div class="mb-3">
+          <?= svg('branding/imagotipo-horizontal', ['height' => 44, 'style' => 'max-width: 100%; width: auto;']) ?>
         </div>
         <p class="text-muted small mb-3" style="line-height: 1.6;">
           Micro-ERP y catálogo textil diseñado exclusivamente para artesanas y tejedores de amigurumis. Controla el rendimiento de tus horas de labor, tus inversiones en hilazas y lanas, tus pedidos a la medida y tus existencias en tiempo real.
         </p>
         <div class="d-flex flex-wrap gap-2 align-items-center">
-          <span class="badge badge-textile-tag">
-            <i class="bi bi-patch-check-fill text-success me-1"></i> Taller Artesanal TT-001
+          <span class="badge badge-textile-tag d-inline-flex align-items-center gap-1">
+            <?= svg('branding/isologo-sello-taller', ['width' => 16, 'height' => 16]) ?>
+            <span>Taller Artesanal Oficial</span>
           </span>
           <span class="badge bg-white text-muted font-monospace border px-2 py-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">
             Hecho a Mano con Amor
@@ -59,8 +57,11 @@
       <div class="col-12 col-lg-4">
         <div class="footer-guarantee-box guarantee-stitched">
           <div class="d-flex align-items-center gap-2 mb-2">
-            <i class="bi bi-shield-lock-fill fs-5" style="color: var(--craft-secondary);"></i>
-            <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme);">Compromiso de Calidad Artesanal</h6>
+            <?= svg('branding/isologo-medallon-garantia', ['width' => 38, 'height' => 38, 'class' => 'flex-shrink-0']) ?>
+            <div>
+              <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme); font-size: 0.98rem;">Compromiso de Calidad Artesanal</h6>
+              <small class="text-muted" style="font-size: 0.74rem;">100% Confección Artesanal Certificada</small>
+            </div>
           </div>
           <div class="footer-guarantee-item">
             <i class="bi bi-check-circle-fill"></i>
@@ -95,8 +96,9 @@
         <span>&copy; <?= date('Y') ?> <strong>Amigurumi Manager</strong> &bull; Micro-ERP & Catálogo Textil. Todos los derechos reservados.</span>
       </div>
       <div class="d-flex flex-wrap align-items-center gap-2">
-        <span class="footer-trust-tag">
-          <i class="bi bi-suit-heart-fill text-danger"></i> Tejido punto a punto con amor artesanal
+        <span class="footer-trust-tag d-inline-flex align-items-center gap-1">
+          <?= svg('branding/isotipo-ovillo-corazon', ['width' => 16, 'height' => 16]) ?>
+          <span>Tejido punto a punto con amor artesanal</span>
         </span>
         <span class="badge bg-white text-muted font-monospace border px-2 py-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">
           Micro-ERP Artesanal v2.7

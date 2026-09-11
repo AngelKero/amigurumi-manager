@@ -74,16 +74,19 @@
 
         <!-- Sello Oficial del Taller Artesanal (Algodón Nórdico) -->
         <div class="artisan-workshop-seal-card">
-          <div class="seal-avatar p-0 d-flex align-items-center justify-content-center">
-            <?= svg('badges/sello-taller', ['width' => 40, 'height' => 40]) ?>
+          <div class="seal-avatar p-0 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
+            <?= svg('branding/isologo-sello-taller', ['width' => 52, 'height' => 52]) ?>
           </div>
           <div class="flex-grow-1">
             <div class="d-flex align-items-center flex-wrap gap-1 mb-1">
               <strong class="text-dark">@admin (Artesano Titular)</strong>
-              <span class="seal-badge-tag"><i class="bi bi-award-fill"></i> Taller Verificado</span>
+              <span class="seal-badge-tag d-inline-flex align-items-center gap-1">
+                <?= svg('branding/isologo-medallon-garantia', ['width' => 14, 'height' => 14]) ?>
+                <span>Taller Verificado</span>
+              </span>
             </div>
             <span class="text-muted small d-block">Confección y autoría responsable registrada en el Micro-ERP</span>
-            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Código de Taller Textil: #TT-001-ARTISAN</small>
+            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Código de Taller Textil: #TT-001-ARTISAN &bull; EST. 2026</small>
           </div>
         </div>
 

@@ -7,10 +7,13 @@
 <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
-      <div class="modal-header border-bottom py-3" style="background-color: var(--craft-surface-muted);">
-        <h5 class="modal-title fw-bold" id="checkoutModalTitle">
-          <i class="bi bi-bag-heart me-2 text-primary"></i>Solicitud de Pedido / Compra
-        </h5>
+      <div class="modal-header border-bottom py-3 align-items-center" style="background-color: var(--craft-surface-muted);">
+        <div class="d-flex align-items-center gap-2">
+          <?= svg('branding/isologo-medallon-garantia', ['width' => 32, 'height' => 32]) ?>
+          <h5 class="modal-title fw-bold m-0" id="checkoutModalTitle" style="font-size: 1.05rem;">
+            Solicitud de Pedido &amp; Encargo Especial
+          </h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
 
@@ -33,9 +36,11 @@
           <!-- Lead Time Notice [QW-2] -->
           <div class="lead-time-notice mb-3">
             <div class="d-flex align-items-center gap-2">
-              <i class="bi bi-clock-history text-primary fs-5"></i>
+              <div class="flex-shrink-0">
+                <?= svg('branding/isotipo-ovillo-corazon', ['width' => 28, 'height' => 28]) ?>
+              </div>
               <div class="small">
-                <strong>Tiempo de Confección:</strong> Los encargos personalizados o sin existencias requieren de 5 a 7 días hábiles de tejido artesanal dedicado.
+                <strong>Tiempo de Confección Artesanal:</strong> Las piezas bajo encargo o sin stock inmediato requieren de 5 a 7 días hábiles de tejido punto a punto.
               </div>
             </div>
           </div>
