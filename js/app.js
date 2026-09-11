@@ -287,8 +287,21 @@ function initCatalogSortAndFilter() {
   const sortDropdown = document.getElementById('filterSort');
   const btnClearFilters = document.getElementById('btnClearFilters');
   const productCards = document.querySelectorAll('.product-grid-item');
+  const filterResultsCount = document.getElementById('filterResultsCount');
+  const categoryChips = document.querySelectorAll('.btn-chip-textile');
 
   if (!productCards.length) return;
+
+  function updateCategoryChips(activeCategory) {
+    categoryChips.forEach(chip => {
+      const chipCat = chip.getAttribute('data-category');
+      if (chipCat === activeCategory) {
+        chip.classList.add('active');
+      } else {
+        chip.classList.remove('active');
+      }
+    });
+  }
 
   function filterAndSortProducts() {
     const query = filterSearch ? filterSearch.value.trim().toLowerCase() : '';
@@ -317,6 +330,12 @@ function initCatalogSortAndFilter() {
       }
     });
 
+    // Update Live Result Counter Badge
+    if (filterResultsCount) {
+      const count = matchedCards.length;
+      filterResultsCount.innerHTML = `<i class="bi bi-grid-fill text-primary me-1"></i>${count} ${count === 1 ? 'pieza visible' : 'piezas visibles'}`;
+    }
+
     // Handle sort ordering
     const gridContainer = document.getElementById('productCardGrid');
     if (gridContainer && matchedCards.length > 0) {
@@ -330,8 +349,25 @@ function initCatalogSortAndFilter() {
     }
   }
 
+  // Bind interactive textile category chips
+  categoryChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const targetCategory = chip.getAttribute('data-category');
+      if (filterCategory) {
+        filterCategory.value = targetCategory;
+      }
+      updateCategoryChips(targetCategory);
+      filterAndSortProducts();
+    });
+  });
+
   if (filterSearch) filterSearch.addEventListener('input', filterAndSortProducts);
-  if (filterCategory) filterCategory.addEventListener('change', filterAndSortProducts);
+  if (filterCategory) {
+    filterCategory.addEventListener('change', () => {
+      updateCategoryChips(filterCategory.value);
+      filterAndSortProducts();
+    });
+  }
   if (filterStock) filterStock.addEventListener('change', filterAndSortProducts);
   if (sortDropdown) sortDropdown.addEventListener('change', filterAndSortProducts);
 
@@ -341,6 +377,7 @@ function initCatalogSortAndFilter() {
       if (filterCategory) filterCategory.value = 'all';
       if (filterStock) filterStock.value = 'all';
       if (sortDropdown) sortDropdown.value = 'recent';
+      updateCategoryChips('all');
       filterAndSortProducts();
     });
   }

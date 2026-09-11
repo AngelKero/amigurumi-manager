@@ -15,13 +15,10 @@
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
 
-## Current State: Phase 2 Craft Textures & Stitched Borders Completed
-- **User Request:** Research and implement CSS border styles that evoke stitched, sewn, or knitted textures (pespuntes, hilvanes, etiquetas textiles, bordes acolchados), giving elements a tactile, handmade aesthetic aligned with "Algodón Nórdico".
-- **Execution Completed:**
-  1. **Research & Design:** Researched authentic needlework and craft web design techniques (inset running seams, embroidered outline offsets, woven cloth tags, running-stitch gradients).
-  2. **CSS Token & Utility Implementation (`css/styles.css`):** Integrated `.card-stitched`, `.btn-craft-stitched`, `.badge-textile-tag`, `.divider-stitched`, and `.guarantee-stitched`.
-  3. **Universal View Deployment:** Fully implemented across `index.html`, `detalle.html`, `pedidos.html`, and `formulario.html`.
-  4. **Atmospheric Backgrounds:** Added floating cloud and yarn SVG decorations (`.cloud-yarn-bg-decorations`) to give an ethereal, soft handmade atmosphere.
-  5. **Design System Codification:** Updated `.agents/rules/ui-ux-design-system.md` with Section 5 enshrining these craft border techniques.
-  6. **Visual Browser Verification:** Verified live via browser subagent with screenshots and screen recordings across all views.
-- **Phase Gate Status:** Phase 2 Layout & UI refinement complete. Awaiting user review and sign-off before proceeding to Phase 3.
+## Current State: Phase 2 Craft Detailing Enhancement (Header, Banner & Filters)
+- **User Request:** "Aun hay muchas areas de oportunidad para implementar la nueva decoracion, como por ejemplo todos los elementos del header, el banner y todo el tema de filtros"
+- **Focus Areas Identified:**
+  1. **Header / Navbar Elements:** Brand identity badge with embroidered stitch, textile tag navigation tabs (`Catálogo`, `Panel del Artesano`), harmonious artisan session badge (`@admin (Artesano)`) replacing harsh dark box with a warm linen/honey stitched artisan seal, logout button polish, and running-stitch divider line along the navbar bottom.
+  2. **Hero Banner (`.hero-cloud`):** Apply grand quilted inset running seam (`.card-stitched`), style collection ribbon as woven care tag, frame hero photo with stitched quilted borders, transform micro-trust indicators into stitched trust chips, and craft the secondary action button with stitched styling.
+  3. **Filter Station / Toolbar:** Wrap search & filters inside a tailored quilted workstation card (`.card-stitched`), add interactive textile category chips (`.badge-textile-tag` with click filter support), style search input and selects with craft stitch focus and custom accents, and provide an embroidered reset button.
+- **Phase Gate Status:** In Phase 2 Layout & UI refinement. Creating detailed implementation plan for user review.

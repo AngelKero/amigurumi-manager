@@ -61,9 +61,11 @@
   <!-- ========================================================================= -->
   <nav class="navbar navbar-expand-lg navbar-craft sticky-top">
     <div class="container-xl">
-      <a class="navbar-brand" href="index.html">
-        <span class="brand-icon"><i class="bi bi-balloon-heart-fill"></i></span>
-        <span>Amigurumi Manager</span>
+      <a class="navbar-brand p-0" href="index.html">
+        <span class="brand-craft-badge">
+          <span class="brand-icon"><i class="bi bi-balloon-heart-fill"></i></span>
+          <span>Amigurumi Manager</span>
+        </span>
       </a>
       
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Alternar navegación">
@@ -106,16 +108,16 @@
 
         <!-- ACCIONES DE AUTENTICACIÓN -->
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-craft-outline btn-sm d-flex align-items-center gap-2" id="btnNavLogin" data-bs-toggle="modal" data-bs-target="#loginModal">
+          <button class="btn btn-craft-outline btn-craft-outline-stitched btn-sm d-flex align-items-center gap-2" id="btnNavLogin" data-bs-toggle="modal" data-bs-target="#loginModal">
             <i class="bi bi-person-circle fs-6"></i>
             <span>Iniciar Sesión</span>
           </button>
 
           <div class="d-none align-items-center gap-2" id="navUserBadge">
-            <span class="badge bg-dark font-monospace py-2 px-3 border border-secondary" style="border-radius: var(--craft-radius-pill);">
-              <i class="bi bi-person-badge text-warning me-1"></i>@admin (Artesano)
+            <span class="badge badge-artisan-seal">
+              <i class="bi bi-patch-check-fill text-warning me-1"></i>@admin (Artesano Titular)
             </span>
-            <button class="btn btn-outline-danger btn-sm btn-nav-logout" title="Cerrar Sesión" style="border-radius: var(--craft-radius-pill);">
+            <button class="btn btn-craft-logout btn-sm btn-nav-logout" title="Cerrar Sesión">
               <i class="bi bi-box-arrow-right"></i>
             </button>
           </div>

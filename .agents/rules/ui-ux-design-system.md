@@ -96,3 +96,16 @@ To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views
    - Used on trust cards, guarantees, and artisan assurances with a distinct spruce-tinted dashed border (`1.5px dashed rgba(82, 133, 124, 0.35)`).
 6. **Atmospheric Background Decorations (`.cloud-yarn-bg-decorations`):**
    - Ambient, non-obtrusive floating SVG clouds, yarn balls, and crochet hooks in the background canvas (`pointer-events: none`, opacity 0.18–0.22).
+7. **Navbar Textile Seam & Artisan Master Seal (`.brand-craft-badge`, `.badge-artisan-seal`, `.btn-craft-logout`):**
+   - Navbars must display a dashed running-stitch bottom seam (`border-bottom: 2px dashed rgba(142, 91, 116, 0.22)`).
+   - The brand title is framed in a delicate pill badge with dashed micro-stitch (`.brand-craft-badge`).
+   - Authenticated artisan status must NEVER revert to harsh black boxes (`bg-dark`). It must always use the warm parchment seal with golden dashed stitches (`.badge-artisan-seal`).
+   - Logout actions use `.btn-craft-logout` with soft rose dashed borders.
+8. **Quilted Hero Banner & Stitched Photo Frame (`.hero-cloud-stitched`, `.hero-photo-stitched-frame`):**
+   - The hero banner includes a grand running-stitch inset seam (`.hero-cloud-seam`).
+   - Hero photography is framed in a white canvas mat with dashed running stitch (`.hero-photo-stitched-frame`).
+9. **Stitched Trust Chips & Secondary CTA (`.trust-chip-stitched`, `.btn-craft-outline-stitched`):**
+   - Trust indicators must be displayed in delicate stitched pill chips (`.trust-chip-stitched`).
+   - Secondary actions must use dashed running stitch borders (`.btn-craft-outline-stitched`).
+10. **Interactive Textile Category Chips (`.btn-chip-textile`):**
+    - The catalog filter station must provide clickable textile tags with dashed borders that activate an embroidered running stitch when selected, maintaining 100% two-way sync with the category select dropdown.
