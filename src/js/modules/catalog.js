@@ -24,6 +24,10 @@ export function initCatalog() {
     if (filterResultsCount) {
       filterResultsCount.innerHTML = `<i class="bi bi-grid-fill text-primary me-1"></i>${visibleCount} ${visibleCount === 1 ? 'pieza visible' : 'piezas visibles'}`;
     }
+    const paginationShowing = document.getElementById('paginationShowingCount');
+    if (paginationShowing) {
+      paginationShowing.textContent = visibleCount;
+    }
   }
 
   function filterAndSort() {

@@ -1,0 +1,158 @@
+/* ==========================================================================
+   04-COMPONENTS: ARTISAN TEXTILE FOOTER
+   Algodón Nórdico Design System
+   ========================================================================== */
+
+.footer-craft {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FCF8FA 40%, #F7EFF3 100%);
+  border-top: 2px dashed rgba(142, 91, 116, 0.28);
+  padding: 4rem 0 2rem 0;
+  color: var(--craft-text-muted);
+  font-size: 0.9rem;
+  position: relative;
+  margin-top: auto;
+  z-index: 1;
+}
+
+/* Ambient Subtle Lighting */
+.footer-craft::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: radial-gradient(ellipse at center, rgba(142, 91, 116, 0.3) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Footer Section Headings */
+.footer-heading {
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
+  color: var(--craft-text-main);
+  font-size: 1.05rem;
+  margin-bottom: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.footer-heading i {
+  color: var(--craft-primary);
+  font-size: 1.1rem;
+}
+
+/* Artisan Navigation Links */
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-list li {
+  margin-bottom: 0.55rem;
+}
+
+.footer-link {
+  color: var(--craft-text-muted);
+  text-decoration: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.885rem;
+  font-weight: 500;
+}
+
+.footer-link i {
+  font-size: 0.75rem;
+  color: var(--craft-primary);
+  opacity: 0.65;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--craft-primary);
+  transform: translateX(3px);
+}
+
+.footer-link:hover i {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Guarantee & Craft Assurance Card */
+.footer-guarantee-box {
+  background: #FFFFFF;
+  border-radius: var(--craft-radius);
+  padding: 1.25rem;
+  border: 1.5px dashed rgba(82, 133, 124, 0.4);
+  box-shadow: 0 4px 18px rgba(30, 37, 45, 0.04);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-guarantee-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(82, 133, 124, 0.12);
+}
+
+.footer-guarantee-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.825rem;
+  color: var(--craft-text-muted);
+  margin-bottom: 0.65rem;
+  line-height: 1.35;
+}
+
+.footer-guarantee-item i {
+  color: var(--craft-secondary);
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.footer-guarantee-item strong {
+  color: var(--craft-text-main);
+  font-weight: 600;
+}
+
+/* Subfooter & Copyright Bar */
+.footer-bottom-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  font-size: 0.825rem;
+  color: var(--craft-text-muted);
+}
+
+.footer-trust-tag {
+  background-color: #FFFFFF;
+  border: 1px dashed rgba(142, 91, 116, 0.3);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.3rem 0.85rem;
+  font-size: 0.785rem;
+  font-weight: 600;
+  color: var(--craft-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .footer-craft {
+    padding-top: 2.5rem;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+}

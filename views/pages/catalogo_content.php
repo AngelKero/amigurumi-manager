@@ -275,16 +275,33 @@ $catalogItems = [
   </div>
 </div>
 
-<!-- PAGINACIÓN / RESUMEN DE RESULTADOS -->
-<section class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-  <span class="text-muted small">
-    Mostrando <strong><?= count($catalogItems) ?></strong> de <strong><?= count($catalogItems) ?></strong> piezas artesanales en el catálogo
-  </span>
+<!-- ESTACIÓN DE PAGINACIÓN TEXTIL ARTESANAL -->
+<section class="pagination-craft-station card-stitched d-flex flex-wrap justify-content-between align-items-center gap-3 my-4">
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <div class="pagination-results-chip">
+      <i class="bi bi-collection-fill" style="color: var(--craft-primary);"></i>
+      <span>Mostrando <strong id="paginationShowingCount"><?= count($catalogItems) ?></strong> de <strong id="paginationTotalCount"><?= count($catalogItems) ?></strong> creaciones artesanales</span>
+    </div>
+    <span class="badge bg-light text-muted font-monospace border px-3 py-2 d-none d-md-inline" style="border-radius: var(--craft-radius-pill); font-size: 0.75rem;">
+      <i class="bi bi-clock-history me-1 text-primary"></i>Colección Nórdica 2026
+    </span>
+  </div>
+
   <nav aria-label="Navegación de catálogo">
-    <ul class="pagination pagination-sm mb-0">
-      <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-      <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
-      <li class="page-item disabled"><a class="page-link" href="#">»</a></li>
+    <ul class="pagination-craft">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" aria-label="Anterior" title="Página anterior">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      </li>
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item disabled">
+        <a class="page-link" href="#" aria-label="Siguiente" title="Página siguiente">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </li>
     </ul>
   </nav>
 </section>

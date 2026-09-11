@@ -14,6 +14,7 @@
 | **Typography & Theme** | Instalación de Tipografía Display Artesanal | **Completed & Verified** | Integrada la fuente Google Font `Fraunces` para encabezados importantes en pantallas públicas (`index.php`, `detalle.php`, modal checkout, navbar), aportando calidez y personalidad artesanal nórdica. |
 | **SVG Assets & Helper** | Galería Vectorial `assets/svg/` & `SvgHelper` | **Completed & Verified** | Creados 22 SVGs artesanales archivo por archivo en `assets/svg/` (amigurumis, tools, badges, decorations) e implementado `SvgHelper` con funciones globales `svg()` y `svg_url()` para renderizado inline de alto rendimiento. |
 | **Hero Image & Showcase** | Fotografía Macro Hero de Gran Formato | **Completed & Verified** | Generada fotografía de estudio artesanal nórdica en `assets/img/hero_amigurumi.jpg` e integrada con marco pespunteado acolchado de 540px en `views/pages/catalogo_content.php`, abarcando un espacio protagónico. |
+| **Pagination & Footer** | Estación Textil y Master Footer Nórdico | **Completed & Verified** | Rediseñados la paginación (`pagination.css`, `catalogo_content.php`) con botones pill bordados y contador reactivo, y el master footer (`footer.css`, `footer.php`) con 4 columnas, tarjeta de garantía nórdica y WhatsApp. |
 | **Phase 3** | Backend & Connection (Clean Architecture) | **Awaiting Explicit Approval** | Implement `src/` modular backend (Autoloader, Singleton Database, Repositories/DAO, Services, Middleware) and `api/` controllers. |
 | **Phase 4** | CRUD Operations & Fullstack Wiring | **Pending** | Wire modular frontend with clean backend endpoints via AJAX fetch. |
 | **Phase 5** | Documentation & Final Delivery | **In Progress (README & Docs Hub created)** | Created `README.md` and master documentation hub `docs/README.md`. |
@@ -33,6 +34,7 @@
 - Phase 2.6 & 2.7 UI/UX & Database Alignment Package completed: User Management (`usuarios.php`), Edit/Delete amigurumi safeguards, Empty states, Manual orders with live KPIs, universal currency helpers, and interactive user role modification.
 - Agent Rules & Workflows in `.agents/` fully updated with learned project patterns (Rules 16 to 21).
 - 100% of PHP and JS code validated via `php -l` and `node --check` with 0 errors.
+- Estación de Paginación Textil (`pagination.css`) con botones pill pespunteados, contador dinámico reactivo en `catalog.js`, y Master Footer Nórdico (`footer.css`, `footer.php`) con 4 columnas, garantía artesanal y contacto WhatsApp.
 
 ## What's Left to Build
 - Phase 3: Modular Backend (`src/Core/`, `src/Database/`, `src/Middleware/`, `src/Services/`, `src/Repositories/`).

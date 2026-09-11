@@ -90,14 +90,3 @@
   font-size: 0.825rem;
   color: var(--craft-text-body);
 }
-
-/* Footer */
-.footer-craft {
-  background-color: var(--craft-surface);
-  border-top: 1px solid var(--craft-border);
-  padding: 2.5rem 0;
-  color: var(--craft-text-muted);
-  font-size: 0.875rem;
-  position: relative;
-  z-index: 1;
-}
