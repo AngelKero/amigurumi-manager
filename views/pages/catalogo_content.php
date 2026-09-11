@@ -66,7 +66,7 @@ $catalogItems = [
   <div class="row align-items-center g-4 position-relative" style="z-index: 2;">
     
     <!-- Columna Texto y Acciones -->
-    <div class="col-lg-7 text-center text-lg-start">
+    <div class="col-lg-6 text-center text-lg-start">
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag fs-6 mb-3">
         <span class="text-primary"><i class="bi bi-stars"></i></span>
         <span>Colección Textil Algodón Nórdico</span>
@@ -110,22 +110,22 @@ $catalogItems = [
     </div>
 
     <!-- Columna Fotografía Artesanal con Marco Pespunte Acolchado -->
-    <div class="col-lg-5 text-center">
+    <div class="col-lg-6 text-center">
       <div class="hero-photo-stitched-frame mx-auto">
-        <div class="position-relative overflow-hidden" style="border-radius: calc(var(--craft-radius) - 6px);">
-          <img src="uploads/dragon.jpg" 
-               alt="Dragón Ignis Amigurumi Artesanal" 
+        <div class="position-relative overflow-hidden" style="border-radius: calc(var(--craft-radius) - 4px);">
+          <img src="assets/img/hero_amigurumi.jpg" 
+               alt="Colección Artesanal Amigurumi Algodón Nórdico" 
                class="img-fluid hero-crafted-img" 
                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
           
           <!-- Fallback SVG Ilustrado Mejorado -->
-          <div class="d-none bg-white p-2">
-            <?= svg('dragon-ignis', ['class' => 'img-fluid hero-crafted-img']) ?>
+          <div class="d-none bg-white p-4 text-center">
+            <?= svg('amigurumis/dragon-ignis', ['class' => 'img-fluid', 'style' => 'max-height: 280px;']) ?>
           </div>
 
           <!-- Micro-Badge de Autoría Flotante -->
-          <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill bg-white shadow-sm border small fw-bold font-monospace" style="color: var(--craft-primary); font-size: 0.75rem;">
-            <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller
+          <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill shadow-sm border small fw-bold font-monospace" style="color: var(--craft-primary); font-size: 0.78rem; z-index: 4; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.94) !important;">
+            <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller • Colección Nórdica
           </div>
         </div>
       </div>
