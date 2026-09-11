@@ -3,12 +3,12 @@
    Clean Architecture Component Styles for pedidos.php
    ========================================================================== */
 
-/* 1. Tarjetas de Pedidos en Cuadrícula Responsiva */
+/* 1. Tarjetas de Pedidos en Cuadrícula Responsiva (Estilo Amigurumis) */
 .card-admin-pedido {
   background: #FFFFFF;
   border-radius: var(--craft-radius);
   border: 1px solid var(--craft-border);
-  box-shadow: var(--craft-shadow-sm);
+  box-shadow: 0 4px 16px rgba(30, 37, 45, 0.04);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -18,31 +18,34 @@
 
 .card-admin-pedido:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(30, 37, 45, 0.08);
+  box-shadow: 0 14px 32px rgba(142, 91, 116, 0.12);
   border-color: rgba(142, 91, 116, 0.35);
 }
 
 /* Encabezado Superior de la Card de Pedido */
 .card-admin-pedido .card-order-header {
-  padding: 1rem 1.15rem 0.75rem 1.15rem;
+  padding: 0.85rem 1.15rem;
   border-bottom: 1px dashed var(--craft-border);
   background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .order-id-badge {
   font-family: var(--craft-font-mono, monospace);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--craft-primary);
   background: var(--craft-primary-subtle);
-  padding: 0.25rem 0.65rem;
+  padding: 0.2rem 0.6rem;
   border-radius: var(--craft-radius-pill);
   border: 1px solid rgba(142, 91, 116, 0.2);
 }
 
 .order-delivery-chip {
   font-family: var(--craft-font-mono, monospace);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--craft-text-muted);
   background: #FFFFFF;
   border: 1px solid var(--craft-border);
@@ -53,54 +56,57 @@
   gap: 0.35rem;
 }
 
+/* Marco Fotográfico Acolchado Pespunteado (Centrado como en Amigurumis) */
+.order-card-photo-frame {
+  height: 135px;
+  background: linear-gradient(135deg, #FAFAFA 0%, #F6EEF2 100%);
+  border-radius: calc(var(--craft-radius) - 6px);
+  border: 1px solid var(--craft-border);
+  outline: 1.5px dashed rgba(142, 91, 116, 0.28);
+  outline-offset: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0.85rem 1.15rem 0.85rem 1.15rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.card-admin-pedido:hover .order-card-photo-frame {
+  outline-color: var(--craft-primary);
+}
+
+.order-card-photo-frame svg,
+.order-card-photo-frame img {
+  max-height: 110px;
+  width: auto;
+  max-width: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(142, 91, 116, 0.14));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-admin-pedido:hover .order-card-photo-frame svg,
+.card-admin-pedido:hover .order-card-photo-frame img {
+  transform: scale(1.06);
+}
+
 /* Cuerpo Principal de la Card de Pedido */
 .card-admin-pedido .card-order-body {
-  padding: 1.15rem;
+  padding: 0 1.15rem 1.15rem 1.15rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Presentación del Amigurumi con Miniatura Textil */
-.order-product-strip {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 0.95rem;
-}
-
-.order-product-thumb-frame {
-  width: 68px;
-  height: 68px;
-  min-width: 68px;
-  border-radius: calc(var(--craft-radius) - 6px);
-  background: #FAF8F5;
-  border: 1.5px dashed rgba(142, 91, 116, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
-}
-
-.order-product-thumb-frame svg,
-.order-product-thumb-frame img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.order-product-info {
-  min-width: 0;
-  flex-grow: 1;
-}
-
 .order-product-title {
   font-family: var(--craft-font-theme);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   color: var(--craft-text-main);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.35rem;
   line-height: 1.25;
 }
 
@@ -108,13 +114,14 @@
   display: inline-flex;
   align-items: center;
   font-family: var(--craft-font-mono, monospace);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--craft-secondary-text);
   background: var(--craft-secondary-subtle);
   border: 1px solid rgba(82, 133, 124, 0.25);
-  padding: 0.15rem 0.5rem;
+  padding: 0.18rem 0.55rem;
   border-radius: var(--craft-radius-pill);
+  white-space: nowrap;
 }
 
 /* Caja de Datos del Cliente */
@@ -122,12 +129,12 @@
   background: var(--craft-surface-muted);
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius-sm);
-  padding: 0.75rem 0.85rem;
-  margin-bottom: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  margin-bottom: 0.85rem;
 }
 
 .order-client-label {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -138,7 +145,7 @@
 .order-client-name {
   font-weight: 700;
   color: var(--craft-text-main);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.2;
 }
 
@@ -150,19 +157,20 @@
   color: #1E7E34;
   font-family: var(--craft-font-mono, monospace);
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--craft-radius-pill);
   border: 1px solid #C3E6CB;
   text-decoration: none;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-wa-pill:hover {
   background: #25D366;
   color: #FFFFFF;
   border-color: #25D366;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.35);
 }
 
 /* Franja Financiera de la Orden */
@@ -170,7 +178,7 @@
   background: #FFFFFF;
   border: 1px dashed var(--craft-border);
   border-radius: var(--craft-radius-sm);
-  padding: 0.65rem 0.85rem;
+  padding: 0.7rem 0.9rem;
   margin-bottom: 0.85rem;
   display: flex;
   justify-content: space-between;
@@ -178,9 +186,9 @@
 }
 
 .order-price-amount {
-  font-family: var(--craft-font-mono, monospace);
+  font-family: var(--craft-font-theme);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--craft-text-main);
   line-height: 1;
 }
@@ -190,17 +198,21 @@
   background: #FFFDF9;
   border-left: 3.5px solid var(--craft-accent-gold);
   border-radius: 0 var(--craft-radius-sm) var(--craft-radius-sm) 0;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.76rem;
   color: var(--craft-text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
   margin-bottom: 0.85rem;
   font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Footer de Acciones de la Card */
 .card-admin-pedido .card-order-footer {
-  padding: 0.75rem 1.15rem;
+  padding: 0.8rem 1.15rem;
   background: var(--craft-surface-muted);
   border-top: 1px dashed var(--craft-border);
   display: flex;

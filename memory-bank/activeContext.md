@@ -1,27 +1,22 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Rediseño Integral de Gestión de Pedidos: Cards Responsivas y Armonización Algodón Nórdico (Completado y Verificado)
+## Current Task: Corrección Ergonómica de Tipografía en KPIs y Reparación Estructural de Cards de Pedidos (Completado y Verificado)
 
 - **User Request:**
-  - *"Hay area de mejora de diseño en pedido, mejoralo y cambia la tabla por cards asi como lo hiciste en amigurumis"* (con captura adjunta de `pedidos.php` mostrando la tabla rígida y el banner oscuro con contraste deficiente).
+  - *"Mejora los tamaños de fuentes de estos y las cards estan rotas"* (adjunta 2 capturas: KPIs con tipografía monoespaciada gigante y desproporcionada; cards con badges cortados como `2 unida...` y layout apretado).
 
-- **Resultados y Soluciones Implementadas:**
-  1. **Cabecera Luminosa con Contraste Superior a 7:1 (`pedidos_content.php`):**
-     - Se reemplazó el banner oscuro `.artisan-panel-banner` por `.artisan-module-header card-stitched` con pespunte perimetral, sello oficial `isologo-sello-taller.svg`, tipografía `Fraunces` para el título y botones de acción pespunteados (`Nuevo Encargo Manual`, `Inventario`, `Ver Catálogo`).
-  2. **Reemplazo Total de la Tabla por Cuadrícula de Cards 3x / 2x (`#ordersGrid`):**
-     - Se eliminó la tabla rígida `#ordersTableDesktop` y la vista móvil duplicada `#mobileOrdersContainer`, unificando la interfaz en una cuadrícula responsiva (`row-cols-1 row-cols-md-2 row-cols-xl-3`) con tarjetas artesanales `.card-admin-pedido.card-stitched`.
-     - Cada card incluye:
-       - **Header:** Insignia ID en fuente monoespaciada (`.order-id-badge`) y chip de fecha límite de entrega con icono de calendario (`.order-delivery-chip`).
-       - **Strip de Amigurumi:** Marco fotográfico pespunteado (`.order-product-thumb-frame`) con SVG renderizado del producto (`dragon-ignis`, `ajolote-pastel`), título, tag textil de categoría y tag de cantidad.
-       - **Bloque de Cliente:** Nombre del destinatario y botón de acción directa de WhatsApp (`.btn-wa-pill` hacia `https://wa.me/...`).
-       - **Franja Financiera:** Monto total acordado y badge tri-estado de pago (`Pendiente`, `Anticipo 50%`, `Liquidado`).
-       - **Notas de Confección:** Cita estilizada para especificaciones especiales (`.order-notes-preview`).
-       - **Footer de Card:** Badge de fase de confección (`En Proceso`, `Pendiente`, `Entregado`, `Cancelado`), botón de inspección modal (`.btn-inspect-order` abriendo `#modalInspeccionarPedido`) y dropdown interactivo de cambio de estado y cancelación con restitución de inventario (`#modalCancelarPedido`).
-  3. **Toolbar y Filtros Textiles Interactivos:**
-     - Barra de pestañas textiles `.btn-filter-order-tab` con contadores dinámicos sincronizados (`#countFilterAll`, `#countFilterPendiente`, `#countFilterProceso`, etc.) y buscador reactivo en tiempo real con estado vacío dedicado (`#emptyOrdersGrid`).
-  4. **Estilos Modulares Dedicados (`src/css/04-components/orders.css`):**
-     - Creado módulo CSS e importado en `src/css/styles.css`.
-  5. **Lógica JavaScript Sincronizada (`src/js/modules/orders.js`):**
-     - Actualizada la manipulación reactiva de `#ordersGrid`, recálculo dinámico de métricas KPI, transiciones de estado in-situ e inyección de nuevas tarjetas para encargos manuales registrados por el artesano.
-  6. **Validación:**
-     - Sintaxis PHP (`php -l`) y JS (`node --check`) verificadas con 0 errores; respuesta HTTP 200 OK en `http://localhost:8000/pedidos.php`.
+- **Diagnóstico y Soluciones:**
+  1. **Tipografía de KPIs Refinada y Proporcionada:**
+     - Se eliminó el uso de `fs-2 fw-extrabold font-monospace` que distorsionaba las métricas.
+     - Se aplicó la tipografía artesanal display `font-theme-display` (`Fraunces` / `Outfit`) con tamaño `fs-2` y `fs-3` proporcionado.
+     - Se separó la cifra numérica de la unidad textual descriptiva (`órdenes`, `en espera`, `activos`, `MXN`) en un `<span>` independiente (`text-muted small fw-medium`), evitando textos sobrecargados y respetando el estándar de `amigurumis.php`.
+  2. **Reparación Estructural de las Cards de Pedidos (`.card-admin-pedido`):**
+     - Se eliminó el layout comprimido de 68px lateral que provocaba el desbordamiento y corte de texto (`2 unida`).
+     - Se implementó el **Marco Fotográfico Acolchado Pespunteado Centrado** (`.order-card-photo-frame`, 135px de altura) idéntico al de `amigurumis.php`, con fondo suave, outline pespunteado y SVG del amigurumi con sombra y micro-animación al hover.
+     - El título del amigurumi, el tag textil de categoría, el tag de cantidad (`.order-qty-tag`) y la medida en cm ahora ocupan el ancho completo de la card con `d-flex flex-wrap align-items-center gap-2`, eliminando por completo cualquier riesgo de recorte o desbordamiento.
+     - Se refinaron los bloques de cliente con botón directo de WhatsApp, franja financiera estilizada y notas de personalización con limitación a 2 líneas.
+  3. **Sincronización de CSS y JavaScript:**
+     - [`src/css/04-components/orders.css`](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/orders.css) actualizado con la nueva arquitectura visual.
+     - [`src/js/modules/orders.js`](file:///Users/angelzaragoza/Desktop/proyecto-web/src/js/modules/orders.js) adaptado para actualizar solo las cifras numéricas de los KPIs y generar el template de card centrado al registrar encargos manuales.
+  4. **Validación:**
+     - Sintaxis PHP (`php -l`) y JS (`node --check`) validadas con 0 errores; respuesta HTTP 200 OK en `http://localhost:8000/pedidos.php`.

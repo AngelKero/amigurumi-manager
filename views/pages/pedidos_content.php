@@ -94,34 +94,46 @@ foreach ($mockOrders as $ord) {
   </div>
 </section>
 
-<!-- TARJETAS DE MÉTRICAS KPI -->
+<!-- TARJETAS DE MÉTRICAS KPI (TIPOGRAFÍA REFINADA Y PROPORCIONADA) -->
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Total Pedidos</div>
-      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiOrdersTotal"><?= $kpiTotal ?> órdenes</div>
-      <div class="text-muted small">Registros en el sistema</div>
+      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Total Pedidos</div>
+      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
+        <span class="fs-2 fw-bold font-theme-display text-dark" id="kpiOrdersTotal"><?= $kpiTotal ?></span>
+        <span class="text-muted small fw-medium">órdenes</span>
+      </div>
+      <div class="text-muted small" style="font-size: 0.76rem;">Registros en el sistema</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Pendientes</div>
-      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiOrdersPendientes"><?= $kpiPendientes ?> pedidos</div>
-      <div class="text-muted small">Esperando confección</div>
+      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Pendientes</div>
+      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
+        <span class="fs-2 fw-bold font-theme-display text-warning-emphasis" id="kpiOrdersPendientes"><?= $kpiPendientes ?></span>
+        <span class="text-muted small fw-medium">en espera</span>
+      </div>
+      <div class="text-muted small" style="font-size: 0.76rem;">Esperando confección</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">En Proceso</div>
-      <div class="fs-2 fw-extrabold text-primary font-monospace" id="kpiOrdersProceso"><?= $kpiProceso ?> activos</div>
-      <div class="text-muted small">En el telar / crochet</div>
+      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">En Confección</div>
+      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
+        <span class="fs-2 fw-bold font-theme-display text-primary" id="kpiOrdersProceso"><?= $kpiProceso ?></span>
+        <span class="text-muted small fw-medium">activos</span>
+      </div>
+      <div class="text-muted small" style="font-size: 0.76rem;">En el telar / crochet</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Ingresos Activos</div>
-      <div class="fs-2 fw-extrabold text-success font-monospace" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?> MXN</div>
-      <div class="text-muted small">Monto en pedidos vigentes</div>
+      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Ingresos Activos</div>
+      <div class="d-flex align-items-baseline gap-1.5 mt-1 mb-1">
+        <span class="fs-3 fw-bold font-theme-display text-success" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?></span>
+        <span class="text-muted font-monospace" style="font-size: 0.74rem;">MXN</span>
+      </div>
+      <div class="text-muted small" style="font-size: 0.76rem;">Monto en pedidos vigentes</div>
     </div>
   </div>
 </section>
@@ -164,7 +176,7 @@ foreach ($mockOrders as $ord) {
   </div>
 </section>
 
-<!-- CUADRÍCULA RESPONSIVA DE TARJETAS DE PEDIDOS (CARDS 3X / 2X) -->
+<!-- CUADRÍCULA RESPONSIVA DE TARJETAS DE PEDIDOS (ESTILO AMIGURUMIS 3X / 2X) -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 g-xl-4 mb-4" id="ordersGrid">
   <?php foreach ($mockOrders as $pedido): ?>
     <div class="col order-card-col"
@@ -185,27 +197,27 @@ foreach ($mockOrders as $ord) {
           </span>
         </div>
 
+        <!-- Marco Fotográfico Acolchado Pespunteado (Centrado) -->
+        <div class="order-card-photo-frame">
+          <?= svg($pedido['svg_slug']) ?>
+        </div>
+
         <!-- Cuerpo de la Card -->
         <div class="card-order-body">
           
-          <!-- Franja de Producto con Miniatura de Hilaza y Medidas -->
-          <div class="order-product-strip">
-            <div class="order-product-thumb-frame">
-              <?= svg($pedido['svg_slug'], ['width' => 54, 'height' => 54]) ?>
-            </div>
-            <div class="order-product-info">
-              <h5 class="order-product-title text-truncate" title="<?= htmlspecialchars($pedido['producto_nombre']) ?>">
-                <?= htmlspecialchars($pedido['producto_nombre']) ?>
-              </h5>
-              <div class="d-flex align-items-center gap-2 mb-1">
-                <span class="badge badge-textile-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">
-                  <?= htmlspecialchars($pedido['producto_categoria']) ?>
-                </span>
-                <span class="order-qty-tag">
-                  <?= $pedido['cantidad'] ?> <?= $pedido['cantidad'] > 1 ? 'unidades' : 'unidad' ?>
-                </span>
-              </div>
-              <small class="text-muted font-monospace" style="font-size: 0.73rem;">
+          <!-- Título y Metadata del Amigurumi (Con flex-wrap holgado) -->
+          <div class="mb-3">
+            <h5 class="order-product-title text-truncate" title="<?= htmlspecialchars($pedido['producto_nombre']) ?>">
+              <?= htmlspecialchars($pedido['producto_nombre']) ?>
+            </h5>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.18rem 0.5rem;">
+                <?= htmlspecialchars($pedido['producto_categoria']) ?>
+              </span>
+              <span class="order-qty-tag">
+                <i class="bi bi-box-seam me-1"></i><?= $pedido['cantidad'] ?> <?= $pedido['cantidad'] > 1 ? 'unidades' : 'unidad' ?>
+              </span>
+              <small class="text-muted font-monospace" style="font-size: 0.74rem;">
                 <i class="bi bi-rulers me-1"></i><?= $pedido['producto_tamano'] ?>
               </small>
             </div>
@@ -254,7 +266,7 @@ foreach ($mockOrders as $ord) {
 
           <!-- Notas y Especificaciones Especiales del Cliente -->
           <?php if (!empty($pedido['notas'])): ?>
-            <div class="order-notes-preview text-truncate" title="<?= htmlspecialchars($pedido['notas']) ?>">
+            <div class="order-notes-preview" title="<?= htmlspecialchars($pedido['notas']) ?>">
               <i class="bi bi-chat-quote me-1 text-warning"></i>"<?= htmlspecialchars($pedido['notas']) ?>"
             </div>
           <?php endif; ?>

@@ -232,9 +232,9 @@ export function initOrders() {
     const kpiProceso = document.getElementById('kpiOrdersProceso');
     const kpiIngresos = document.getElementById('kpiOrdersIngresos');
 
-    if (kpiTotal) kpiTotal.textContent = `${totalAll} órdenes`;
-    if (kpiPendientes) kpiPendientes.textContent = `${pendingCount} pedidos`;
-    if (kpiProceso) kpiProceso.textContent = `${processCount} activos`;
+    if (kpiTotal) kpiTotal.textContent = totalAll;
+    if (kpiPendientes) kpiPendientes.textContent = pendingCount;
+    if (kpiProceso) kpiProceso.textContent = processCount;
     if (kpiIngresos) kpiIngresos.textContent = formatPesos(totalRevenue);
 
     // Actualizar contadores en píldoras textiles de filtro
@@ -293,16 +293,16 @@ export function initOrders() {
       // Determinar thumbnail SVG según la selección
       let svgThumbHtml = '';
       if (selectedVal === '1') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/dragon-ignis.svg" width="54" height="54" alt="Dragón Ignis" style="max-width:100%; max-height:100%; object-fit:contain;">';
+        svgThumbHtml = '<img src="assets/svg/amigurumis/dragon-ignis.svg" alt="Dragón Ignis">';
       } else if (selectedVal === '2') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/mini-suculenta.svg" width="54" height="54" alt="Mini Suculenta" style="max-width:100%; max-height:100%; object-fit:contain;">';
+        svgThumbHtml = '<img src="assets/svg/amigurumis/mini-suculenta.svg" alt="Mini Suculenta">';
       } else if (selectedVal === '3') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/ajolote-pastel.svg" width="54" height="54" alt="Ajolote Pastel" style="max-width:100%; max-height:100%; object-fit:contain;">';
+        svgThumbHtml = '<img src="assets/svg/amigurumis/ajolote-pastel.svg" alt="Ajolote Pastel">';
       } else {
-        svgThumbHtml = '<img src="assets/svg/branding/isologo-medallon-garantia.svg" width="54" height="54" alt="Encargo Especial" style="max-width:100%; max-height:100%; object-fit:contain;">';
+        svgThumbHtml = '<img src="assets/svg/branding/isologo-medallon-garantia.svg" alt="Encargo Especial">';
       }
 
-      // Inyectar Card en el Grid Responsivo #ordersGrid
+      // Inyectar Card en el Grid Responsivo #ordersGrid (Estilo Amigurumis)
       const ordersGrid = document.getElementById('ordersGrid');
       if (ordersGrid) {
         const newCol = document.createElement('div');
@@ -324,26 +324,26 @@ export function initOrders() {
               </span>
             </div>
 
+            <!-- Marco Fotográfico Acolchado Pespunteado (Centrado) -->
+            <div class="order-card-photo-frame">
+              ${svgThumbHtml}
+            </div>
+
             <!-- Cuerpo de la Card -->
             <div class="card-order-body">
-              <!-- Franja de Producto -->
-              <div class="order-product-strip">
-                <div class="order-product-thumb-frame">
-                  ${svgThumbHtml}
-                </div>
-                <div class="order-product-info">
-                  <h5 class="order-product-title text-truncate" title="${productName}">
-                    ${productName}
-                  </h5>
-                  <div class="d-flex align-items-center gap-2 mb-1">
-                    <span class="badge badge-textile-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">
-                      Encargo Taller
-                    </span>
-                    <span class="order-qty-tag">
-                      ${qty} ${qty > 1 ? 'unidades' : 'unidad'}
-                    </span>
-                  </div>
-                  <small class="text-muted font-monospace" style="font-size: 0.73rem;">
+              <!-- Título y Metadata del Amigurumi -->
+              <div class="mb-3">
+                <h5 class="order-product-title text-truncate" title="${productName}">
+                  ${productName}
+                </h5>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.18rem 0.5rem;">
+                    Encargo Taller
+                  </span>
+                  <span class="order-qty-tag">
+                    <i class="bi bi-box-seam me-1"></i>${qty} ${qty > 1 ? 'unidades' : 'unidad'}
+                  </span>
+                  <small class="text-muted font-monospace" style="font-size: 0.74rem;">
                     <i class="bi bi-magic me-1"></i>Confección Artesanal
                   </small>
                 </div>
@@ -378,7 +378,7 @@ export function initOrders() {
               </div>
 
               <!-- Notas Especiales -->
-              <div class="order-notes-preview text-truncate" title="${notas}">
+              <div class="order-notes-preview" title="${notas}">
                 <i class="bi bi-chat-quote me-1 text-warning"></i>"${notas}"
               </div>
             </div>
