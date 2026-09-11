@@ -149,3 +149,15 @@ graph TD
 1. **Prioridad 1 (Crítica para Integridad de Datos):** Implementar la vista/modal de **Gestión de Usuarios** (`usuarios.php`) y la pantalla de **Edición** (`formulario.php?id=X`) con modal de **Eliminación Segura** que refleje la regla `ON DELETE RESTRICT`.
 2. **Prioridad 2 (Flujo de Negocio del Artesano):** Agregar el **Modal de Encargo Manual** en `pedidos.php` y activar los filtros reactivos por estado (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`).
 3. **Prioridad 3 (Perfeccionamiento Heurístico y Visual):** Agregar las **Métricas Privadas del Artesano** en `detalle.php`, el **Estado Vacío** en `index.php` y el campo de contacto (WhatsApp/Email) en el checkout.
+
+---
+
+## 5. Estado de Implementación y Cierre de Brechas
+
+| Código / Módulo | Ítem Auditado | Estado | Implementación / Archivos Clave | Verificación |
+| :--- | :--- | :---: | :--- | :--- |
+| **2.2.D - Catálogo** | Filtros avanzados en catálogo: rango de precio (Min/Max) y filtro por autor/artesano | **Completado y Verificado** | `views/pages/catalogo_content.php`, `views/components/product_card.php`, `js/modules/catalog.js` | Filtrado en tiempo real por `filterPriceMin`, `filterPriceMax` y dropdown `filterArtisan` sincronizado con chips y búsqueda de texto. |
+| **2.3.3 - Frontend** | Estandarización de helpers monetarios (Conversión universal céntimos $\leftrightarrow$ pesos) | **Completado y Verificado** | `js/modules/currency.js`, `src/Utils/CurrencyHelper.php`, `margin-calculator.js`, `checkout.js`, `orders.js`, `catalog.js` | Métodos `centsToPesos`, `pesosToCents`, `formatPesos`, `formatCents`, `parseCurrency` aplicados uniformemente en todos los cálculos y vistas. |
+| **3. Propuestas BD** | Actualización del DDL en `database/seed.sql` (`cliente_contacto`, `estado_pago`, `es_sobre_encargo`) | **Completado y Verificado** | `database/seed.sql`, `database/database.sqlite`, `docs/database-schema.md`, `formulario_content.php`, `pedidos_content.php`, modales | DDL recreado con restricciones CHECK SQLite (`chk_amigurumis_es_sobre_encargo`, `chk_pedidos_cliente_contacto`, `chk_pedidos_estado_pago`), seed data sincronizado y visualizado en UI con enlaces WhatsApp y badges de cobro. |
+| **4 - Usuarios** | Modal o control para modificar el rol de un usuario existente en `usuarios.php` | **Completado y Verificado** | `views/components/modal_editar_rol_usuario.php`, `usuarios.php`, `views/pages/usuarios_content.php`, `js/modules/users.js` | Modal interactivo para cambiar rol (Admin, Artesano, Asistente) con salvaguarda para ID #1, actualización en tiempo real de badges y recálculo reactivo de KPIs. |
+

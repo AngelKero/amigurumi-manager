@@ -26,17 +26,20 @@
 - **Housekeeping Completed:** 
   - Antiguas vistas estáticas (`index.html`, `detalle.html`, `formulario.html`, `pedidos.html`) archivadas en [`docs/archive/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/archive).
   - Enlace simbólico duplicado `.docs` eliminado, dejando únicamente la carpeta canónica [`docs/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs).
-- **Current Milestone: Paquete Integral de Completitud UI/UX y Base de Datos (COMPLETADO):**
-  - **Gestión de Usuarios (`usuarios.php`):** Creado directorio de artesanos y equipo con tarjetas KPI, tabla responsiva con iniciales en avatar circular, badges de rol (`admin`, `artesano`, `asistente`), modal de creación (`modal_crear_usuario.php`) con validación de restricciones SQLite (`chk_usuarios_username`, min 6 caracteres en contraseña), aviso de protección referencial (`ON DELETE RESTRICT`) y módulo interactivo (`js/modules/users.js`). Navbar actualizado con enlace directo para artesanos.
-  - **Ciclo de Vida de Amigurumis y Salvaguardas:**
-    - `formulario.php?id=X`: Detección de `$isEditing`, pre-carga de atributos físicos, económicos e imagen para Dragón Ignis, Mini Suculenta y Ajolote, título dinámico ("Modificar Creación Artesanal"), badge de modo ("Modo: Edición #X") y botón de cancelación directa.
-    - `modal_eliminar_amigurumi.php`: Diálogo con explicación explícita de `ON DELETE RESTRICT` (bloqueo si hay pedidos históricos) y limpieza de huérfanos con `unlink()` en `/uploads/`.
-    - `detalle.php`: Barra contextual del artesano (`#artisanDetailToolbar`) con acciones directas ("Editar Creación", "Eliminar Pieza") y panel de métricas privadas del taller (`#artisanPrivateMetricsCard`) con costo de materiales, ganancia neta, margen % y retorno horario ($/hr).
-    - `catalogo_content.php`: Componente de estado vacío escandinavo (`#emptyCatalogState`) con ilustración vectorial e interactividad de restablecimiento.
-  - **Gestión Avanzada de Pedidos (`pedidos.php`):**
-    - `modal_nuevo_pedido.php`: Registro de encargos directos/manuales con selección de pieza de catálogo, teléfono/WhatsApp, cantidad, fecha de compromiso, notas y cómputo de precio total en vivo.
-    - Píldoras reactivas de estado (`Todos`, `Pendientes`, `En Proceso`, `Entregados`, `Cancelados`) con contadores dinámicos.
-    - Acciones de cambio de estado en vivo en tabla y tarjetas móviles con recálculo automático de KPIs (`#kpiOrdersTotal`, `#kpiOrdersPendientes`, `#kpiOrdersProceso`, `#kpiOrdersIngresos`).
-    - Búsqueda reactiva instantánea por cliente, producto, teléfono o ID con vista de estado vacío condicional.
-- **Phase Gate Status:** Fase 2 y mejoras de completitud UI/UX 100% terminadas y verificadas. Sistema preparado para recibir la Fase 3 (Backend PDO & Endpoints) cuando el usuario lo determine.
+- **Current Milestone: Resolución Integral de Tareas Pendientes del Informe de Brechas (COMPLETADO Y VERIFICADO):**
+  - **1. Filtros Avanzados en Catálogo [2.2.D]:** Rango de presupuesto (Min/Max: `filterPriceMin`, `filterPriceMax`) y dropdown de selección de artesano (`filterArtisan`) integrados en `views/pages/catalogo_content.php` y reactivos en `js/modules/catalog.js` en sincronía con chips de categoría y buscador.
+  - **2. Estandarización de Helpers Monetarios [2.3.3]:** Módulo `js/modules/currency.js` con conversión matemática exacta (`centsToPesos`, `pesosToCents`, `formatPesos`, `formatCents`, `formatCurrency`, `parseCurrency`) y sincronización simétrica con `src/Utils/CurrencyHelper.php`, aplicado a lo largo de `margin-calculator.js`, `checkout.js`, `orders.js` y `catalog.js`.
+  - **3. Propuestas de Base de Datos y Sincronización [3]:** Sincronización integral del DDL en `database/seed.sql` (`es_sobre_encargo`, `cliente_contacto`, `estado_pago`) con sus restricciones CHECK SQLite, diccionarios de datos en `docs/database-schema.md` y `database-schema.es.md`, switch en `formulario_content.php`, enlaces directos a WhatsApp `https://wa.me/...` y badges de estado de cobro en `pedidos_content.php` y modales.
+  - **4. Edición de Roles de Usuario [4]:** Modal interactivo `modal_editar_rol_usuario.php` registrado en `usuarios.php`, botones de edición en cada fila de `usuarios_content.php`, y lógica reactiva con salvaguarda para la cuenta raíz `#1` (`@admin`) y recálculo en vivo de tarjetas KPI en `js/modules/users.js`.
+  - **Verificación en Navegador:** Validado exhaustivamente mediante `browser_subagent` registrando capturas de pantalla de edición de rol, salvaguarda de administrador, filtros de presupuesto y autoría, y creación de encargo manual con WhatsApp y anticipo del 50%.
+- **Current Milestone: Reubicación de Activos Frontend (JS y CSS dentro de `src/`) (COMPLETADO Y VERIFICADO):**
+  - Mover `css/` a `src/css/` y `js/` a `src/js/` preservando el historial con `git mv`.
+  - Actualizadas rutas de carga en [views/layouts/main.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/layouts/main.php): `src/css/styles.css` y `src/js/main.js`.
+  - Verificada la resolución de `@import` de ITCSS y los módulos nativos ES6 (`import ...`).
+  - Limpieza de borradores redundantes (`src/js/utils/`).
+  - Verificado en vivo en navegador con `0 errores` en consola y estilos / reactividad 100% operativos.
+  - Sincronizados `README.md`, `docs/architecture-refactor-plan.md` y `memory-bank/`.
+- **Next Phase:** Fase 3 (Backend & Conexión PDO con Arquitectura Limpia) pendiente de aprobación explícita del usuario.
+
+
 

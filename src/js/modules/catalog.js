@@ -3,6 +3,8 @@
  * Single Responsibility: Filtrado dinámico del catálogo y actualización del contador de piezas.
  */
 
+import { parseCurrency, centsToPesos } from './currency.js';
+
 export function initCatalog() {
   const searchInput = document.getElementById('filterSearch') || document.getElementById('searchCatalog');
   const filterCategory = document.getElementById('filterCategory');
@@ -28,8 +30,8 @@ export function initCatalog() {
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const category = filterCategory ? filterCategory.value : 'all';
     const stock = filterStock ? filterStock.value : 'all';
-    const minPrice = filterPriceMin && filterPriceMin.value !== '' ? parseFloat(filterPriceMin.value) : 0;
-    const maxPrice = filterPriceMax && filterPriceMax.value !== '' ? parseFloat(filterPriceMax.value) : Infinity;
+    const minPrice = filterPriceMin && filterPriceMin.value !== '' ? parseCurrency(filterPriceMin.value) : 0;
+    const maxPrice = filterPriceMax && filterPriceMax.value !== '' ? parseCurrency(filterPriceMax.value) : Infinity;
     const artisan = filterArtisan ? filterArtisan.value : 'all';
 
     let visibleCount = 0;
@@ -39,7 +41,7 @@ export function initCatalog() {
       const material = (item.getAttribute('data-material') || '').toLowerCase();
       const cat = item.getAttribute('data-category') || '';
       const itemStock = parseInt(item.getAttribute('data-stock') || '0', 10);
-      const itemPrice = parseFloat(item.getAttribute('data-price') || '0');
+      const itemPrice = parseFloat(item.getAttribute('data-price') || '0') || centsToPesos(item.getAttribute('data-price-cents') || 0);
       const itemArtisan = item.getAttribute('data-artisan') || 'admin';
       const isOnDemand = item.getAttribute('data-on-demand') === '1';
 

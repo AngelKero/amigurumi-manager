@@ -166,6 +166,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `horas_tejido` | Decimal | `REAL` | **Sí** | `0.0` | `>= 0.0 AND <= 500.0` | Horas estimadas de trabajo manual invertidas en tejer la pieza. |
 | `descripcion` | Texto Largo | `TEXT` | **Sí** | `NULL` | Longitud `<= 2000` | Notas de confección, cuidados de lavado y especificaciones. |
 | `imagen_url` | URL Web | `TEXT` | **Sí** | `NULL` | Longitud `<= 500` | Enlace a la fotografía de la pieza o ruta local. |
+| `es_sobre_encargo`| Bandera Binaria| `INTEGER` | **No** | `0` | En `0, 1` | 1 si la pieza se teje exclusivamente sobre pedido sin stock inmediato. |
 | `creado_en` | Marca de tiempo | `TEXT` | **No** | `datetime('now', 'localtime')` | Formato ISO 8601 | Fecha y hora de registro de la pieza. |
 | `actualizado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Auditoría de fecha de última modificación. |
 
@@ -174,10 +175,12 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `id` | Identificador | `INTEGER` | **No** | *Autoincremental* | `PRIMARY KEY AUTOINCREMENT` | Identificador único del pedido o encargo. |
 | `cliente_nombre` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-100 | Nombre del cliente que solicitó el encargo. |
+| `cliente_contacto`| Texto | `TEXT` | **No** | `''` | Longitud `<= 50` | Vía de contacto directo del cliente (WhatsApp, teléfono o email). |
 | `amigurumi_id` | Clave Foránea | `INTEGER` | **No** | *Ninguno* | `REFERENCES amigurumis(id)` | Creación solicitada. Protegida con `ON DELETE RESTRICT`. |
 | `cantidad` | Entero | `INTEGER` | **No** | `1` | `1` a `1000` | Cantidad de piezas solicitadas en este pedido. |
 | `fecha_entrega` | Fecha (Texto) | `TEXT` | **Sí** | `NULL` | Formato `YYYY-MM-DD` | Fecha estimada o pactada de entrega. |
 | `estado_pedido` | Enumeración | `TEXT` | **No** | `'Pendiente'` | En `Pendiente`, `En Proceso`, `Entregado`, `Cancelado` | Estado del ciclo de vida del encargo. |
+| `estado_pago` | Enumeración | `TEXT` | **No** | `'Pendiente'` | En `Pendiente`, `Anticipo 50%`, `Liquidado` | Estado financiero y de cobro del encargo artesanal. |
 | `precio_final` | Moneda (Centavos) | `INTEGER` | **No** | *Ninguno* | `1` a `9999999` | Precio total pactado bloqueado al momento de la orden en centavos. |
 | `notas` | Texto | `TEXT` | **Sí** | `NULL` | Longitud `<= 1000` | Instrucciones de personalización (color de accesorios, mensaje de regalo). |
 | `creado_en` | Marca de tiempo | `TEXT` | **No** | `datetime('now', 'localtime')` | Formato ISO 8601 | Fecha y hora de alta del pedido. |

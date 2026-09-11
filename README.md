@@ -55,8 +55,10 @@ proyecto-web/
 │   ├── layouts/main.php            # Layout maestro (<head>, scripts, decoraciones y modals)
 │   ├── components/                 # Barra de navegación, footer, tarjetas y modales
 │   └── pages/                      # Contenido específico de cada vista
-├── src/                            # Capa de Backend Protegida (.htaccess: Deny from all)
-│   ├── bootstrap.php               # Inicializador de entorno y autocargador PSR-4 nativo
+├── src/                            # Código fuente modular (Backend y Activos Frontend)
+│   ├── css/                        # Estilos modulares organizados por capas ITCSS (Algodón Nórdico)
+│   ├── js/                         # Scripts cliente desacoplados en ES Modules
+│   ├── Utils/                      # Helpers universales (CurrencyHelper, etc.)
 │   ├── Core/                       # Autoloader y Formateador de Respuestas JSON
 │   ├── Database/                   # Conexión Singleton PDO SQLite con Foreign Keys
 │   ├── Middleware/                 # Guardián de sesión y autorización por rol
@@ -69,8 +71,6 @@ proyecto-web/
 │   └── usuarios/                   # index.php (CRUD de administradores)
 ├── database/                       # Almacenamiento físico SQLite protegido
 ├── uploads/                        # Directorio para fotografías reales de creaciones
-├── css/                            # Estilos modulares organizados por capas ITCSS
-├── js/                             # Scripts cliente desacoplados en ES Modules
 └── docs/                           # Documentación técnica de arquitectura y pruebas
 ```
 

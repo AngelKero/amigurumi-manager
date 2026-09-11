@@ -53,4 +53,18 @@ class CurrencyHelper {
         $formatted = '$' . number_format((float)$amount, 2, '.', ',');
         return $includeCurrency ? $formatted . ' MXN' : $formatted;
     }
+
+    /**
+     * Alias de conveniencia para centavos a pesos.
+     */
+    public static function centsToPesos(int $cents): float {
+        return self::centsToMxn($cents);
+    }
+
+    /**
+     * Alias de conveniencia para pesos a centavos.
+     */
+    public static function pesosToCents(float|int|string $pesos): int {
+        return self::mxnToCents($pesos);
+    }
 }

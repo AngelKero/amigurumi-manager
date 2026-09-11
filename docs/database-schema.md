@@ -172,6 +172,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `horas_tejido` | Float | `REAL` | **Yes** | `0.0` | `>= 0.0 AND <= 500.0` | Estimated manual crochet labor time. |
 | `descripcion` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 2000` | Craft notes and instructions. |
 | `imagen_url` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 500` | Image photo URL or local asset. |
+| `es_sobre_encargo`| Binary Flag | `INTEGER` | **No** | `0` | In `0, 1` | 1 if made exclusively to order (on-demand without immediate stock). |
 | `creado_en` | Timestamp | `TEXT` | **No** | `datetime('now', 'localtime')` | ISO 8601 | Timestamp of item registration. |
 | `actualizado_en` | Timestamp | `TEXT` | **Yes** | `NULL` | ISO 8601 | Audit timestamp on modification. |
 
@@ -180,10 +181,12 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `id` | Identifier | `INTEGER` | **No** | *Autoincrement* | `PRIMARY KEY AUTOINCREMENT` | Unique order/commission ID. |
 | `cliente_nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Customer name who placed the order. |
+| `cliente_contacto`| Text | `TEXT` | **No** | `''` | Length `<= 50` | Direct customer contact info (WhatsApp, phone, or email). |
 | `amigurumi_id` | Foreign Key | `INTEGER` | **No** | *None* | `REFERENCES amigurumis(id)` | Ordered catalog item. Protected via `ON DELETE RESTRICT`. |
 | `cantidad` | Integer | `INTEGER` | **No** | `1` | `1` to `1000` | Number of units of this amigurumi requested in this order. |
 | `fecha_entrega` | Date Text | `TEXT` | **Yes** | `NULL` | Format `YYYY-MM-DD` | Target delivery or completion date. |
 | `estado_pedido` | Enum | `TEXT` | **No** | `'Pendiente'` | In `Pendiente`, `En Proceso`, `Entregado`, `Cancelado` | Operational fulfillment state. |
+| `estado_pago` | Enum | `TEXT` | **No** | `'Pendiente'` | In `Pendiente`, `Anticipo 50%`, `Liquidado` | Financial settlement status of the commission order. |
 | `precio_final` | Currency (Cents) | `INTEGER` | **No** | *None* | `1` to `9999999` | Locked total agreed price for the order in cents. |
 | `notas` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 1000` | Customization requests (e.g., color variants, gift note). |
 | `creado_en` | Timestamp | `TEXT` | **No** | `datetime('now', 'localtime')` | ISO 8601 | Timestamp when order was booked. |

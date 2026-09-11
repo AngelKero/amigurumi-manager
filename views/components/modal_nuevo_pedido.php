@@ -61,10 +61,20 @@
             </div>
           </div>
 
-          <!-- Notas y Personalizaciones -->
+          <!-- Estado Financiero / Cobro del Encargo -->
           <div class="mb-3">
-            <label for="manualNotas" class="form-label fw-bold small">Detalles y Especificaciones de Confección</label>
-            <textarea class="form-control" id="manualNotas" rows="2" style="border-radius: var(--craft-radius-sm);" placeholder="Ej. Colores específicos, tarjeta de regalo, empaque especial..."></textarea>
+            <label for="manualEstadoPago" class="form-label fw-bold small">Estado de Cobro / Anticipo (*)</label>
+            <select class="form-select select-craft-pill" id="manualEstadoPago" required>
+              <option value="Pendiente">Pendiente (Sin cobro previo)</option>
+              <option value="Anticipo 50%" selected>Anticipo 50% (Anticipo para compra de hilazas recibido)</option>
+              <option value="Liquidado">Liquidado (100% pagado por el cliente)</option>
+            </select>
+          </div>
+
+          <!-- Notas y Especificaciones del Encargo -->
+          <div class="mb-3">
+            <label for="manualNotas" class="form-label fw-bold small">Notas / Especificaciones Especiales</label>
+            <textarea class="form-control" id="manualNotas" rows="2" placeholder="Ej. Hilo color esmeralda, bordar iniciales 'VM', empaque para regalo..." maxlength="1000" style="border-radius: var(--craft-radius-sm);"></textarea>
           </div>
 
           <!-- Resumen Financiero -->

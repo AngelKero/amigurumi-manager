@@ -14,6 +14,7 @@ $pageDescription = $pageDescription ?? 'Sistema de gestión de catálogo, invent
 $activePage = $activePage ?? 'catalogo';
 $modals = $modals ?? [];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,7 +34,7 @@ $modals = $modals ?? [];
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   
   <!-- Master Stylesheet (Modular ITCSS Architecture) -->
-  <link href="css/styles.css" rel="stylesheet">
+  <link href="src/css/styles.css" rel="stylesheet">
 </head>
 <body>
 
@@ -73,6 +74,6 @@ $modals = $modals ?? [];
   <!-- Bootstrap 5.3 Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Frontend Scripting: ES Modules Native Orchestrator -->
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="src/js/main.js"></script>
 </body>
 </html>

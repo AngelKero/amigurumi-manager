@@ -23,6 +23,10 @@
                 <td class="fw-bold py-2" id="inspectCliente">Mariana Gómez</td>
               </tr>
               <tr class="border-bottom">
+                <td class="text-muted small py-2">Contacto / WhatsApp:</td>
+                <td class="py-2 font-monospace" id="inspectContacto"><i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039</td>
+              </tr>
+              <tr class="border-bottom">
                 <td class="text-muted small py-2">Pieza Confeccionada:</td>
                 <td class="fw-bold py-2" id="inspectProducto">Dragón Ignis</td>
               </tr>
@@ -33,6 +37,10 @@
               <tr class="border-bottom">
                 <td class="text-muted small py-2">Precio Final Acordado:</td>
                 <td class="fw-bold py-2 font-monospace text-primary" id="inspectTotal">$450.00 MXN</td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="text-muted small py-2">Estado de Cobro:</td>
+                <td class="py-2" id="inspectEstadoPago"><span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-coin me-1"></i>Anticipo 50%</span></td>
               </tr>
               <tr>
                 <td class="text-muted small py-2">Fecha Estimada de Entrega:</td>

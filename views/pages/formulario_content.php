@@ -17,6 +17,7 @@ $seedItems = [
     'costo' => 120.00,
     'horas' => 6.5,
     'stock' => 4,
+    'es_sobre_encargo' => 0,
     'descripcion' => 'Amigurumi de dragón mítico tejido a mano con técnica crochet japonesa, escamas en relieve y fibra siliconada antialérgica.',
     'imagen_preview' => 'uploads/dragon.jpg'
   ],
@@ -29,6 +30,7 @@ $seedItems = [
     'costo' => 45.00,
     'horas' => 2.0,
     'stock' => 12,
+    'es_sobre_encargo' => 0,
     'descripcion' => 'Pequeña maceta tejida con suculenta en relieve botánico. No requiere riego, ideal para escritorios.',
     'imagen_preview' => ''
   ],
@@ -41,6 +43,7 @@ $seedItems = [
     'costo' => 85.00,
     'horas' => 4.5,
     'stock' => 0,
+    'es_sobre_encargo' => 1,
     'descripcion' => 'Tierno ajolote mexicano con textura aterciopelada ultra suave, branquias externas kawaii y ojos de seguridad.',
     'imagen_preview' => ''
   ]
@@ -50,11 +53,12 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
   'nombre' => $isEditing ? 'Creación #' . $editId : '',
   'categoria' => 'Fantasía',
   'material' => '',
-  'tamano_cm' => 15.0,
-  'precio' => 350.00,
-  'costo' => 100.00,
-  'horas' => 5.0,
-  'stock' => 1,
+  'tamano_cm' => '',
+  'precio' => '',
+  'costo' => '',
+  'horas' => '',
+  'stock' => '',
+  'es_sobre_encargo' => 0,
   'descripcion' => '',
   'imagen_preview' => ''
 ];
@@ -124,6 +128,19 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
               <input type="number" min="0" max="10000" class="form-control input-craft-pill" id="inputStock" value="<?= $currentItem['stock'] ?>" required>
               <span class="input-group-text bg-light text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">unidades</span>
             </div>
+          </div>
+        </div>
+
+        <!-- Distintivo de Confección Sobre Encargo [Propuesta BD 3 / DDL] -->
+        <div class="mb-3 p-3 bg-white border rounded card-stitched" style="border-radius: var(--craft-radius-sm);">
+          <div class="form-check form-switch mb-0">
+            <input class="form-check-input" type="checkbox" role="switch" id="inputEsSobreEncargo" <?= !empty($currentItem['es_sobre_encargo']) ? 'checked' : '' ?> style="cursor: pointer;">
+            <label class="form-check-label fw-bold small text-dark" for="inputEsSobreEncargo" style="cursor: pointer;">
+              <i class="bi bi-magic text-primary me-1"></i> Creación Exclusiva Bajo Encargo (Confección a Pedido)
+            </label>
+          </div>
+          <div class="form-text text-muted small mt-1 ps-4">
+            Al activar esta opción, la pieza se exhibirá con distintivo morado nórdico <em>"Bajo Encargo (5-7 d)"</em> en lugar de marcarse como <em>"Agotada"</em> cuando el inventario sea 0.
           </div>
         </div>
 

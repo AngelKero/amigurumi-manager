@@ -114,11 +114,10 @@ proyecto-web/
 ├── database/
 │   ├── seed.sql                (Full SQLite DDL schema and initial seed data)
 │   ├── database.sqlite         (Physical SQLite DB file - created in Phase 1)
-│   └── .htaccess               (Internal folder protection denying all direct web access)
-├── css/
-│   └── styles.css              (Artisan styling, preview frames, badge indicators)
-├── js/
-│   └── app.js                  (Client-side validation, Navbar Modal, calculations)
+├── src/
+│   ├── css/                    (Modular ITCSS styles: 01-settings, 02-base, 03-animations, 04-components)
+│   ├── js/                     (Modular ES modules: auth, catalog, detail, checkout, margin, orders, users)
+│   └── Utils/                  (Universal utilities: CurrencyHelper.php)
 ├── uploads/                    (Local directory storing uploaded product images)
 │   └── .gitkeep                (Git retention marker for uploads directory)
 ├── api/

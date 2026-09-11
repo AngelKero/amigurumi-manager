@@ -72,21 +72,21 @@ $usuariosList = [
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
       <div class="text-muted small fw-bold text-uppercase">Administradores</div>
-      <div class="fs-2 fw-extrabold text-primary font-monospace">1</div>
+      <div class="fs-2 fw-extrabold text-primary font-monospace" id="kpiAdminUsers">1</div>
       <div class="text-muted small">Acceso integral al sistema</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
       <div class="text-muted small fw-bold text-uppercase">Artesanos</div>
-      <div class="fs-2 fw-extrabold text-secondary font-monospace" style="color: var(--craft-secondary) !important;">1</div>
+      <div class="fs-2 fw-extrabold text-secondary font-monospace" id="kpiArtesanoUsers" style="color: var(--craft-secondary) !important;">1</div>
       <div class="text-muted small">Autores de creaciones</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
       <div class="text-muted small fw-bold text-uppercase">Asistentes</div>
-      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace">1</div>
+      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiAsistenteUsers">1</div>
       <div class="text-muted small">Control de envíos e inventario</div>
     </div>
   </div>
@@ -102,8 +102,8 @@ $usuariosList = [
         </h5>
         <span class="text-muted small">Permisos regidos por SQLite <code>chk_usuarios_rol</code></span>
       </div>
-      <span class="badge bg-light text-muted font-monospace border px-3 py-2" style="border-radius: var(--craft-radius-pill);">
-        <i class="bi bi-person-check-fill text-success me-1"></i>3 Cuentas Registradas
+      <span class="badge bg-light text-muted font-monospace border px-3 py-2" id="badgeTotalUsersCount" style="border-radius: var(--craft-radius-pill);">
+        <i class="bi bi-person-check-fill text-success me-1"></i><?= count($usuariosList) ?> Cuentas Registradas
       </span>
     </div>
 
@@ -121,7 +121,7 @@ $usuariosList = [
         </thead>
         <tbody>
           <?php foreach ($usuariosList as $u): ?>
-            <tr>
+            <tr data-user-id="<?= $u['id'] ?>" data-username="<?= htmlspecialchars($u['username']) ?>" data-rol="<?= $u['rol'] ?>" id="userRow_<?= $u['id'] ?>">
               <td class="fw-bold font-monospace text-primary px-3">#<?= $u['id'] ?></td>
               <td>
                 <div class="d-flex align-items-center gap-3">
@@ -129,12 +129,12 @@ $usuariosList = [
                     <?= strtoupper(substr($u['username'], 0, 1)) ?>
                   </div>
                   <div>
-                    <strong class="d-block text-dark">@<?= htmlspecialchars($u['username']) ?></strong>
+                    <strong class="d-block text-dark username-text">@<?= htmlspecialchars($u['username']) ?></strong>
                     <small class="text-muted">Taller Textil Nórdico</small>
                   </div>
                 </div>
               </td>
-              <td>
+              <td class="user-role-cell">
                 <?php if ($u['rol'] === 'admin'): ?>
                   <span class="badge badge-role-admin px-3 py-2 rounded-pill font-monospace">
                     <i class="bi bi-patch-check-fill text-warning me-1"></i>Administrador
@@ -159,7 +159,12 @@ $usuariosList = [
               </td>
               <td class="text-end pe-3">
                 <div class="btn-group btn-group-sm">
-                  <button type="button" class="btn btn-outline-secondary" onclick="alert('En Fase 4 editará rol vía PUT a /api/usuarios.php');" title="Editar Rol">
+                  <button type="button" class="btn btn-outline-secondary btn-editar-rol" 
+                          data-bs-toggle="modal" data-bs-target="#modalEditarRolUsuario"
+                          data-user-id="<?= $u['id'] ?>"
+                          data-username="<?= htmlspecialchars($u['username']) ?>"
+                          data-rol="<?= $u['rol'] ?>"
+                          title="Modificar Rol de Acceso">
                     <i class="bi bi-pencil-square"></i>
                   </button>
                   <?php if ($u['creaciones_count'] > 0): ?>
@@ -167,7 +172,7 @@ $usuariosList = [
                       <i class="bi bi-lock-fill text-muted"></i>
                     </button>
                   <?php else: ?>
-                    <button type="button" class="btn btn-outline-danger" onclick="if(confirm('¿Eliminar usuario @<?= $u['username'] ?>?')) alert('Usuario eliminado. En Fase 4 se conectará con DELETE /api/usuarios.php');" title="Eliminar Usuario">
+                    <button type="button" class="btn btn-outline-danger" onclick="if(confirm('¿Eliminar usuario @<?= $u['username'] ?>?')) this.closest('tr').remove();" title="Eliminar Usuario">
                       <i class="bi bi-trash"></i>
                     </button>
                   <?php endif; ?>

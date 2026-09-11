@@ -3,6 +3,8 @@
  * Single Responsibility: Control de cantidad acotado a existencias físicas y cómputo de totales.
  */
 
+import { formatPesos, parseCurrency } from './currency.js';
+
 export function initCheckout() {
   const checkoutModal = document.getElementById('checkoutModal');
   if (!checkoutModal) return;
@@ -25,7 +27,7 @@ export function initCheckout() {
     if (btnInc) btnInc.disabled = qty >= maxStock;
 
     const total = qty * unitPrice;
-    displayTotal.textContent = `$${total.toFixed(2)} MXN`;
+    displayTotal.textContent = formatPesos(total);
   }
 
   if (btnDec && btnInc && inputQty) {
@@ -70,7 +72,7 @@ export function initCheckout() {
 
         if (modalTitle) modalTitle.innerHTML = `<i class="bi bi-bag-heart me-2 text-primary"></i>Solicitud de Pedido: ${name}`;
         if (modalProductName) modalProductName.textContent = name;
-        if (modalUnitPriceDisplay) modalUnitPriceDisplay.textContent = `Precio Unitario: $${price.toFixed(2)} MXN`;
+        if (modalUnitPriceDisplay) modalUnitPriceDisplay.textContent = `Precio Unitario: ${formatPesos(price)}`;
         if (unitPriceHidden) unitPriceHidden.value = price;
         if (availableStockHidden) availableStockHidden.value = stock;
 
@@ -101,9 +103,9 @@ export function initCheckout() {
           if (modalTitle) modalTitle.innerHTML = `<i class="bi bi-bag-heart me-2 text-primary"></i>Solicitud de Pedido: ${name}`;
         }
         if (detailPrice && unitPriceHidden) {
-          const price = parseFloat(detailPrice.textContent.replace('$', '').trim()) || 450;
+          const price = parseCurrency(detailPrice.textContent) || 450;
           unitPriceHidden.value = price;
-          if (modalUnitPriceDisplay) modalUnitPriceDisplay.textContent = `Precio Unitario: $${price.toFixed(2)} MXN`;
+          if (modalUnitPriceDisplay) modalUnitPriceDisplay.textContent = `Precio Unitario: ${formatPesos(price)}`;
         }
         if (detailStock && availableStockHidden) {
           const isOut = detailStock.classList.contains('badge-stock-out');

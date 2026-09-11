@@ -4,9 +4,21 @@
  * Responsabilidad: Control del ciclo de vida de pedidos, filtrado reactivo, KPIs dinámicos y registro de encargos.
  */
 
+import { formatPesos, parseCurrency, formatCents } from './currency.js';
+
 export function initOrders() {
   let currentCancelOrderId = null;
   let nextOrderId = 3;
+
+  function getPaymentBadge(estadoPago) {
+    if (estadoPago === 'Liquidado') {
+      return '<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-check-all me-1"></i>Liquidado</span>';
+    } else if (estadoPago === 'Anticipo 50%') {
+      return '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-coin me-1"></i>Anticipo 50%</span>';
+    } else {
+      return '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-clock-history me-1"></i>Pendiente</span>';
+    }
+  }
 
   // 1. Modales de Inspección y Cancelación
   const cancelButtons = document.querySelectorAll('.btn-cancel-order, .btn-trigger-cancel-order');
@@ -48,6 +60,8 @@ export function initOrders() {
     const inspectButtons = document.querySelectorAll('.btn-inspect-order');
     const inspectId = document.getElementById('inspectOrderId');
     const inspectCliente = document.getElementById('inspectCliente');
+    const inspectContacto = document.getElementById('inspectContacto');
+    const inspectEstadoPago = document.getElementById('inspectEstadoPago');
     const inspectProducto = document.getElementById('inspectProducto');
     const inspectCantidad = document.getElementById('inspectCantidad');
     const inspectTotal = document.getElementById('inspectTotal');
@@ -58,6 +72,14 @@ export function initOrders() {
       btn.onclick = () => {
         if (inspectId) inspectId.textContent = btn.getAttribute('data-order-id') || '#1';
         if (inspectCliente) inspectCliente.textContent = btn.getAttribute('data-cliente') || 'Mariana Gómez';
+        if (inspectContacto) {
+          const tel = btn.getAttribute('data-contacto') || '+52 55 4892 1039';
+          inspectContacto.innerHTML = `<i class="bi bi-whatsapp text-success me-1"></i>${tel}`;
+        }
+        if (inspectEstadoPago) {
+          const ep = btn.getAttribute('data-estado-pago') || 'Pendiente';
+          inspectEstadoPago.innerHTML = getPaymentBadge(ep);
+        }
         if (inspectProducto) inspectProducto.textContent = btn.getAttribute('data-product') || 'Dragón Ignis';
         if (inspectCantidad) inspectCantidad.textContent = `${btn.getAttribute('data-qty') || 1} u.`;
         if (inspectTotal) inspectTotal.textContent = btn.getAttribute('data-total') || '$450.00 MXN';
@@ -251,7 +273,7 @@ export function initOrders() {
     if (kpiTotal) kpiTotal.textContent = `${totalAll} órdenes`;
     if (kpiPendientes) kpiPendientes.textContent = `${pendingCount} pedidos`;
     if (kpiProceso) kpiProceso.textContent = `${processCount} activos`;
-    if (kpiIngresos) kpiIngresos.textContent = `$${totalRevenue.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN`;
+    if (kpiIngresos) kpiIngresos.textContent = formatPesos(totalRevenue);
 
     // Actualizar contadores en píldoras de filtro
     const cAll = document.getElementById('countFilterAll');
@@ -279,7 +301,7 @@ export function initOrders() {
     const unitPrice = parseFloat(selectedOption?.getAttribute('data-price')) || 450;
     const qty = parseInt(inputCantidad.value, 10) || 1;
     const total = unitPrice * qty;
-    displayTotal.textContent = `$${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN`;
+    displayTotal.textContent = formatPesos(total);
   }
 
   if (selectAmigurumi) selectAmigurumi.addEventListener('change', updateManualTotal);
@@ -294,14 +316,16 @@ export function initOrders() {
       const unitPrice = parseFloat(selectedOption.getAttribute('data-price')) || 450;
       const clienteNombre = document.getElementById('manualClienteNombre').value.trim();
       const clienteContacto = document.getElementById('manualClienteContacto').value.trim();
+      const estadoPago = document.getElementById('manualEstadoPago')?.value || 'Pendiente';
       const qty = parseInt(inputCantidad.value, 10) || 1;
       const fechaEntrega = document.getElementById('manualFechaEntrega').value;
-      const notas = document.getElementById('manualNotas').value.trim() || 'Encargo registrado manualmente por el artesano.';
+      const notas = (document.getElementById('manualNotas')?.value || '').trim() || 'Encargo registrado manualmente por el artesano.';
       const totalOrder = unitPrice * qty;
-      const formattedTotal = `$${totalOrder.toFixed(2)} MXN`;
+      const formattedTotal = formatPesos(totalOrder);
 
       const newIdString = `#${nextOrderId++}`;
       const searchData = `${newIdString.replace('#', '')} ${clienteNombre} ${clienteContacto} ${productName}`.toLowerCase();
+      const waDigits = clienteContacto.replace(/[^0-9]/g, '');
 
       // Añadir fila a Desktop
       const tableBody = document.getElementById('ordersTableBody');
@@ -311,11 +335,16 @@ export function initOrders() {
         newRow.setAttribute('data-status', 'Pendiente');
         newRow.setAttribute('data-price', totalOrder);
         newRow.setAttribute('data-search', searchData);
+        newRow.id = `orderRow_${newIdString.replace('#', '')}`;
         newRow.innerHTML = `
-          <td class="fw-bold font-monospace text-primary px-3">${newIdString}</td>
+          <td class="fw-bold font-monospace text-primary">${newIdString}</td>
           <td>
             <div class="fw-bold text-dark order-client-name">${clienteNombre}</div>
-            <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>${clienteContacto}</div>
+            <div class="small text-muted font-monospace">
+              <a href="https://wa.me/${waDigits}" target="_blank" class="text-decoration-none text-muted">
+                <i class="bi bi-whatsapp text-success me-1"></i>${clienteContacto}
+              </a>
+            </div>
           </td>
           <td>
             <div class="fw-semibold text-dark order-product-name">${productName}</div>
@@ -323,8 +352,8 @@ export function initOrders() {
           </td>
           <td class="text-center fw-bold">${qty}</td>
           <td>
-            <span class="fw-bold text-dark font-monospace">$${totalOrder.toFixed(2)}</span>
-            <small class="text-muted d-block" style="font-size: 0.72rem;">MXN</small>
+            <span class="fw-bold text-dark font-monospace">${formattedTotal}</span>
+            <div>${getPaymentBadge(estadoPago)}</div>
           </td>
           <td>
             <span class="badge badge-order-pendiente px-3 py-2 rounded-pill font-monospace order-status-badge">
@@ -340,6 +369,8 @@ export function initOrders() {
                       data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
                       data-order-id="${newIdString}"
                       data-cliente="${clienteNombre}"
+                      data-contacto="${clienteContacto}"
+                      data-estado-pago="${estadoPago}"
                       data-product="${productName}"
                       data-qty="${qty}"
                       data-total="${formattedTotal}"
@@ -403,7 +434,11 @@ export function initOrders() {
           <div class="mb-2">
             <h6 class="fw-bold mb-0 text-dark order-product-name">${productName}</h6>
             <small class="text-muted">Cliente: <strong class="order-client-name">${clienteNombre}</strong></small>
-            <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>${clienteContacto}</div>
+            <div class="small text-muted font-monospace">
+              <a href="https://wa.me/${waDigits}" target="_blank" class="text-decoration-none text-muted">
+                <i class="bi bi-whatsapp text-success me-1"></i>${clienteContacto}
+              </a>
+            </div>
           </div>
           <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
             <div class="col-6">
@@ -411,8 +446,9 @@ export function initOrders() {
               <strong class="font-monospace">${qty} unidad(es)</strong>
             </div>
             <div class="col-6">
-              <small class="text-muted d-block" style="font-size: 0.72rem;">Total:</small>
+              <small class="text-muted d-block" style="font-size: 0.72rem;">Total / Cobro:</small>
               <strong class="text-dark font-monospace fs-6">${formattedTotal}</strong>
+              <div>${getPaymentBadge(estadoPago)}</div>
             </div>
             <div class="col-12">
               <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">${fechaEntrega}</strong></small>
@@ -423,6 +459,8 @@ export function initOrders() {
                     data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
                     data-order-id="${newIdString}"
                     data-cliente="${clienteNombre}"
+                    data-contacto="${clienteContacto}"
+                    data-estado-pago="${estadoPago}"
                     data-product="${productName}"
                     data-qty="${qty}"
                     data-total="${formattedTotal}"
@@ -467,12 +505,9 @@ export function initOrders() {
         mobileContainer.insertBefore(newCard, mobileContainer.firstChild);
       }
 
-      // Re-vincular botones dinámicos
       bindCancelButtons();
       bindInspectButtons();
       bindStatusChangeButtons();
-
-      // Recalcular y cerrar modal
       recalculateKPIs();
       applyCurrentFilters();
 

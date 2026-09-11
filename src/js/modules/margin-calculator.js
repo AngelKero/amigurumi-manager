@@ -3,6 +3,8 @@
  * Single Responsibility: Cálculo en tiempo real del margen de utilidad (%) y retorno horario ($/hr).
  */
 
+import { formatPesos } from './currency.js';
+
 export function initMarginCalculator() {
   const inputPrecio = document.getElementById('inputPrecio');
   const inputCosto = document.getElementById('inputCosto');
@@ -27,15 +29,15 @@ export function initMarginCalculator() {
     const margenPorcentaje = precio > 0 ? ((ganancia / precio) * 100) : 0;
     const retornoHora = horas > 0 ? (ganancia / horas) : 0;
 
-    // Actualizar cifras
-    if (displayPrecio) displayPrecio.textContent = `$${precio.toFixed(2)} MXN`;
-    if (displayCosto) displayCosto.textContent = `- $${costo.toFixed(2)} MXN`;
+    // Actualizar cifras con helpers monetarios estandarizados
+    if (displayPrecio) displayPrecio.textContent = formatPesos(precio);
+    if (displayCosto) displayCosto.textContent = `- ${formatPesos(costo)}`;
     if (displayGanancia) {
-      displayGanancia.textContent = `$${ganancia.toFixed(2)} MXN`;
+      displayGanancia.textContent = formatPesos(ganancia);
       displayGanancia.className = ganancia >= 0 ? 'fw-bold fs-5 text-success' : 'fw-bold fs-5 text-danger';
     }
     if (displayMargen) displayMargen.textContent = `${margenPorcentaje.toFixed(1)}%`;
-    if (displayRetorno) displayRetorno.textContent = `$${retornoHora.toFixed(2)} MXN/hr`;
+    if (displayRetorno) displayRetorno.textContent = `${formatPesos(retornoHora)}/hr`;
 
     // 1. Feedback Visual de Margen de Utilidad
     if (badgeMargenStatus) {

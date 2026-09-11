@@ -103,7 +103,11 @@
     <div class="mb-2">
       <h6 class="fw-bold mb-0 text-dark order-product-name">Dragón Ignis</h6>
       <small class="text-muted">Cliente: <strong class="order-client-name">Mariana Gómez</strong></small>
-      <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039</div>
+      <div class="small text-muted font-monospace">
+        <a href="https://wa.me/525548921039" target="_blank" class="text-decoration-none text-muted">
+          <i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039
+        </a>
+      </div>
     </div>
     <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
       <div class="col-6">
@@ -111,8 +115,13 @@
         <strong class="font-monospace">1 unidad</strong>
       </div>
       <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Total:</small>
+        <small class="text-muted d-block" style="font-size: 0.72rem;">Total / Cobro:</small>
         <strong class="text-dark font-monospace fs-6">$450.00 MXN</strong>
+        <div>
+          <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.68rem;">
+            <i class="bi bi-coin me-1"></i>Anticipo 50%
+          </span>
+        </div>
       </div>
       <div class="col-12">
         <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-24</strong></small>
@@ -123,6 +132,8 @@
               data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
               data-order-id="#1"
               data-cliente="Mariana Gómez"
+              data-contacto="+52 55 4892 1039"
+              data-estado-pago="Anticipo 50%"
               data-product="Dragón Ignis"
               data-qty="1"
               data-total="$450.00 MXN"
@@ -176,7 +187,11 @@
     <div class="mb-2">
       <h6 class="fw-bold mb-0 text-dark order-product-name">Ajolote Rosado Pastel</h6>
       <small class="text-muted">Cliente: <strong class="order-client-name">Carlos Mendoza</strong></small>
-      <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472</div>
+      <div class="small text-muted font-monospace">
+        <a href="https://wa.me/525593018472" target="_blank" class="text-decoration-none text-muted">
+          <i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472
+        </a>
+      </div>
     </div>
     <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
       <div class="col-6">
@@ -184,8 +199,13 @@
         <strong class="font-monospace">2 unidades</strong>
       </div>
       <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Total:</small>
+        <small class="text-muted d-block" style="font-size: 0.72rem;">Total / Cobro:</small>
         <strong class="text-dark font-monospace fs-6">$640.00 MXN</strong>
+        <div>
+          <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.68rem;">
+            <i class="bi bi-clock-history me-1"></i>Pendiente
+          </span>
+        </div>
       </div>
       <div class="col-12">
         <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-30</strong></small>
@@ -196,6 +216,8 @@
               data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
               data-order-id="#2"
               data-cliente="Carlos Mendoza"
+              data-contacto="+52 55 9301 8472"
+              data-estado-pago="Pendiente"
               data-product="Ajolote Rosado Pastel"
               data-qty="2"
               data-total="$640.00 MXN"
@@ -256,7 +278,7 @@
           <th scope="col" class="py-3">Cliente</th>
           <th scope="col" class="py-3">Creación Amigurumi</th>
           <th scope="col" class="py-3 text-center">Cant.</th>
-          <th scope="col" class="py-3">Total Acordado</th>
+          <th scope="col" class="py-3">Total Acordado / Cobro</th>
           <th scope="col" class="py-3">Estado</th>
           <th scope="col" class="py-3">Fecha Entrega</th>
           <th scope="col" class="py-3 text-end pe-3">Acciones</th>
@@ -269,7 +291,11 @@
           <td class="fw-bold font-monospace text-primary px-3">#1</td>
           <td>
             <div class="fw-bold text-dark order-client-name">Mariana Gómez</div>
-            <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039</div>
+            <div class="small text-muted font-monospace">
+              <a href="https://wa.me/525548921039" target="_blank" class="text-decoration-none text-muted">
+                <i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039
+              </a>
+            </div>
           </td>
           <td>
             <div class="fw-semibold text-dark order-product-name">Dragón Ignis</div>
@@ -278,7 +304,12 @@
           <td class="text-center fw-bold">1</td>
           <td>
             <span class="fw-bold text-dark font-monospace">$450.00</span>
-            <small class="text-muted d-block" style="font-size: 0.72rem;">MXN</small>
+            <small class="text-muted" style="font-size: 0.72rem;">MXN</small>
+            <div>
+              <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.7rem;">
+                <i class="bi bi-coin me-1"></i>Anticipo 50%
+              </span>
+            </div>
           </td>
           <td>
             <span class="badge badge-order-proceso px-3 py-2 rounded-pill font-monospace order-status-badge">
@@ -294,6 +325,8 @@
                       data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
                       data-order-id="#1"
                       data-cliente="Mariana Gómez"
+                      data-contacto="+52 55 4892 1039"
+                      data-estado-pago="Anticipo 50%"
                       data-product="Dragón Ignis"
                       data-qty="1"
                       data-total="$450.00 MXN"
@@ -342,7 +375,11 @@
           <td class="fw-bold font-monospace text-primary px-3">#2</td>
           <td>
             <div class="fw-bold text-dark order-client-name">Carlos Mendoza</div>
-            <div class="small text-muted font-monospace"><i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472</div>
+            <div class="small text-muted font-monospace">
+              <a href="https://wa.me/525593018472" target="_blank" class="text-decoration-none text-muted">
+                <i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472
+              </a>
+            </div>
           </td>
           <td>
             <div class="fw-semibold text-dark order-product-name">Ajolote Rosado Pastel</div>
@@ -351,7 +388,12 @@
           <td class="text-center fw-bold">2</td>
           <td>
             <span class="fw-bold text-dark font-monospace">$640.00</span>
-            <small class="text-muted d-block" style="font-size: 0.72rem;">MXN</small>
+            <small class="text-muted" style="font-size: 0.72rem;">MXN</small>
+            <div>
+              <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.7rem;">
+                <i class="bi bi-clock-history me-1"></i>Pendiente
+              </span>
+            </div>
           </td>
           <td>
             <span class="badge badge-order-pendiente px-3 py-2 rounded-pill font-monospace order-status-badge">
@@ -367,6 +409,8 @@
                       data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
                       data-order-id="#2"
                       data-cliente="Carlos Mendoza"
+                      data-contacto="+52 55 9301 8472"
+                      data-estado-pago="Pendiente"
                       data-product="Ajolote Rosado Pastel"
                       data-qty="2"
                       data-total="$640.00 MXN"

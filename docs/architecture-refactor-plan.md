@@ -54,7 +54,7 @@ views/
 Dividiremos el monolito de estilos siguiendo una arquitectura modular basada en el estándar ITCSS / SMACSS:
 
 ```
-css/
+src/css/
 ├── styles.css                      # Master bundle que orquesta e importa los módulos
 ├── 01-settings/
 │   └── variables.css               # Paleta Algodón Nórdico, tipografías, elevación y radios
@@ -81,10 +81,10 @@ css/
 
 ## 4. Arquitectura JavaScript Modular (ES Modules)
 
-Reemplazaremos el archivo procedural `app.js` por módulos ES6 nativos con alcance encapsulado (`import` / `export`), ejecutados mediante `<script type="module" src="js/main.js"></script>`:
+Reemplazaremos el archivo procedural `app.js` por módulos ES6 nativos con alcance encapsulado (`import` / `export`), ejecutados mediante `<script type="module" src="src/js/main.js"></script>`:
 
 ```
-js/
+src/js/
 ├── main.js                         # Orquestador principal y despachador según la vista activa
 └── modules/
     ├── auth.js                     # Gestión de sesión, modal de login y logout reactivo
