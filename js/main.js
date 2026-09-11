@@ -10,6 +10,7 @@ import { initCheckout } from './modules/checkout.js';
 import { initMarginCalculator } from './modules/margin-calculator.js';
 import { initDropzone } from './modules/dropzone.js';
 import { initOrders } from './modules/orders.js';
+import { initUsers } from './modules/users.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Inicialización global de sesión y autenticación
@@ -22,4 +23,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initMarginCalculator();
   initDropzone();
   initOrders();
+  initUsers();
 });

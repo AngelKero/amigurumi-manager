@@ -1,0 +1,60 @@
+/* ==========================================================================
+   04-COMPONENTS: USERS & ARTISAN TEAM MANAGEMENT
+   Proposal B: "Algodón Nórdico"
+   ========================================================================== */
+
+.table-users thead th {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--craft-border);
+}
+
+.table-users tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table-users tbody tr:hover {
+  background-color: var(--craft-primary-subtle);
+}
+
+.user-avatar-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--craft-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1.5px dashed rgba(142, 91, 116, 0.35);
+  background-color: #ffffff;
+  color: var(--craft-primary);
+  box-shadow: 0 2px 8px rgba(30, 37, 45, 0.04);
+}
+
+.badge-role-admin {
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
+  border: 1px solid rgba(142, 91, 116, 0.3);
+  font-weight: 600;
+}
+
+.badge-role-artesano {
+  background-color: var(--craft-secondary-subtle);
+  color: var(--craft-secondary-text);
+  border: 1px solid rgba(82, 133, 124, 0.3);
+  font-weight: 600;
+}
+
+.badge-role-asistente {
+  background-color: #fcf6ed;
+  color: #a46d29;
+  border: 1px solid rgba(217, 156, 82, 0.3);
+  font-weight: 600;
+}

@@ -212,6 +212,27 @@ $catalogItems = [
   <?php endforeach; ?>
 </section>
 
+<!-- ESTADO VACÍO (Visible cuando ningún producto coincide con los filtros) -->
+<div id="emptyCatalogState" class="d-none text-center py-5 my-4 p-4 card border-0 shadow-sm card-stitched" style="border-radius: var(--craft-radius); background-color: #ffffff;">
+  <div class="mb-3">
+    <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-primary mx-auto" style="opacity: 0.85;">
+      <circle cx="50" cy="50" r="38" stroke="currentColor" stroke-width="3" stroke-dasharray="6 6" fill="var(--craft-primary-subtle)"/>
+      <path d="M30 45 Q50 30 70 45 Q50 60 30 45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <path d="M35 55 Q50 70 65 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="50" cy="50" r="4" fill="currentColor"/>
+    </svg>
+  </div>
+  <h4 class="fw-bold text-dark mb-2">No se encontraron piezas artesanales</h4>
+  <p class="text-muted small mx-auto mb-4" style="max-width: 460px;">
+    No hay ninguna creación en el catálogo que coincida con tu búsqueda o filtros actuales. Prueba a limpiar los filtros o buscar con otro término.
+  </p>
+  <div>
+    <button type="button" class="btn btn-craft-primary btn-craft-stitched btn-sm px-4" id="btnResetFiltersEmpty">
+      <i class="bi bi-arrow-counterclockwise me-1"></i> Restablecer Filtros
+    </button>
+  </div>
+</div>
+
 <!-- PAGINACIÓN / RESUMEN DE RESULTADOS -->
 <section class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
   <span class="text-muted small">

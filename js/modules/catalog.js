@@ -51,8 +51,40 @@ export function initCatalog() {
       }
     });
 
+    const emptyState = document.getElementById('emptyCatalogState');
+    if (emptyState) {
+      if (visibleCount === 0) {
+        emptyState.classList.remove('d-none');
+      } else {
+        emptyState.classList.add('d-none');
+      }
+    }
+
     updateFilterCounter(visibleCount);
   }
+
+  // Restablecer filtros desde el Empty State
+  const btnResetEmpty = document.getElementById('btnResetFiltersEmpty');
+  if (btnResetEmpty && btnClearFilters) {
+    btnResetEmpty.addEventListener('click', () => btnClearFilters.click());
+  }
+
+  // Activar acciones del artesano en tarjetas si hay sesión activa
+  const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
+  if (isArtisanSession) {
+    document.querySelectorAll('.artisan-card-actions').forEach(el => {
+      el.classList.remove('d-none');
+    });
+  }
+
+  // Disparar modal de eliminación desde tarjeta
+  document.querySelectorAll('.btn-card-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name') || 'esta pieza';
+      const nameSpan = document.getElementById('deleteAmigurumiName');
+      if (nameSpan) nameSpan.textContent = name;
+    });
+  });
 
   // Sincronización bidireccional con los chips textiles
   if (textileChips.length) {

@@ -40,7 +40,7 @@
 
       <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Regresar</button>
-        <button type="button" class="btn btn-danger btn-sm" onclick="alert('Pedido cancelado. En Fase 4 se conectará con el endpoint transaccional /api/pedidos/actualizar_estado.php'); bootstrap.Modal.getInstance(document.getElementById('modalCancelarPedido')).hide();">
+        <button type="button" class="btn btn-danger btn-sm" id="btnConfirmarCancelacionPedido">
           <i class="bi bi-x-circle me-1"></i> Confirmar Cancelación y Restituir Stock
         </button>
       </div>

@@ -18,6 +18,24 @@
     </div>
   </nav>
 
+  <!-- BARRA CONTEXTUAL DEL ARTESANO (Visible con sesión activa) -->
+  <div class="card border-0 shadow-sm p-3 mb-4 bg-white card-stitched d-none" id="artisanDetailToolbar" style="border-radius: var(--craft-radius);">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge badge-artisan-seal"><i class="bi bi-tools me-1 text-warning"></i>Acciones de Autoría</span>
+        <small class="text-muted">Como artesano titular, puedes modificar especificaciones o dar de baja la pieza del catálogo.</small>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="formulario.php?id=1" class="btn btn-craft-outline btn-craft-outline-stitched btn-sm" id="btnEditarCreacion">
+          <i class="bi bi-pencil-square me-1"></i>Editar Creación
+        </a>
+        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarAmigurumi" id="btnEliminarCreacion">
+          <i class="bi bi-trash3 me-1"></i>Eliminar Pieza
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- SPLIT DE 2 COLUMNAS (col-12 col-lg-6 / col-12 col-lg-6) -->
   <div class="row g-4 g-lg-5 mb-5">
 
@@ -148,6 +166,33 @@
                 </tr>
               </tbody>
             </table>
+          <!-- PANEL DE MÉTRICAS PRIVADAS DEL TALLER (Visible para artesanos con sesión) -->
+          <div class="card border-0 shadow-sm p-3 mb-4 card-stitched d-none" id="artisanPrivateMetricsCard" style="border-radius: var(--craft-radius); background-color: var(--craft-surface-muted);">
+            <div class="d-flex align-items-center justify-content-between mb-2 border-bottom pb-2">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-calculator-fill text-primary"></i>
+                <strong class="text-dark small text-uppercase">Métricas de Rentabilidad del Taller</strong>
+              </div>
+              <span class="badge bg-white text-muted font-monospace border" style="font-size: 0.7rem;">Privado Artesano</span>
+            </div>
+            <div class="row g-2">
+              <div class="col-6 col-md-3">
+                <span class="small text-muted d-block" style="font-size: 0.72rem;">Costo Materiales:</span>
+                <strong class="font-monospace text-danger small" id="metricCostDisplay">$120.00 MXN</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <span class="small text-muted d-block" style="font-size: 0.72rem;">Ganancia Neta / u:</span>
+                <strong class="font-monospace text-success small" id="metricGainDisplay">$330.00 MXN</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <span class="small text-muted d-block" style="font-size: 0.72rem;">Margen Utilidad:</span>
+                <strong class="font-monospace text-dark small" id="metricMarginDisplay">73.3%</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <span class="small text-muted d-block" style="font-size: 0.72rem;">Retorno / Hora:</span>
+                <strong class="font-monospace text-primary small" id="metricHourlyDisplay">$50.77 MXN/hr</strong>
+              </div>
+            </div>
           </div>
 
         </div>

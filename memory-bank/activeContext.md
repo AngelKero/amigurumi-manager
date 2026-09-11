@@ -26,4 +26,17 @@
 - **Housekeeping Completed:** 
   - Antiguas vistas estáticas (`index.html`, `detalle.html`, `formulario.html`, `pedidos.html`) archivadas en [`docs/archive/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/archive).
   - Enlace simbólico duplicado `.docs` eliminado, dejando únicamente la carpeta canónica [`docs/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs).
-- **Phase Gate Status:** Halting and awaiting explicit user instruction before initiating Phase 3 (Backend & Connection: `src/` modular classes, autoloader, PDO singleton, and auth guard).
+- **Current Milestone: Paquete Integral de Completitud UI/UX y Base de Datos (COMPLETADO):**
+  - **Gestión de Usuarios (`usuarios.php`):** Creado directorio de artesanos y equipo con tarjetas KPI, tabla responsiva con iniciales en avatar circular, badges de rol (`admin`, `artesano`, `asistente`), modal de creación (`modal_crear_usuario.php`) con validación de restricciones SQLite (`chk_usuarios_username`, min 6 caracteres en contraseña), aviso de protección referencial (`ON DELETE RESTRICT`) y módulo interactivo (`js/modules/users.js`). Navbar actualizado con enlace directo para artesanos.
+  - **Ciclo de Vida de Amigurumis y Salvaguardas:**
+    - `formulario.php?id=X`: Detección de `$isEditing`, pre-carga de atributos físicos, económicos e imagen para Dragón Ignis, Mini Suculenta y Ajolote, título dinámico ("Modificar Creación Artesanal"), badge de modo ("Modo: Edición #X") y botón de cancelación directa.
+    - `modal_eliminar_amigurumi.php`: Diálogo con explicación explícita de `ON DELETE RESTRICT` (bloqueo si hay pedidos históricos) y limpieza de huérfanos con `unlink()` en `/uploads/`.
+    - `detalle.php`: Barra contextual del artesano (`#artisanDetailToolbar`) con acciones directas ("Editar Creación", "Eliminar Pieza") y panel de métricas privadas del taller (`#artisanPrivateMetricsCard`) con costo de materiales, ganancia neta, margen % y retorno horario ($/hr).
+    - `catalogo_content.php`: Componente de estado vacío escandinavo (`#emptyCatalogState`) con ilustración vectorial e interactividad de restablecimiento.
+  - **Gestión Avanzada de Pedidos (`pedidos.php`):**
+    - `modal_nuevo_pedido.php`: Registro de encargos directos/manuales con selección de pieza de catálogo, teléfono/WhatsApp, cantidad, fecha de compromiso, notas y cómputo de precio total en vivo.
+    - Píldoras reactivas de estado (`Todos`, `Pendientes`, `En Proceso`, `Entregados`, `Cancelados`) con contadores dinámicos.
+    - Acciones de cambio de estado en vivo en tabla y tarjetas móviles con recálculo automático de KPIs (`#kpiOrdersTotal`, `#kpiOrdersPendientes`, `#kpiOrdersProceso`, `#kpiOrdersIngresos`).
+    - Búsqueda reactiva instantánea por cliente, producto, teléfono o ID con vista de estado vacío condicional.
+- **Phase Gate Status:** Fase 2 y mejoras de completitud UI/UX 100% terminadas y verificadas. Sistema preparado para recibir la Fase 3 (Backend PDO & Endpoints) cuando el usuario lo determine.
+

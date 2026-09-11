@@ -112,4 +112,26 @@ export function initDetail() {
       }
     });
   });
+
+  // Activar barra de autoría y métricas privadas si hay sesión activa
+  const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
+  const artisanToolbar = document.getElementById('artisanDetailToolbar');
+  const privateMetricsCard = document.getElementById('artisanPrivateMetricsCard');
+
+  if (isArtisanSession) {
+    if (artisanToolbar) artisanToolbar.classList.remove('d-none');
+    if (privateMetricsCard) privateMetricsCard.classList.remove('d-none');
+  }
+
+  // Poblar nombre en modal de eliminación
+  const btnEliminar = document.getElementById('btnEliminarCreacion');
+  if (btnEliminar) {
+    btnEliminar.addEventListener('click', () => {
+      const titleEl = document.getElementById('detalleTitle');
+      const deleteNameSpan = document.getElementById('deleteAmigurumiName');
+      if (titleEl && deleteNameSpan) {
+        deleteNameSpan.textContent = titleEl.textContent.trim();
+      }
+    });
+  }
 }

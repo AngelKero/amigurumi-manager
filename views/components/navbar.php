@@ -28,7 +28,7 @@ $activePage = $activePage ?? 'catalogo';
 
         <!-- MENÚ DEL PANEL DEL ARTESANO (Oculto en público, visible con sesión activa) -->
         <li class="nav-item dropdown d-none" id="navArtisanDropdown">
-          <a class="nav-link dropdown-toggle fw-bold text-primary <?= in_array($activePage, ['formulario', 'pedidos']) ? 'active' : '' ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle fw-bold text-primary <?= in_array($activePage, ['formulario', 'pedidos', 'usuarios']) ? 'active' : '' ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-tools me-1"></i>Panel del Artesano
           </a>
           <ul class="dropdown-menu shadow-sm border-0" style="border-radius: var(--craft-radius-sm);">
@@ -44,8 +44,8 @@ $activePage = $activePage ?? 'catalogo';
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item py-2 text-muted" href="#">
-                <i class="bi bi-people me-2"></i>Gestión de Usuarios (Admin)
+              <a class="dropdown-item py-2 <?= $activePage === 'usuarios' ? 'active fw-bold' : '' ?>" href="usuarios.php">
+                <i class="bi bi-people-fill text-primary me-2"></i>Gestión de Usuarios (Admin)
               </a>
             </li>
           </ul>

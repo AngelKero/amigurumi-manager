@@ -97,6 +97,19 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
           </button>
         <?php endif; ?>
       </div>
+
+      <!-- Acciones Contextuales del Artesano (Visibles con sesión activa) -->
+      <div class="artisan-card-actions d-none pt-2 mt-2 border-top d-flex justify-content-between align-items-center">
+        <small class="text-muted font-monospace" style="font-size: 0.7rem;">ID: #<?= $item['id'] ?> &bull; @admin</small>
+        <div class="btn-group btn-group-sm">
+          <a href="formulario.php?id=<?= $item['id'] ?>" class="btn btn-outline-secondary btn-sm py-0 px-2" title="Editar amigurumi">
+            <i class="bi bi-pencil-square"></i>
+          </a>
+          <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2 btn-card-delete" data-bs-toggle="modal" data-bs-target="#modalEliminarAmigurumi" data-id="<?= $item['id'] ?>" data-name="<?= htmlspecialchars($item['nombre']) ?>" title="Eliminar del catálogo">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </article>
