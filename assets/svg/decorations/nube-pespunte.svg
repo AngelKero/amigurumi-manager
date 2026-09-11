@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180" width="100%" height="100%">
+  <!-- Cloud with Inset Dashed Running Stitch -->
+  <g>
+    <!-- Soft Background Shadow -->
+    <path d="M 65 140 C 40 140 25 120 30 95 C 25 65 55 45 80 55 C 95 30 140 20 170 40 C 190 25 235 30 250 55 C 275 55 290 80 280 110 C 290 135 265 150 240 145 Z" fill="#E8EEF4" opacity="0.5" transform="translate(4, 6)"/>
+
+    <!-- Main Cloud Body -->
+    <path d="M 65 135 C 40 135 25 115 30 90 C 25 60 55 40 80 50 C 95 25 140 15 170 35 C 190 20 235 25 250 50 C 275 50 290 75 280 105 C 290 130 265 145 240 140 Z" fill="#FFFFFF" stroke="#E4E8ED" stroke-width="1.5"/>
+
+    <!-- Inset Dashed Running Stitch -->
+    <path d="M 68 127 C 48 127 36 112 40 92 C 36 68 60 52 80 60 C 92 40 130 32 155 48 C 172 36 210 40 222 60 C 244 60 256 80 248 104 C 256 124 236 135 216 131 Z" fill="none" stroke="#8E5B74" stroke-width="1.8" stroke-dasharray="5 4" opacity="0.4"/>
+  </g>
+</svg>

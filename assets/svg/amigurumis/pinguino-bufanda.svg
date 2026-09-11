@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas -->
+  <rect width="500" height="500" rx="28" fill="#F0F5F7"/>
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#52857C" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Base Shadow -->
+  <ellipse cx="250" cy="425" rx="110" ry="20" fill="#D3DFE2" opacity="0.7"/>
+
+  <!-- Flippers (Left & Right) -->
+  <path d="M 155 240 C 115 250 110 320 150 340 C 170 330 170 270 155 240 Z" fill="#1E252D"/>
+  <path d="M 345 240 C 385 250 390 320 350 340 C 330 330 330 270 345 240 Z" fill="#1E252D"/>
+
+  <!-- Main Penguin Body (Midnight Slate Plush Oval) -->
+  <ellipse cx="250" cy="280" rx="115" ry="135" fill="#1E252D"/>
+
+  <!-- White Belly Patch (Heart/Egg Shaped) -->
+  <path d="M 250 175 C 190 175 175 240 180 340 C 185 390 315 390 320 340 C 325 240 310 175 250 175 Z" fill="#FFFFFF"/>
+  <path d="M 250 185 C 200 185 188 245 192 335 C 195 380 305 380 308 335 C 312 245 300 185 250 185 Z" stroke="#E4E8ED" stroke-width="1.8" stroke-dasharray="5 4" fill="none"/>
+
+  <!-- Safety Eyes -->
+  <circle cx="215" cy="220" r="10" fill="#1E252D"/>
+  <circle cx="218" cy="217" r="3.5" fill="#FFFFFF"/>
+  <circle cx="285" cy="220" r="10" fill="#1E252D"/>
+  <circle cx="288" cy="217" r="3.5" fill="#FFFFFF"/>
+
+  <!-- Sweet Orange Embroidered Beak -->
+  <polygon points="250,230 238,245 262,245" fill="#D99C52"/>
+  <polygon points="250,252 240,245 260,245" fill="#C48842"/>
+
+  <!-- Soft Pink Cheeks -->
+  <ellipse cx="185" cy="242" rx="12" ry="7" fill="#F4B8C7" opacity="0.6"/>
+  <ellipse cx="315" cy="242" rx="12" ry="7" fill="#F4B8C7" opacity="0.6"/>
+
+  <!-- Cozy Mint-Green Knitted Scarf with Pom-Pom -->
+  <g>
+    <!-- Scarf Body -->
+    <path d="M 180 270 Q 250 295 320 270 Q 330 295 315 305 Q 250 320 185 305 Z" fill="#52857C"/>
+    <!-- Stitched stripes on scarf -->
+    <line x1="205" y1="280" x2="210" y2="303" stroke="#FAF6EE" stroke-width="3"/>
+    <line x1="235" y1="286" x2="238" y2="311" stroke="#FAF6EE" stroke-width="3"/>
+    <line x1="265" y1="286" x2="262" y2="311" stroke="#FAF6EE" stroke-width="3"/>
+    <line x1="295" y1="280" x2="290" y2="303" stroke="#FAF6EE" stroke-width="3"/>
+    <!-- Trailing scarf tail -->
+    <path d="M 200 295 L 210 375 L 245 370 L 235 295 Z" fill="#436D66"/>
+    <!-- Pom-pom at end of scarf -->
+    <circle cx="228" cy="385" r="14" fill="#FAF6EE" stroke="#E4E8ED" stroke-width="1.5"/>
+    <circle cx="228" cy="385" r="9" fill="none" stroke="#D99C52" stroke-width="1.5" stroke-dasharray="3 3"/>
+  </g>
+
+  <!-- Orange Feet (Webbed Crochet Tabs) -->
+  <ellipse cx="215" cy="408" rx="24" ry="12" fill="#D99C52"/>
+  <ellipse cx="285" cy="408" rx="24" ry="12" fill="#D99C52"/>
+
+  <!-- Bottom Crafted Ribbon Tag -->
+  <g transform="translate(130, 440)">
+    <rect width="240" height="34" rx="17" fill="#FFFFFF" stroke="#52857C" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="12" fill="#235048">
+      🐧 Pingüino Pip &bull; Colección Invernal
+    </text>
+  </g>
+</svg>

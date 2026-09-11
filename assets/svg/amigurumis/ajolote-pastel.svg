@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas with Rose Milk Tint -->
+  <rect width="500" height="500" rx="28" fill="#FAF0F4"/>
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#C6788F" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Base Shadow -->
+  <ellipse cx="250" cy="425" rx="125" ry="20" fill="#E2D4DC" opacity="0.6"/>
+
+  <!-- External Gills (Left & Right Branching Feathers) -->
+  <g fill="#D4708C">
+    <!-- Left Gills -->
+    <path d="M 170 210 C 110 180 90 140 130 130 C 155 125 165 170 180 195 Z"/>
+    <path d="M 160 230 C 90 220 75 190 110 175 C 135 165 155 195 170 220 Z"/>
+    <path d="M 165 250 C 100 260 85 240 120 220 C 145 205 160 230 175 245 Z"/>
+    
+    <!-- Right Gills -->
+    <path d="M 330 210 C 390 180 410 140 370 130 C 345 125 335 170 320 195 Z"/>
+    <path d="M 340 230 C 410 220 425 190 390 175 C 365 165 345 195 330 220 Z"/>
+    <path d="M 335 250 C 400 260 415 240 380 220 C 355 205 340 230 325 245 Z"/>
+  </g>
+
+  <!-- Axolotl Body & Wide Head (Soft Velvet Chenille Head) -->
+  <ellipse cx="250" cy="255" rx="145" ry="115" fill="#F4B8C7"/>
+
+  <!-- Head Crochet Texture Spiral -->
+  <ellipse cx="250" cy="255" rx="120" ry="92" fill="none" stroke="#E39EB0" stroke-width="1.8" stroke-dasharray="7 5" opacity="0.4"/>
+
+  <!-- Safety Eyes with Wide Spacing (Baby Look) -->
+  <circle cx="195" cy="245" r="13" fill="#1E252D"/>
+  <circle cx="198" cy="241" r="4.5" fill="#FFFFFF"/>
+  <circle cx="192" cy="249" r="2" fill="#FFFFFF"/>
+
+  <circle cx="305" cy="245" r="13" fill="#1E252D"/>
+  <circle cx="308" cy="241" r="4.5" fill="#FFFFFF"/>
+  <circle cx="302" cy="249" r="2" fill="#FFFFFF"/>
+
+  <!-- Big Rosy Kawaii Cheeks -->
+  <circle cx="165" cy="275" r="18" fill="#E8849E" opacity="0.55"/>
+  <circle cx="335" cy="275" r="18" fill="#E8849E" opacity="0.55"/>
+
+  <!-- Gentle Curved Stitched Smile -->
+  <path d="M 232 278 Q 250 295 268 278" stroke="#8E3C54" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- Tiny Forepaws -->
+  <ellipse cx="205" cy="350" rx="22" ry="15" fill="#F4B8C7" stroke="#E39EB0" stroke-width="1.5"/>
+  <ellipse cx="295" cy="350" rx="22" ry="15" fill="#F4B8C7" stroke="#E39EB0" stroke-width="1.5"/>
+
+  <!-- Belly Texture Ring -->
+  <ellipse cx="250" cy="345" rx="60" ry="35" fill="#FDEEF3" opacity="0.6"/>
+  <ellipse cx="250" cy="345" rx="52" ry="28" fill="none" stroke="#E39EB0" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- Bottom Crafted Ribbon Tag -->
+  <g transform="translate(130, 440)">
+    <rect width="240" height="34" rx="17" fill="#FFFFFF" stroke="#C6788F" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="12" fill="#8E3C54">
+      ✨ Ajolote Chenille &bull; Edición Pastel
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="needleSteel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E4E8ED"/>
+      <stop offset="50%" stop-color="#CBD3DC"/>
+      <stop offset="100%" stop-color="#9AA4AF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Flowing Thread Behind Needle -->
+  <path d="M 15 85 C 35 110 70 100 80 75 C 90 50 110 30 135 45 C 150 55 140 80 120 75 C 105 70 120 40 145 35 L 160 30" fill="none" stroke="#8E5B74" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 15 85 C 35 110 70 100 80 75 C 90 50 110 30 135 45" fill="none" stroke="#FAF4F7" stroke-width="1" stroke-dasharray="3 3" opacity="0.8"/>
+
+  <!-- Steel Needle -->
+  <g transform="rotate(-25 150 35)">
+    <!-- Pointy tip -->
+    <path d="M 70 35 L 180 34 C 185 34 188 36 185 38 L 70 37 Z" fill="url(#needleSteel)"/>
+    <!-- Eye of the Needle -->
+    <ellipse cx="80" cy="36" rx="6" ry="1.5" fill="#505963"/>
+  </g>
+
+  <!-- Thread looping through the eye -->
+  <path d="M 148 40 C 155 35 162 25 170 20" fill="none" stroke="#8E5B74" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Micro decorative star stitches -->
+  <g transform="translate(165, 70)">
+    <line x1="0" y1="-5" x2="0" y2="5" stroke="#D99C52" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="-5" y1="0" x2="5" y2="0" stroke="#D99C52" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="-3.5" y1="-3.5" x2="3.5" y2="3.5" stroke="#D99C52" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="3.5" y1="-3.5" x2="-3.5" y2="3.5" stroke="#D99C52" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(45, 30)">
+    <line x1="0" y1="-4" x2="0" y2="4" stroke="#52857C" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="-4" y1="0" x2="4" y2="0" stroke="#52857C" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

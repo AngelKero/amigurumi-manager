@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="basketWicker" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E5BE8A"/>
+      <stop offset="100%" stop-color="#C29052"/>
+    </linearGradient>
+    <linearGradient id="basketRim" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D99C52"/>
+      <stop offset="50%" stop-color="#F2D09E"/>
+      <stop offset="100%" stop-color="#C29052"/>
+    </linearGradient>
+    <linearGradient id="yarnBerry" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A5728B"/>
+      <stop offset="100%" stop-color="#8E5B74"/>
+    </linearGradient>
+    <linearGradient id="yarnSpruce" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6AA096"/>
+      <stop offset="100%" stop-color="#52857C"/>
+    </linearGradient>
+    <linearGradient id="yarnCream" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1E7ED"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Soft Ellipse Shadow -->
+  <ellipse cx="120" cy="200" rx="90" ry="14" fill="#E8EEF4" opacity="0.65"/>
+
+  <!-- Yarn Balls peeking inside the basket -->
+  <!-- Berry Yarn Ball -->
+  <g transform="translate(60, 65)">
+    <circle cx="35" cy="35" r="28" fill="url(#yarnBerry)"/>
+    <path d="M 16 28 C 24 16 46 16 54 28 C 46 40 24 40 16 28 Z" fill="none" stroke="#F7EFF3" stroke-width="1.8" stroke-dasharray="3 2" opacity="0.75"/>
+    <path d="M 20 42 C 28 54 44 54 50 42" fill="none" stroke="#F7EFF3" stroke-width="1.8" stroke-dasharray="3 2" opacity="0.75"/>
+  </g>
+
+  <!-- Spruce Green Yarn Ball -->
+  <g transform="translate(110, 60)">
+    <circle cx="36" cy="36" r="30" fill="url(#yarnSpruce)"/>
+    <path d="M 16 26 C 26 14 50 14 58 26 C 48 38 24 38 16 26 Z" fill="none" stroke="#EBF4F2" stroke-width="1.8" stroke-dasharray="3 2" opacity="0.75"/>
+    <path d="M 20 44 C 30 56 46 56 54 44" fill="none" stroke="#EBF4F2" stroke-width="1.8" stroke-dasharray="3 2" opacity="0.75"/>
+  </g>
+
+  <!-- Cream Yarn Ball -->
+  <g transform="translate(85, 45)">
+    <circle cx="28" cy="28" r="22" fill="url(#yarnCream)" stroke="#E4D5DC" stroke-width="1.5"/>
+    <path d="M 14 22 C 20 12 38 12 44 22" fill="none" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.6"/>
+  </g>
+
+  <!-- Crochet Hook sticking out -->
+  <g transform="rotate(35 150 50)">
+    <rect x="146" y="-10" width="8" height="90" rx="4" fill="#D99C52"/>
+    <path d="M 146 80 C 146 95 150 96 150 88" fill="none" stroke="#B87D38" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Wicker Basket Body -->
+  <path d="M 45 105 L 60 185 C 62 195 75 198 120 198 C 165 198 178 195 180 185 L 195 105 Z" fill="url(#basketWicker)" stroke="#9E6E34" stroke-width="2"/>
+
+  <!-- Wicker Weave Pattern Lines -->
+  <path d="M 52 130 Q 120 145 188 130" fill="none" stroke="#FAF4F7" stroke-width="2" stroke-dasharray="8 6" opacity="0.45"/>
+  <path d="M 56 155 Q 120 170 184 155" fill="none" stroke="#FAF4F7" stroke-width="2" stroke-dasharray="8 6" opacity="0.45"/>
+  <path d="M 62 178 Q 120 190 178 178" fill="none" stroke="#FAF4F7" stroke-width="2" stroke-dasharray="8 6" opacity="0.45"/>
+
+  <!-- Vertical Ribs -->
+  <path d="M 85 110 L 92 192" fill="none" stroke="#9E6E34" stroke-width="1.8" opacity="0.4"/>
+  <path d="M 120 112 L 120 196" fill="none" stroke="#9E6E34" stroke-width="1.8" opacity="0.4"/>
+  <path d="M 155 110 L 148 192" fill="none" stroke="#9E6E34" stroke-width="1.8" opacity="0.4"/>
+
+  <!-- Basket Rim Lip -->
+  <ellipse cx="120" cy="105" rx="78" ry="16" fill="url(#basketRim)" stroke="#9E6E34" stroke-width="2"/>
+  <ellipse cx="120" cy="105" rx="72" ry="11" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6"/>
+
+  <!-- Hanging Textile Tag on Front -->
+  <g transform="translate(100, 125)">
+    <line x1="20" y1="-10" x2="20" y2="10" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <rect x="0" y="10" width="40" height="24" rx="4" fill="#FFFFFF" stroke="#8E5B74" stroke-width="1.5"/>
+    <line x1="2" y1="12" x2="2" y2="32" stroke="#8E5B74" stroke-width="2.5"/>
+    <!-- Thread stitches -->
+    <circle cx="8" cy="22" r="1.5" fill="#8E5B74"/>
+    <circle cx="15" cy="22" r="1.5" fill="#8E5B74"/>
+    <circle cx="22" cy="22" r="1.5" fill="#8E5B74"/>
+    <circle cx="30" cy="22" r="1.5" fill="#52857C"/>
+  </g>
+
+  <!-- Curled Loose Thread running down -->
+  <path d="M 75 100 C 50 115 35 150 48 175 C 55 190 70 195 72 205" fill="none" stroke="#8E5B74" stroke-width="2.2" stroke-linecap="round"/>
+</svg>

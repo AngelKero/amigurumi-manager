@@ -46,22 +46,7 @@
         <!-- Imagen Principal con Marco Acolchado Paspartú -->
         <div class="product-photo-stitched-frame mb-3">
           <div class="card-product-img-wrapper rounded shadow-sm" style="aspect-ratio: 1 / 1; max-height: 480px;">
-            <svg viewBox="0 0 500 500" class="card-product-img" xmlns="http://www.w3.org/2000/svg" id="detailMainProductSvg">
-              <rect width="500" height="500" fill="#f5ede7"/>
-              <circle cx="250" cy="250" r="140" fill="#c25e3e"/>
-              <path d="M170 170 Q200 90 230 150" stroke="#a84d30" stroke-width="18" fill="none" stroke-linecap="round"/>
-              <path d="M330 170 Q300 90 270 150" stroke="#a84d30" stroke-width="18" fill="none" stroke-linecap="round"/>
-              <circle cx="210" cy="230" r="16" fill="#2d2621"/>
-              <circle cx="290" cy="230" r="16" fill="#2d2621"/>
-              <circle cx="215" cy="226" r="5" fill="#ffffff"/>
-              <circle cx="295" cy="226" r="5" fill="#ffffff"/>
-              <path d="M225 275 Q250 295 275 275" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
-              <!-- Detalles de escamas en relieve -->
-              <circle cx="250" cy="180" r="10" fill="#a84d30"/>
-              <circle cx="230" cy="200" r="8" fill="#a84d30"/>
-              <circle cx="270" cy="200" r="8" fill="#a84d30"/>
-              <text x="250" y="440" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#8c3f25" font-size="18" id="detailSvgCaption">🧶 Edición Especial Fantasía &bull; Dragón Ignis</text>
-            </svg>
+            <?= svg('dragon-ignis', ['class' => 'card-product-img', 'id' => 'detailMainProductSvg']) ?>
           </div>
         </div>
 

@@ -12,6 +12,7 @@
 | **Phase 2.7 (Gap Closure)** | 100% Cierre de Brechas UI/UX y BD | **Completed & Verified** | Completadas las 4 tareas de la auditoría: Filtros avanzados de catálogo (Min/Max precio y artesano), Helpers monetarios universales (`currency.js`), Sincronización completa de DDL en BD/Docs/UI (`cliente_contacto`, `estado_pago`, `es_sobre_encargo`), y Modal interactivo de modificación de rol de usuario con salvaguarda RBAC. |
 | **Documentation & Skills** | Reestructuración Docs & Refinamiento `.agents/` | **Completed & Verified** | Reestructurada toda la carpeta `docs/` bajo Clean Architecture y creado `docs/README.md`. Convertido `clean-code-architect` a skill nativa autodescubrible (`.agents/skills/clean-code-architect/SKILL.md`), expandido el sistema de diseño con reglas 16–21 y actualizados los flujos en `.agents/rules/` y `.agents/workflows/`. |
 | **Typography & Theme** | Instalación de Tipografía Display Artesanal | **Completed & Verified** | Integrada la fuente Google Font `Fraunces` para encabezados importantes en pantallas públicas (`index.php`, `detalle.php`, modal checkout, navbar), aportando calidez y personalidad artesanal nórdica. |
+| **SVG Assets & Helper** | Galería Vectorial `assets/svg/` & `SvgHelper` | **Completed & Verified** | Creados 22 SVGs artesanales archivo por archivo en `assets/svg/` (amigurumis, tools, badges, decorations) e implementado `SvgHelper` con funciones globales `svg()` y `svg_url()` para renderizado inline de alto rendimiento. |
 | **Phase 3** | Backend & Connection (Clean Architecture) | **Awaiting Explicit Approval** | Implement `src/` modular backend (Autoloader, Singleton Database, Repositories/DAO, Services, Middleware) and `api/` controllers. |
 | **Phase 4** | CRUD Operations & Fullstack Wiring | **Pending** | Wire modular frontend with clean backend endpoints via AJAX fetch. |
 | **Phase 5** | Documentation & Final Delivery | **In Progress (README & Docs Hub created)** | Created `README.md` and master documentation hub `docs/README.md`. |
@@ -19,7 +20,10 @@
 ## What Works
 - Memory Bank completely synchronized across all 5 core files.
 - Clean Code Skill installed as auto-discoverable native skill at `.agents/skills/clean-code-architect/SKILL.md`.
-- Master Documentation Hub created at `docs/README.md` with 5 logical domains indexing all 17 documentation files.
+- Master Documentation Hub created at `docs/README.md` with 5 logical domains indexing all 18 documentation files.
+- Vector Asset Library (`assets/svg/`) with 22 handcrafted SVGs across 4 categories (`amigurumis`, `tools`, `badges`, `decorations`).
+- Helper utility `App\Utils\SvgHelper` and global functions `svg($name, $attrs)` / `svg_url($name)` for simple, unified inline SVG rendering and URL generation.
+- Views refactored (`catalogo_content.php`, `detalle_content.php`, `footer.php`) to use `svg()` helper instead of verbose inline strings.
 - Wireframes (`docs/wireframes.md` and `docs/wireframes.es.md`) completely synchronized with PHP views, advanced filters, WhatsApp links, and user management.
 - Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.
 - Phase 1 Database completed: `database/seed.sql`, `database/database.sqlite` initialized, verified via `docs/database-testing.md`.
@@ -34,4 +38,4 @@
 - Phase 4: Modular API endpoints (`api/`) and full AJAX integration.
 
 ## Known Issues / Blockers
-- None. Frontend and UI/UX alignment with SQLite database schema are 100% complete, tested, and thoroughly documented. Ready for Phase 3 when user instructs.
+- None. Frontend, SVG vector asset suite, and UI/UX alignment with SQLite database schema are 100% complete, tested, and thoroughly documented. Ready for Phase 3 when user instructs.

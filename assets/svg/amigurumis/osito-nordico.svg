@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas -->
+  <rect width="500" height="500" rx="28" fill="#FAF6EE"/>
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#D99C52" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Soft Shadow -->
+  <ellipse cx="250" cy="425" rx="120" ry="20" fill="#E6DDD2" opacity="0.7"/>
+
+  <!-- Bear Ears -->
+  <circle cx="170" cy="140" r="38" fill="#C88846"/>
+  <circle cx="170" cy="140" r="22" fill="#E8BD8A"/>
+  <circle cx="330" cy="140" r="38" fill="#C88846"/>
+  <circle cx="330" cy="140" r="22" fill="#E8BD8A"/>
+
+  <!-- Bear Body (Sitting Plush) -->
+  <ellipse cx="250" cy="330" rx="110" ry="90" fill="#BA7937"/>
+
+  <!-- Bear Head -->
+  <circle cx="250" cy="215" r="110" fill="#C88846"/>
+
+  <!-- Snout Area -->
+  <ellipse cx="250" cy="245" rx="46" ry="36" fill="#FCEBD4"/>
+  <!-- Triangle Embroidered Nose -->
+  <path d="M 238 230 Q 250 226 262 230 Q 250 248 238 230 Z" fill="#3D2614"/>
+  <line x1="250" y1="240" x2="250" y2="255" stroke="#3D2614" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 240 255 Q 250 262 260 255" stroke="#3D2614" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Safety Bead Eyes -->
+  <circle cx="205" cy="205" r="11" fill="#1E252D"/>
+  <circle cx="208" cy="202" r="3.5" fill="#FFFFFF"/>
+  <circle cx="295" cy="205" r="11" fill="#1E252D"/>
+  <circle cx="298" cy="202" r="3.5" fill="#FFFFFF"/>
+
+  <!-- Subtle Pink Cheeks -->
+  <circle cx="175" cy="245" r="14" fill="#E28B6A" opacity="0.45"/>
+  <circle cx="325" cy="245" r="14" fill="#E28B6A" opacity="0.45"/>
+
+  <!-- Nordic Spruce Knitted Scarf with Fringe -->
+  <g>
+    <!-- Scarf loop around neck -->
+    <path d="M 170 290 Q 250 320 330 290 Q 340 315 320 330 Q 250 345 180 330 Z" fill="#52857C"/>
+    <!-- Knitted Stitches on Scarf -->
+    <path d="M 185 305 Q 250 330 315 305" stroke="#EBF4F2" stroke-width="2.5" stroke-dasharray="6 4" fill="none"/>
+    <path d="M 195 320 Q 250 338 305 320" stroke="#EBF4F2" stroke-width="2.5" stroke-dasharray="6 4" fill="none"/>
+    
+    <!-- Hanging Scarf End with Fringes -->
+    <path d="M 280 320 L 295 400 L 335 395 L 320 320 Z" fill="#446E66"/>
+    <line x1="298" y1="400" x2="295" y2="415" stroke="#446E66" stroke-width="3" stroke-linecap="round"/>
+    <line x1="308" y1="399" x2="307" y2="416" stroke="#446E66" stroke-width="3" stroke-linecap="round"/>
+    <line x1="318" y1="398" x2="319" y2="415" stroke="#446E66" stroke-width="3" stroke-linecap="round"/>
+    <line x1="328" y1="396" x2="331" y2="414" stroke="#446E66" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Paws (Left & Right) with Stitched Footpads -->
+  <ellipse cx="165" cy="380" rx="30" ry="24" fill="#C88846" stroke="#BA7937" stroke-width="1.5"/>
+  <ellipse cx="165" cy="382" rx="16" ry="12" fill="#FCEBD4"/>
+  <circle cx="154" cy="370" r="4" fill="#FCEBD4"/>
+  <circle cx="165" cy="367" r="4" fill="#FCEBD4"/>
+  <circle cx="176" cy="370" r="4" fill="#FCEBD4"/>
+
+  <ellipse cx="335" cy="380" rx="30" ry="24" fill="#C88846" stroke="#BA7937" stroke-width="1.5"/>
+  <ellipse cx="335" cy="382" rx="16" ry="12" fill="#FCEBD4"/>
+  <circle cx="324" cy="370" r="4" fill="#FCEBD4"/>
+  <circle cx="335" cy="367" r="4" fill="#FCEBD4"/>
+  <circle cx="346" cy="370" r="4" fill="#FCEBD4"/>
+
+  <!-- Bottom Crafted Ribbon Tag -->
+  <g transform="translate(130, 440)">
+    <rect width="240" height="34" rx="17" fill="#FFFFFF" stroke="#D99C52" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="12" fill="#8C531B">
+      🐻 Osito Nórdico &bull; Lana Cardada
+    </text>
+  </g>
+</svg>

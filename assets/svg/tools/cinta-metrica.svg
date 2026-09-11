@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="100%" height="100%">
+  <!-- Soft Coiled Tape Measure with Millimeter/Centimeter Ticks -->
+  <g>
+    <!-- Background Shadow -->
+    <ellipse cx="100" cy="95" rx="70" ry="12" fill="#E2E8EE" opacity="0.6"/>
+
+    <!-- Coiled Ribbon Body (Nordic Glacier Tint) -->
+    <path d="M 30 75 C 20 40 60 20 100 25 C 150 30 180 60 160 85 C 145 100 110 95 90 85 C 70 75 75 55 95 50 C 115 45 130 55 125 70" fill="none" stroke="#52857C" stroke-width="26" stroke-linecap="round"/>
+    <!-- Yellow Measuring Face Ribbon Strip -->
+    <path d="M 30 75 C 20 40 60 20 100 25 C 150 30 180 60 160 85 C 145 100 110 95 90 85 C 70 75 75 55 95 50 C 115 45 130 55 125 70" fill="none" stroke="#FDF6E2" stroke-width="20" stroke-linecap="round"/>
+
+    <!-- Centimeter Tick Marks & Numerals -->
+    <!-- Brass End Tab -->
+    <rect x="20" y="62" width="14" height="26" rx="3" fill="#D99C52" stroke="#B87B32" stroke-width="1.2"/>
+    <circle cx="27" cy="75" r="3" fill="#8C531B"/>
+
+    <!-- Ticks along the front curve -->
+    <line x1="45" y1="64" x2="45" y2="76" stroke="#52857C" stroke-width="2"/>
+    <line x1="55" y1="58" x2="55" y2="66" stroke="#52857C" stroke-width="1.5"/>
+    <line x1="65" y1="52" x2="65" y2="60" stroke="#52857C" stroke-width="1.5"/>
+    <line x1="75" y1="46" x2="75" y2="58" stroke="#52857C" stroke-width="2"/>
+    <line x1="85" y1="42" x2="85" y2="50" stroke="#52857C" stroke-width="1.5"/>
+    <line x1="95" y1="40" x2="95" y2="48" stroke="#52857C" stroke-width="1.5"/>
+    <line x1="105" y1="40" x2="105" y2="52" stroke="#52857C" stroke-width="2"/>
+
+    <!-- Small numbers -->
+    <text x="48" y="80" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8" fill="#235048">1</text>
+    <text x="78" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8" fill="#235048">2</text>
+    <text x="108" y="54" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8" fill="#235048">3</text>
+  </g>
+</svg>

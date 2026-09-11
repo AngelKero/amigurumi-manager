@@ -21,7 +21,7 @@ $catalogItems = [
     'cantidad_stock' => 4,
     'es_sobre_encargo' => 0,
     'descripcion' => 'Dragón mítico con escamas en relieve tejidas con hilo de algodón mercerizado y relleno antialérgico.',
-    'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#f5ede7"/><circle cx="200" cy="150" r="85" fill="#c25e3e"/><path d="M140 100 Q160 50 180 90" stroke="#a84d30" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M260 100 Q240 50 220 90" stroke="#a84d30" stroke-width="12" fill="none" stroke-linecap="round"/><circle cx="175" cy="140" r="10" fill="#2d2621"/><circle cx="225" cy="140" r="10" fill="#2d2621"/><circle cx="178" cy="138" r="3" fill="#ffffff"/><circle cx="228" cy="138" r="3" fill="#ffffff"/><path d="M185 165 Q200 180 215 165" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/><text x="200" y="270" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#8c3f25" font-size="15">🧶 Tejido a Mano &bull; 100% Algodón</text></svg>'
+    'svg_illustration' => svg('dragon-ignis', ['class' => 'card-product-img'])
   ],
   [
     'id' => 2,
@@ -38,7 +38,7 @@ $catalogItems = [
     'cantidad_stock' => 12,
     'es_sobre_encargo' => 0,
     'descripcion' => 'Suculenta de escritorio que no requiere riego, tejida con algodón rústico en maceta color terracota.',
-    'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#edf4ef"/><path d="M150 180 L160 250 L240 250 L250 180 Z" fill="#bfa085"/><ellipse cx="200" cy="150" rx="45" ry="30" fill="#5a7d66"/><ellipse cx="170" cy="140" rx="30" ry="20" fill="#6d947b"/><ellipse cx="230" cy="140" rx="30" ry="20" fill="#6d947b"/><circle cx="200" cy="120" r="22" fill="#7fa88e"/><text x="200" y="280" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#486552" font-size="15">🌿 Colección Botánica</text></svg>'
+    'svg_illustration' => svg('mini-suculenta', ['class' => 'card-product-img'])
   ],
   [
     'id' => 3,
@@ -55,7 +55,7 @@ $catalogItems = [
     'cantidad_stock' => 0,
     'es_sobre_encargo' => 1,
     'descripcion' => 'Ajolote mexicano extra suave confeccionado en hilo chenille velvet. Se elabora exclusivamente bajo encargo.',
-    'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#faeff2"/><ellipse cx="200" cy="150" rx="80" ry="60" fill="#e8a2b5"/><path d="M120 140 Q90 120 125 105" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M115 155 Q80 150 115 135" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M280 140 Q310 120 275 105" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M285 155 Q320 150 285 135" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="170" cy="145" r="8" fill="#2d2621"/><circle cx="230" cy="145" r="8" fill="#2d2621"/><path d="M185 165 Q200 175 215 165" stroke="#2d2621" stroke-width="3" fill="none" stroke-linecap="round"/><text x="200" y="270" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#a64964" font-size="15">✨ Hilo Chenille Aterciopelado</text></svg>'
+    'svg_illustration' => svg('ajolote-pastel', ['class' => 'card-product-img'])
   ]
 ];
 ?>
@@ -269,12 +269,7 @@ $catalogItems = [
 <!-- ESTADO VACÍO (Visible cuando ningún producto coincide con los filtros) -->
 <div id="emptyCatalogState" class="d-none text-center py-5 my-4 p-4 card border-0 shadow-sm card-stitched" style="border-radius: var(--craft-radius); background-color: #ffffff;">
   <div class="mb-3">
-    <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-primary mx-auto" style="opacity: 0.85;">
-      <circle cx="50" cy="50" r="38" stroke="currentColor" stroke-width="3" stroke-dasharray="6 6" fill="var(--craft-primary-subtle)"/>
-      <path d="M30 45 Q50 30 70 45 Q50 60 30 45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <path d="M35 55 Q50 70 65 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="50" cy="50" r="4" fill="currentColor"/>
-    </svg>
+    <?= svg('empty-basket', ['width' => 120, 'height' => 110, 'class' => 'mx-auto mb-2']) ?>
   </div>
   <h4 class="fw-bold text-dark mb-2 font-theme-display">No se encontraron piezas artesanales</h4>
   <p class="text-muted small mx-auto mb-4" style="max-width: 460px;">

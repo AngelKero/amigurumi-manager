@@ -31,7 +31,8 @@ docs/
 │   ├── ui-ux-skill-report.md      # Auditoría Heurística y Accesibilidad WCAG (EN)
 │   ├── ui-ux-skill-report.es.md   # Auditoría Heurística y Accesibilidad WCAG (ES)
 │   ├── wireframes.md              # Especificaciones de Wireframes y Flujos (EN)
-│   └── wireframes.es.md           # Especificaciones de Wireframes y Flujos (ES)
+│   ├── wireframes.es.md           # Especificaciones de Wireframes y Flujos (ES)
+│   └── svg-assets-and-helper.md   # Catálogo de 22 SVGs y Utilidad SvgHelper (PHP)
 └── archive/                       # Archivo histórico de maquetas estáticas (.html)
 ```
 
@@ -66,6 +67,8 @@ docs/
   Evaluación contra 19 reglas de diseño UI/UX y estándares de contraste WCAG 2.1 AA (> 4.5:1).
 - **[wireframes.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.es.md)** / **[wireframes.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.md):**  
   Representación textual de alta fidelidad de las vistas y componentes del sistema.
+- **[svg-assets-and-helper.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/svg-assets-and-helper.md):**  
+  Catálogo de 22 gráficos vectoriales SVG temáticos organizados en `assets/svg/` y guía de uso del helper `SvgHelper::render()` / funciones globales `svg()` y `svg_url()`.
 
 ---
 
@@ -77,6 +80,7 @@ docs/
 | **Componentes UI** | `views/components/` | Modales, navbar, footer, tarjetas reutilizables. |
 | **Estilos CSS** | `src/css/` | Arquitectura ITCSS por capas (`01-settings` a `04-components`). |
 | **Lógica JavaScript** | `src/js/`, `src/js/modules/` | Vanilla JS nativo en ES Modules (`main.js` orquestador). |
-| **Helpers de Utilidad** | `src/Utils/` (PHP), `src/js/modules/currency.js` (JS) | Conversión estandarizada céntimos $\leftrightarrow$ pesos. |
+| **Helpers de Utilidad** | `src/Utils/` (PHP), `src/js/modules/currency.js` (JS) | `CurrencyHelper.php` (moneda) y `SvgHelper.php` (vector assets). |
+| **Recursos Vectoriales** | `assets/svg/` | 22 SVGs artesanales divididos en `amigurumis`, `tools`, `badges` y `decorations`. |
 | **Puntos de Entrada** | `index.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php` | Controladores de vista en raíz. |
 | **Base de Datos** | `database/database.sqlite`, `database/seed.sql` | SQLite 3 con `PRAGMA foreign_keys = ON;`. |

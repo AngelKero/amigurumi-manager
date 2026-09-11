@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas with Subtle Warm Porcelain Tint -->
+  <rect width="500" height="500" rx="28" fill="#FAF5F3"/>
+  
+  <!-- Inset Dashed Craft Seam -->
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Soft Shadow Under Base -->
+  <ellipse cx="250" cy="420" rx="130" ry="22" fill="#E4DCD8" opacity="0.6"/>
+
+  <!-- Dragon Wings (Left & Right) -->
+  <g fill="#A84D30" opacity="0.9">
+    <!-- Left Wing -->
+    <path d="M 160 210 Q 80 160 90 230 Q 120 260 170 245 Z"/>
+    <path d="M 160 210 Q 110 180 120 235" stroke="#F5EDE7" stroke-width="2.5" stroke-dasharray="4 3" fill="none"/>
+    <!-- Right Wing -->
+    <path d="M 340 210 Q 420 160 410 230 Q 380 260 330 245 Z"/>
+    <path d="M 340 210 Q 390 180 380 235" stroke="#F5EDE7" stroke-width="2.5" stroke-dasharray="4 3" fill="none"/>
+  </g>
+
+  <!-- Dragon Body & Head (Plush Stuffed Wool Sphere) -->
+  <circle cx="250" cy="245" r="135" fill="#C25E3E"/>
+
+  <!-- Stitched Wool Texture Rings (Crochet Spiral Illusion) -->
+  <circle cx="250" cy="245" r="115" fill="none" stroke="#B34B2D" stroke-width="2" stroke-dasharray="8 6" opacity="0.4"/>
+  <circle cx="250" cy="245" r="85" fill="none" stroke="#B34B2D" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.3"/>
+
+  <!-- Cute Soft Horns (Embroidered Cones) -->
+  <path d="M 180 150 Q 165 80 205 125 Z" fill="#D99C52"/>
+  <path d="M 180 150 Q 165 80 205 125" stroke="#B87B32" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+  
+  <path d="M 320 150 Q 335 80 295 125 Z" fill="#D99C52"/>
+  <path d="M 320 150 Q 335 80 295 125" stroke="#B87B32" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+
+  <!-- Dragon Muzzle / Snout -->
+  <ellipse cx="250" cy="268" rx="55" ry="38" fill="#D16E4F"/>
+  <circle cx="236" cy="258" r="4.5" fill="#872E14"/>
+  <circle cx="264" cy="258" r="4.5" fill="#872E14"/>
+
+  <!-- Safety Bead Eyes with Glossy Highlights -->
+  <g>
+    <!-- Left Eye -->
+    <circle cx="205" cy="225" r="14" fill="#1E252D"/>
+    <circle cx="209" cy="221" r="4.5" fill="#FFFFFF"/>
+    <circle cx="202" cy="229" r="2" fill="#FFFFFF"/>
+    
+    <!-- Right Eye -->
+    <circle cx="295" cy="225" r="14" fill="#1E252D"/>
+    <circle cx="299" cy="221" r="4.5" fill="#FFFFFF"/>
+    <circle cx="292" cy="229" r="2" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Sweet Stitched Smile -->
+  <path d="M 238 282 Q 250 294 262 282" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Embroidered Scales on Forehead -->
+  <path d="M 242 165 Q 250 155 258 165" stroke="#FDF5EB" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M 235 180 Q 250 170 265 180" stroke="#FDF5EB" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Soft Blush Cheeks -->
+  <ellipse cx="178" cy="252" rx="14" ry="9" fill="#E88874" opacity="0.6"/>
+  <ellipse cx="322" cy="252" rx="14" ry="9" fill="#E88874" opacity="0.6"/>
+
+  <!-- Tiny Plush Paws -->
+  <ellipse cx="205" cy="365" rx="26" ry="18" fill="#A84D30"/>
+  <path d="M 195 365 L 195 375 M 205 365 L 205 376 M 215 365 L 215 375" stroke="#872E14" stroke-width="2" stroke-linecap="round"/>
+
+  <ellipse cx="295" cy="365" rx="26" ry="18" fill="#A84D30"/>
+  <path d="M 285 365 L 285 375 M 295 365 L 295 376 M 305 365 L 305 375" stroke="#872E14" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Bottom Crafted Ribbon Tag -->
+  <g transform="translate(130, 436)">
+    <rect width="240" height="34" rx="17" fill="#FFFFFF" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="12" fill="#8E5B74">
+      🧶 Dragón Ignis &bull; 100% Algodón
+    </text>
+  </g>
+</svg>

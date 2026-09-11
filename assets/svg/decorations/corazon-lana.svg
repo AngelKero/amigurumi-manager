@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="heartYarn" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C47E9E"/>
+      <stop offset="50%" stop-color="#8E5B74"/>
+      <stop offset="100%" stop-color="#6F3F56"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <ellipse cx="80" cy="148" rx="45" ry="8" fill="#E8EEF4" opacity="0.6"/>
+
+  <!-- Crochet Heart Body -->
+  <path d="M 80 135 C 45 105 20 80 20 50 C 20 28 36 15 56 15 C 68 15 76 22 80 30 C 84 22 92 15 104 15 C 124 15 140 28 140 50 C 140 80 115 105 80 135 Z" fill="url(#heartYarn)" stroke="#5A3044" stroke-width="1.8"/>
+
+  <!-- Inset Dashed Running Stitch Contour -->
+  <path d="M 80 123 C 50 96 28 73 28 50 C 28 34 40 23 56 23 C 65 23 73 29 80 38 C 87 29 95 23 104 23 C 120 23 132 34 132 50 C 132 73 110 96 80 123 Z" fill="none" stroke="#FAF4F7" stroke-width="1.8" stroke-dasharray="4 3" opacity="0.85"/>
+
+  <!-- Handcrafted Wool Knit Texture / Ribs -->
+  <path d="M 45 42 Q 80 65 115 42" fill="none" stroke="#FAF4F7" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.5"/>
+  <path d="M 40 62 Q 80 90 120 62" fill="none" stroke="#FAF4F7" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.5"/>
+  <path d="M 48 85 Q 80 110 112 85" fill="none" stroke="#FAF4F7" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.5"/>
+
+  <!-- Trailing yarn thread at tip -->
+  <path d="M 80 135 C 80 148 70 152 72 158 C 74 162 82 160 88 155" fill="none" stroke="#8E5B74" stroke-width="2" stroke-linecap="round"/>
+</svg>

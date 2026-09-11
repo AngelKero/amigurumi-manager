@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas -->
+  <rect width="500" height="500" rx="28" fill="#FAF6F2"/>
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#A8443B" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Base Shadow -->
+  <ellipse cx="250" cy="430" rx="115" ry="20" fill="#E4DCD3" opacity="0.7"/>
+
+  <!-- Mushroom Stem (Beige Plush Trunk) -->
+  <path d="M 200 240 L 190 390 Q 190 415 250 415 Q 310 415 310 390 L 300 240 Z" fill="#F4EDE2"/>
+  <path d="M 200 240 L 190 390 Q 190 415 250 415 Q 310 415 310 390 L 300 240 Z" stroke="#E2D6C5" stroke-width="2" fill="none"/>
+
+  <!-- Kawaii Eyes on Stem -->
+  <circle cx="225" cy="320" r="8" fill="#1E252D"/>
+  <circle cx="227" cy="318" r="2.8" fill="#FFFFFF"/>
+  <circle cx="275" cy="320" r="8" fill="#1E252D"/>
+  <circle cx="277" cy="318" r="2.8" fill="#FFFFFF"/>
+
+  <!-- Blush Cheeks -->
+  <circle cx="208" cy="330" r="9" fill="#EFAAC4" opacity="0.6"/>
+  <circle cx="292" cy="330" r="9" fill="#EFAAC4" opacity="0.6"/>
+
+  <!-- Smile -->
+  <path d="M 243 332 Q 250 340 257 332" stroke="#1E252D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Mushroom Cap Underside Gills -->
+  <ellipse cx="250" cy="245" rx="160" ry="32" fill="#E2D5C3"/>
+  <ellipse cx="250" cy="245" rx="155" ry="28" stroke="#D1C0AA" stroke-width="1.8" stroke-dasharray="6 4" fill="none"/>
+
+  <!-- Mushroom Cap (Crimson Red Dome with Running Stitch Rim) -->
+  <path d="M 90 245 C 90 100 410 100 410 245 C 410 255 90 255 90 245 Z" fill="#C93F34"/>
+
+  <!-- Embroidered French-Knot White Polka Dots -->
+  <!-- Top Center Dot -->
+  <circle cx="250" cy="140" r="18" fill="#FFFFFF"/>
+  <circle cx="250" cy="140" r="14" stroke="#FAF4F7" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+
+  <!-- Left Side Dots -->
+  <circle cx="170" cy="180" r="16" fill="#FFFFFF"/>
+  <circle cx="170" cy="180" r="12" stroke="#FAF4F7" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+
+  <circle cx="135" cy="225" r="12" fill="#FFFFFF"/>
+  <circle cx="205" cy="220" r="10" fill="#FFFFFF"/>
+
+  <!-- Right Side Dots -->
+  <circle cx="330" cy="180" r="16" fill="#FFFFFF"/>
+  <circle cx="330" cy="180" r="12" stroke="#FAF4F7" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+
+  <circle cx="365" cy="225" r="12" fill="#FFFFFF"/>
+  <circle cx="295" cy="220" r="10" fill="#FFFFFF"/>
+
+  <!-- Tiny Forest Fern Accent on Stem Base -->
+  <path d="M 180 405 Q 165 375 145 385 Q 165 395 180 405 Z" fill="#52857C"/>
+  <path d="M 180 405 Q 160 395 155 410 Q 170 410 180 405 Z" fill="#659B91"/>
+
+  <!-- Bottom Crafted Ribbon Tag -->
+  <g transform="translate(130, 442)">
+    <rect width="240" height="34" rx="17" fill="#FFFFFF" stroke="#A8443B" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="12" fill="#8A2820">
+      🍄 Hongo del Bosque &bull; Fantasía
+    </text>
+  </g>
+</svg>
