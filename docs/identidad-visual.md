@@ -34,7 +34,7 @@ Para garantizar versatilidad en todas las superficies (favicons, cabeceras web, 
 - **Variantes Desarrolladas:**
   1. `isotipo-ovillo-corazon.svg`: Un ovillo de estambre texturizado con una hebra continua que dibuja un corazón y un gancho de crochet en diagonal. Símbolo oficial universal de la marca.
   2. `isotipo-hebra-nordica.svg`: Nube algodonada entrelazada con una lazada de estambre en espiral dorada.
-  3. `isotipo-osito-amigurumi.svg`: Rostro geométrico y tierno de osito tejido con pespunte perimetral y orejitas tejidas (representativo de la disciplina de amigurumis).
+  3. `isotipo-osito-crochet.svg`: Rostro geométrico y tierno de osito tejido con pespunte perimetral y orejitas tejidas en crochet.
 
 ### 2. Logotipo (Wordmark / Tipografía estilizada sin símbolo)
 - **Definición:** La representación verbal exclusiva del nombre "Crochet Manager" mediante una construcción tipográfica personalizada basada en las curvas y terminales esféricas (*ball terminals*) de la fuente `Fraunces`, complementada por un pespunte inferior.

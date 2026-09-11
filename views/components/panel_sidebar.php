@@ -45,7 +45,7 @@ $activePage = $activePage ?? 'creaciones';
       </a>
     </li>
     <li>
-      <a href="creaciones.php" class="panel-nav-link <?= in_array($activePage, ['creaciones', 'amigurumis']) ? 'active' : '' ?>">
+      <a href="creaciones.php" class="panel-nav-link <?= in_array($activePage, ['creaciones', 'piezas']) ? 'active' : '' ?>">
         <span class="d-flex align-items-center gap-2">
           <i class="bi bi-collection-fill"></i>
           <span>Inventario & Creaciones</span>

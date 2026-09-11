@@ -293,16 +293,16 @@ export function initOrders() {
       // Determinar thumbnail SVG según la selección
       let svgThumbHtml = '';
       if (selectedVal === '1') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/dragon-ignis.svg" alt="Dragón Ignis">';
+        svgThumbHtml = '<img src="assets/svg/piezas/dragon-ignis.svg" alt="Dragón Ignis">';
       } else if (selectedVal === '2') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/mini-suculenta.svg" alt="Mini Suculenta">';
+        svgThumbHtml = '<img src="assets/svg/piezas/mini-suculenta.svg" alt="Mini Suculenta">';
       } else if (selectedVal === '3') {
-        svgThumbHtml = '<img src="assets/svg/amigurumis/ajolote-pastel.svg" alt="Ajolote Pastel">';
+        svgThumbHtml = '<img src="assets/svg/piezas/ajolote-pastel.svg" alt="Ajolote Pastel">';
       } else {
         svgThumbHtml = '<img src="assets/svg/branding/isologo-medallon-garantia.svg" alt="Encargo Especial">';
       }
 
-      // Inyectar Card en el Grid Responsivo #ordersGrid (Estilo Amigurumis)
+      // Inyectar Card en el Grid Responsivo #ordersGrid (Estilo Piezas / Creaciones)
       const ordersGrid = document.getElementById('ordersGrid');
       if (ordersGrid) {
         const newCol = document.createElement('div');

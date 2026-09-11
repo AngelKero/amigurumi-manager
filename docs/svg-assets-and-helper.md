@@ -2,13 +2,13 @@
 
 ## 1. Resumen y Propósito
 
-Para dotar a **Amigurumi Manager** de una identidad visual artesanal, táctil y coherente con el sistema de diseño **"Algodón Nórdico"**, se ha implementado una biblioteca completa de gráficos vectoriales SVG hechos a mano, organizados archivo por archivo en una estructura limpia bajo `assets/svg/`.
+Para dotar a **Crochet Manager** de una identidad visual artesanal, táctil y coherente con el sistema de diseño **"Algodón Nórdico"**, se ha implementado una biblioteca completa de gráficos vectoriales SVG hechos a mano, organizados archivo por archivo en una estructura limpia bajo `assets/svg/`.
 
 Adicionalmente, bajo los principios de **Clean Code & Clean Architecture**, se ha desarrollado la utilidad `App\Utils\SvgHelper` en `src/Utils/SvgHelper.php` junto con funciones globales de acceso (`svg()` y `svg_url()`) que permiten renderizar o enlazar cualquier vector de manera inmediata, con inyección segura de atributos HTML, fusión de clases CSS y caché en memoria para alto rendimiento.
 
 ---
 
-## 2. Estructura de Directorios en `assets/`
+## 2. Estructura de Directorios
 
 ```
 assets/
@@ -19,19 +19,21 @@ assets/
     │   ├── isologo-medallon-garantia.svg
     │   ├── isologo-sello-taller.svg
     │   ├── isotipo-hebra-nordica.svg
-    │   ├── isotipo-osito-amigurumi.svg
+    │   ├── isotipo-osito-crochet.svg
     │   ├── isotipo-ovillo-corazon.svg
-    │   ├── logotipo-amigurumi-manager.svg
+    │   ├── logotipo-crochet-manager.svg
     │   └── logotipo-taller-artesanal.svg
-    ├── amigurumis/         # Personajes, botánica y piezas de catálogo
+    ├── piezas/             # Piezas de catálogo: amigurumis, prendas, bolsos y hogar
     │   ├── ajolote-pastel.svg
+    │   ├── cardigan-granny.svg
     │   ├── dragon-ignis.svg
     │   ├── gatito-ovillo.svg
     │   ├── hongo-bosque.svg
     │   ├── medusa-magica.svg
     │   ├── mini-suculenta.svg
     │   ├── osito-nordico.svg
-    │   └── pinguino-bufanda.svg
+    │   ├── pinguino-bufanda.svg
+    │   └── tote-bag.svg
     ├── tools/              # Herramientas de crochet y costura artesanal
     │   ├── boton-madera.svg
     │   ├── cinta-metrica.svg
@@ -102,14 +104,14 @@ assets/
 | Slug / Nombre | Arquetipo | ViewBox | Temática / Aplicación |
 | :--- | :---: | :---: | :--- |
 | `isotipo-ovillo-corazon` | **Isotipo** | `0 0 100 100` | Ovillo de hilaza con hebra continua que dibuja un corazón y gancho cruzado. Ideal para favicons y avatares. |
-| `isotipo-osito-amigurumi` | **Isotipo** | `0 0 100 100` | Rostro amigurumi bordado con pespunte perimetral y mejillas de hilo rosa. Ideal para badges circulares. |
+| `isotipo-osito-crochet` | **Isotipo** | `0 0 100 100` | Rostro de osito en crochet bordado con pespunte perimetral y mejillas de hilo rosa. |
 | `isotipo-hebra-nordica` | **Isotipo** | `0 0 100 100` | Nube de algodón peinado con aguja botánica y lazo infinito dorado. |
-| `logotipo-amigurumi-manager` | **Logotipo** | `0 0 340 75` | Wordmark estilizado en Fraunces y Outfit con hebra pespunteada y puntos de costura. |
-| `logotipo-taller-artesanal` | **Logotipo** | `0 0 320 65` | Marca verbal institucional enmarcada en cinta textil con ojales de costura. |
-| `imagotipo-horizontal` | **Imagotipo** | `0 0 380 90` | Símbolo de ovillo en píldora a la izquierda + Wordmark y bajada Micro-ERP a la derecha. Ideal para el `navbar`. |
-| `imagotipo-vertical` | **Imagotipo** | `0 0 220 200` | Símbolo de ovillo centrado arriba + Wordmark y píldora de categoría abajo. Ideal para modales y portadas. |
-| `isologo-sello-taller` | **Isologo** | `0 0 160 160` | Sello circular indivisible con texto perimetral sobre trayectoria SVG, año de fundación y amigurumi central. |
-| `isologo-medallon-garantia` | **Isologo** | `0 0 160 160` | Medallón con festones dentados, listón ribbon inferior de garantía y leyenda "100% HECHO A MANO". |
+| `logotipo-crochet-manager` | **Logotipo** | `0 0 320 75` | Wordmark estilizado en Fraunces y Outfit con hebra pespunteada y puntos de costura. |
+| `logotipo-taller-artesanal` | **Logotipo** | `0 0 320 65` | Marca verbal institucional "CROCHET TALLER & ERP" enmarcada en cinta textil con ojales de costura. |
+| `imagotipo-horizontal` | **Imagotipo** | `0 0 390 90` | Símbolo de ovillo en píldora a la izquierda + Wordmark "Crochet Manager" y bajada Micro-ERP a la derecha. Ideal para el `navbar`. |
+| `imagotipo-vertical` | **Imagotipo** | `0 0 220 200` | Símbolo de ovillo centrado arriba + Wordmark "Crochet MANAGER" y píldora de categoría abajo. Ideal para modales y portadas. |
+| `isologo-sello-taller` | **Isologo** | `0 0 160 160` | Sello circular indivisible con texto perimetral "CROCHET MANAGER" sobre trayectoria SVG, año de fundación y emblema universal de crochet central. |
+| `isologo-medallon-garantia` | **Isologo** | `0 0 160 160` | Medallón festoneado con listón de garantía artesanal "CROCHET MANAGER - 100% HECHO A MANO". |
 
 ---
 
@@ -118,7 +120,7 @@ assets/
 ### 4.1. Filosofía de Diseño
 1. **Zero Bloat:** 100% PHP nativo, sin dependencias externas ni compiladores pesados.
 2. **Caché en Memoria:** Las lecturas de disco se cachean en un array estático durante el ciclo de vida del request, evitando lecturas redundantes en rejillas de productos.
-3. **Resolución Inteligente de Nombres:** Permite invocar un asset por su slug simple (`svg('dragon-ignis')`) o por su ruta relativa explícita (`svg('amigurumis/dragon-ignis')`), con o sin extensión `.svg`.
+3. **Resolución Inteligente de Nombres:** Permite invocar un asset por su slug simple (`svg('dragon-ignis')`) o por su ruta relativa explícita (`svg('piezas/dragon-ignis')` o `svg('creaciones/dragon-ignis')`), con o sin extensión `.svg`.
 4. **Inyección Segura de Atributos:** Permite añadir o sobrescribir `class`, `width`, `height`, `id`, `style`, `aria-hidden`, etc., fusionando clases CSS de forma no destructiva.
 5. **Tolerancia a Fallos:** Si un archivo no existe, genera un comentario HTML legible (`<!-- [SvgHelper] Archivo SVG no encontrado: "..." -->`) en lugar de arrojar una excepción fatal.
 
@@ -138,7 +140,7 @@ assets/
 
 ### 5.1. Renderizado Inline Básico
 ```php
-<!-- Busca automáticamente en amigurumis/, tools/, badges/, decorations/ -->
+<!-- Busca automáticamente en piezas/, creaciones/, tools/, badges/, decorations/ -->
 <?= svg('dragon-ignis') ?>
 ```
 

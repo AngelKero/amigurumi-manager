@@ -128,7 +128,7 @@ proyecto-web/
 ├── setup.php                   (CLI-only database initialization script executing seed.sql)
 ├── index.php                   (Catalog & inventory showcase)
 ├── creaciones.php              (Admin Creations and Stock Management)
-├── amigurumis.php              (HTTP 301 Permanent Redirect to creaciones.php)
+├── piezas.php                  (HTTP 301 Permanent Redirect to creaciones.php)
 ├── formulario.php              (Add / Edit creation with image upload and margin simulator)
 ├── detalle.php                 (Detailed piece view with public checkout modal)
 ├── pedidos.php                 (Order and commission tracking dashboard)

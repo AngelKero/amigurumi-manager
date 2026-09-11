@@ -22,7 +22,7 @@ An academic web development project to build a responsive, dynamic web applicati
 - **Static & Dynamic User Interfaces:**
   - `index.php`: Public catalog and inventory view with category filtering, dynamic stock badges, and textile chips.
   - `creaciones.php`: Administrative workshop creations and inventory dashboard with quick stock controls and modals.
-  - `amigurumis.php`: HTTP 301 permanent redirect forwarder to `creaciones.php`.
+  - `piezas.php`: HTTP 301 permanent redirect forwarder to `creaciones.php`.
   - `formulario.php`: Dual-purpose form for adding and editing creations with real image file uploads and margin preview.
   - `detalle.php`: Comprehensive creation specification, artisan economics view, and Public Client Checkout Modal.
   - `pedidos.php`: Order and custom commission tracking dashboard with responsive card grid and WhatsApp contact.

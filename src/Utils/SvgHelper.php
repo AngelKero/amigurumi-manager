@@ -31,7 +31,8 @@ namespace App\Utils {
             '',
             'branding/',
             'creaciones/',
-            'amigurumis/',
+            'piezas/',
+            'crochet/',
             'tools/',
             'badges/',
             'decorations/'
@@ -225,7 +226,7 @@ namespace App\Utils {
                 return $result;
             }
 
-            $categories = ['branding', 'creaciones', 'amigurumis', 'tools', 'badges', 'decorations'];
+            $categories = ['branding', 'creaciones', 'piezas', 'tools', 'badges', 'decorations'];
             foreach ($categories as $cat) {
                 $catDir = $base . DIRECTORY_SEPARATOR . $cat;
                 $result[$cat] = [];

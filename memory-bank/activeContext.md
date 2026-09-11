@@ -78,4 +78,37 @@
      - Actualizado el manual maestro a la versión 2.0.0 bajo la arquitectura unificada de Crochet Manager.
 - **Verificación:** 0 ocurrencias de "Amigurumi Manager" o "AMIGURUMI" en la suite de branding vectorial; validada la inyección limpia de `CROCHET MANAGER` y `CROCHET TALLER & ERP` en HTTP en vivo.
 
+## Hito Completado: Erradicación y Renombrado Total de Archivos (`amigurumi*` -> `crochet` / `piezas`)
+- **User Request:** *"Crees que ya acabaste, pero aun hay archivos llamados con algo de amigurumi, cambialos a crotchet o piezas"*
+- **Estado:** **100% Completado y Verificado (0 archivos con "amigurumi" en su nombre)**
+- **Acciones Ejecutadas:**
+  1. **Fotografía Hero (`assets/img/` y `uploads/`):**
+     - Renombrados `assets/img/hero_amigurumi.jpg` $\rightarrow$ `assets/img/hero_crochet.jpg` y `uploads/hero_amigurumi.jpg` $\rightarrow$ `uploads/hero_crochet.jpg`.
+     - Actualizada la ruta en [catalogo_content.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/pages/catalogo_content.php).
+  2. **Directorio Vectorial de Catálogo (`assets/svg/`):**
+     - Renombrado directorio físico `assets/svg/amigurumis/` $\rightarrow$ `assets/svg/piezas/`.
+     - Creados enlaces simbólicos limpios `assets/svg/creaciones -> piezas` y `assets/svg/crochet -> piezas`.
+     - Eliminada completamente la carpeta `assets/svg/amigurumis/`.
+     - Actualizado `src/Utils/SvgHelper.php` registrando `piezas/` y `crochet/` en `$searchPaths` y `listAll()`.
+     - Actualizados slugs en [pedidos_content.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/pages/pedidos_content.php) y [orders.js](file:///Users/angelzaragoza/Desktop/proyecto-web/src/js/modules/orders.js).
+  3. **Vectores de Branding:**
+     - Eliminado `logotipo-amigurumi-manager.svg` (reemplazado por `logotipo-crochet-manager.svg`).
+     - Renombrado `isotipo-osito-amigurumi.svg` $\rightarrow$ `isotipo-osito-crochet.svg`.
+  4. **Controladores y Vistas PHP:**
+     - Renombrado `amigurumis.php` $\rightarrow$ `piezas.php` (redirección 301 a `creaciones.php`).
+     - Renombrado `views/pages/amigurumis_content.php` $\rightarrow$ `views/pages/piezas_content.php`.
+     - Renombrados modales `modal_inspect_amigurumi.php` $\rightarrow$ `modal_inspect_pieza.php` y `modal_eliminar_amigurumi.php` $\rightarrow$ `modal_eliminar_pieza.php`.
+     - Sincronizados [main.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/layouts/main.php) y [panel_sidebar.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/panel_sidebar.php) con `'piezas'`.
+  5. **Módulos CSS y JavaScript:**
+     - Renombrado `src/css/04-components/amigurumis.css` $\rightarrow$ `src/css/04-components/piezas.css`.
+     - Renombrado `src/js/modules/amigurumis.js` $\rightarrow$ `src/js/modules/piezas.js`.
+  6. **Documentación:**
+     - Actualizados [docs/svg-assets-and-helper.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/svg-assets-and-helper.md) y [docs/identidad-visual.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/identidad-visual.md).
+- **Verificación Final:**
+  - `find . -iname "*amigurumi*"` devuelve **0 resultados**.
+  - `php -l` en todos los archivos PHP reporta **0 errores de sintaxis**.
+  - `node --check` en todos los módulos JS reporta **0 errores**.
+  - Servidor HTTP local respondiendo **200 OK** en todas las pantallas principales y **301** en `piezas.php`.
+
+
 
