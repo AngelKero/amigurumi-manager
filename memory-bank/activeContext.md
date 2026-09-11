@@ -1,26 +1,33 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Ajustes de Layout y Ergonomía en Formulario y Simulador de Márgenes (Completado y Verificado)
+## Current Task: Refactorización Ergonómica del Simulador de Márgenes (Completado y Verificado)
 
 - **User Request:**
-  - *"El formulario se rompe el diseño con todo lo nuevo, dale unos ajustes"*
+  - *"El simulador sigue roto"*
 
-- **Diagnóstico del Problema Resuelto:**
-  1. **Triple Columna Hacinada:** En `formulario.php`, el sidebar del panel ocupa `col-lg-3` y el área de contenido `col-lg-9`. Dentro de `formulario_content.php`, el formulario tenía `col-lg-8` y el simulador `col-lg-4`. Esto provocaba una división en 3 columnas simultáneas en pantallas estándar (Sidebar ~280px + Formulario ~480px + Simulador ~280px).
-  2. **Ruptura de Input Groups Económicos:** En los 480px del formulario, los campos de `Precio Venta (*)` y `Costo Materiales (*)` estaban divididos en tres `col-md-4` (~140px cada uno). Debido al `flex-wrap: wrap` por defecto de Bootstrap y a la clase `.input-craft-pill` con `border-radius: 50px !important`, el símbolo `$` se desprendía a una línea superior y el input numérico caía debajo.
-  3. **Títulos y Badges Comprimidos:** El título `Registrar Nueva Creación Artesanal` colisionaba con el badge de modo a la derecha.
+- **Diagnóstico Preciso del Problema Resuelto:**
+  1. **Ruptura de Textos en 'd-flex justify-content-between':**
+     - En la tarjeta del simulador (~280px-330px), los pares etiqueta-valor con textos largos colisionaban:
+       - `Ganancia Bruta:` y `$0.00 MXN` se partían en 4 líneas fragmentadas (`Ganancia` / `Bruta:` a la izquierda, `$0.00` / `MXN` a la derecha).
+       - `2. Retorno Efectivo por Hora:` (30 caracteres) y `$0.00 MXN/hr` (13 caracteres en `fs-5`) no cabían en una sola línea, fracturándose en `2. Retorno Efectivo` / `por Hora:` y `$0.00` / `MXN/hr`.
+       - En `Costo Materiales: - $0.00 MXN`, el signo `-` quedaba descolgado.
+  2. **Anomalía de Breakpoint XXL:**
+     - El simulador tenía `col-xxl-4`, lo cual provocaba que al abrir la ventana en pantallas grandes (`>= 1400px`), la columna del simulador se reducía de 41.6% (`col-xl-5`) a solo 33.3% (`col-xxl-4`), haciéndolo más angosto en monitores grandes.
+  3. **Pills de Feedback Desalineadas:**
+     - Los badges de feedback (`.margin-feedback-pill`) tenían ancho variable e irregular sin llenar el ancho del contenedor.
 
 - **Soluciones de Diseño Implementadas:**
-  1. **Reorganización del Grid Responsive:**
-     - En pantallas estándar (`< 1200px`), el formulario y el simulador adoptan ancho completo (`col-12`) del área del panel (~830px–950px), permitiendo que todos los pares de campos (`Categoría/Material`, `Tamaño/Stock`, `Precio/Costo/Horas`) respiren con espacio generoso sin desbordamiento.
-     - En pantallas amplias (`xl` / `xxl`), se distribuye en `col-12 col-xl-7 col-xxl-8` para el formulario y `col-12 col-xl-5 col-xxl-4` para el simulador de márgenes.
-  2. **Sistema `.input-group-craft` Antirruptura:**
-     - `flex-wrap: nowrap !important` y `min-width: 0 !important` en `.form-control` para que el símbolo `$` y las unidades `cm`, `unidades`, `hrs` permanezcan siempre soldados a su campo sin importar la resolución.
-     - Esquinas exteriores redondeadas en píldora (`--craft-radius-pill`), bordes interiores contiguos limpios e iluminación de borde `:focus-within` en `--craft-primary`.
-  3. **Anclaje de Navegación del Panel:**
-     - Agregado `id="simuladorMargen"` al contenedor del simulador para responder armónicamente al enlace `#simuladorMargen` del menú lateral izquierdo.
-  4. **Microcopy y Jerarquía Visual:**
-     - Header con flexbox envolvente (`d-flex flex-wrap justify-content-between align-items-center gap-2`), tipografía display artesanal (`Fraunces`) y sello artesanal cálido (`.badge-artisan-seal`). Microcopy de apoyo debajo de cada métrica financiera.
+  1. **Micro-Cards de Métricas Dedicadas:**
+     - Se separó cada métrica clave (`Margen de Utilidad` y `Retorno por Hora`) en tarjetas estructuradas independientes (`.card-stitched bg-white`).
+     - Títulos concisos (`Margen de Utilidad`, `Retorno por Hora`) con subtítulos de apoyo y valores en `fs-4 font-monospace text-nowrap` que nunca se fracturan ni envuelven.
+     - Badges de feedback a ancho completo (`width: 100%; justify-content: center;`) como barras de estado uniformes.
+  2. **Formato Monetario Conciso y 'text-nowrap':**
+     - En `margin-calculator.js`, se implementó `formatPesos(retornoHora, false) + '/hr'` (`$0.00/hr`) y se blindó `displayGanancia` con `text-nowrap font-monospace`.
+     - En el desglose financiero, se utilizó `text-nowrap` en precios y ganancia.
+  3. **Corrección de Cuadrícula Responsive:**
+     - Asignado `col-12 col-xl-7` para el formulario y `col-12 col-xl-5` para el simulador tanto en `xl` como en `xxl`, garantizando entre 360px y 420px de anchura óptima para la tarjeta financiera.
+  4. **Blindaje de Desbordamiento y Padding:**
+     - `sticky-margin-card` con `overflow: hidden` y padding responsivo `p-3 p-sm-4`.
 
 ## Next Steps:
 - Mantener validación continua del sistema y esperar instrucciones del usuario para avanzar a la Fase 3 (Backend & Conexión Limpia).

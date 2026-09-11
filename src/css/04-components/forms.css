@@ -27,17 +27,22 @@
   border-radius: var(--craft-radius);
   box-shadow: var(--craft-shadow-md);
   transition: all 0.25s ease;
+  overflow: hidden;
 }
 
 .margin-feedback-pill {
   padding: 0.45rem 0.9rem;
   border-radius: var(--craft-radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: center;
+  text-align: center;
+  gap: 0.4rem;
+  width: 100%;
 }
+
 
 /* ==========================================================================
    CRAFT INPUT GROUP: SEAMLESS NON-WRAPPING PILL ADDONS

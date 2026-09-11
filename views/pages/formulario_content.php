@@ -79,11 +79,11 @@ $calcGanancia = $calcPrecio - $calcCosto;
 $calcMargen = $calcPrecio > 0 ? ($calcGanancia / $calcPrecio) * 100 : 0.0;
 $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 ?>
-<!-- 2-COLUMN RESPONSIVE SPLIT: FORMULARIO (col-12 col-xl-7 col-xxl-8) + SIMULADOR (col-12 col-xl-5 col-xxl-4) -->
+<!-- 2-COLUMN RESPONSIVE SPLIT: FORMULARIO (col-12 col-xl-7) + SIMULADOR (col-12 col-xl-5) -->
 <div class="row g-4 mb-5">
 
   <!-- FORMULARIO DE ALTA / EDICIÓN -->
-  <div class="col-12 col-xl-7 col-xxl-8">
+  <div class="col-12 col-xl-7">
     <div class="card border-0 shadow-sm p-4 bg-white card-stitched" style="border-radius: var(--craft-radius);">
       
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom pb-3 mb-4">
@@ -260,46 +260,48 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
     </div>
   </div>
 
-  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-xl-5 col-xxl-4) -->
-  <div class="col-12 col-xl-5 col-xxl-4" id="simuladorMargen">
-    <div class="card sticky-margin-card p-4 card-stitched">
+  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-xl-5) -->
+  <div class="col-12 col-xl-5" id="simuladorMargen">
+    <div class="card sticky-margin-card p-3 p-sm-4 card-stitched">
       
-      <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-3">
-        <div class="bg-warning-subtle text-warning-emphasis p-2 rounded">
+      <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
+        <div class="d-flex align-items-center justify-content-center rounded-3 bg-warning-subtle text-warning-emphasis" style="width: 42px; height: 42px; flex-shrink: 0;">
           <i class="bi bi-calculator-fill fs-5"></i>
         </div>
-        <div>
-          <h5 class="fw-bold mb-0">Simulador de Márgenes</h5>
-          <small class="text-muted">Cálculo de viabilidad en vivo</small>
+        <div class="min-w-0">
+          <h5 class="fw-bold mb-0 font-theme-display text-dark" style="font-size: 1.15rem; line-height: 1.2;">Simulador de Márgenes</h5>
+          <span class="text-muted small" style="font-size: 0.75rem;">Cálculo de viabilidad en vivo</span>
         </div>
       </div>
 
-      <p class="text-muted small mb-3">
+      <p class="text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">
         Monitorea en tiempo real la salud financiera de tu amigurumi conforme modificas precio, costo de estambre y horas dedicadas:
       </p>
 
-      <!-- Desglose de Números -->
-      <div class="p-3 rounded mb-3 border" style="background-color: var(--craft-surface-muted);">
-        <div class="d-flex justify-content-between py-1 border-bottom">
-          <span class="text-muted small">Precio Venta:</span>
-          <span class="fw-bold text-dark font-monospace" id="calcDisplayPrecio">$<?= number_format($calcPrecio, 2) ?> MXN</span>
+      <!-- Desglose Financiero Directo -->
+      <div class="p-3 rounded mb-3 border card-stitched" style="background-color: var(--craft-surface-muted);">
+        <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
+          <span class="text-muted">Precio Venta</span>
+          <span class="fw-bold text-dark font-monospace text-nowrap" id="calcDisplayPrecio">$<?= number_format($calcPrecio, 2) ?> MXN</span>
         </div>
-        <div class="d-flex justify-content-between py-1 border-bottom">
-          <span class="text-muted small">Costo Materiales:</span>
-          <span class="text-danger font-monospace" id="calcDisplayCosto">- $<?= number_format($calcCosto, 2) ?> MXN</span>
+        <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
+          <span class="text-muted">Costo Materiales</span>
+          <span class="text-danger font-monospace text-nowrap" id="calcDisplayCosto">- $<?= number_format($calcCosto, 2) ?> MXN</span>
         </div>
-        <div class="d-flex justify-content-between py-2 mt-2 bg-white px-2 rounded border">
-          <span class="fw-bold small">Ganancia Bruta:</span>
-          <span class="fw-bold <?= $calcGanancia >= 0 ? 'text-success' : 'text-danger' ?> font-monospace" id="calcDisplayGanancia">$<?= number_format($calcGanancia, 2) ?> MXN</span>
+        <div class="d-flex justify-content-between align-items-center pt-2 mt-1">
+          <span class="fw-bold small text-dark text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.03em;">Ganancia Bruta</span>
+          <span class="fw-bold font-monospace text-nowrap fs-5 <?= $calcGanancia >= 0 ? 'text-success' : 'text-danger' ?>" id="calcDisplayGanancia">$<?= number_format($calcGanancia, 2) ?> MXN</span>
         </div>
       </div>
 
-      <!-- FEEDBACK DUAL -->
+      <!-- FEEDBACK DUAL: MÉTRICAS CLAVE -->
       <!-- Métrica 1: Margen Porcentual -->
-      <div class="mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <span class="small text-muted fw-bold">1. Margen de Ganancia:</span>
-          <strong class="fs-5 text-dark font-monospace" id="calcDisplayMargen">
+      <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="small text-muted fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.03em;">
+            <i class="bi bi-percent me-1 text-primary"></i> Margen de Utilidad
+          </span>
+          <strong class="fs-4 text-dark font-monospace text-nowrap" id="calcDisplayMargen">
             <?= number_format($calcMargen, 1) ?>%
           </strong>
         </div>
@@ -325,11 +327,16 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
       </div>
 
       <!-- Métrica 2: Retorno por Hora de Trabajo -->
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <span class="small text-muted fw-bold">2. Retorno Efectivo por Hora:</span>
-          <strong class="fs-5 text-primary font-monospace" id="calcDisplayRetorno">
-            $<?= number_format($calcRetorno, 2) ?> MXN/hr
+      <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <span class="small text-muted fw-bold text-uppercase d-block" style="font-size: 0.72rem; letter-spacing: 0.03em;">
+              <i class="bi bi-clock-history me-1 text-primary"></i> Retorno por Hora
+            </span>
+            <span class="text-muted" style="font-size: 0.68rem;">Tiempo confeccionado</span>
+          </div>
+          <strong class="fs-4 text-primary font-monospace text-nowrap" id="calcDisplayRetorno">
+            $<?= number_format($calcRetorno, 2) ?>/hr
           </strong>
         </div>
         <?php if ($hasFinancialData && $calcHoras > 0): ?>
@@ -354,7 +361,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
       </div>
 
       <!-- Nota Metodológica -->
-      <div class="p-3 bg-light rounded text-muted" style="font-size: 0.75rem;">
+      <div class="p-3 bg-light rounded text-muted" style="font-size: 0.75rem; border: 1px dashed var(--craft-border);">
         <i class="bi bi-info-circle me-1 text-primary"></i>
         Fórmula: <code>(Precio - Materiales) / Horas</code>. Proporciona estimación objetiva de rentabilidad artesanal antes de publicar en catálogo.
       </div>

@@ -34,10 +34,11 @@ export function initMarginCalculator() {
     if (displayCosto) displayCosto.textContent = `- ${formatPesos(costo)}`;
     if (displayGanancia) {
       displayGanancia.textContent = formatPesos(ganancia);
-      displayGanancia.className = ganancia >= 0 ? 'fw-bold fs-5 text-success' : 'fw-bold fs-5 text-danger';
+      displayGanancia.className = ganancia >= 0 ? 'fw-bold font-monospace text-nowrap fs-5 text-success' : 'fw-bold font-monospace text-nowrap fs-5 text-danger';
     }
     if (displayMargen) displayMargen.textContent = `${margenPorcentaje.toFixed(1)}%`;
-    if (displayRetorno) displayRetorno.textContent = `${formatPesos(retornoHora)}/hr`;
+    if (displayRetorno) displayRetorno.textContent = `${formatPesos(retornoHora, false)}/hr`;
+
 
     // 1. Feedback Visual de Margen de Utilidad
     if (badgeMargenStatus) {
