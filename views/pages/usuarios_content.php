@@ -130,7 +130,7 @@ $usuariosList = [
                   </div>
                   <div>
                     <strong class="d-block text-dark username-text">@<?= htmlspecialchars($u['username']) ?></strong>
-                    <small class="text-muted">Taller Textil Nórdico</small>
+                    <small class="text-muted">Taller Textil Principal</small>
                   </div>
                 </div>
               </td>

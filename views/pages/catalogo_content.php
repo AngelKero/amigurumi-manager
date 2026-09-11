@@ -10,7 +10,7 @@ $catalogItems = [
     'id' => 1,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Nórdico)',
+    'artesano_nombre' => 'Admin (Taller Principal)',
     'nombre' => 'Dragón Ignis',
     'categoria' => 'Fantasía',
     'material' => 'Algodón Mercerizado',
@@ -27,7 +27,7 @@ $catalogItems = [
     'id' => 2,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Nórdico)',
+    'artesano_nombre' => 'Admin (Taller Principal)',
     'nombre' => 'Mini Suculenta Maceta',
     'categoria' => 'Plantas / Botánica',
     'material' => 'Algodón Rústico',
@@ -69,7 +69,7 @@ $catalogItems = [
     <div class="col-lg-6 text-center text-lg-start">
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag fs-6 mb-3">
         <span class="text-primary"><i class="bi bi-stars"></i></span>
-        <span>Colección Textil Algodón Nórdico</span>
+        <span>Colección Textil Artesanal</span>
         <span class="badge bg-white text-muted font-monospace border ms-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">Stock en Vivo</span>
       </div>
       
@@ -78,7 +78,7 @@ $catalogItems = [
       </h1>
       
       <p class="lead mb-4" style="color: var(--craft-text-muted); font-size: 1.1rem;">
-        Piezas artesanales tejidas a mano punto a punto con lanas nórdicas y algodón mercerizado hipoalergénico. Monitorea inventarios reales o encarga piezas exclusivas a tu medida.
+        Piezas artesanales tejidas a mano punto a punto con hilazas suaves y algodón mercerizado hipoalergénico. Monitorea inventarios reales o encarga piezas exclusivas a tu medida.
       </p>
       
       <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
@@ -114,7 +114,7 @@ $catalogItems = [
       <div class="hero-photo-stitched-frame mx-auto">
         <div class="position-relative overflow-hidden" style="border-radius: calc(var(--craft-radius) - 4px);">
           <img src="assets/img/hero_amigurumi.jpg" 
-               alt="Colección Artesanal Amigurumi Algodón Nórdico" 
+               alt="Colección Artesanal de Amigurumis" 
                class="img-fluid hero-crafted-img" 
                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
           
@@ -125,7 +125,7 @@ $catalogItems = [
 
           <!-- Micro-Badge de Autoría Flotante -->
           <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill shadow-sm border small fw-bold font-monospace" style="color: var(--craft-primary); font-size: 0.78rem; z-index: 4; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.94) !important;">
-            <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller • Colección Nórdica
+            <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller • Colección Artesanal
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@ $catalogItems = [
           <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-person-badge text-primary me-1"></i>Artesano:</span>
           <select id="filterArtisan" class="form-select form-select-sm select-craft-pill" style="max-width: 260px;">
             <option value="all" selected>Todos los Artesanos</option>
-            <option value="admin">@admin (Taller Nórdico)</option>
+            <option value="admin">@admin (Taller Principal)</option>
             <option value="artesana_ana">@artesana_ana (Diseñadora)</option>
           </select>
         </div>
@@ -283,7 +283,7 @@ $catalogItems = [
       <span>Mostrando <strong id="paginationShowingCount"><?= count($catalogItems) ?></strong> de <strong id="paginationTotalCount"><?= count($catalogItems) ?></strong> creaciones artesanales</span>
     </div>
     <span class="badge bg-light text-muted font-monospace border px-3 py-2 d-none d-md-inline" style="border-radius: var(--craft-radius-pill); font-size: 0.75rem;">
-      <i class="bi bi-clock-history me-1 text-primary"></i>Colección Nórdica 2026
+      <i class="bi bi-clock-history me-1 text-primary"></i>Colección Textil 2026
     </span>
   </div>
 

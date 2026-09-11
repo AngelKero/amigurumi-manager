@@ -6,7 +6,7 @@
  */
 ?>
 <div class="cloud-yarn-bg-decorations" aria-hidden="true">
-  <!-- Nube 1: Superior Izquierda (Pespunte Nórdico) -->
+  <!-- Nube 1: Superior Izquierda (Pespunte Artesanal) -->
   <div class="bg-float-item bg-cloud-1" style="top: 2%; left: -25px;">
     <?= svg('decorations/nube-pespunte') ?>
   </div>
@@ -21,12 +21,12 @@
     <?= svg('decorations/nube-ovillo') ?>
   </div>
 
-  <!-- Nube 4: Centro-Derecha (Pespunte Nórdico) -->
+  <!-- Nube 4: Centro-Derecha (Pespunte Artesanal) -->
   <div class="bg-float-item bg-cloud-4" style="top: 64%; right: -30px;">
     <?= svg('decorations/nube-pespunte') ?>
   </div>
 
-  <!-- Nube 5: Inferior Izquierda (Pespunte Nórdico) -->
+  <!-- Nube 5: Inferior Izquierda (Pespunte Artesanal) -->
   <div class="bg-float-item bg-cloud-5" style="top: 84%; left: 8%;">
     <?= svg('decorations/nube-pespunte') ?>
   </div>

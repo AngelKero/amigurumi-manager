@@ -1,35 +1,42 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Rediseño Artesanal de Paginación y Master Footer Nórdico ("Algodón Nórdico") (Completado y Verificado)
+## Current Task: Disociación de "Nórdico" (Exclusividad para el Tema CSS / Sistema de Diseño) (Completado y Verificado)
 
 - **User Request:**
-  - *"Toda esta parte de paginación y footer dale un estilo mas propio del sitio y su proposito, lee las reglas de diseño"* (acompañado de captura con la paginación genérica oscura y el footer minimalista sin identidad artesanal).
+  - *"Debes quitar cualquie referencia a que es nordico, lo nordico solo es el tema de css no los productos u otra cosa"*
 
-- **Auditoría Heurística & Reglas de Diseño Resueltas:**
-  - **Erradicación de Estilos Cuadrados y Bloques Negros (Regla 7 & Regla 11):**
-    - Se eliminaron las clases genéricas `page-link bg-dark border-dark` y los botones cuadrados de Bootstrap.
-    - Se implementó `.pagination-craft` con geometría de píldora nórdica (`border-radius: var(--craft-radius-pill)`), estado activo en `--craft-primary` (`#8E5B74`) con pespunte interior bordado blanco (`outline: 1.5px dashed rgba(255, 255, 255, 0.65)`), sombra suave de elevación y chevrons SVG (`bi-chevron-left`, `bi-chevron-right`).
-  - **Estación de Paginación y Contador Reactivo:**
-    - Contenedor `.pagination-craft-station` con costura perimetral hilvanada `.card-stitched`, chip de resultados `.pagination-results-chip` con contador dinámico enlazado a `catalog.js` (`#paginationShowingCount`), y tag conmemorativo de la colección.
-  - **Master Footer Nórdico de 4 Columnas (`views/components/footer.php` & `footer.css`):**
-    - Costura superior hilvanada con pespunte dashed (`border-top: 2px dashed rgba(142, 91, 116, 0.28)`) y gradiente suave de lana nórdica.
-    - **Columna 1:** Identidad del Taller & Micro-ERP con sello de taller artesanal (`svg('badges/sello-taller')`), tipografía Google Font `Fraunces`, microcopy de valor y tag textil de taller oficial `TT-001`.
-    - **Columna 2:** Exploración del Catálogo (enlaces de navegación suave con micro-animación `translateX(3px)`).
-    - **Columna 3:** Panel de Herramientas del Artesano (accesos a simulador, pedidos, directorio y creación).
-    - **Columna 4:** Tarjeta de Garantía y Compromiso de Calidad Nórdica (`.footer-guarantee-box.guarantee-stitched`) con hilo hipoalergénico, ojos de seguridad con traba y retribución ética, acompañada del botón de contacto directo de encargos por WhatsApp (`https://wa.me/...`).
-    - **Barra Inferior:** Separador hilvanado (`.divider-stitched`), resguardo legal, sello de confianza *"Tejido punto a punto con lana nórdica"* y versionado *"Algodón Nórdico v2.7"*.
+- **Principio Establecido:**
+  - El término "Algodón Nórdico" pertenece estricta y únicamente al **tema y sistema de diseño CSS** (paleta de colores, tokens, tipografías y pespuntes).
+  - Los **productos (amigurumis), descripciones, materiales, colecciones, talleres artesanos y garantías de confección** son 100% artesanales y NO deben presentarse como "nórdicos".
 
-- **Archivos Creados y Modificados:**
-  - `src/css/04-components/pagination.css` (nuevo): Estilos de la estación de paginación textil.
-  - `src/css/04-components/footer.css` (nuevo): Estilos modulares del master footer nórdico y caja de garantía.
-  - `src/css/styles.css` (modificado): Registro en la arquitectura ITCSS.
-  - `src/css/04-components/modals.css` (modificado): Limpieza de la regla legacy `.footer-craft`.
-  - `views/pages/catalogo_content.php` (modificado): Estación de paginación con chevrons y chip de resultados.
-  - `views/components/footer.php` (modificado): Rediseño de 4 columnas, sello artesanal y garantía.
-  - `src/js/modules/catalog.js` (modificado): Sincronización reactiva del contador de paginación con los filtros.
+- **Ajustes Realizados:**
+  - **Catálogo (`views/pages/catalogo_content.php`):**
+    - `Admin (Taller Nórdico)` &rarr; `Admin (Taller Principal)`.
+    - `Colección Textil Algodón Nórdico` &rarr; `Colección Textil Artesanal`.
+    - `lanas nórdicas y algodón mercerizado` &rarr; `hilazas suaves y algodón mercerizado`.
+    - `Colección Artesanal Amigurumi Algodón Nórdico` &rarr; `Colección Artesanal de Amigurumis`.
+    - `Favorito del Taller • Colección Nórdica` &rarr; `Favorito del Taller • Colección Artesanal`.
+    - `Colección Nórdica 2026` &rarr; `Colección Textil 2026`.
+    - Dropdown de filtro `@admin (Taller Nórdico)` &rarr; `@admin (Taller Principal)`.
+  - **Detalle (`views/pages/detalle_content.php`):**
+    - Código de taller `#TT-001-NORDIC` &rarr; `#TT-001-ARTISAN`.
+    - `Inspirado en leyendas nórdicas...` &rarr; `Inspirado en criaturas fantásticas de fuego sereno...`.
+  - **Footer (`views/components/footer.php`):**
+    - `Compromiso de Calidad Nórdica` &rarr; `Compromiso de Calidad Artesanal`.
+    - `Tejido punto a punto con lana nórdica` &rarr; `Tejido punto a punto con amor artesanal`.
+    - `Algodón Nórdico v2.7` &rarr; `Micro-ERP Artesanal v2.7`.
+  - **Gestión de Usuarios (`views/pages/usuarios_content.php` & `src/js/modules/users.js`):**
+    - Subtítulo `Taller Textil Nórdico` &rarr; `Taller Textil Principal`.
+  - **Formulario (`views/pages/formulario_content.php`):**
+    - `distintivo morado nórdico` &rarr; `distintivo morado artesanal`.
+  - **SVGs (`assets/svg/`):**
+    - `osito-nordico.svg`: Cinta inferior cambiada a `🐻 Osito Artesanal • Lana Cardada`.
+    - `madeja-textil.svg`: Faja de papel rotulada cambiada de `Nórdico` a `Artesanal`.
+  - **Documentación (`docs/svg-assets-and-helper.md`):**
+    - Ajustadas descripciones de recursos vectoriales para eliminar referencias a lanas y maderas nórdicas en productos.
 
 - **Verificaciones Ejecutadas:**
-  - `php -l` limpio en todas las vistas (0 errores).
-  - `node --check` limpio en módulos JS (0 errores).
-  - Verificación visual con subagente de navegador en `http://127.0.0.1:8000/index.php` confirmando diseño nórdico, responsivo móvil y actualización reactiva al filtrar.
+  - `php -l` limpio en todas las vistas y componentes modificados (0 errores).
+  - `node --check` limpio en `src/js/modules/users.js` (0 errores).
+  - `git diff` verificado exhaustivamente: 0 referencias espurias a "nórdico" en productos o textos de negocio.
 

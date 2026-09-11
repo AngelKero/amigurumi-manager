@@ -31,7 +31,7 @@
 
     <!-- Label Text & Logo -->
     <text x="120" y="82" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-weight="700" font-size="9" fill="#8E5B74">Algodón</text>
-    <text x="120" y="93" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-weight="700" font-size="8" fill="#52857C">Nórdico</text>
+    <text x="120" y="93" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-weight="700" font-size="8" fill="#52857C">Artesanal</text>
     <text x="120" y="104" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="6" fill="#87929E">100g &bull; 100% PURO</text>
   </g>
 </svg>

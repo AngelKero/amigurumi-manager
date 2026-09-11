@@ -83,7 +83,7 @@
               <span class="seal-badge-tag"><i class="bi bi-award-fill"></i> Taller Verificado</span>
             </div>
             <span class="text-muted small d-block">Confección y autoría responsable registrada en el Micro-ERP</span>
-            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Código de Taller Textil: #TT-001-NORDIC</small>
+            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Código de Taller Textil: #TT-001-ARTISAN</small>
           </div>
         </div>
 
@@ -117,7 +117,7 @@
           <!-- Párrafo Descriptivo con Recuadro Artesanal -->
           <div class="story-quote-craft mb-4">
             <p class="mb-0 text-muted" id="detalleDescription">
-              Inspirado en leyendas nórdicas de fuego sereno, cada escama de Ignis es tejida pacientemente a mano con doble hebra para otorgar textura tridimensional al tacto. Incluye armazón interno flexible no deformable y fibra hipoalergénica lavable.
+              Inspirado en criaturas fantásticas de fuego sereno, cada escama de Ignis es tejida pacientemente a mano con doble hebra para otorgar textura tridimensional al tacto. Incluye armazón interno flexible no deformable y fibra hipoalergénica lavable.
             </p>
           </div>
 

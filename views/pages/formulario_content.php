@@ -156,7 +156,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
             </label>
           </div>
           <div class="form-text text-muted small mt-1 ps-4">
-            Al activar esta opción, la pieza se exhibirá con distintivo morado nórdico <em>"Bajo Encargo (5-7 d)"</em> en lugar de marcarse como <em>"Agotada"</em> cuando el inventario sea 0.
+            Al activar esta opción, la pieza se exhibirá con distintivo morado artesanal <em>"Bajo Encargo (5-7 d)"</em> en lugar de marcarse como <em>"Agotada"</em> cuando el inventario sea 0.
           </div>
         </div>
 

@@ -50,9 +50,9 @@ assets/
 | Slug / Nombre | ViewBox | Temática / Descripción |
 | :--- | :---: | :--- |
 | `dragon-ignis` | `0 0 500 500` | Dragón de fantasía con cuernos de madera, escamas tejidas en relieve y etiqueta de algodón mercerizado. |
-| `mini-suculenta` | `0 0 400 300` | Planta suculenta en maceta de terracota tejida con roseta botánica en lanas verdes nórdicas. |
+| `mini-suculenta` | `0 0 400 300` | Planta suculenta en maceta de terracota tejida con roseta botánica en hilazas verdes. |
 | `ajolote-pastel` | `0 0 400 300` | Ajolote rosa en hilo chenille velvet extra suave con branquias aterciopeladas y pespunte frontal. |
-| `osito-nordico` | `0 0 400 300` | Osito escandinavo en lana miel con bufanda verde pino hilvanada. |
+| `osito-nordico` | `0 0 400 300` | Osito artesanal en lana miel con bufanda verde pino hilvanada. |
 | `gatito-ovillo` | `0 0 400 300` | Gatito tierno jugando con una madeja de estambre ciruela. |
 | `medusa-magica` | `0 0 400 300` | Medusa marina con tentáculos ondulados en tonos lavanda y menta. |
 | `pinguino-bufanda` | `0 0 400 300` | Pingüino invernal con gorrito de pompón y bufanda a rayas. |
@@ -63,7 +63,7 @@ assets/
 | Slug / Nombre | ViewBox | Temática / Descripción |
 | :--- | :---: | :--- |
 | `ovillo-lana` | `0 0 160 160` | Ovillo esférico de hilaza con texturas de punto y hebra curva suelta. |
-| `ganchillo-crochet` | `0 0 160 160` | Ganchillo ergonómico con mango de madera nórdica y punta dorada. |
+| `ganchillo-crochet` | `0 0 160 160` | Ganchillo ergonómico con mango de madera pulida y punta dorada. |
 | `tijeras-artesanales` | `0 0 160 160` | Tijeras vintage estilo garza / cigüeña con acabado dorado antiguo. |
 | `cinta-metrica` | `0 0 160 160` | Cinta de sastre enrollada en caracol con marcas milimétricas. |
 | `boton-madera` | `0 0 160 160` | Botón rústico de 4 orificios con pespunte en cruz de hilo ciruela. |
@@ -75,13 +75,13 @@ assets/
 | :--- | :---: | :--- |
 | `sello-taller` | `0 0 160 160` | Sello circular de taller oficial verificado con madeja central y borde dentado. |
 | `algodon-natural` | `0 0 160 160` | Flor de algodón orgánico con cápsula vegetal y anillo de calidad. |
-| `garantia-autor` | `0 0 160 160` | Insignia de garantía de autor con escudo y estrella nórdica. |
+| `garantia-autor` | `0 0 160 160` | Insignia de garantía de autor con escudo y estrella artesanal. |
 
 ### 3.4. Decoraciones y Estados (`assets/svg/decorations/`)
 
 | Slug / Nombre | ViewBox | Temática / Descripción |
 | :--- | :---: | :--- |
-| `nube-pespunte` | `0 0 300 180` | Nube escandinava con línea interior de pespunte discontinuo. |
+| `nube-pespunte` | `0 0 300 180` | Nube acolchada con línea interior de pespunte discontinuo. |
 | `nube-ovillo` | `0 0 320 200` | Nube acolchada con ovillo reposando y destellos dorados. |
 | `empty-basket` | `0 0 240 220` | Cesta de mimbre tejida con ovillos de lana, ganchillo y etiqueta colgante (utilizada para estado vacío del catálogo). |
 | `aguja-hebra` | `0 0 200 120` | Aguja de costura con hebra ondulada y cruces de pespunte decorativas. |

@@ -55,12 +55,12 @@
         </ul>
       </div>
 
-      <!-- Columna 4: Compromiso Textil y Garantía Nórdica -->
+      <!-- Columna 4: Compromiso Textil y Garantía Artesanal -->
       <div class="col-12 col-lg-4">
         <div class="footer-guarantee-box guarantee-stitched">
           <div class="d-flex align-items-center gap-2 mb-2">
             <i class="bi bi-shield-lock-fill fs-5" style="color: var(--craft-secondary);"></i>
-            <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme);">Compromiso de Calidad Nórdica</h6>
+            <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme);">Compromiso de Calidad Artesanal</h6>
           </div>
           <div class="footer-guarantee-item">
             <i class="bi bi-check-circle-fill"></i>
@@ -96,10 +96,10 @@
       </div>
       <div class="d-flex flex-wrap align-items-center gap-2">
         <span class="footer-trust-tag">
-          <i class="bi bi-suit-heart-fill text-danger"></i> Tejido punto a punto con lana nórdica
+          <i class="bi bi-suit-heart-fill text-danger"></i> Tejido punto a punto con amor artesanal
         </span>
         <span class="badge bg-white text-muted font-monospace border px-2 py-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">
-          Algodón Nórdico v2.7
+          Micro-ERP Artesanal v2.7
         </span>
       </div>
     </div>
