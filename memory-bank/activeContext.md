@@ -1,25 +1,27 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Centrado del Avatar y Elementos de Identidad en el Sidebar del Panel (Completado y Verificado)
+## Current Task: Rediseño Integral de Gestión de Pedidos: Cards Responsivas y Armonización Algodón Nórdico (Completado y Verificado)
 
 - **User Request:**
-  - *"Eso centralo"* (con captura adjunta del sidebar donde el avatar circular del osito amigurumi se encontraba desalineado a la izquierda dentro de la tarjeta de perfil).
+  - *"Hay area de mejora de diseño en pedido, mejoralo y cambia la tabla por cards asi como lo hiciste en amigurumis"* (con captura adjunta de `pedidos.php` mostrando la tabla rígida y el banner oscuro con contraste deficiente).
 
-- **Diagnóstico y Causa Raíz:**
-  - La adición de la clase utilitaria `d-flex` en `<div class="panel-profile-avatar">` forzó un `display: flex !important;` a nivel de bloque, anulando el efecto del `text-align: center` del contenedor padre (`.panel-profile-box`). Al carecer de márgenes automáticos laterales, el elemento se pegó al borde izquierdo de la caja.
-
-- **Solución Aplicada:**
-  1. **Regla CSS en `src/css/04-components/sidebar.css`:**
-     - Se actualizó `.panel-profile-avatar` con `display: flex; align-items: center; justify-content: center; margin: 0 auto 0.65rem auto;`.
-     - Se amplió su diámetro a 58px para mayor visibilidad del isotipo vectorial del osito (`42x42`).
-     - Se ajustó el contorno pespunteado a `outline: 2px dashed rgba(142, 91, 116, 0.28);` para que armonice con el fondo alabastro del sistema Nórdico.
-  2. **Plantilla PHP `views/components/panel_sidebar.php`:**
-     - Se añadió `mx-auto` y `mb-2` en el contenedor del avatar.
-     - Se reforzó el contenedor del logotipo superior con `d-flex justify-content-center align-items-center` y `mx-auto` en el SVG, garantizando alineación axial perfecta.
-
-- **Verificación:**
-  - Sintaxis PHP validada con `php -l views/components/panel_sidebar.php` (0 errores).
-  - Salida HTML verificada vía `curl` con las clases `mx-auto` y `text-center`.
-
-## Next Steps:
-- Mantener la suite de vistas lista para que el usuario indique cuándo iniciar la Fase 3 (Backend & Conexión Limpia).
+- **Resultados y Soluciones Implementadas:**
+  1. **Cabecera Luminosa con Contraste Superior a 7:1 (`pedidos_content.php`):**
+     - Se reemplazó el banner oscuro `.artisan-panel-banner` por `.artisan-module-header card-stitched` con pespunte perimetral, sello oficial `isologo-sello-taller.svg`, tipografía `Fraunces` para el título y botones de acción pespunteados (`Nuevo Encargo Manual`, `Inventario`, `Ver Catálogo`).
+  2. **Reemplazo Total de la Tabla por Cuadrícula de Cards 3x / 2x (`#ordersGrid`):**
+     - Se eliminó la tabla rígida `#ordersTableDesktop` y la vista móvil duplicada `#mobileOrdersContainer`, unificando la interfaz en una cuadrícula responsiva (`row-cols-1 row-cols-md-2 row-cols-xl-3`) con tarjetas artesanales `.card-admin-pedido.card-stitched`.
+     - Cada card incluye:
+       - **Header:** Insignia ID en fuente monoespaciada (`.order-id-badge`) y chip de fecha límite de entrega con icono de calendario (`.order-delivery-chip`).
+       - **Strip de Amigurumi:** Marco fotográfico pespunteado (`.order-product-thumb-frame`) con SVG renderizado del producto (`dragon-ignis`, `ajolote-pastel`), título, tag textil de categoría y tag de cantidad.
+       - **Bloque de Cliente:** Nombre del destinatario y botón de acción directa de WhatsApp (`.btn-wa-pill` hacia `https://wa.me/...`).
+       - **Franja Financiera:** Monto total acordado y badge tri-estado de pago (`Pendiente`, `Anticipo 50%`, `Liquidado`).
+       - **Notas de Confección:** Cita estilizada para especificaciones especiales (`.order-notes-preview`).
+       - **Footer de Card:** Badge de fase de confección (`En Proceso`, `Pendiente`, `Entregado`, `Cancelado`), botón de inspección modal (`.btn-inspect-order` abriendo `#modalInspeccionarPedido`) y dropdown interactivo de cambio de estado y cancelación con restitución de inventario (`#modalCancelarPedido`).
+  3. **Toolbar y Filtros Textiles Interactivos:**
+     - Barra de pestañas textiles `.btn-filter-order-tab` con contadores dinámicos sincronizados (`#countFilterAll`, `#countFilterPendiente`, `#countFilterProceso`, etc.) y buscador reactivo en tiempo real con estado vacío dedicado (`#emptyOrdersGrid`).
+  4. **Estilos Modulares Dedicados (`src/css/04-components/orders.css`):**
+     - Creado módulo CSS e importado en `src/css/styles.css`.
+  5. **Lógica JavaScript Sincronizada (`src/js/modules/orders.js`):**
+     - Actualizada la manipulación reactiva de `#ordersGrid`, recálculo dinámico de métricas KPI, transiciones de estado in-situ e inyección de nuevas tarjetas para encargos manuales registrados por el artesano.
+  6. **Validación:**
+     - Sintaxis PHP (`php -l`) y JS (`node --check`) verificadas con 0 errores; respuesta HTTP 200 OK en `http://localhost:8000/pedidos.php`.

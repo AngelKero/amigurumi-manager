@@ -2,30 +2,93 @@
 /**
  * Page Content: Dashboard de Gestión de Pedidos y Encargos
  * Algodón Nórdico Design System
+ * Responsabilidad: Administración y seguimiento de ciclo de vida de pedidos mediante cards responsivas 3x.
  */
+
+// Conjunto inicial de pedidos alineado con la base de datos
+$mockOrders = [
+  [
+    'id' => 1,
+    'codigo' => '#1',
+    'cliente_nombre' => 'Mariana Gómez',
+    'cliente_contacto' => '+52 55 4892 1039',
+    'cliente_wa' => '525548921039',
+    'producto_nombre' => 'Dragón Ignis',
+    'producto_categoria' => 'Fantasía',
+    'producto_tamano' => '18.5 cm',
+    'svg_slug' => 'amigurumis/dragon-ignis',
+    'cantidad' => 1,
+    'total' => 450.00,
+    'estado_pago' => 'Anticipo 50%',
+    'estado' => 'En Proceso',
+    'fecha_entrega' => '2026-09-24',
+    'notas' => "Empaque para regalo con listón verde bosque y dedicatoria para Sofía.",
+    'search' => '1 mariana gomez mariana.g@example.com dragon ignis fantasia'
+  ],
+  [
+    'id' => 2,
+    'codigo' => '#2',
+    'cliente_nombre' => 'Carlos Mendoza',
+    'cliente_contacto' => '+52 55 9301 8472',
+    'cliente_wa' => '525593018472',
+    'producto_nombre' => 'Ajolote Rosado Pastel',
+    'producto_categoria' => 'Animales / Fauna',
+    'producto_tamano' => '14.0 cm',
+    'svg_slug' => 'amigurumis/ajolote-pastel',
+    'cantidad' => 2,
+    'total' => 640.00,
+    'estado_pago' => 'Pendiente',
+    'estado' => 'Pendiente',
+    'fecha_entrega' => '2026-09-30',
+    'notas' => 'Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias.',
+    'search' => '2 carlos mendoza carlos.m@example.com ajolote rosado pastel animales fauna'
+  ]
+];
+
+// Cálculo inicial de métricas KPI
+$kpiTotal = count($mockOrders);
+$kpiPendientes = 0;
+$kpiProceso = 0;
+$kpiIngresos = 0;
+
+foreach ($mockOrders as $ord) {
+  if ($ord['estado'] === 'Pendiente') {
+    $kpiPendientes++;
+    $kpiIngresos += $ord['total'];
+  } elseif ($ord['estado'] === 'En Proceso') {
+    $kpiProceso++;
+    $kpiIngresos += $ord['total'];
+  } elseif ($ord['estado'] === 'Entregado') {
+    $kpiIngresos += $ord['total'];
+  }
+}
 ?>
-<!-- CABECERA DEL PANEL DEL ARTESANO -->
-<section class="artisan-panel-banner p-3 p-md-4 mb-4">
+
+<!-- CABECERA PRINCIPAL DEL MÓDULO DE PEDIDOS (ALGODÓN NÓRDICO) -->
+<section class="artisan-module-header card-stitched mb-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <div class="d-flex align-items-center gap-3">
-      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-        <?= svg('branding/isologo-sello-taller', ['width' => 44, 'height' => 44]) ?>
+    <div>
+      <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
+        <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
+        <span>Taller de Confección &amp; Encargos</span>
       </div>
-      <div>
-        <h4 class="mb-0 fw-bold">Panel de Administración del Artesano</h4>
-        <small class="text-white-50">Control integral de encargos, fechas de entrega y ciclo de vida de pedidos</small>
-      </div>
+      <h2 class="fw-bold font-theme-display text-dark mb-1">Control de Pedidos y Encargos</h2>
+      <p class="text-muted small mb-0" style="max-width: 650px;">
+        Gestión integral de ciclo de vida de pedidos, fechas de entrega programadas, anticipos y restitución de inventario.
+      </p>
     </div>
-    <!-- BOTONES DE ACCIÓN RÁPIDA DENTRO DEL PANEL -->
     <div class="d-flex gap-2 flex-wrap">
-      <button type="button" class="btn btn-sm btn-panel-action active" data-bs-toggle="modal" data-bs-target="#modalNuevoPedido" id="btnAbrirModalNuevoPedido">
-        <i class="bi bi-journal-plus me-1"></i>Nuevo Encargo Manual
+      <button type="button" class="btn btn-craft-primary btn-craft-stitched d-inline-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoPedido" id="btnAbrirModalNuevoPedido">
+        <i class="bi bi-journal-plus"></i>
+        <span>Nuevo Encargo Manual</span>
       </button>
-      <a href="formulario.php" class="btn btn-sm btn-outline-light">
-        <i class="bi bi-plus-circle me-1"></i>Nuevo Amigurumi
+      <a href="amigurumis.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+        <i class="bi bi-box2-heart"></i>
+        <span>Inventario</span>
       </a>
-      <a href="index.php" class="btn btn-sm btn-outline-light">
-        <i class="bi bi-arrow-left me-1"></i>Ver Catálogo
+      <a href="index.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+        <i class="bi bi-shop"></i>
+        <span>Ver Catálogo</span>
       </a>
     </div>
   </div>
@@ -35,53 +98,65 @@
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Total Pedidos</div>
-      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiOrdersTotal">2</div>
-      <div class="text-muted small">Registros históricos</div>
+      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Total Pedidos</div>
+      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiOrdersTotal"><?= $kpiTotal ?> órdenes</div>
+      <div class="text-muted small">Registros en el sistema</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Pendientes</div>
-      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiOrdersPendientes">1</div>
+      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Pendientes</div>
+      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiOrdersPendientes"><?= $kpiPendientes ?> pedidos</div>
       <div class="text-muted small">Esperando confección</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">En Proceso</div>
-      <div class="fs-2 fw-extrabold text-primary font-monospace" id="kpiOrdersProceso">1</div>
+      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">En Proceso</div>
+      <div class="fs-2 fw-extrabold text-primary font-monospace" id="kpiOrdersProceso"><?= $kpiProceso ?> activos</div>
       <div class="text-muted small">En el telar / crochet</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Ingresos Totales</div>
-      <div class="fs-2 fw-extrabold text-success font-monospace" id="kpiOrdersIngresos">$1,090.00</div>
-      <div class="text-muted small">Monto en pedidos activos</div>
+      <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.04em;">Ingresos Activos</div>
+      <div class="fs-2 fw-extrabold text-success font-monospace" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?> MXN</div>
+      <div class="text-muted small">Monto en pedidos vigentes</div>
     </div>
   </div>
 </section>
 
-<!-- TOOLBAR DE FILTROS Y BÚSQUEDA -->
-<section class="card border-0 shadow-sm mb-4">
+<!-- TOOLBAR DE FILTROS Y BÚSQUEDA TEXTIL -->
+<section class="card border-0 shadow-sm mb-4 card-stitched" style="border-radius: var(--craft-radius);">
   <div class="card-body p-3">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
       
-      <!-- Píldoras de Filtro por Estado -->
-      <div class="btn-group btn-group-sm flex-wrap" role="group" aria-label="Filtro por Estado" id="orderStatusFilters">
-        <button type="button" class="btn btn-dark active filter-order-btn" data-status="all">Todos (<span id="countFilterAll">2</span>)</button>
-        <button type="button" class="btn btn-outline-secondary filter-order-btn" data-status="Pendiente">Pendientes (<span id="countFilterPendiente">1</span>)</button>
-        <button type="button" class="btn btn-outline-secondary filter-order-btn" data-status="En Proceso">En Proceso (<span id="countFilterProceso">1</span>)</button>
-        <button type="button" class="btn btn-outline-secondary filter-order-btn" data-status="Entregado">Entregados (<span id="countFilterEntregado">0</span>)</button>
-        <button type="button" class="btn btn-outline-secondary filter-order-btn" data-status="Cancelado">Cancelados (<span id="countFilterCancelado">0</span>)</button>
+      <!-- Píldoras de Filtro por Estado (Textile Tabs) -->
+      <div class="filter-tabs-craft" role="tablist" aria-label="Filtro por Estado" id="orderStatusFilters">
+        <button type="button" class="btn-filter-order-tab active filter-order-btn" data-status="all">
+          <i class="bi bi-collection me-1"></i>Todos (<span id="countFilterAll"><?= $kpiTotal ?></span>)
+        </button>
+        <button type="button" class="btn-filter-order-tab filter-order-btn" data-status="Pendiente">
+          <i class="bi bi-hourglass-split me-1 text-warning"></i>Pendientes (<span id="countFilterPendiente"><?= $kpiPendientes ?></span>)
+        </button>
+        <button type="button" class="btn-filter-order-tab filter-order-btn" data-status="En Proceso">
+          <i class="bi bi-gear-wide-connected me-1 text-primary"></i>En Proceso (<span id="countFilterProceso"><?= $kpiProceso ?></span>)
+        </button>
+        <button type="button" class="btn-filter-order-tab filter-order-btn" data-status="Entregado">
+          <i class="bi bi-check2 me-1 text-success"></i>Entregados (<span id="countFilterEntregado">0</span>)
+        </button>
+        <button type="button" class="btn-filter-order-tab filter-order-btn" data-status="Cancelado">
+          <i class="bi bi-x-circle me-1 text-danger"></i>Cancelados (<span id="countFilterCancelado">0</span>)
+        </button>
       </div>
 
       <!-- Buscador Rápido -->
       <div class="col-12 col-md-4">
-        <div class="input-group input-group-sm">
-          <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control" id="searchOrdersInput" placeholder="Filtrar por cliente, producto o ID...">
+        <div class="input-group">
+          <span class="input-group-text bg-white text-muted border-end-0" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">
+            <i class="bi bi-search"></i>
+          </span>
+          <input type="text" class="form-control border-start-0" id="searchOrdersInput" placeholder="Filtrar por cliente, producto o ID..." style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">
         </div>
       </div>
 
@@ -89,380 +164,184 @@
   </div>
 </section>
 
-<!-- VISTA MÓVIL DE PEDIDOS: TARJETAS APILADAS [CR-2] (Visible en pantallas < 768px) -->
-<div class="d-block d-md-none mb-4" id="mobileOrdersContainer">
-  
-  <!-- Tarjeta Móvil Pedido #1 -->
-  <div class="order-card-mobile card-stitched mb-3" data-order-id="#1" data-status="En Proceso" data-price="450" data-search="1 mariana gomez mariana.g@example.com dragon ignis fantasia">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <span class="fw-bold font-monospace text-primary fs-5">#1</span>
-      <span class="badge badge-order-proceso px-3 py-2 rounded-pill font-monospace order-status-badge">
-        <i class="bi bi-gear-wide-connected me-1"></i>En Proceso
-      </span>
-    </div>
-    <div class="mb-2">
-      <h6 class="fw-bold mb-0 text-dark order-product-name">Dragón Ignis</h6>
-      <small class="text-muted">Cliente: <strong class="order-client-name">Mariana Gómez</strong></small>
-      <div class="small text-muted font-monospace">
-        <a href="https://wa.me/525548921039" target="_blank" class="text-decoration-none text-muted">
-          <i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039
-        </a>
-      </div>
-    </div>
-    <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
-      <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Cantidad:</small>
-        <strong class="font-monospace">1 unidad</strong>
-      </div>
-      <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Total / Cobro:</small>
-        <strong class="text-dark font-monospace fs-6">$450.00 MXN</strong>
-        <div>
-          <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.68rem;">
-            <i class="bi bi-coin me-1"></i>Anticipo 50%
+<!-- CUADRÍCULA RESPONSIVA DE TARJETAS DE PEDIDOS (CARDS 3X / 2X) -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 g-xl-4 mb-4" id="ordersGrid">
+  <?php foreach ($mockOrders as $pedido): ?>
+    <div class="col order-card-col"
+         id="orderCol_<?= $pedido['id'] ?>"
+         data-order-id="<?= $pedido['codigo'] ?>"
+         data-status="<?= $pedido['estado'] ?>"
+         data-price="<?= $pedido['total'] ?>"
+         data-search="<?= htmlspecialchars(strtolower($pedido['search'])) ?>">
+      
+      <div class="card card-admin-pedido card-stitched h-100">
+        
+        <!-- Encabezado Superior de la Card: ID y Fecha Límite de Entrega -->
+        <div class="card-order-header d-flex justify-content-between align-items-center">
+          <span class="order-id-badge"><?= $pedido['codigo'] ?></span>
+          <span class="order-delivery-chip" title="Fecha pactada de entrega">
+            <i class="bi bi-calendar3 text-primary"></i>
+            <span class="font-monospace text-dark"><?= $pedido['fecha_entrega'] ?></span>
           </span>
         </div>
-      </div>
-      <div class="col-12">
-        <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-24</strong></small>
-      </div>
-    </div>
-    <div class="d-flex justify-content-between align-items-center pt-2">
-      <button type="button" class="btn btn-outline-secondary btn-sm btn-inspect-order" 
-              data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-              data-order-id="#1"
-              data-cliente="Mariana Gómez"
-              data-contacto="+52 55 4892 1039"
-              data-estado-pago="Anticipo 50%"
-              data-product="Dragón Ignis"
-              data-qty="1"
-              data-total="$450.00 MXN"
-              data-fecha="2026-09-24"
-              data-notes="Empaque para regalo con listón verde bosque y tarjeta con mensaje: 'Feliz Cumpleaños Sofía'.">
-        <i class="bi bi-eye me-1"></i> Notas
-      </button>
-      <div class="btn-group btn-group-sm">
-        <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Estado
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="Pendiente">
-              <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="En Proceso">
-              <i class="bi bi-gear-wide-connected text-primary me-2"></i>En Confección
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="Entregado">
-              <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
-            </button>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#" 
-               data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-               data-order-id="#1"
-               data-qty="1"
-               data-product="Dragón Ignis">
-              <i class="bi bi-x-circle me-2"></i>Cancelar (Restaura Stock)
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
-  <!-- Tarjeta Móvil Pedido #2 -->
-  <div class="order-card-mobile card-stitched mb-3" data-order-id="#2" data-status="Pendiente" data-price="640" data-search="2 carlos mendoza carlos.m@example.com ajolote rosado pastel animales fauna">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <span class="fw-bold font-monospace text-primary fs-5">#2</span>
-      <span class="badge badge-order-pendiente px-3 py-2 rounded-pill font-monospace order-status-badge">
-        <i class="bi bi-hourglass-split me-1"></i>Pendiente
-      </span>
-    </div>
-    <div class="mb-2">
-      <h6 class="fw-bold mb-0 text-dark order-product-name">Ajolote Rosado Pastel</h6>
-      <small class="text-muted">Cliente: <strong class="order-client-name">Carlos Mendoza</strong></small>
-      <div class="small text-muted font-monospace">
-        <a href="https://wa.me/525593018472" target="_blank" class="text-decoration-none text-muted">
-          <i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472
-        </a>
-      </div>
-    </div>
-    <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
-      <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Cantidad:</small>
-        <strong class="font-monospace">2 unidades</strong>
-      </div>
-      <div class="col-6">
-        <small class="text-muted d-block" style="font-size: 0.72rem;">Total / Cobro:</small>
-        <strong class="text-dark font-monospace fs-6">$640.00 MXN</strong>
-        <div>
-          <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.68rem;">
-            <i class="bi bi-clock-history me-1"></i>Pendiente
-          </span>
+        <!-- Cuerpo de la Card -->
+        <div class="card-order-body">
+          
+          <!-- Franja de Producto con Miniatura de Hilaza y Medidas -->
+          <div class="order-product-strip">
+            <div class="order-product-thumb-frame">
+              <?= svg($pedido['svg_slug'], ['width' => 54, 'height' => 54]) ?>
+            </div>
+            <div class="order-product-info">
+              <h5 class="order-product-title text-truncate" title="<?= htmlspecialchars($pedido['producto_nombre']) ?>">
+                <?= htmlspecialchars($pedido['producto_nombre']) ?>
+              </h5>
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge badge-textile-tag" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">
+                  <?= htmlspecialchars($pedido['producto_categoria']) ?>
+                </span>
+                <span class="order-qty-tag">
+                  <?= $pedido['cantidad'] ?> <?= $pedido['cantidad'] > 1 ? 'unidades' : 'unidad' ?>
+                </span>
+              </div>
+              <small class="text-muted font-monospace" style="font-size: 0.73rem;">
+                <i class="bi bi-rulers me-1"></i><?= $pedido['producto_tamano'] ?>
+              </small>
+            </div>
+          </div>
+
+          <!-- Caja de Datos del Cliente con Acceso Inmediato a WhatsApp -->
+          <div class="order-client-box">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="order-client-label">Cliente / Destinatario</div>
+                <div class="order-client-name"><?= htmlspecialchars($pedido['cliente_nombre']) ?></div>
+              </div>
+              <a href="https://wa.me/<?= $pedido['cliente_wa'] ?>" target="_blank" class="btn-wa-pill" title="Contactar por WhatsApp">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+            <div class="small text-muted font-monospace mt-1" style="font-size: 0.74rem;">
+              <i class="bi bi-telephone me-1"></i><?= $pedido['cliente_contacto'] ?>
+            </div>
+          </div>
+
+          <!-- Franja Financiera: Precio Total y Badge Tri-Estado de Pago -->
+          <div class="order-financial-strip">
+            <div>
+              <span class="text-muted small d-block" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;">Total Acordado</span>
+              <span class="order-price-amount">$<?= number_format($pedido['total'], 2) ?></span>
+              <small class="text-muted font-monospace" style="font-size: 0.72rem;">MXN</small>
+            </div>
+            <div>
+              <?php if ($pedido['estado_pago'] === 'Liquidado'): ?>
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill font-monospace" style="font-size: 0.72rem;">
+                  <i class="bi bi-check-all me-1"></i>Liquidado
+                </span>
+              <?php elseif ($pedido['estado_pago'] === 'Anticipo 50%'): ?>
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.72rem;">
+                  <i class="bi bi-coin me-1"></i>Anticipo 50%
+                </span>
+              <?php else: ?>
+                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.72rem;">
+                  <i class="bi bi-clock-history me-1"></i>Pendiente
+                </span>
+              <?php endif; ?>
+            </div>
+          </div>
+
+          <!-- Notas y Especificaciones Especiales del Cliente -->
+          <?php if (!empty($pedido['notas'])): ?>
+            <div class="order-notes-preview text-truncate" title="<?= htmlspecialchars($pedido['notas']) ?>">
+              <i class="bi bi-chat-quote me-1 text-warning"></i>"<?= htmlspecialchars($pedido['notas']) ?>"
+            </div>
+          <?php endif; ?>
+
         </div>
-      </div>
-      <div class="col-12">
-        <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-30</strong></small>
+
+        <!-- Footer: Badge de Estado y Botonera de Acciones -->
+        <div class="card-order-footer">
+          <div>
+            <?php if ($pedido['estado'] === 'En Proceso'): ?>
+              <span class="badge badge-order-proceso px-2.5 py-1.5 rounded-pill font-monospace order-status-badge">
+                <i class="bi bi-gear-wide-connected me-1"></i>En Proceso
+              </span>
+            <?php elseif ($pedido['estado'] === 'Pendiente'): ?>
+              <span class="badge badge-order-pendiente px-2.5 py-1.5 rounded-pill font-monospace order-status-badge">
+                <i class="bi bi-hourglass-split me-1"></i>Pendiente
+              </span>
+            <?php elseif ($pedido['estado'] === 'Entregado'): ?>
+              <span class="badge badge-order-entregado px-2.5 py-1.5 rounded-pill font-monospace order-status-badge">
+                <i class="bi bi-check2 text-success me-1"></i>Entregado
+              </span>
+            <?php else: ?>
+              <span class="badge badge-order-cancelado px-2.5 py-1.5 rounded-pill font-monospace order-status-badge">
+                <i class="bi bi-x-circle me-1"></i>Cancelado
+              </span>
+            <?php endif; ?>
+          </div>
+
+          <div class="d-flex align-items-center gap-1">
+            <button type="button" class="btn btn-sm btn-craft-outline btn-inspect-order"
+                    data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
+                    data-order-id="<?= $pedido['codigo'] ?>"
+                    data-cliente="<?= htmlspecialchars($pedido['cliente_nombre']) ?>"
+                    data-contacto="<?= htmlspecialchars($pedido['cliente_contacto']) ?>"
+                    data-estado-pago="<?= $pedido['estado_pago'] ?>"
+                    data-product="<?= htmlspecialchars($pedido['producto_nombre']) ?>"
+                    data-qty="<?= $pedido['cantidad'] ?>"
+                    data-total="$<?= number_format($pedido['total'], 2) ?> MXN"
+                    data-fecha="<?= $pedido['fecha_entrega'] ?>"
+                    data-notes="<?= htmlspecialchars($pedido['notas']) ?>"
+                    title="Ver ficha técnica y notas completas">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-sm btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cambiar fase de confección">
+                Estado
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: var(--craft-radius-sm);">
+                <li>
+                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="<?= $pedido['codigo'] ?>" data-target-status="Pendiente">
+                    <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="<?= $pedido['codigo'] ?>" data-target-status="En Proceso">
+                    <i class="bi bi-gear-wide-connected text-primary me-2"></i>En Confección (Proceso)
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="<?= $pedido['codigo'] ?>" data-target-status="Entregado">
+                    <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
+                  </button>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#"
+                     data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
+                     data-order-id="<?= $pedido['codigo'] ?>"
+                     data-qty="<?= $pedido['cantidad'] ?>"
+                     data-product="<?= htmlspecialchars($pedido['producto_nombre']) ?>">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar (Restaura Stock)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-    <div class="d-flex justify-content-between align-items-center pt-2">
-      <button type="button" class="btn btn-outline-secondary btn-sm btn-inspect-order" 
-              data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-              data-order-id="#2"
-              data-cliente="Carlos Mendoza"
-              data-contacto="+52 55 9301 8472"
-              data-estado-pago="Pendiente"
-              data-product="Ajolote Rosado Pastel"
-              data-qty="2"
-              data-total="$640.00 MXN"
-              data-fecha="2026-09-30"
-              data-notes="Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias.">
-        <i class="bi bi-eye me-1"></i> Notas
-      </button>
-      <div class="btn-group btn-group-sm">
-        <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Estado
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="Pendiente">
-              <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="En Proceso">
-              <i class="bi bi-gear-wide-connected text-primary me-2"></i>Iniciar Confección
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="Entregado">
-              <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
-            </button>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#" 
-               data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-               data-order-id="#2"
-               data-qty="2"
-               data-product="Ajolote Rosado Pastel">
-              <i class="bi bi-x-circle me-2"></i>Cancelar (Restaura Stock)
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Estado Vacío Móvil -->
-  <div id="emptyOrdersMobile" class="p-4 text-center bg-white rounded-3 border d-none">
-    <i class="bi bi-inbox text-muted fs-1 mb-2 d-block"></i>
-    <p class="text-muted small mb-0">No se encontraron pedidos con los filtros aplicados.</p>
-  </div>
-
+  <?php endforeach; ?>
 </div>
 
-<!-- VISTA TABULAR DE PEDIDOS (Visible en pantallas >= 768px) -->
-<section class="card border-0 shadow-sm d-none d-md-block mb-5 card-stitched" style="border-radius: var(--craft-radius);">
-  <div class="table-responsive">
-    <table class="table table-hover align-middle mb-0" id="ordersTableDesktop">
-      <thead style="background-color: var(--craft-surface-muted);">
-        <tr>
-          <th scope="col" class="py-3 px-3">ID</th>
-          <th scope="col" class="py-3">Cliente</th>
-          <th scope="col" class="py-3">Creación Amigurumi</th>
-          <th scope="col" class="py-3 text-center">Cant.</th>
-          <th scope="col" class="py-3">Total Acordado / Cobro</th>
-          <th scope="col" class="py-3">Estado</th>
-          <th scope="col" class="py-3">Fecha Entrega</th>
-          <th scope="col" class="py-3 text-end pe-3">Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="ordersTableBody">
-        
-        <!-- FILA 1: Pedido #1 (En Proceso) -->
-        <tr data-order-id="#1" data-status="En Proceso" data-price="450" data-search="1 mariana gomez mariana.g@example.com dragon ignis fantasia">
-          <td class="fw-bold font-monospace text-primary px-3">#1</td>
-          <td>
-            <div class="fw-bold text-dark order-client-name">Mariana Gómez</div>
-            <div class="small text-muted font-monospace">
-              <a href="https://wa.me/525548921039" target="_blank" class="text-decoration-none text-muted">
-                <i class="bi bi-whatsapp text-success me-1"></i>+52 55 4892 1039
-              </a>
-            </div>
-          </td>
-          <td>
-            <div class="fw-semibold text-dark order-product-name">Dragón Ignis</div>
-            <div class="small text-muted">Fantasía &bull; 18.5 cm</div>
-          </td>
-          <td class="text-center fw-bold">1</td>
-          <td>
-            <span class="fw-bold text-dark font-monospace">$450.00</span>
-            <small class="text-muted" style="font-size: 0.72rem;">MXN</small>
-            <div>
-              <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.7rem;">
-                <i class="bi bi-coin me-1"></i>Anticipo 50%
-              </span>
-            </div>
-          </td>
-          <td>
-            <span class="badge badge-order-proceso px-3 py-2 rounded-pill font-monospace order-status-badge">
-              <i class="bi bi-gear-wide-connected me-1"></i>En Proceso
-            </span>
-          </td>
-          <td>
-            <span class="font-monospace small text-dark"><i class="bi bi-calendar3 me-1"></i>2026-09-24</span>
-          </td>
-          <td class="text-end pe-3">
-            <div class="btn-group btn-group-sm">
-              <button type="button" class="btn btn-outline-secondary btn-inspect-order" 
-                      data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-                      data-order-id="#1"
-                      data-cliente="Mariana Gómez"
-                      data-contacto="+52 55 4892 1039"
-                      data-estado-pago="Anticipo 50%"
-                      data-product="Dragón Ignis"
-                      data-qty="1"
-                      data-total="$450.00 MXN"
-                      data-fecha="2026-09-24"
-                      data-notes="Empaque para regalo con listón verde bosque y tarjeta con mensaje: 'Feliz Cumpleaños Sofía'."
-                      title="Ver notas y detalles completos">
-                <i class="bi bi-eye"></i>
-              </button>
-
-              <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Estado
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="Pendiente">
-                    <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="En Proceso">
-                    <i class="bi bi-gear-wide-connected text-primary me-2"></i>En Confección
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#1" data-target-status="Entregado">
-                    <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
-                  </button>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#" 
-                     data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-                     data-order-id="#1"
-                     data-qty="1"
-                     data-product="Dragón Ignis">
-                    <i class="bi bi-x-circle me-2"></i>Cancelar Pedido (Restaura Stock)
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-
-        <!-- FILA 2: Pedido #2 (Pendiente) -->
-        <tr data-order-id="#2" data-status="Pendiente" data-price="640" data-search="2 carlos mendoza carlos.m@example.com ajolote rosado pastel animales fauna">
-          <td class="fw-bold font-monospace text-primary px-3">#2</td>
-          <td>
-            <div class="fw-bold text-dark order-client-name">Carlos Mendoza</div>
-            <div class="small text-muted font-monospace">
-              <a href="https://wa.me/525593018472" target="_blank" class="text-decoration-none text-muted">
-                <i class="bi bi-whatsapp text-success me-1"></i>+52 55 9301 8472
-              </a>
-            </div>
-          </td>
-          <td>
-            <div class="fw-semibold text-dark order-product-name">Ajolote Rosado Pastel</div>
-            <div class="small text-muted">Animales / Fauna &bull; 14.0 cm</div>
-          </td>
-          <td class="text-center fw-bold">2</td>
-          <td>
-            <span class="fw-bold text-dark font-monospace">$640.00</span>
-            <small class="text-muted" style="font-size: 0.72rem;">MXN</small>
-            <div>
-              <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.7rem;">
-                <i class="bi bi-clock-history me-1"></i>Pendiente
-              </span>
-            </div>
-          </td>
-          <td>
-            <span class="badge badge-order-pendiente px-3 py-2 rounded-pill font-monospace order-status-badge">
-              <i class="bi bi-hourglass-split me-1"></i>Pendiente
-            </span>
-          </td>
-          <td>
-            <span class="font-monospace small text-dark"><i class="bi bi-calendar3 me-1"></i>2026-09-30</span>
-          </td>
-          <td class="text-end pe-3">
-            <div class="btn-group btn-group-sm">
-              <button type="button" class="btn btn-outline-secondary btn-inspect-order" 
-                      data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-                      data-order-id="#2"
-                      data-cliente="Carlos Mendoza"
-                      data-contacto="+52 55 9301 8472"
-                      data-estado-pago="Pendiente"
-                      data-product="Ajolote Rosado Pastel"
-                      data-qty="2"
-                      data-total="$640.00 MXN"
-                      data-fecha="2026-09-30"
-                      data-notes="Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias."
-                      title="Ver notas y detalles completos">
-                <i class="bi bi-eye"></i>
-              </button>
-
-              <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Estado
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="Pendiente">
-                    <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="En Proceso">
-                    <i class="bi bi-gear-wide-connected text-primary me-2"></i>Iniciar Confección (En Proceso)
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="#2" data-target-status="Entregado">
-                    <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
-                  </button>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#" 
-                     data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-                     data-order-id="#2"
-                     data-qty="2"
-                     data-product="Ajolote Rosado Pastel">
-                    <i class="bi bi-x-circle me-2"></i>Cancelar Pedido (Restaura Stock)
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-
-        <!-- Estado Vacío Tabla Desktop -->
-        <tr id="emptyOrdersDesktopRow" class="d-none">
-          <td colspan="8" class="text-center py-5 text-muted">
-            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-            <span>No se encontraron pedidos con los filtros o búsqueda especificada.</span>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-</section>
+<!-- Estado Vacío Cuando Ningún Pedido Coincide con la Búsqueda o Filtros -->
+<div id="emptyOrdersGrid" class="p-5 text-center bg-white card-stitched rounded-4 border d-none mb-5" style="border-radius: var(--craft-radius);">
+  <i class="bi bi-inbox text-muted fs-1 mb-2 d-block"></i>
+  <h5 class="fw-bold font-theme-display text-dark">No se encontraron pedidos</h5>
+  <p class="text-muted small mb-0">No hay encargos que coincidan con los filtros o el término de búsqueda ingresado.</p>
+</div>

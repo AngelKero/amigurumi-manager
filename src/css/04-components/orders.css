@@ -1,0 +1,264 @@
+/* ==========================================================================
+   04-COMPONENTS: ORDERS MANAGEMENT & CARDS GRID (ALGODÓN NÓRDICO)
+   Clean Architecture Component Styles for pedidos.php
+   ========================================================================== */
+
+/* 1. Tarjetas de Pedidos en Cuadrícula Responsiva */
+.card-admin-pedido {
+  background: #FFFFFF;
+  border-radius: var(--craft-radius);
+  border: 1px solid var(--craft-border);
+  box-shadow: var(--craft-shadow-sm);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-admin-pedido:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(30, 37, 45, 0.08);
+  border-color: rgba(142, 91, 116, 0.35);
+}
+
+/* Encabezado Superior de la Card de Pedido */
+.card-admin-pedido .card-order-header {
+  padding: 1rem 1.15rem 0.75rem 1.15rem;
+  border-bottom: 1px dashed var(--craft-border);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);
+}
+
+.order-id-badge {
+  font-family: var(--craft-font-mono, monospace);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--craft-primary);
+  background: var(--craft-primary-subtle);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--craft-radius-pill);
+  border: 1px solid rgba(142, 91, 116, 0.2);
+}
+
+.order-delivery-chip {
+  font-family: var(--craft-font-mono, monospace);
+  font-size: 0.76rem;
+  color: var(--craft-text-muted);
+  background: #FFFFFF;
+  border: 1px solid var(--craft-border);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--craft-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Cuerpo Principal de la Card de Pedido */
+.card-admin-pedido .card-order-body {
+  padding: 1.15rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Presentación del Amigurumi con Miniatura Textil */
+.order-product-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.95rem;
+}
+
+.order-product-thumb-frame {
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  border-radius: calc(var(--craft-radius) - 6px);
+  background: #FAF8F5;
+  border: 1.5px dashed rgba(142, 91, 116, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.order-product-thumb-frame svg,
+.order-product-thumb-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.order-product-info {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.order-product-title {
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--craft-text-main);
+  margin-bottom: 0.15rem;
+  line-height: 1.25;
+}
+
+.order-qty-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--craft-font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--craft-secondary-text);
+  background: var(--craft-secondary-subtle);
+  border: 1px solid rgba(82, 133, 124, 0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--craft-radius-pill);
+}
+
+/* Caja de Datos del Cliente */
+.order-client-box {
+  background: var(--craft-surface-muted);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius-sm);
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 0.9rem;
+}
+
+.order-client-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--craft-text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.order-client-name {
+  font-weight: 700;
+  color: var(--craft-text-main);
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.btn-wa-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #E8F5E9;
+  color: #1E7E34;
+  font-family: var(--craft-font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--craft-radius-pill);
+  border: 1px solid #C3E6CB;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-wa-pill:hover {
+  background: #25D366;
+  color: #FFFFFF;
+  border-color: #25D366;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+}
+
+/* Franja Financiera de la Orden */
+.order-financial-strip {
+  background: #FFFFFF;
+  border: 1px dashed var(--craft-border);
+  border-radius: var(--craft-radius-sm);
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-price-amount {
+  font-family: var(--craft-font-mono, monospace);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--craft-text-main);
+  line-height: 1;
+}
+
+/* Notas de Personalización Artesanal */
+.order-notes-preview {
+  background: #FFFDF9;
+  border-left: 3.5px solid var(--craft-accent-gold);
+  border-radius: 0 var(--craft-radius-sm) var(--craft-radius-sm) 0;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--craft-text-muted);
+  line-height: 1.4;
+  margin-bottom: 0.85rem;
+  font-style: italic;
+}
+
+/* Footer de Acciones de la Card */
+.card-admin-pedido .card-order-footer {
+  padding: 0.75rem 1.15rem;
+  background: var(--craft-surface-muted);
+  border-top: 1px dashed var(--craft-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+/* 2. Botones de Filtro por Estado (Textile Tabs) */
+.filter-tabs-craft {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.btn-filter-order-tab {
+  background: #FFFFFF;
+  color: var(--craft-text-muted);
+  border: 1.5px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.38rem 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-filter-order-tab:hover {
+  background: var(--craft-surface-muted);
+  color: var(--craft-text-main);
+  border-color: #D1D8E0;
+}
+
+.btn-filter-order-tab.active {
+  background: var(--craft-primary);
+  color: #FFFFFF;
+  border-color: var(--craft-primary);
+  box-shadow: 0 4px 12px rgba(142, 91, 116, 0.28);
+  outline: 1.5px dashed rgba(255, 255, 255, 0.55);
+  outline-offset: -3.5px;
+}
+
+.btn-filter-order-tab .badge-count {
+  font-family: var(--craft-font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--craft-radius-pill);
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+}
+
+.btn-filter-order-tab.active .badge-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
