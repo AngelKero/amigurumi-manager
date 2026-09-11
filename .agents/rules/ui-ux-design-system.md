@@ -109,3 +109,14 @@ To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views
    - Secondary actions must use dashed running stitch borders (`.btn-craft-outline-stitched`).
 10. **Interactive Textile Category Chips (`.btn-chip-textile`):**
     - The catalog filter station must provide clickable textile tags with dashed borders that activate an embroidered running stitch when selected, maintaining 100% two-way sync with the category select dropdown.
+11. **Strict Eradication of Bootstrap Electric Blue:**
+    - Under no circumstances should default Bootstrap blue (`#0d6efd`) appear via `.text-primary`, `.border-primary`, or `.bg-primary`. All primary elements must resolve strictly to `--craft-primary` (`#8E5B74`).
+12. **Breadcrumb Craft Ribbon (`.breadcrumb-craft-ribbon`):**
+    - Navigation breadcrumbs must be styled as a stitched ribbon pill with dashed borders (`1.5px dashed rgba(142, 91, 116, 0.25)`), thread bullet separators (`•`), and the active item wrapped in a delicate plum pill tag.
+13. **Quilted Photo Mat Frame (`.product-photo-stitched-frame`):**
+    - Product showcase imagery must be nested inside a quilted white mat frame with an inset dashed running stitch (`outline: 1.5px dashed rgba(142, 91, 116, 0.28); outline-offset: -8px`).
+14. **Artisan Workshop Verified Seal (`.artisan-workshop-seal-card`):**
+    - Authorship must be displayed in a warm parchment card (`#FFFDF9`) framed by golden honey dashed stitches (`1.5px dashed #E0A868`) with a crest avatar and official workshop registration.
+15. **Tailored Specifications Table & Story Quote (`.table-craft-specs`, `.story-quote-craft`):**
+    - Technical specifications must use dashed thread dividers (`1px dashed var(--craft-border)`), plum micro-badges for spec icons, and artisan descriptions framed with a 3.5px primary left border and lino-tinted background.
+

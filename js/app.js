@@ -513,13 +513,26 @@ function initDetalleStockGuard() {
     btnSimOut.addEventListener('click', () => setStockState(0));
   }
 
-  // Interactive Thumbnail Switching
+  // Interactive Textile Thumbnail Switching
   const thumbnails = document.querySelectorAll('.card-thumb-item');
+  const svgCaption = document.getElementById('detailSvgCaption');
+  const captionMap = {
+    frontal: '🧶 Edición Especial Fantasía • Dragón Ignis (Vista Frontal)',
+    escamas: '🔍 Detalle Escamas Tridimensionales en Crochet Artesanal',
+    perfil: '🐉 Vista de Perfil y Cola con Escamas Modeladas'
+  };
+
   thumbnails.forEach(thumb => {
     thumb.addEventListener('click', () => {
-      thumbnails.forEach(t => t.classList.remove('border-primary', 'shadow-sm', 'bg-white'));
-      thumb.classList.add('border-primary', 'shadow-sm', 'bg-white');
+      thumbnails.forEach(t => t.classList.remove('active', 'border-primary', 'shadow-sm', 'bg-white'));
+      thumb.classList.add('active');
+
+      const viewType = thumb.getAttribute('data-view');
+      if (svgCaption && captionMap[viewType]) {
+        svgCaption.textContent = captionMap[viewType];
+      }
     });
   });
 }
+
 
