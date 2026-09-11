@@ -6,10 +6,10 @@
   <title>Gestión de Pedidos y Encargos | Panel del Artesano | Amigurumi Manager</title>
   <meta name="description" content="Dashboard de gestión de pedidos, encargos personalizados, estados de entrega y restitución automática de stock en el Micro-ERP.">
   
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans (Propuesta B: Algodón Nórdico) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Bootstrap 5.3 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
   <nav class="navbar navbar-expand-lg navbar-craft sticky-top">
     <div class="container-xl">
       <a class="navbar-brand" href="index.html">
-        <i class="bi bi-box-seam"></i>
+        <span class="brand-icon"><i class="bi bi-balloon-heart-fill"></i></span>
         <span>Amigurumi Manager</span>
       </a>
       
@@ -47,7 +47,7 @@
             <a class="nav-link dropdown-toggle active fw-bold text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-tools me-1"></i>Panel del Artesano
             </a>
-            <ul class="dropdown-menu shadow-sm border-0">
+            <ul class="dropdown-menu shadow-sm border-0" style="border-radius: var(--craft-radius-sm);">
               <li>
                 <a class="dropdown-item py-2" href="formulario.html">
                   <i class="bi bi-plus-circle text-success me-2"></i>Nuevo Amigurumi
@@ -70,10 +70,10 @@
 
         <!-- IDENTIFICADOR DE SESIÓN DE ARTESANO -->
         <div class="d-flex align-items-center gap-2">
-          <span class="badge bg-dark font-monospace py-2 px-3 border border-secondary">
+          <span class="badge bg-dark font-monospace py-2 px-3 border border-secondary" style="border-radius: var(--craft-radius-pill);">
             <i class="bi bi-person-badge text-warning me-1"></i>@admin (Artesano Titular)
           </span>
-          <a href="index.html" class="btn btn-outline-danger btn-sm" title="Salir al Catálogo">
+          <a href="index.html" class="btn btn-outline-danger btn-sm" title="Salir al Catálogo" style="border-radius: var(--craft-radius-pill);">
             <i class="bi bi-box-arrow-right"></i>
           </a>
         </div>
@@ -172,8 +172,109 @@
         </div>
       </section>
 
-      <!-- TABLA DE PEDIDOS RESPONSIVE -->
-      <section class="card border-0 shadow-sm mb-5 bg-white overflow-hidden" style="border-radius: var(--craft-radius);">
+      <!-- VISTA MÓVIL DE PEDIDOS: TARJETAS APILADAS [CR-2] (Visible en pantallas < 768px) -->
+      <div class="d-block d-md-none mb-4" id="mobileOrdersContainer">
+        
+        <!-- Tarjeta Móvil Pedido #1 -->
+        <div class="order-card-mobile">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold font-monospace text-primary fs-5">#1</span>
+            <span class="badge badge-order-proceso px-3 py-2 rounded-pill font-monospace">
+              <i class="bi bi-gear-wide-connected me-1"></i>En Proceso
+            </span>
+          </div>
+          <div class="mb-2">
+            <h6 class="fw-bold mb-0 text-dark">Dragón Ignis</h6>
+            <small class="text-muted">Cliente: <strong>Mariana Gómez</strong></small>
+            <div class="small text-muted font-monospace" style="font-size: 0.75rem;">mariana.g@example.com</div>
+          </div>
+          <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
+            <div class="col-6">
+              <small class="text-muted d-block" style="font-size: 0.72rem;">Cantidad:</small>
+              <strong class="font-monospace">1 unidad</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-muted d-block" style="font-size: 0.72rem;">Total:</small>
+              <strong class="text-dark font-monospace fs-6">$450.00 MXN</strong>
+            </div>
+            <div class="col-12">
+              <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-24</strong></small>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-inspect-order" 
+                    data-bs-toggle="modal" data-bs-target="#modalDetallePedido"
+                    data-order-id="#1"
+                    data-cliente="Mariana Gómez"
+                    data-product="Dragón Ignis"
+                    data-qty="1"
+                    data-total="$450.00 MXN"
+                    data-fecha="2026-09-24"
+                    data-notes="Empaque para regalo con listón verde bosque y tarjeta con mensaje: 'Feliz Cumpleaños Sofía'.">
+              <i class="bi bi-eye me-1"></i> Ver Notas
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm btn-trigger-cancel-order" 
+                    data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
+                    data-order-id="#1"
+                    data-qty="1"
+                    data-product="Dragón Ignis">
+              <i class="bi bi-x-circle me-1"></i> Cancelar
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta Móvil Pedido #2 -->
+        <div class="order-card-mobile">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold font-monospace text-primary fs-5">#2</span>
+            <span class="badge badge-order-pendiente px-3 py-2 rounded-pill font-monospace">
+              <i class="bi bi-hourglass-split me-1"></i>Pendiente
+            </span>
+          </div>
+          <div class="mb-2">
+            <h6 class="fw-bold mb-0 text-dark">Ajolote Rosado Pastel</h6>
+            <small class="text-muted">Cliente: <strong>Carlos Mendoza</strong></small>
+            <div class="small text-muted font-monospace" style="font-size: 0.75rem;">carlos.m@example.com</div>
+          </div>
+          <div class="row g-2 py-2 my-2 border-top border-bottom bg-light rounded px-2">
+            <div class="col-6">
+              <small class="text-muted d-block" style="font-size: 0.72rem;">Cantidad:</small>
+              <strong class="font-monospace">2 unidades</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-muted d-block" style="font-size: 0.72rem;">Total:</small>
+              <strong class="text-dark font-monospace fs-6">$640.00 MXN</strong>
+            </div>
+            <div class="col-12">
+              <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Compromiso: <strong class="font-monospace text-dark">2026-09-30</strong></small>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-inspect-order" 
+                    data-bs-toggle="modal" data-bs-target="#modalDetallePedido"
+                    data-order-id="#2"
+                    data-cliente="Carlos Mendoza"
+                    data-product="Ajolote Rosado Pastel"
+                    data-qty="2"
+                    data-total="$640.00 MXN"
+                    data-fecha="2026-09-30"
+                    data-notes="Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias.">
+              <i class="bi bi-eye me-1"></i> Ver Notas
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm btn-trigger-cancel-order" 
+                    data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
+                    data-order-id="#2"
+                    data-qty="2"
+                    data-product="Ajolote Rosado Pastel">
+              <i class="bi bi-x-circle me-1"></i> Cancelar
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLA DE PEDIDOS RESPONSIVE (Visible en desktop/tablet >= 768px) -->
+      <section class="card border-0 shadow-sm mb-5 bg-white overflow-hidden d-none d-md-block" style="border-radius: var(--craft-radius);">
         <div class="table-responsive">
           <table class="table table-craft table-hover align-middle mb-0">
             <thead>

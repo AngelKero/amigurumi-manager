@@ -1,44 +1,55 @@
 /* ==========================================================================
    AMIGURUMI MICRO-ERP & CATALOG - DESIGN SYSTEM
-   Warm, Crafted Artisan Aesthetic
-   Palette: Terracotta, Warm Cream, Sage Green, Linen, Dark Espresso
+   Proposal B: "Algodón Nórdico" (Scandinavian Minimalist & Soft Wool)
+   Palette: Dusty Heather Plum, Nordic Spruce, Nordic Honey, Alabaster Porcelain
+   Aesthetics: Cloud Soft, Dreamy Animations, Pill Geometry & Airy Layout
    ========================================================================== */
 
 :root {
-  /* Warm Earthy Artisan Palette */
-  --craft-primary: #c25e3e;          /* Warm Terracotta Clay */
-  --craft-primary-hover: #a84d30;
-  --craft-primary-subtle: #fbeee9;
-  --craft-secondary: #5a7d66;        /* Sage Green */
-  --craft-secondary-hover: #486552;
-  --craft-secondary-subtle: #edf4ef;
+  /* Scandinavian Powdery Craft Palette (Proposal B) */
+  --craft-primary: #8E5B74;          /* Dusty Heather Plum (Brand & Primary CTA) */
+  --craft-primary-hover: #75475E;    /* Deep Plum */
+  --craft-primary-subtle: #F7EFF3;   /* Lavender Milk */
   
-  --craft-bg: #fbf9f5;               /* Soft Linen / Warm Cream */
-  --craft-surface: #ffffff;
-  --craft-surface-muted: #f6f3ed;
-  --craft-border: #e8e2d8;
-  --craft-border-light: #f0ebe2;
+  --craft-secondary: #52857C;        /* Nordic Spruce / Frost Teal */
+  --craft-secondary-hover: #406B63;  /* Deep Spruce */
+  --craft-secondary-subtle: #EBF4F2; /* Glacier Mist */
+  --craft-secondary-text: #235048;   /* Dark Spruce (WCAG AAA/AA 6.2:1 contrast against #EBF4F2) */
 
-  --craft-text-main: #2d2621;        /* Dark Espresso Charcoal */
-  --craft-text-muted: #746c64;
-  --craft-text-light: #9d948a;
+  --craft-accent-gold: #D99C52;      /* Nordic Honey (Warning & Alerts) */
+  --craft-accent-gold-subtle: #FDF5EB;
+  --craft-accent-rose: #C6788F;      /* Soft Heather Rose */
 
-  --craft-accent-gold: #c98838;
-  --craft-accent-rose: #b8627d;
+  --craft-bg: #F8F9FB;               /* Alabaster Porcelain Canvas */
+  --craft-surface: #FFFFFF;          /* Crisp White Surface */
+  --craft-surface-muted: #F1F4F8;    /* Soft Frost Porcelain Tint */
+  --craft-border: #E4E8ED;          /* Crisp Frost Border */
+  --craft-border-light: #EEF2F6;
+
+  --craft-text-main: #1E252D;        /* Nordic Midnight Slate */
+  --craft-text-muted: #505963;       /* Granite Muted */
+  --craft-text-light: #87929E;       /* Cool Cashmere */
+
+  /* Cloud Elevation & Pill Radiuses */
+  --craft-radius: 18px;              /* Ultra-soft rounded corners */
+  --craft-radius-sm: 10px;
+  --craft-radius-pill: 50px;         /* Smooth pill tags */
   
-  /* Shadows */
-  --craft-shadow-sm: 0 2px 6px rgba(45, 38, 33, 0.04);
-  --craft-shadow-md: 0 6px 18px rgba(45, 38, 33, 0.07);
-  --craft-shadow-lg: 0 12px 30px rgba(45, 38, 33, 0.1);
-  --craft-radius: 12px;
-  --craft-radius-sm: 8px;
+  --craft-shadow-sm: 0 4px 16px rgba(30, 37, 45, 0.04);
+  --craft-shadow-md: 0 8px 24px rgba(30, 37, 45, 0.06);
+  --craft-shadow-lg: 0 14px 36px rgba(30, 37, 45, 0.09);
+  --craft-shadow-cloud: 0 16px 42px -8px rgba(142, 91, 116, 0.12);
+
+  /* Typography Pairings */
+  --craft-font-display: 'Outfit', sans-serif;
+  --craft-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Base Document Styles */
 body {
   background-color: var(--craft-bg);
   color: var(--craft-text-main);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--craft-font-body);
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
@@ -50,28 +61,63 @@ main {
 }
 
 /* Typography Enhancements */
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--craft-font-display);
   color: var(--craft-text-main);
   font-weight: 700;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
+}
+
+/* Cloud Keyframe Animations */
+@keyframes floatSoft {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(1.5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes floatGentle {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.animate-float-soft {
+  animation: floatSoft 6s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 4.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 5s ease-in-out infinite;
 }
 
 /* Artisan Navigation Bar */
 .navbar-craft {
-  background-color: var(--craft-surface);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--craft-border);
   box-shadow: var(--craft-shadow-sm);
   padding: 0.85rem 1rem;
 }
 
 .navbar-craft .navbar-brand {
+  font-family: var(--craft-font-display);
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: var(--craft-primary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   letter-spacing: -0.02em;
+  transition: color 0.2s ease;
 }
 
 .navbar-craft .navbar-brand:hover {
@@ -81,8 +127,8 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-craft .nav-link {
   color: var(--craft-text-muted);
   font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: var(--craft-radius-sm);
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--craft-radius-pill);
   transition: all 0.2s ease;
 }
 
@@ -99,17 +145,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Artisan Administration Top Bar */
 .artisan-panel-banner {
-  background: linear-gradient(135deg, #2b2420 0%, #3e332c 100%);
-  color: #f7f4ef;
+  background: linear-gradient(135deg, #1E252D 0%, #2A3440 100%);
+  color: #F8F9FB;
   border-radius: var(--craft-radius);
   box-shadow: var(--craft-shadow-md);
-  border-left: 4px solid var(--craft-accent-gold);
+  border-left: 5px solid var(--craft-accent-gold);
 }
 
 .artisan-panel-banner .btn-panel-action {
   background-color: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--craft-radius-pill);
   transition: all 0.2s ease;
 }
 
@@ -121,29 +168,95 @@ h1, h2, h3, h4, h5, h6 {
 
 .artisan-panel-banner .btn-panel-action.active {
   background-color: #ffffff;
-  color: #2b2420;
+  color: #1E252D;
   font-weight: 700;
   border-color: #ffffff;
 }
 
-/* Hero Section */
-.hero-craft {
-  background: linear-gradient(180deg, #ffffff 0%, var(--craft-surface-muted) 100%);
+/* Cloud Soft Hero Section ("Algodón Nórdico") */
+.hero-craft-nordic, .hero-cloud {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAF4F7 50%, #F1F6F5 100%);
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--craft-shadow-cloud);
 }
 
-.hero-craft::before {
+.hero-cloud::before, .hero-craft-nordic .cloud-bg-orb-1 {
   content: "";
   position: absolute;
-  top: -50px;
+  top: -60px;
   right: -50px;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(194, 94, 62, 0.08) 0%, transparent 70%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(142, 91, 116, 0.12) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-cloud::after, .hero-craft-nordic .cloud-bg-orb-2 {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -50px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(82, 133, 124, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-craft-img-badge {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 28px;
+  box-shadow: 0 16px 40px rgba(142, 91, 116, 0.16);
+  border: 6px solid #FFFFFF;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero-craft-img-badge:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 48px rgba(142, 91, 116, 0.22);
+}
+
+.anim-float-slow, .animate-float-soft {
+  animation: floatSoft 6s ease-in-out infinite;
+}
+
+.anim-float-gentle, .animate-float-gentle {
+  animation: floatGentle 4.5s ease-in-out infinite;
+}
+
+.anim-pulse-glow, .animate-pulse-glow {
+  animation: pulseGlow 5s ease-in-out infinite;
+}
+
+.hero-pill-badge {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.45rem 1.15rem;
+  font-size: 0.85rem;
+  color: var(--craft-primary);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--craft-shadow-sm);
+}
+
+.hero-craft-illustration-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+  overflow: hidden;
 }
 
 /* Product Cards */
@@ -151,7 +264,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--craft-surface);
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.2s ease;
   overflow: hidden;
   box-shadow: var(--craft-shadow-sm);
   display: flex;
@@ -159,9 +272,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-product:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--craft-shadow-md);
-  border-color: #d8cebf;
+  transform: translateY(-5px);
+  box-shadow: var(--craft-shadow-lg);
+  border-color: #D1D8E0;
 }
 
 .card-product-img-wrapper {
@@ -179,47 +292,48 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.45s ease;
 }
 
 .card-product:hover .card-product-img {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 .card-product-badge-float {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 14px;
+  right: 14px;
   z-index: 2;
 }
 
-/* Artisan Custom Badges */
+/* Artisan Custom Badges - Pill Shaped */
 .badge-category {
   background-color: var(--craft-surface-muted);
   color: var(--craft-text-muted);
   font-weight: 600;
   border: 1px solid var(--craft-border);
-  border-radius: 6px;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.75rem;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.775rem;
 }
 
+/* Contrast Fix [QW-1]: Dark Spruce on Glacier Mist (>6.2:1 contrast ratio) */
 .badge-stock-in {
   background-color: var(--craft-secondary-subtle);
-  color: var(--craft-secondary);
-  border: 1px solid rgba(90, 125, 102, 0.25);
+  color: var(--craft-secondary-text);
+  border: 1px solid rgba(82, 133, 124, 0.3);
   font-weight: 700;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--craft-radius-pill);
 }
 
 .badge-stock-out {
-  background-color: #f3efe9;
+  background-color: #F1F4F8;
   color: var(--craft-text-muted);
   border: 1px solid var(--craft-border);
   font-weight: 600;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--craft-radius-pill);
 }
 
 /* Custom Buttons */
@@ -228,8 +342,9 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--craft-primary);
   color: #ffffff;
   font-weight: 600;
-  border-radius: var(--craft-radius-sm);
-  padding: 0.5rem 1.15rem;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.55rem 1.25rem;
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.25);
   transition: all 0.2s ease;
 }
 
@@ -237,7 +352,18 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--craft-primary-hover);
   border-color: var(--craft-primary-hover);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(194, 94, 62, 0.25);
+  box-shadow: 0 6px 20px rgba(142, 91, 116, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-craft-primary:disabled {
+  background-color: #D1D8E0 !important;
+  border-color: #D1D8E0 !important;
+  color: #717D8A !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  opacity: 0.85;
 }
 
 .btn-craft-outline {
@@ -245,8 +371,8 @@ h1, h2, h3, h4, h5, h6 {
   border: 1.5px solid var(--craft-border);
   color: var(--craft-text-main);
   font-weight: 600;
-  border-radius: var(--craft-radius-sm);
-  padding: 0.5rem 1.15rem;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.55rem 1.25rem;
   transition: all 0.2s ease;
 }
 
@@ -261,7 +387,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--craft-surface-muted);
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius-sm);
-  padding: 0.85rem 1rem;
+  padding: 0.95rem 1.15rem;
 }
 
 .guarantee-item {
@@ -274,17 +400,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .guarantee-item i {
   color: var(--craft-secondary);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
-/* Quantity Stepper Control in Checkout Modal */
+/* Quantity Stepper Control in Checkout Modal (CR-2) */
 .qty-stepper {
   display: inline-flex;
   align-items: center;
   border: 1.5px solid var(--craft-border);
-  border-radius: var(--craft-radius-sm);
+  border-radius: var(--craft-radius-pill);
   background: var(--craft-surface);
   overflow: hidden;
+  box-shadow: var(--craft-shadow-sm);
 }
 
 .qty-stepper button {
@@ -293,28 +420,32 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
   border: none;
   font-weight: bold;
+  font-size: 1.1rem;
   color: var(--craft-text-main);
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .qty-stepper button:hover:not(:disabled) {
-  background-color: var(--craft-surface-muted);
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
 }
 
 .qty-stepper button:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
 .qty-stepper input {
-  width: 50px;
+  width: 48px;
   height: 42px;
   border: none;
   text-align: center;
   font-weight: 700;
+  font-family: var(--craft-font-display);
+  font-size: 1.05rem;
   color: var(--craft-text-main);
   background: transparent;
   outline: none;
@@ -325,7 +456,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 2px dashed var(--craft-border);
   background-color: var(--craft-surface-muted);
   border-radius: var(--craft-radius);
-  padding: 2rem 1.5rem;
+  padding: 2.2rem 1.5rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -347,8 +478,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .margin-feedback-pill {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--craft-radius-pill);
   font-size: 0.8rem;
   font-weight: 700;
   display: flex;
@@ -370,53 +501,92 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--craft-border);
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.1rem;
 }
 
 .table-craft tbody td {
-  padding: 1rem;
+  padding: 1.1rem;
   border-bottom: 1px solid var(--craft-border-light);
   vertical-align: middle;
 }
 
 .table-craft tbody tr:hover td {
-  background-color: #faf7f2;
+  background-color: #FAFBFD;
+}
+
+/* Mobile Order Cards (CR-2) */
+.order-card-mobile {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--craft-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card-mobile:hover {
+  box-shadow: var(--craft-shadow-md);
+  border-color: #D1D8E0;
 }
 
 /* Status Badges for Orders */
 .badge-order-pendiente {
-  background-color: #fff4e5;
-  color: #b56c00;
-  border: 1px solid #fed8a5;
+  background-color: #FFF6EC;
+  color: #B56C00;
+  border: 1px solid #FED8A5;
   font-weight: 700;
+  border-radius: var(--craft-radius-pill);
 }
 
 .badge-order-proceso {
-  background-color: #e8f4fd;
-  color: #0b69a3;
-  border: 1px solid #bce1fa;
+  background-color: #EBF4F2;
+  color: var(--craft-secondary-text);
+  border: 1px solid #B8DDD6;
   font-weight: 700;
+  border-radius: var(--craft-radius-pill);
 }
 
 .badge-order-entregado {
-  background-color: #edf7ed;
-  color: #1e7e34;
-  border: 1px solid #c3e6cb;
+  background-color: #EDF7ED;
+  color: #1E7E34;
+  border: 1px solid #C3E6CB;
   font-weight: 700;
+  border-radius: var(--craft-radius-pill);
 }
 
 .badge-order-cancelado {
-  background-color: #fbeae9;
-  color: #b82a20;
-  border: 1px solid #f5c2be;
+  background-color: #FBEAE9;
+  color: #B82A20;
+  border: 1px solid #F5C2BE;
   font-weight: 700;
+  border-radius: var(--craft-radius-pill);
+}
+
+/* Lead Time Alert Box in Modal (QW-2) */
+.lead-time-notice {
+  background-color: #FAF6F8;
+  border-left: 4px solid var(--craft-primary);
+  border-radius: var(--craft-radius-sm);
+  padding: 0.85rem 1rem;
+  font-size: 0.825rem;
+  color: var(--craft-text-body);
+}
+
+/* Out-of-Stock Notice Container (CR-1) */
+.out-of-stock-alert {
+  background-color: #F8F9FA;
+  border: 1.5px dashed #D1D8E0;
+  border-radius: var(--craft-radius-sm);
+  padding: 1rem 1.2rem;
+  color: var(--craft-text-muted);
 }
 
 /* Footer */
 .footer-craft {
   background-color: var(--craft-surface);
   border-top: 1px solid var(--craft-border);
-  padding: 2rem 0;
+  padding: 2.5rem 0;
   color: var(--craft-text-muted);
   font-size: 0.875rem;
 }
