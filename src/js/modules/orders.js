@@ -253,27 +253,27 @@ export function initOrders() {
 
   // 6. Modal Nuevo Encargo Manual
   const formNuevoPedido = document.getElementById('formNuevoPedido');
-  const selectAmigurumi = document.getElementById('manualAmigurumiSelect');
+  const selectCreacion = document.getElementById('manualCreacionSelect') || document.getElementById('manualAmigurumiSelect');
   const inputCantidad = document.getElementById('manualCantidad');
   const displayTotal = document.getElementById('manualTotalDisplay');
 
   function updateManualTotal() {
-    if (!selectAmigurumi || !inputCantidad || !displayTotal) return;
-    const selectedOption = selectAmigurumi.options[selectAmigurumi.selectedIndex];
+    if (!selectCreacion || !inputCantidad || !displayTotal) return;
+    const selectedOption = selectCreacion.options[selectCreacion.selectedIndex];
     const unitPrice = parseFloat(selectedOption?.getAttribute('data-price')) || 450;
     const qty = parseInt(inputCantidad.value, 10) || 1;
     const total = unitPrice * qty;
     displayTotal.textContent = formatPesos(total);
   }
 
-  if (selectAmigurumi) selectAmigurumi.addEventListener('change', updateManualTotal);
+  if (selectCreacion) selectCreacion.addEventListener('change', updateManualTotal);
   if (inputCantidad) inputCantidad.addEventListener('input', updateManualTotal);
 
   if (formNuevoPedido) {
     formNuevoPedido.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const selectedOption = selectAmigurumi.options[selectAmigurumi.selectedIndex];
+      const selectedOption = selectCreacion.options[selectCreacion.selectedIndex];
       const selectedVal = selectedOption.value;
       const productName = selectedOption.getAttribute('data-name') || 'Dragón Ignis';
       const unitPrice = parseFloat(selectedOption.getAttribute('data-price')) || 450;

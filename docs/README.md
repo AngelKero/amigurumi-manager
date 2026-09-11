@@ -1,6 +1,6 @@
 # 📚 Índice Maestro de Documentación Técnica
 
-Bienvenido al centro de documentación técnica y arquitectura del sistema **Amigurumi Manager (Micro-ERP & Catálogo Textil)**.
+Bienvenido al centro de documentación técnica y arquitectura del sistema **Crochet Manager (Micro-ERP & Catálogo Textil)**.
 
 Este repositorio de documentación está estructurado bajo los principios de **Clean Architecture & Clean Code**, garantizando que cada documento posea una única responsabilidad bien definida, libre de referencias obsoletas y perfectamente alineada con la base de datos SQLite y las interfaces de usuario.
 
@@ -43,11 +43,11 @@ docs/
 
 ### 1. Base de Datos e Integridad Relacional
 - **[database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md)** / **[database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md):**  
-  Especificación canónica de las tablas `usuarios`, `amigurumis` y `pedidos`, detallando todas las restricciones CHECK de SQLite (`chk_amigurumis_es_sobre_encargo`, `chk_pedidos_cliente_contacto`, `chk_pedidos_estado_pago`, etc.) y la política de claves foráneas con `ON DELETE RESTRICT`.
+  Especificación canónica de las tablas `usuarios`, `creaciones` y `pedidos`, detallando todas las restricciones CHECK de SQLite (`chk_creaciones_es_sobre_encargo`, `chk_pedidos_cliente_contacto`, `chk_pedidos_estado_pago`, etc.) y la política de claves foráneas con `ON DELETE RESTRICT`.
 - **[data-model.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md)** / **[data-model.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.md):**  
   Diagrama relacional Mermaid, ciclo de vida de entidades y correspondencia con los directorios de la aplicación.
 - **[database-testing.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.es.md)** / **[database-testing.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.md):**  
-  Batería de comandos CLI para SQLite para verificar restricciones de longitud, valores permitidos y protección referencial.
+  Batería de comandos CLI para SQLite para verificar restricciones de longitud, valores permitidos y protección referencial en `creaciones`.
 
 ### 2. Autenticación y Control de Acceso (RBAC)
 - **[auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md)** / **[auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md):**  
@@ -55,7 +55,7 @@ docs/
 
 ### 3. Contratos de Endpoints (Backend & APIs)
 - **[api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md)** / **[api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md):**  
-  Contratos JSON estrictos para autenticación, gestión de catálogo, pedidos públicos y manuales (con WhatsApp y anticipos), y modificación de roles de usuario.
+  Contratos JSON estrictos para autenticación, gestión del catálogo de creaciones, pedidos públicos y manuales (con WhatsApp y anticipos), y modificación de roles de usuario.
 
 ### 4. Arquitectura de Software & Auditorías
 - **[architecture-refactor-plan.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/architecture-refactor-plan.md):**  
@@ -71,7 +71,7 @@ docs/
 - **[wireframes.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.es.md)** / **[wireframes.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/wireframes.md):**  
   Representación textual de alta fidelidad de las vistas y componentes del sistema.
 - **[svg-assets-and-helper.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/svg-assets-and-helper.md):**  
-  Catálogo de 31 gráficos vectoriales SVG temáticos organizados en `assets/svg/` (incluyendo la suite de `branding/`) y guía de uso del helper `SvgHelper::render()` / funciones globales `svg()` y `svg_url()`.
+  Catálogo de gráficos vectoriales SVG temáticos organizados en `assets/svg/` (incluyendo `branding/` y `creaciones/`) y guía de uso del helper `SvgHelper::render()` / funciones globales `svg()` y `svg_url()`.
 
 ---
 
@@ -84,6 +84,6 @@ docs/
 | **Estilos CSS** | `src/css/` | Arquitectura ITCSS por capas (`01-settings` a `04-components`). |
 | **Lógica JavaScript** | `src/js/`, `src/js/modules/` | Vanilla JS nativo en ES Modules (`main.js` orquestador). |
 | **Helpers de Utilidad** | `src/Utils/` (PHP), `src/js/modules/currency.js` (JS) | `CurrencyHelper.php` (moneda) y `SvgHelper.php` (vector assets). |
-| **Recursos Vectoriales** | `assets/svg/` | 31 SVGs artesanales divididos en `branding`, `amigurumis`, `tools`, `badges` y `decorations`. |
-| **Puntos de Entrada** | `index.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php` | Controladores de vista en raíz. |
+| **Recursos Vectoriales** | `assets/svg/` | SVGs artesanales divididos en `branding`, `creaciones`, `tools`, `badges` y `decorations`. |
+| **Puntos de Entrada** | `index.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php`, `creaciones.php` | Controladores de vista en raíz. |
 | **Base de Datos** | `database/database.sqlite`, `database/seed.sql` | SQLite 3 con `PRAGMA foreign_keys = ON;`. |

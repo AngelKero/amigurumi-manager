@@ -1,6 +1,6 @@
-# 🧶 Amigurumi Manager | Micro-ERP & Catálogo Textil Artesanal
+# 🧶 Crochet Manager | Micro-ERP & Catálogo Textil Artesanal
 
-Sistema web integral de comercio artesanal y gestión de taller (**Micro-ERP**) diseñado especialmente para creadores textiles y artesanos de amigurumi. Permite controlar inventarios físicos en tiempo real, calcular costos de material y rentabilidad por hora, gestionar encargos de clientes y administrar el catálogo público bajo la identidad visual de **"Algodón Nórdico"**.
+Sistema web integral de comercio artesanal y gestión de taller (**Micro-ERP**) diseñado especialmente para creadores y artesanos de crochet integral (amigurumis, prendas de vestir, bolsos/accesorios, artículos del hogar y línea bebé). Permite controlar inventarios físicos en tiempo real, calcular costos de material y rentabilidad por hora, gestionar encargos de clientes y administrar el catálogo público bajo la identidad visual de **"Algodón Nórdico"**.
 
 ---
 
@@ -35,13 +35,13 @@ php setup.php
 
 ## 🔑 Credenciales de Acceso (Panel del Artesano)
 
-Para acceder a las herramientas administrativas del taller textil (Nuevo Amigurumi, Gestión de Pedidos y Márgenes):
+Para acceder a las herramientas administrativas del taller textil (Nueva Creación, Gestión de Pedidos, Inventario y Márgenes):
 
 - **Usuario:** `admin`
 - **Contraseña:** `admin123`
 - **Rol:** `admin` (Artesano Principal Titular)
 
-*El inicio de sesión se realiza cómodamente desde el botón "Iniciar Sesión" en la barra de navegación superior.*
+*El inicio de sesión se realiza cómodamente desde el botón "Iniciar Sesión" en la barra de navegación superior o haciendo clic en el badge del artesano autenticado.*
 
 ---
 
@@ -54,11 +54,11 @@ proyecto-web/
 ├── views/                          # Sistema de plantillas y componentes modulares PHP
 │   ├── layouts/main.php            # Layout maestro (<head>, scripts, decoraciones y modals)
 │   ├── components/                 # Barra de navegación, footer, tarjetas y modales
-│   └── pages/                      # Contenido específico de cada vista
+│   └── pages/                      # Contenido específico de cada vista (catalogo, creaciones, etc.)
 ├── src/                            # Código fuente modular (Backend y Activos Frontend)
 │   ├── css/                        # Estilos modulares organizados por capas ITCSS (Algodón Nórdico)
 │   ├── js/                         # Scripts cliente desacoplados en ES Modules
-│   ├── Utils/                      # Helpers universales (CurrencyHelper, etc.)
+│   ├── Utils/                      # Helpers universales (CurrencyHelper, SvgHelper, etc.)
 │   ├── Core/                       # Autoloader y Formateador de Respuestas JSON
 │   ├── Database/                   # Conexión Singleton PDO SQLite con Foreign Keys
 │   ├── Middleware/                 # Guardián de sesión y autorización por rol
@@ -66,10 +66,10 @@ proyecto-web/
 │   └── Services/                   # Reglas de negocio (anti-spoofing, subida de fotos y unlink)
 ├── api/                            # Fachada de Controladores HTTP livianos (JSON APIs)
 │   ├── auth/                       # login.php, logout.php, me.php
-│   ├── amigurumis/                 # leer.php, crear.php, actualizar.php, eliminar.php
+│   ├── creaciones/                 # leer.php, crear.php, actualizar.php, eliminar.php
 │   ├── pedidos/                    # solicitar.php, listar.php, actualizar_estado.php
 │   └── usuarios/                   # index.php (CRUD de administradores)
-├── database/                       # Almacenamiento físico SQLite protegido
+├── database/                       # Almacenamiento físico SQLite protegido (seed.sql, database.sqlite)
 ├── uploads/                        # Directorio para fotografías reales de creaciones
 └── docs/                           # Documentación técnica de arquitectura y pruebas
 ```
@@ -81,7 +81,7 @@ proyecto-web/
 El frontend implementa una estética textil escandinava suave y acogedora:
 - **Paleta de Color:** Ciruela Nórdico (`#8E5B74`), Abeto Glaciar (`#52857C` con alto contraste `#235048`), Miel Nórdica (`#D99C52`) y Lienzo Porcelana (`#F8F9FB`).
 - **Detallado Textil:** Bordes pespunteados (`.card-stitched`), cintas hilvanadas para migas de pan (`.breadcrumb-craft-ribbon`), etiquetas de cuidado tejidas (`.badge-textile-tag`), marcos paspartú acolchados para fotografías y sello oficial del taller artesanal.
-- **Tipografía:** *Outfit* (títulos y cifras) y *Plus Jakarta Sans* (lectura y tablas).
+- **Tipografía:** *Fraunces* (títulos de display y cabeceras de impacto), *Outfit* (subtítulos y cifras) y *Plus Jakarta Sans* (lectura, tablas y formularios).
 - **Accesibilidad:** Contraste superior a 6.2:1 (superando WCAG 2.1 AA) y navegación mobile-first.
 
 ---
@@ -91,3 +91,4 @@ El frontend implementa una estética textil escandinava suave y acogedora:
 - **PHP 8.0** o superior con extensiones estándar `pdo_sqlite` y `mbstring`.
 - **Navegador web moderno** (Chrome, Firefox, Safari o Edge) con soporte para JavaScript ES6+.
 - Cero dependencias externas de Composer o Node.js requeridas en tiempo de ejecución.
+

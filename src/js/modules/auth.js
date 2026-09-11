@@ -9,7 +9,7 @@ export function initAuth() {
   const navUserBadge = document.getElementById('navUserBadge');
 
   // Verificar si la sesión simulada del artesano está activa
-  const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
+  const isArtisanSession = localStorage.getItem('crochet_session_active') === 'true' || localStorage.getItem('amigurumi_session_active') === 'true';
 
   if (isArtisanSession) {
     if (btnNavLogin) btnNavLogin.classList.add('d-none');
@@ -27,6 +27,7 @@ export function initAuth() {
   logoutButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      localStorage.removeItem('crochet_session_active');
       localStorage.removeItem('amigurumi_session_active');
       window.location.href = 'index.php';
     });
@@ -47,6 +48,7 @@ export function initAuth() {
       const pass = passwordInput.value.trim();
 
       if (user === 'admin' && pass === 'admin123') {
+        localStorage.setItem('crochet_session_active', 'true');
         localStorage.setItem('amigurumi_session_active', 'true');
         if (alertPlaceholder) alertPlaceholder.classList.add('d-none');
         
@@ -55,7 +57,7 @@ export function initAuth() {
           const modalInstance = window.bootstrap.Modal.getInstance(loginModalEl);
           if (modalInstance) modalInstance.hide();
         }
-        window.location.href = 'amigurumis.php';
+        window.location.href = 'creaciones.php';
       } else {
         if (alertPlaceholder) {
           alertPlaceholder.textContent = 'Credenciales inválidas. Usuario o contraseña incorrectos.';

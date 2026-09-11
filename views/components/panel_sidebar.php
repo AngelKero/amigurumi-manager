@@ -2,9 +2,9 @@
 /**
  * Component: Panel Left Sidebar (Algodón Nórdico)
  * Left navigation sidebar for artisan admin panel pages:
- * amigurumis.php, pedidos.php, usuarios.php, formulario.php
+ * creaciones.php, pedidos.php, usuarios.php, formulario.php
  */
-$activePage = $activePage ?? 'amigurumis';
+$activePage = $activePage ?? 'creaciones';
 ?>
 <aside class="panel-sidebar-card card-stitched">
   <!-- Logotipo Oficial del Taller Artesanal -->
@@ -36,33 +36,6 @@ $activePage = $activePage ?? 'amigurumis';
   <!-- Lista de Enlaces de Administración -->
   <ul class="panel-nav-list">
     <li>
-      <a href="amigurumis.php" class="panel-nav-link <?= $activePage === 'amigurumis' ? 'active' : '' ?>">
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-collection-fill"></i>
-          <span>Inventario & Piezas</span>
-        </span>
-        <span class="panel-nav-badge" id="sidebarBadgeAmigurumis">3</span>
-      </a>
-    </li>
-    <li>
-      <a href="formulario.php" class="panel-nav-link <?= $activePage === 'formulario' ? 'active' : '' ?>">
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-plus-circle-fill text-success"></i>
-          <span>Nuevo Amigurumi</span>
-        </span>
-        <span class="panel-nav-badge text-success font-monospace">+</span>
-      </a>
-    </li>
-    <li>
-      <a href="pedidos.php" class="panel-nav-link <?= $activePage === 'pedidos' ? 'active' : '' ?>">
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-box-seam-fill text-info"></i>
-          <span>Control Pedidos</span>
-        </span>
-        <span class="panel-nav-badge" id="sidebarBadgePedidos">2</span>
-      </a>
-    </li>
-    <li>
       <a href="usuarios.php" class="panel-nav-link <?= $activePage === 'usuarios' ? 'active' : '' ?>">
         <span class="d-flex align-items-center gap-2">
           <i class="bi bi-people-fill text-primary"></i>
@@ -72,12 +45,21 @@ $activePage = $activePage ?? 'amigurumis';
       </a>
     </li>
     <li>
-      <a href="formulario.php#simuladorMargen" class="panel-nav-link">
+      <a href="creaciones.php" class="panel-nav-link <?= $activePage === 'creaciones' ? 'active' : '' ?>">
         <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-calculator-fill text-warning"></i>
-          <span>Simulador Margen</span>
+          <i class="bi bi-collection-fill"></i>
+          <span>Inventario & Creaciones</span>
         </span>
-        <span class="panel-nav-badge font-monospace">$/hr</span>
+        <span class="panel-nav-badge" id="sidebarBadgeCreaciones">5</span>
+      </a>
+    </li>
+    <li>
+      <a href="pedidos.php" class="panel-nav-link <?= $activePage === 'pedidos' ? 'active' : '' ?>">
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-box-seam-fill text-info"></i>
+          <span>Control Pedidos</span>
+        </span>
+        <span class="panel-nav-badge" id="sidebarBadgePedidos">2</span>
       </a>
     </li>
   </ul>

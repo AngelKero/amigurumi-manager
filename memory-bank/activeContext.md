@@ -1,51 +1,43 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Current Task: Generalización Exitosa a Crochet Integral (Prendas, Accesorios, Hogar, Bebé y Amigurumis)
+## Completed Milestone: Renombrado Global de Dominio (Amigurumis -> Creaciones) en Base de Datos, Código y Vistas
 
 - **User Request:**
-  - *"Vamos a hacer modificaciones algo importantes pero no mucho, el sistema no se va a limitar unicamente a amigurumis, si no que a crotchet en general, por lo que hay que hacer un analisis de que cambios o cosas serian necesarias (por ejemplo en vez de tamaño manejar dimensiones). Usa todas tus skills o con la investigacion que vas a hacer en internet descarga nuevas que te sirvan a aterrizar el producto. En si en la base de datos seran las mismas tablas pero puede que con unos cuantos cambios"*
+  - *"tienes total libertad de modificar la bd y cambiar todos los nombres que hagan mencion a amigurumis, como aun no esta implementado datos reales ni conexiones no hay ningun problema, solo asegurate de documentar todo al final"*
 
-- **Alcance y Arquitectura Implementada:**
-  1. **Evolución del Esquema Relacional (3 Tablas Preservadas):**
-     - Se mantuvo intacta la estructura de 3 tablas (`usuarios`, `amigurumis`, `pedidos`) para evitar rupturas de claves foráneas.
-     - Campo migrado: `tamano_cm REAL NOT NULL` -> `dimensiones TEXT NOT NULL` con restricción estricta `chk_amigurumis_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100)`.
-     - Permite almacenar medidas 2D/3D (ej. `'140 x 100 cm'`, `'35 x 30 cm'`), tallas de prendas (ej. `'Talla M (95 x 58 cm)'`) y alturas de amigurumis (ej. `'18.5 cm (Alto)'`).
-  2. **Taxonomía Canónica de Crochet (5 Categorías Oficiales):**
-     - `Amigurumis & Figuras`
-     - `Prendas & Ropa` (Tops, Suéteres, Cardigans, Gorros)
-     - `Bolsos & Accesorios` (Tote Bags, Monederos, Cuellos)
-     - `Hogar & Decoración` (Mantas, Cojines, Suculentas, Tapices)
-     - `Bebé & Infantil` (Mantas de apego, Zapatitos, Sonajeros)
-  3. **Suite Vectorial Ampliada (`assets/svg/amigurumis/`):**
-     - Creado `cardigan-granny.svg`: Ilustración artesanal de cardigan con cuadros de la abuela florales en paleta Algodón Nórdico y botones de madera.
-     - Creado `tote-bag.svg`: Ilustración artesanal de tote bag con tejido espiga, textura de trapillo, chevrons decorativos y borla boho.
-  4. **Semillas Realistas (`database/seed.sql` & `database.sqlite`):**
-     - 5 creaciones representativas de la taxonomía:
-       1. *Dragón Ignis* (Amigurumi, $450 MXN, 18.5 cm alto, stock 4)
-       2. *Mini Suculenta en Maceta* (Hogar, $180 MXN, 10x8 cm, stock 12)
-       3. *Ajolote Rosado Pastel* (Amigurumi, $320 MXN, 14x10 cm, bajo encargo)
-       4. *Cardigan Granny Squares* (Prenda, $980 MXN, Talla M, stock 2)
-       5. *Tote Bag Boho Trapillo* (Bolso, $380 MXN, 35x30 cm, stock 6)
-  5. **Sincronización Total de Vistas y Componentes PHP:**
-     - `views/components/product_card.php`: Soporte nativo para `$item['dimensiones']` con fallback.
-     - `views/pages/catalogo_content.php`: Hero banner generalizado a crochet, 5 chips textiles de categoría, dropdown sincronizado y 5 items pre-cargados.
-     - `views/pages/detalle_content.php`: Ficha técnica con fila *"Dimensiones / Talla"*, categoría actualizada y tiempos de entrega para prendas (5-10 días).
-     - `views/pages/amigurumis_content.php`: Array de 5 items, cabecera de taller, selector de categorías y renderizado de `dimensiones` en cards 3x.
-     - `views/pages/formulario_content.php`: Selector con las 5 categorías de crochet y campo de texto `#inputDimensiones`.
-     - `views/components/modal_nuevo_pedido.php`: Selector enriquecido con las 5 piezas del catálogo.
-     - `views/pages/pedidos_content.php`: Renderizado de dimensiones en tarjetas pespunteadas de pedidos.
-  6. **Sincronización de JavaScript:**
-     - `src/js/modules/amigurumis.js`: Extracción de `data-dimensiones` y formateo inteligente en modal de inspección.
-     - `src/js/modules/catalog.js`: Filtrado reactivo por las 5 nuevas categorías.
-     - `src/js/modules/orders.js`: Compatibilidad total con dimensiones de producto.
-  7. **Documentación Técnica Bilingüe Actualizada:**
+- **Estado:** **Completado, Verificado y Documentado al 100%**
+
+- **Resumen de Modificaciones Ejecutadas:**
+  1. **Base de Datos Relacional SQLite (`database/seed.sql`, `setup.php`, `database.sqlite`):**
+     - Renombrada la tabla canónica: `amigurumis` $\rightarrow$ `creaciones`.
+     - Actualizada clave foránea de autoría: `CONSTRAINT fk_creaciones_artesano FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE`.
+     - Renombradas todas las restricciones: `chk_creaciones_nombre`, `chk_creaciones_categoria`, `chk_creaciones_material`, `chk_creaciones_dimensiones`, `chk_creaciones_precio`, `chk_creaciones_costo_materiales`, `chk_creaciones_cantidad_stock`, `chk_creaciones_horas_tejido`, `chk_creaciones_descripcion`, `chk_creaciones_imagen_url`, `chk_creaciones_es_sobre_encargo`.
+     - Renombrada la columna foránea en `pedidos`: `amigurumi_id` $\rightarrow$ `creacion_id` con `CONSTRAINT fk_pedidos_creacion FOREIGN KEY (creacion_id) REFERENCES creaciones(id) ON DELETE RESTRICT ON UPDATE CASCADE`.
+     - Renombrados índices: `idx_creaciones_artesano`, `idx_creaciones_categoria`, `idx_creaciones_stock`, `idx_pedidos_creacion`.
+     - Actualizado `setup.php` para validar la inicialización de `creaciones`. Re-ejecutado con código de salida 0.
+  2. **Estructura de Vistas, Componentes y Puntos de Entrada:**
+     - Creado `creaciones.php` como nuevo controlador de vista para el inventario del taller (`$activePage = 'creaciones'`).
+     - Convertido `amigurumis.php` en redirección permanente HTTP 301 hacia `creaciones.php` para mantener retrocompatibilidad total.
+     - Creado `views/pages/creaciones_content.php` con panel de control de creaciones, KPIs en vivo, filtros textiles de 2 niveles, Cards pespunteadas 3x y controles in-situ.
+     - Creados modales `views/components/modal_inspect_creacion.php` y `views/components/modal_eliminar_creacion.php` (con wrappers de compatibilidad en `modal_*_amigurumi.php`).
+     - Sincronizados componentes: `panel_sidebar.php`, `navbar.php`, `footer.php`, `product_card.php`, `detalle_content.php`, `formulario_content.php`, `pedidos_content.php`, `modal_nuevo_pedido.php`.
+  3. **Estilos CSS y JavaScript Modular:**
+     - Creado `src/css/04-components/creaciones.css` con clases `.card-admin-creacion`, `.creacion-thumb-frame`, etc. e importado en `src/css/styles.css`.
+     - Creado `src/js/modules/creaciones.js` con `initCreaciones()` y re-exportado en `amigurumis.js`.
+     - Actualizados `src/js/main.js`, `auth.js`, `catalog.js`, `detail.js`, `orders.js`.
+  4. **Recursos Gráficos y Helpers:**
+     - Actualizado `src/Utils/SvgHelper.php` registrando la ruta `'creaciones/'`.
+     - Creado enlace simbólico `assets/svg/creaciones -> amigurumis`.
+  5. **Documentación Técnica Bilingüe Actualizada:**
      - `docs/database-schema.md` y `docs/database-schema.es.md`
      - `docs/data-model.md` y `docs/data-model.es.md`
      - `docs/database-testing.md` y `docs/database-testing.es.md`
      - `docs/api-design.md` y `docs/api-design.es.md`
-     - `memory-bank/techContext.md`, `productContext.md` y `progress.md`
+     - `docs/README.md` y root `README.md`
+     - Los 5 archivos de `/memory-bank/` sincronizados.
 
 - **Verificación y Pruebas:**
-  - Sintaxis PHP (`php -l`) y JS (`node --check`) validadas con 0 errores en todos los archivos modificados.
-  - Verificación HTTP en `http://localhost:8000/` (`index.php`, `detalle.php`, `amigurumis.php`, `formulario.php`, `pedidos.php`): Todos responden HTTP 200 OK.
-  - Base de datos `database/database.sqlite` regenerada mediante `setup.php` con integridad referencial activa.
+  - Sintaxis PHP: 34 archivos `.php` validados con `php -l` (0 errores de sintaxis).
+  - Sintaxis JS: Todos los módulos `.js` validados con `node --check` (0 errores).
+  - Base de datos SQLite: Regenerada con `php setup.php` (5 creaciones, 2 pedidos vinculados, 3 usuarios).
+  - Servidor HTTP: Todos los endpoints responden correctamente (`index.php`: 200, `creaciones.php`: 200, `amigurumis.php`: 301, `detalle.php`: 200, `formulario.php`: 200, `pedidos.php`: 200, `usuarios.php`: 200).

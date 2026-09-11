@@ -114,7 +114,7 @@ export function initDetail() {
   });
 
   // Activar barra de autoría y métricas privadas si hay sesión activa
-  const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
+  const isArtisanSession = localStorage.getItem('crochet_session_active') === 'true' || localStorage.getItem('amigurumi_session_active') === 'true';
   const artisanToolbar = document.getElementById('artisanDetailToolbar');
   const privateMetricsCard = document.getElementById('artisanPrivateMetricsCard');
 
@@ -128,7 +128,7 @@ export function initDetail() {
   if (btnEliminar) {
     btnEliminar.addEventListener('click', () => {
       const titleEl = document.getElementById('detalleTitle');
-      const deleteNameSpan = document.getElementById('deleteAmigurumiName');
+      const deleteNameSpan = document.getElementById('deleteCreacionName') || document.getElementById('deleteAmigurumiName');
       if (titleEl && deleteNameSpan) {
         deleteNameSpan.textContent = titleEl.textContent.trim();
       }

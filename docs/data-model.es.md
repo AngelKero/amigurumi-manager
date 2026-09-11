@@ -1,12 +1,12 @@
-# Micro-ERP de Amigurumis: Índice Maestro de Datos y Arquitectura
+# Micro-ERP de Creaciones en Crochet: Índice Maestro de Datos y Arquitectura
 
-Este directorio contiene la documentación modular de la arquitectura del sistema Micro-ERP para Catálogo, Inventario y Gestión de Pedidos de Creaciones de Amigurumi.
+Este directorio contiene la documentación modular de la arquitectura del sistema Micro-ERP para Catálogo, Inventario y Gestión de Pedidos de Creaciones en Crochet Artesanal.
 
 ---
 
 ## 1. Índice de Documentación Modular
 
-- **[database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md):** Esquema relacional completo de 3 tablas (`usuarios`, `amigurumis`, `pedidos`), DDL detallado con claves foráneas, diccionarios de datos, índices y reglas de integridad referencial. (Versión en inglés: [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md))
+- **[database-schema.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md):** Esquema relacional completo de 3 tablas (`usuarios`, `creaciones`, `pedidos`), DDL detallado con claves foráneas, diccionarios de datos, índices y reglas de integridad referencial. (Versión en inglés: [database-schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md))
 - **[auth-flow.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.es.md):** Ciclo de vida de autenticación, hashing de contraseñas con PHP nativo `password_hash()`, control de sesiones y matriz de protección de endpoints. (Versión en inglés: [auth-flow.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/auth-flow.md))
 - **[api-design.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md):** Contratos de endpoints REST, formato estándar de respuestas JSON, gestión de errores y operaciones CRUD para catálogo y pedidos. (Versión en inglés: [api-design.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md))
 - **[database-testing.es.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.es.md):** Guía de verificación CLI y consultas reproducibles en terminal con `sqlite3` para validar claves foráneas, cálculo de precios y límites de inventario. (Versión en inglés: [database-testing.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-testing.md))
@@ -25,7 +25,7 @@ erDiagram
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
-    AMIGURUMIS {
+    CREACIONES {
         integer id PK "INTEGER AUTOINCREMENT"
         integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 caracteres)"
@@ -47,7 +47,7 @@ erDiagram
         integer id PK "INTEGER AUTOINCREMENT"
         string cliente_nombre "TEXT NOT NULL (2-100 caracteres)"
         string cliente_contacto "TEXT NOT NULL (WhatsApp o teléfono, máx 50 car.)"
-        integer amigurumi_id FK "REFERENCES amigurumis(id)"
+        integer creacion_id FK "REFERENCES creaciones(id)"
         integer cantidad "INTEGER NOT NULL (Unidades solicitadas >= 1)"
         string fecha_entrega "TEXT (YYYY-MM-DD)"
         string estado_pedido "TEXT (Pendiente, En Proceso, Entregado, Cancelado)"
@@ -57,8 +57,8 @@ erDiagram
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
     }
 
-    USUARIOS ||--o{ AMIGURUMIS : "confecciona / registra"
-    AMIGURUMIS ||--o{ PEDIDOS : "referenciado en pedidos"
+    USUARIOS ||--o{ CREACIONES : "confecciona / registra"
+    CREACIONES ||--o{ PEDIDOS : "referenciado en pedidos"
 ```
 
 ---
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
--- 2. Tabla: amigurumis (Catálogo e Inventario de Productos)
-CREATE TABLE IF NOT EXISTS amigurumis (
+-- 2. Tabla: creaciones (Catálogo e Inventario de Productos)
+CREATE TABLE IF NOT EXISTS creaciones (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
     cliente_contacto TEXT NOT NULL DEFAULT '' CHECK(length(trim(cliente_contacto)) <= 50),
-    amigurumi_id INTEGER NOT NULL,
+    creacion_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1 CHECK(cantidad >= 1 AND cantidad <= 1000),
     fecha_entrega TEXT CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente' CHECK(estado_pedido IN (
@@ -119,15 +119,15 @@ CREATE TABLE IF NOT EXISTS pedidos (
     precio_final INTEGER NOT NULL CHECK(precio_final >= 1 AND precio_final <= 9999999),
     notas TEXT CHECK(notas IS NULL OR length(notas) <= 1000),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-    FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (creacion_id) REFERENCES creaciones(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- Índices para Optimización de Consultas
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
-CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
+CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
 
@@ -140,11 +140,11 @@ proyecto-web/
 ├── views/                          # Plantillas y componentes modulares PHP
 │   ├── layouts/main.php            # Layout maestro (<head>, nav, modals, footer)
 │   ├── components/                 # Modales, navbar, tarjetas y footer
-│   └── pages/                      # Vistas de contenido (catálogo, detalle, formulario, pedidos, usuarios)
+│   └── pages/                      # Vistas de contenido (catálogo, detalle, formulario, pedidos, usuarios, creaciones)
 ├── src/                            # Código fuente modular protegido
 │   ├── css/                        # Estilos modulares ITCSS (01-settings a 04-components)
 │   ├── js/                         # JavaScript nativo en ES Modules (main.js y modules/)
-│   └── Utils/                      # Utilidades compartidas (CurrencyHelper.php)
+│   └── Utils/                      # Utilidades compartidas (CurrencyHelper.php, SvgHelper.php)
 ├── api/                            # Controladores JSON livianos (Fase 3/4)
 ├── database/                       # Base de datos SQLite y seed.sql
 ├── uploads/                        # Archivos de imágenes reales

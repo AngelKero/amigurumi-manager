@@ -14,7 +14,7 @@
           <?= svg('branding/imagotipo-horizontal', ['height' => 44, 'style' => 'max-width: 100%; width: auto;']) ?>
         </div>
         <p class="text-muted small mb-3" style="line-height: 1.6;">
-          Micro-ERP y catálogo textil diseñado exclusivamente para artesanas y tejedores de amigurumis. Controla el rendimiento de tus horas de labor, tus inversiones en hilazas y lanas, tus pedidos a la medida y tus existencias en tiempo real.
+          Micro-ERP y catálogo textil diseñado para artesanas y creadores en crochet. Controla el rendimiento de tus horas de labor, tus inversiones en hilazas y lanas, tus pedidos a la medida y tus existencias en tiempo real.
         </p>
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <span class="badge badge-textile-tag d-inline-flex align-items-center gap-1">
@@ -46,7 +46,7 @@
           <i class="bi bi-tools"></i> Taller ERP
         </h6>
         <ul class="footer-links-list">
-          <li><a href="amigurumis.php" class="footer-link"><i class="bi bi-chevron-right"></i> Inventario Piezas</a></li>
+          <li><a href="creaciones.php" class="footer-link"><i class="bi bi-chevron-right"></i> Inventario Creaciones</a></li>
           <li><a href="formulario.php" class="footer-link"><i class="bi bi-chevron-right"></i> Nueva Creación</a></li>
           <li><a href="pedidos.php" class="footer-link"><i class="bi bi-chevron-right"></i> Gestión Pedidos</a></li>
           <li><a href="usuarios.php" class="footer-link"><i class="bi bi-chevron-right"></i> Equipo Taller</a></li>
@@ -75,7 +75,7 @@
             <i class="bi bi-check-circle-fill"></i>
             <span><strong>Confección Justa:</strong> Cada precio garantiza una retribución horaria ética a las artesanas.</span>
           </div>
-          <a href="https://wa.me/5215500000000?text=Hola,%20quisiera%20consultar%20sobre%20un%20encargo%20especial%20de%20amigurumi" 
+          <a href="https://wa.me/5215500000000?text=Hola,%20quisiera%20consultar%20sobre%20un%20encargo%20especial%20de%20crochet" 
              target="_blank" 
              rel="noopener noreferrer" 
              class="btn btn-craft-outline btn-craft-outline-stitched btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
@@ -93,7 +93,7 @@
     <!-- Barra Inferior de Copyright y Resguardo -->
     <div class="footer-bottom-bar">
       <div>
-        <span>&copy; <?= date('Y') ?> <strong>Amigurumi Manager</strong> &bull; Micro-ERP & Catálogo Textil. Todos los derechos reservados.</span>
+        <span>&copy; <?= date('Y') ?> <strong>Crochet Manager</strong> &bull; Micro-ERP & Catálogo Textil. Todos los derechos reservados.</span>
       </div>
       <div class="d-flex flex-wrap align-items-center gap-2">
         <span class="footer-trust-tag d-inline-flex align-items-center gap-1">

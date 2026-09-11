@@ -1,5 +1,5 @@
 -- ==============================================================================
--- Handmade Amigurumi Micro-ERP & Catalog System
+-- Handmade Crochet Creations Micro-ERP & Catalog System
 -- Database Seed Script: DDL Schema & Initial Mock Data
 -- Engine: SQLite 3
 -- ==============================================================================
@@ -10,7 +10,8 @@ PRAGMA foreign_keys = ON;
 -- 1. CLEANUP PREVIOUS TABLES (Reverse order of dependencies)
 -- ------------------------------------------------------------------------------
 DROP TABLE IF EXISTS pedidos;
-DROP TABLE IF EXISTS amigurumis;
+DROP TABLE IF EXISTS creaciones;
+DROP TABLE IF EXISTS amigurumis; -- Legacy cleanup
 DROP TABLE IF EXISTS usuarios;
 
 -- ------------------------------------------------------------------------------
@@ -51,8 +52,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
         CHECK(rol IN ('admin', 'artesano', 'asistente'))
 );
 
--- Table: amigurumis (Core Catalog & Physical Inventory)
-CREATE TABLE IF NOT EXISTS amigurumis (
+-- Table: creaciones (Core Catalog & Physical Inventory in Crochet)
+CREATE TABLE IF NOT EXISTS creaciones (
     -- -------------------------------------------------------------------------
     -- Definición de Columnas
     -- -------------------------------------------------------------------------
@@ -80,74 +81,74 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     -- QUÉ HACE: Relaciona artesano_id con usuarios(id). Bloquea el borrado del usuario si tiene piezas (ON DELETE RESTRICT)
     --           y propaga modificaciones de ID (ON UPDATE CASCADE).
     -- REGLA DE NEGOCIO: Toda pieza debe tener un artesano responsable; no se pueden eliminar artesanos con catálogo activo.
-    CONSTRAINT fk_amigurumis_artesano 
+    CONSTRAINT fk_creaciones_artesano 
         FOREIGN KEY (artesano_id) REFERENCES usuarios(id) 
         ON DELETE RESTRICT ON UPDATE CASCADE,
 
     -- 2. Longitud y Sanidad del Nombre
-    -- QUÉ HACE: Obliga a que el nombre del amigurumi tenga entre 2 y 100 caracteres sin ser solo espacios.
+    -- QUÉ HACE: Obliga a que el nombre de la creación tenga entre 2 y 100 caracteres sin ser solo espacios.
     -- REGLA DE NEGOCIO: Títulos descriptivos válidos para la tienda y tarjetas de catálogo.
-    CONSTRAINT chk_amigurumis_nombre 
+    CONSTRAINT chk_creaciones_nombre 
         CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
 
     -- 3. Longitud de Categoría
     -- QUÉ HACE: Asegura entre 2 y 50 caracteres para clasificar la creación.
     -- REGLA DE NEGOCIO: Clasificación taxonómica consistente (Amigurumis & Figuras, Prendas & Ropa, Bolsos & Accesorios, etc.).
-    CONSTRAINT chk_amigurumis_categoria 
+    CONSTRAINT chk_creaciones_categoria 
         CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
 
     -- 4. Detalle de Materiales de Tejido
     -- QUÉ HACE: Exige entre 3 y 80 caracteres en la especificación técnica de hilazas/fibras.
     -- REGLA DE NEGOCIO: Transparencia al cliente sobre calidad y composición textil (ej. 100% Algodón Mercerizado).
-    CONSTRAINT chk_amigurumis_material 
+    CONSTRAINT chk_creaciones_material 
         CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
 
     -- 5. Rango de Dimensiones Físicas y Talla
     -- QUÉ HACE: Valida que la cadena de dimensiones tenga entre 2 y 100 caracteres sin espacios vacíos exclusivos.
     -- REGLA DE NEGOCIO: Admite dimensiones 2D/3D (ej. '140 x 100 cm', '35 x 30 cm'), medidas de amigurumi (ej. '18.5 cm alto') o tallas de prendas (ej. 'Talla M (95 x 58 cm)').
-    CONSTRAINT chk_amigurumis_dimensiones 
+    CONSTRAINT chk_creaciones_dimensiones 
         CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
 
     -- 6. Precio de Venta al Público (Almacenado en Centavos)
     -- QUÉ HACE: Obliga a que el precio sea entero entre 1 centavo ($0.01 MXN) y 9,999,999 centavos ($99,999.99 MXN).
     -- REGLA DE NEGOCIO: Integridad financiera sin errores de redondeo de punto flotante; prohíbe productos gratuitos o negativos.
-    CONSTRAINT chk_amigurumis_precio 
+    CONSTRAINT chk_creaciones_precio 
         CHECK(precio >= 1 AND precio <= 9999999),
 
     -- 7. Costo de Inversión en Materiales (Almacenado en Centavos)
     -- QUÉ HACE: Obliga a que el costo sea entero >= 0 y <= 9,999,999 centavos.
     -- REGLA DE NEGOCIO: Base contable para calcular el margen de utilidad neta y retorno de inversión del taller.
-    CONSTRAINT chk_amigurumis_costo_materiales 
+    CONSTRAINT chk_creaciones_costo_materiales 
         CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
 
     -- 8. Control de Stock Físico Disponible
     -- QUÉ HACE: Asegura que las existencias no sean negativas y no superen 10,000 unidades.
     -- REGLA DE NEGOCIO: Evita vender inventario negativo; el badge "Agotado" se deriva en UI cuando stock = 0.
-    CONSTRAINT chk_amigurumis_cantidad_stock 
+    CONSTRAINT chk_creaciones_cantidad_stock 
         CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
 
     -- 9. Horas de Labor Manual Invertidas
     -- QUÉ HACE: Permite NULL o un valor numérico entre 0.0 y 500.0 horas de tejido.
     -- REGLA DE NEGOCIO: Registro del tiempo de trabajo para calcular la tasa de ganancia por hora ($/hr).
-    CONSTRAINT chk_amigurumis_horas_tejido 
+    CONSTRAINT chk_creaciones_horas_tejido 
         CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
 
     -- 10. Longitud Máxima de Descripción
     -- QUÉ HACE: Permite NULL o texto de hasta 2000 caracteres.
     -- REGLA DE NEGOCIO: Espacio suficiente para historia, instrucciones de cuidado y detalles sin desbordar la memoria.
-    CONSTRAINT chk_amigurumis_descripcion 
+    CONSTRAINT chk_creaciones_descripcion 
         CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
 
     -- 11. Longitud y Sanidad de Ruta de Imagen
     -- QUÉ HACE: Permite NULL o texto de hasta 500 caracteres sin espacios vacíos exclusivos.
     -- REGLA DE NEGOCIO: Almacena la ruta relativa del archivo en el servidor local (/uploads/...).
-    CONSTRAINT chk_amigurumis_imagen_url 
+    CONSTRAINT chk_creaciones_imagen_url 
         CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
 
     -- 12. Distintivo de Confección Sobre Encargo
     -- QUÉ HACE: Flag binario (0 o 1) que indica si la pieza se elabora exclusivamente bajo encargo personalizado.
     -- REGLA DE NEGOCIO: Permite piezas sin stock inmediato (stock = 0) que no están "Agotadas" sino que se tejen a pedido.
-    CONSTRAINT chk_amigurumis_es_sobre_encargo 
+    CONSTRAINT chk_creaciones_es_sobre_encargo 
         CHECK(es_sobre_encargo IN (0, 1))
 );
 
@@ -159,7 +160,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL,
     cliente_contacto TEXT NOT NULL DEFAULT '',
-    amigurumi_id INTEGER NOT NULL,
+    creacion_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1,
     fecha_entrega TEXT,
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente',
@@ -173,11 +174,11 @@ CREATE TABLE IF NOT EXISTS pedidos (
     -- =========================================================================
 
     -- 1. Integridad Referencial: Pieza Encargada
-    -- QUÉ HACE: Vincula amigurumi_id con amigurumis(id). Bloquea el borrado de una pieza si tiene pedidos (ON DELETE RESTRICT)
+    -- QUÉ HACE: Vincula creacion_id con creaciones(id). Bloquea el borrado de una pieza si tiene pedidos (ON DELETE RESTRICT)
     --           y propaga actualizaciones de ID (ON UPDATE CASCADE).
     -- REGLA DE NEGOCIO: Protección contable e histórica; no se puede borrar una creación del catálogo si fue pedida por clientes.
-    CONSTRAINT fk_pedidos_amigurumi 
-        FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) 
+    CONSTRAINT fk_pedidos_creacion 
+        FOREIGN KEY (creacion_id) REFERENCES creaciones(id) 
         ON DELETE RESTRICT ON UPDATE CASCADE,
 
     -- 2. Nombre del Cliente Comprador
@@ -233,10 +234,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
 -- 3. QUERY PERFORMANCE INDEXES
 -- ------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
-CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
+CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 -- ------------------------------------------------------------------------------
@@ -271,7 +272,7 @@ VALUES
 
 -- 4.2 Five Distinct Crochet Creations
 -- Item 1: Amigurumis & Figuras category (@admin)
-INSERT INTO amigurumis (
+INSERT INTO creaciones (
     id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
@@ -294,7 +295,7 @@ INSERT INTO amigurumis (
 );
 
 -- Item 2: Hogar & Decoración category (@admin)
-INSERT INTO amigurumis (
+INSERT INTO creaciones (
     id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
@@ -317,7 +318,7 @@ INSERT INTO amigurumis (
 );
 
 -- Item 3: Amigurumis & Figuras category (@artesana_ana) - Confección Exclusiva Bajo Encargo
-INSERT INTO amigurumis (
+INSERT INTO creaciones (
     id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
@@ -340,7 +341,7 @@ INSERT INTO amigurumis (
 );
 
 -- Item 4: Prendas & Ropa category (@admin)
-INSERT INTO amigurumis (
+INSERT INTO creaciones (
     id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
@@ -363,7 +364,7 @@ INSERT INTO amigurumis (
 );
 
 -- Item 5: Bolsos & Accesorios category (@artesana_ana)
-INSERT INTO amigurumis (
+INSERT INTO creaciones (
     id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
@@ -388,7 +389,7 @@ INSERT INTO amigurumis (
 -- 4.3 Two Commission Orders (Linked via Foreign Key)
 -- Order 1: For Dragón Ignis (cantidad = 1, precio_final = 1 * 45000 = 45000)
 INSERT INTO pedidos (
-    id, cliente_nombre, cliente_contacto, amigurumi_id, cantidad, fecha_entrega,
+    id, cliente_nombre, cliente_contacto, creacion_id, cantidad, fecha_entrega,
     estado_pedido, estado_pago, precio_final, notas, creado_en
 ) VALUES (
     1,
@@ -406,7 +407,7 @@ INSERT INTO pedidos (
 
 -- Order 2: For Ajolote Rosado Pastel (cantidad = 2, precio_final = 2 * 32000 = 64000)
 INSERT INTO pedidos (
-    id, cliente_nombre, cliente_contacto, amigurumi_id, cantidad, fecha_entrega,
+    id, cliente_nombre, cliente_contacto, creacion_id, cantidad, fecha_entrega,
     estado_pedido, estado_pago, precio_final, notas, creado_en
 ) VALUES (
     2,

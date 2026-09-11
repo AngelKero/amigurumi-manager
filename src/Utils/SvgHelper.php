@@ -30,6 +30,7 @@ namespace App\Utils {
         protected static array $searchPaths = [
             '',
             'branding/',
+            'creaciones/',
             'amigurumis/',
             'tools/',
             'badges/',
@@ -224,7 +225,7 @@ namespace App\Utils {
                 return $result;
             }
 
-            $categories = ['branding', 'amigurumis', 'tools', 'badges', 'decorations'];
+            $categories = ['branding', 'creaciones', 'amigurumis', 'tools', 'badges', 'decorations'];
             foreach ($categories as $cat) {
                 $catDir = $base . DIRECTORY_SEPARATOR . $cat;
                 $result[$cat] = [];

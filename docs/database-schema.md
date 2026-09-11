@@ -1,6 +1,6 @@
-# Relational Database Schema & Data Dictionary: Micro-ERP
+# Relational Database Schema & Data Dictionary: Crochet Creations Micro-ERP
 
-This document defines the production relational schema for the Amigurumi Craft Micro-ERP, spanning authentication (`usuarios`), product catalog (`amigurumis`), and custom commission/order tracking (`pedidos`).
+This document defines the production relational schema for the Handmade Crochet Creations Micro-ERP, spanning authentication (`usuarios`), product catalog (`creaciones`), and custom commission/order tracking (`pedidos`).
 
 ---
 
@@ -16,7 +16,7 @@ erDiagram
         string creado_en "TEXT (ISO 8601 timestamp)"
     }
 
-    AMIGURUMIS {
+    CREACIONES {
         integer id PK "INTEGER AUTOINCREMENT"
         integer artesano_id FK "REFERENCES usuarios(id)"
         string nombre "TEXT NOT NULL (2-100 chars)"
@@ -29,6 +29,7 @@ erDiagram
         real horas_tejido "REAL (Labor hours >= 0.0)"
         string descripcion "TEXT (Max 2000 chars)"
         string imagen_url "TEXT (Max 500 chars)"
+        integer es_sobre_encargo "INTEGER NOT NULL (0 or 1)"
         string creado_en "TEXT (ISO 8601 timestamp)"
         string actualizado_en "TEXT (ISO 8601 timestamp)"
     }
@@ -36,17 +37,19 @@ erDiagram
     PEDIDOS {
         integer id PK "INTEGER AUTOINCREMENT"
         string cliente_nombre "TEXT NOT NULL (2-100 chars)"
-        integer amigurumi_id FK "REFERENCES amigurumis(id)"
+        string cliente_contacto "TEXT (Max 50 chars)"
+        integer creacion_id FK "REFERENCES creaciones(id)"
         integer cantidad "INTEGER NOT NULL (>= 1, units count)"
         string fecha_entrega "TEXT (YYYY-MM-DD)"
         string estado_pedido "TEXT (Pendiente, En Proceso, Entregado, Cancelado)"
+        string estado_pago "TEXT (Pendiente, Anticipo 50%, Liquidado)"
         integer precio_final "INTEGER NOT NULL (Locked cents)"
         string notas "TEXT (Max 1000 chars)"
         string creado_en "TEXT (ISO 8601 timestamp)"
     }
 
-    USUARIOS ||--o{ AMIGURUMIS : "crafts / registers"
-    AMIGURUMIS ||--o{ PEDIDOS : "referenced by orders"
+    USUARIOS ||--o{ CREACIONES : "crafts / registers"
+    CREACIONES ||--o{ PEDIDOS : "referenced by orders"
 ```
 
 ---
@@ -73,9 +76,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- ========================================================
--- 2. Table: amigurumis (Core Catalog & Inventory)
+-- 2. Table: creaciones (Core Catalog & Inventory)
 -- ========================================================
-CREATE TABLE IF NOT EXISTS amigurumis (
+CREATE TABLE IF NOT EXISTS creaciones (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     artesano_id INTEGER NOT NULL,
     nombre TEXT NOT NULL,
@@ -92,18 +95,18 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
     -- Table Constraints
-    CONSTRAINT fk_amigurumis_artesano FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT chk_amigurumis_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
-    CONSTRAINT chk_amigurumis_categoria CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
-    CONSTRAINT chk_amigurumis_material CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
-    CONSTRAINT chk_amigurumis_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
-    CONSTRAINT chk_amigurumis_precio CHECK(precio >= 1 AND precio <= 9999999),
-    CONSTRAINT chk_amigurumis_costo_materiales CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
-    CONSTRAINT chk_amigurumis_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
-    CONSTRAINT chk_amigurumis_horas_tejido CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
-    CONSTRAINT chk_amigurumis_descripcion CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
-    CONSTRAINT chk_amigurumis_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
-    CONSTRAINT chk_amigurumis_es_sobre_encargo CHECK(es_sobre_encargo IN (0, 1))
+    CONSTRAINT fk_creaciones_artesano FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_creaciones_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
+    CONSTRAINT chk_creaciones_categoria CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
+    CONSTRAINT chk_creaciones_material CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
+    CONSTRAINT chk_creaciones_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
+    CONSTRAINT chk_creaciones_precio CHECK(precio >= 1 AND precio <= 9999999),
+    CONSTRAINT chk_creaciones_costo_materiales CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
+    CONSTRAINT chk_creaciones_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
+    CONSTRAINT chk_creaciones_horas_tejido CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
+    CONSTRAINT chk_creaciones_descripcion CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
+    CONSTRAINT chk_creaciones_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+    CONSTRAINT chk_creaciones_es_sobre_encargo CHECK(es_sobre_encargo IN (0, 1))
 );
 
 -- ========================================================
@@ -113,7 +116,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL,
     cliente_contacto TEXT NOT NULL DEFAULT '',
-    amigurumi_id INTEGER NOT NULL,
+    creacion_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1,
     fecha_entrega TEXT,
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente',
@@ -122,7 +125,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     notas TEXT,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     -- Table Constraints
-    CONSTRAINT fk_pedidos_amigurumi FOREIGN KEY (amigurumi_id) REFERENCES amigurumis(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_pedidos_creacion FOREIGN KEY (creacion_id) REFERENCES creaciones(id) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT chk_pedidos_cliente_nombre CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
     CONSTRAINT chk_pedidos_cantidad CHECK(cantidad >= 1 AND cantidad <= 1000),
     CONSTRAINT chk_pedidos_fecha_entrega CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
@@ -137,10 +140,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
 -- Indexes for Query Optimization
 -- ========================================================
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_artesano ON amigurumis(artesano_id);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_categoria ON amigurumis(categoria);
-CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
-CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
+CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
 
@@ -157,20 +160,20 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `rol` | Enum | `TEXT` | **No** | `'admin'` | In `admin`, `artesano`, `asistente` | Access authorization tier. |
 | `creado_en` | Timestamp | `TEXT` | **No** | `datetime('now', 'localtime')` | ISO 8601 | Registration timestamp. |
 
-### 3.2 Table: `amigurumis`
+### 3.2 Table: `creaciones`
 | Field | Type | SQLite Class | Nullable | Default | Constraints | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `id` | Identifier | `INTEGER` | **No** | *Autoincrement* | `PRIMARY KEY AUTOINCREMENT` | Unique amigurumi ID. |
+| `id` | Identifier | `INTEGER` | **No** | *Autoincrement* | `PRIMARY KEY AUTOINCREMENT` | Unique creation ID. |
 | `artesano_id` | Foreign Key | `INTEGER` | **No** | *None* | `REFERENCES usuarios(id)` | Artisan user who crafted/registered this item. Protected via `ON DELETE RESTRICT`. |
-| `nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Creation / character name. |
-| `categoria` | Text | `TEXT` | **No** | *None* | Length 2-50 | Thematic grouping (app-level whitelist). |
-| `material` | Text | `TEXT` | **No** | *None* | Length 3-80 | Primary yarn composition. |
-| `dimensiones` | Text | `TEXT` | **No** | *None* | Length 2-100 | Physical dimensions (2D/3D), clothing size (e.g. Talla M), or height. |
+| `nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Creation name / title. |
+| `categoria` | Text | `TEXT` | **No** | *None* | Length 2-50 | Thematic grouping (e.g. Amigurumis & Figuras, Prendas & Ropa, Bolsos & Accesorios, Hogar & Decoración, Bebé & Infantil). |
+| `material` | Text | `TEXT` | **No** | *None* | Length 3-80 | Primary yarn or fiber composition (e.g. 100% Algodón, Trapillo, Lana Merino). |
+| `dimensiones` | Text | `TEXT` | **No** | *None* | Length 2-100 | Physical dimensions (2D/3D), clothing size (e.g. Talla M (95x58 cm)), or height. |
 | `precio` | Currency (Cents) | `INTEGER` | **No** | *None* | `1` to `9999999` | Retail price in cents ($150.50 = 15050). |
 | `costo_materiales`| Currency (Cents) | `INTEGER` | **No** | `0` | `0` to `9999999` | Raw materials cost in cents. |
 | `cantidad_stock` | Integer | `INTEGER` | **No** | `0` | `0` to `10000` | Physical stock count. |
 | `horas_tejido` | Float | `REAL` | **Yes** | `0.0` | `>= 0.0 AND <= 500.0` | Estimated manual crochet labor time. |
-| `descripcion` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 2000` | Craft notes and instructions. |
+| `descripcion` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 2000` | Craft notes, yarn care, and instructions. |
 | `imagen_url` | Text | `TEXT` | **Yes** | `NULL` | Length `<= 500` | Image photo URL or local asset. |
 | `es_sobre_encargo`| Binary Flag | `INTEGER` | **No** | `0` | In `0, 1` | 1 if made exclusively to order (on-demand without immediate stock). |
 | `creado_en` | Timestamp | `TEXT` | **No** | `datetime('now', 'localtime')` | ISO 8601 | Timestamp of item registration. |
@@ -182,8 +185,8 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `id` | Identifier | `INTEGER` | **No** | *Autoincrement* | `PRIMARY KEY AUTOINCREMENT` | Unique order/commission ID. |
 | `cliente_nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Customer name who placed the order. |
 | `cliente_contacto`| Text | `TEXT` | **No** | `''` | Length `<= 50` | Direct customer contact info (WhatsApp, phone, or email). |
-| `amigurumi_id` | Foreign Key | `INTEGER` | **No** | *None* | `REFERENCES amigurumis(id)` | Ordered catalog item. Protected via `ON DELETE RESTRICT`. |
-| `cantidad` | Integer | `INTEGER` | **No** | `1` | `1` to `1000` | Number of units of this amigurumi requested in this order. |
+| `creacion_id` | Foreign Key | `INTEGER` | **No** | *None* | `REFERENCES creaciones(id)` | Ordered catalog creation. Protected via `ON DELETE RESTRICT`. |
+| `cantidad` | Integer | `INTEGER` | **No** | `1` | `1` to `1000` | Number of units requested in this order. |
 | `fecha_entrega` | Date Text | `TEXT` | **Yes** | `NULL` | Format `YYYY-MM-DD` | Target delivery or completion date. |
 | `estado_pedido` | Enum | `TEXT` | **No** | `'Pendiente'` | In `Pendiente`, `En Proceso`, `Entregado`, `Cancelado` | Operational fulfillment state. |
 | `estado_pago` | Enum | `TEXT` | **No** | `'Pendiente'` | In `Pendiente`, `Anticipo 50%`, `Liquidado` | Financial settlement status of the commission order. |
@@ -195,10 +198,10 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 ## 4. Referential Integrity Rules
 - **Foreign Key Enforcement:** Enforced dynamically on every PDO connection via `PRAGMA foreign_keys = ON;`.
-- **Artisan Attribution (`artesano_id`):** Every piece of amigurumi is tied to the artisan who created it. A user account cannot be deleted if active amigurumis reference it (`ON DELETE RESTRICT`).
-- **Order Delete Protection (`ON DELETE RESTRICT`):** An amigurumi cannot be deleted if active or past orders reference its ID. This protects financial integrity and transaction history.
-- **Price Immutability (`precio_final`):** Calculated securely by the backend (`amigurumis.precio * pedidos.cantidad`) and locked in `pedidos.precio_final` at order creation time. Subsequent price changes in the catalog do not alter historical orders.
-- **Quantity Tracking (`cantidad`):** A single order can track multiple units of an amigurumi, allowing accurate calculation of total revenue and material consumption.
-- **Atomic Stock Deduction:** Creating an order requires an atomic transaction (`BEGIN TRANSACTION`). The backend validates that `cantidad <= amigurumis.cantidad_stock` and decrements physical stock (`UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad`).
-- **Restocking on Order Cancellation:** Updating an order to `'Cancelado'` via `POST /api/actualizar_pedido.php` automatically executes a transaction restoring the reserved units back to `amigurumis.cantidad_stock`.
-- **Physical Asset Cleanup (Zero Orphaned Files):** When an amigurumi record is deleted via `POST /api/eliminar.php`, the backend must retrieve `imagen_url` and delete the associated file from `/uploads/` using `unlink()` before or upon deletion. If deletion is blocked by existing `pedidos` (via `ON DELETE RESTRICT`), the physical file is preserved on disk.
+- **Artisan Attribution (`artesano_id`):** Every piece/creation is tied to the artisan who created it. A user account cannot be deleted if active creaciones reference it (`ON DELETE RESTRICT`).
+- **Order Delete Protection (`ON DELETE RESTRICT`):** A creation cannot be deleted if active or past orders reference its ID (`fk_pedidos_creacion`). This protects financial integrity and transaction history.
+- **Price Immutability (`precio_final`):** Calculated securely by the backend (`creaciones.precio * pedidos.cantidad`) and locked in `pedidos.precio_final` at order creation time. Subsequent price changes in the catalog do not alter historical orders.
+- **Quantity Tracking (`cantidad`):** A single order can track multiple units of a creation, allowing accurate calculation of total revenue and material consumption.
+- **Atomic Stock Deduction:** Creating an order requires an atomic transaction (`BEGIN TRANSACTION`). The backend validates that `cantidad <= creaciones.cantidad_stock` and decrements physical stock (`UPDATE creaciones SET cantidad_stock = cantidad_stock - :cantidad`).
+- **Restocking on Order Cancellation:** Updating an order to `'Cancelado'` via `POST /api/actualizar_pedido.php` automatically executes a transaction restoring the reserved units back to `creaciones.cantidad_stock`.
+- **Physical Asset Cleanup (Zero Orphaned Files):** When a creation record is deleted via `POST /api/eliminar.php`, the backend must retrieve `imagen_url` and delete the associated file from `/uploads/` using `unlink()` before or upon deletion. If deletion is blocked by existing `pedidos` (via `ON DELETE RESTRICT`), the physical file is preserved on disk.

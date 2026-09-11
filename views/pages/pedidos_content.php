@@ -82,7 +82,7 @@ foreach ($mockOrders as $ord) {
         <i class="bi bi-journal-plus"></i>
         <span>Nuevo Encargo Manual</span>
       </button>
-      <a href="amigurumis.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+      <a href="creaciones.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
         <i class="bi bi-box2-heart"></i>
         <span>Inventario</span>
       </a>
@@ -176,7 +176,7 @@ foreach ($mockOrders as $ord) {
   </div>
 </section>
 
-<!-- CUADRÍCULA RESPONSIVA DE TARJETAS DE PEDIDOS (ESTILO AMIGURUMIS 3X / 2X) -->
+<!-- CUADRÍCULA RESPONSIVA DE TARJETAS DE PEDIDOS (ESTILO CREACIONES 3X / 2X) -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 g-xl-4 mb-4" id="ordersGrid">
   <?php foreach ($mockOrders as $pedido): ?>
     <div class="col order-card-col"
@@ -205,7 +205,7 @@ foreach ($mockOrders as $ord) {
         <!-- Cuerpo de la Card -->
         <div class="card-order-body">
           
-          <!-- Título y Metadata del Amigurumi (Con flex-wrap holgado) -->
+          <!-- Título y Metadata de la Creación (Con flex-wrap holgado) -->
           <div class="mb-3">
             <h5 class="order-product-title text-truncate" title="<?= htmlspecialchars($pedido['producto_nombre']) ?>">
               <?= htmlspecialchars($pedido['producto_nombre']) ?>

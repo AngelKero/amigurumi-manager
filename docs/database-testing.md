@@ -50,7 +50,7 @@ SELECT
     printf('$%.2f', costo_materiales / 100.0) AS costo_mat,
     cantidad_stock AS stock,
     horas_tejido AS hrs
-FROM amigurumis;
+FROM creaciones;
 ```
 *Expected Result:*
 ```
@@ -64,25 +64,25 @@ id  nombre                   categoria              dimensiones        precio_ve
 ```
 
 ### 2.3 View Commission Orders Joined with Products & Artisans
-Verify relational linkage between `pedidos`, `amigurumis`, and `usuarios`:
+Verify relational linkage between `pedidos`, `creaciones`, and `usuarios`:
 
 ```sql
 SELECT 
     p.id AS pedido_id,
     p.cliente_nombre AS cliente,
-    a.nombre AS producto,
+    c.nombre AS creacion,
     u.username AS artesano,
     p.cantidad,
     printf('$%.2f', p.precio_final / 100.0) AS total_orden,
     p.estado_pedido AS estado,
     p.fecha_entrega
 FROM pedidos p
-JOIN amigurumis a ON p.amigurumi_id = a.id
-JOIN usuarios u ON a.artesano_id = u.id;
+JOIN creaciones c ON p.creacion_id = c.id
+JOIN usuarios u ON c.artesano_id = u.id;
 ```
 *Expected Result:*
 ```
-pedido_id  cliente        producto               artesano  cantidad  total_orden  estado      fecha_entrega
+pedido_id  cliente        creacion               artesano  cantidad  total_orden  estado      fecha_entrega
 ---------  -------------  ---------------------  --------  --------  -----------  ----------  -------------
 1          Mariana Gómez  Dragón Ignis           admin     1         $450.00      En Proceso  2026-09-24
 2          Carlos Mendoza Ajolote Rosado Pastel  admin     2         $640.00      Pendiente   2026-09-30
@@ -95,7 +95,7 @@ pedido_id  cliente        producto               artesano  cantidad  total_orden
 > [!IMPORTANT]
 > Ensure `PRAGMA foreign_keys = ON;` is executed before running these tests. SQLite does not enforce foreign keys by default unless explicitly enabled per connection.
 
-### Test 3.1: Attempt to Delete a User with Linked Amigurumis (`ON DELETE RESTRICT`)
+### Test 3.1: Attempt to Delete a User with Linked Creaciones (`ON DELETE RESTRICT`)
 ```sql
 PRAGMA foreign_keys = ON;
 DELETE FROM usuarios WHERE id = 1;
@@ -104,30 +104,30 @@ DELETE FROM usuarios WHERE id = 1;
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(User is protected from deletion because amigurumis reference `artesano_id = 1`)*
+*(User is protected from deletion because creaciones reference `artesano_id = 1`)*
 
-### Test 3.2: Attempt to Delete an Amigurumi with Linked Orders (`ON DELETE RESTRICT`)
+### Test 3.2: Attempt to Delete a Creación with Linked Orders (`ON DELETE RESTRICT`)
 ```sql
 PRAGMA foreign_keys = ON;
-DELETE FROM amigurumis WHERE id = 1;
+DELETE FROM creaciones WHERE id = 1;
 ```
 *Expected Result:*
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(Catalog item is protected from deletion because order #1 references `amigurumi_id = 1`)*
+*(Catalog item is protected from deletion because order #1 references `creacion_id = 1`)*
 
-### Test 3.3: Attempt to Insert an Order Referencing Non-Existent Amigurumi
+### Test 3.3: Attempt to Insert an Order Referencing Non-Existent Creación
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, precio_final)
 VALUES ('Cliente Fantasma', 999, 1, 35000);
 ```
 *Expected Result:*
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(Insertion blocked because `amigurumi_id = 999` does not exist)*
+*(Insertion blocked because `creacion_id = 999` does not exist)*
 
 ---
 
@@ -136,7 +136,7 @@ Runtime error: FOREIGN KEY constraint failed (19)
 ### Test 4.1: Negative Price Prevention (`precio >= 1`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio)
 VALUES (1, 'Pieza Inválida', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', -5000);
 ```
 *Expected Result:*
@@ -147,7 +147,7 @@ Runtime error: CHECK constraint failed: precio >= 1 AND precio <= 9999999 (19)
 ### Test 4.2: Negative Stock Prevention (`cantidad_stock >= 0`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, cantidad_stock)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio, cantidad_stock)
 VALUES (1, 'Pieza Sin Stock', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', 25000, -3);
 ```
 *Expected Result:*
@@ -158,7 +158,7 @@ Runtime error: CHECK constraint failed: cantidad_stock >= 0 AND cantidad_stock <
 ### Test 4.3: Order Quantity Zero Prevention (`cantidad >= 1`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, precio_final)
 VALUES ('Ana López', 2, 0, 18000);
 ```
 *Expected Result:*
@@ -169,7 +169,7 @@ Runtime error: CHECK constraint failed: cantidad >= 1 AND cantidad <= 1000 (19)
 ### Test 4.4: Invalid Order Status Prevention
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, estado_pedido, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, estado_pedido, precio_final)
 VALUES ('Ana López', 2, 1, 'Desconocido', 18000);
 ```
 *Expected Result:*
@@ -185,7 +185,7 @@ Runtime error: CHECK constraint failed: estado_pedido IN (
 ### Test 4.5: On-Demand Exclusivity Validation (`es_sobre_encargo IN (0, 1)`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, es_sobre_encargo)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio, es_sobre_encargo)
 VALUES (1, 'Invalid On Demand Item', 'Amigurumis & Figuras', 'Algodón', '15.0 cm', 30000, 5);
 ```
 *Expected Result:*
@@ -196,7 +196,7 @@ Runtime error: CHECK constraint failed: es_sobre_encargo IN (0, 1) (19)
 ### Test 4.6: Order Payment Status Validation (`chk_pedidos_estado_pago`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, estado_pago, precio_final)
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, creacion_id, cantidad, estado_pago, precio_final)
 VALUES ('Valeria Luna', '5512345678', 1, 1, 'Unknown Payment', 45000);
 ```
 *Expected Result:*
@@ -207,7 +207,7 @@ Runtime error: CHECK constraint failed: estado_pago IN ('Pendiente', 'Anticipo 5
 ### Test 4.7: Client Contact String Length Validation (`chk_pedidos_cliente_contacto <= 50`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, creacion_id, cantidad, precio_final)
 VALUES ('Valeria Luna', 'This contact value is purposefully longer than the maximum allowed fifty characters limit', 1, 1, 45000);
 ```
 *Expected Result:*
@@ -231,7 +231,7 @@ SELECT
     printf('%.1f%%', ((precio - costo_materiales) * 100.0) / precio) AS margen_pct,
     horas_tejido AS hrs_labor,
     printf('$%.2f/hr', ((precio - costo_materiales) / 100.0) / horas_tejido) AS retorno_por_hora
-FROM amigurumis;
+FROM creaciones;
 ```
 *Expected Result:*
 ```
@@ -240,6 +240,8 @@ nombre                   p_venta  c_mat    ganancia_neta  margen_pct  hrs_labor 
 Dragón Ignis             $450.00  $120.00  $330.00        73.3%       6.5        $50.77/hr
 Mini Suculenta en Maceta $180.00  $45.00   $135.00        75.0%       2.0        $67.50/hr
 Ajolote Rosado Pastel    $320.00  $85.00   $235.00        73.4%       4.5        $52.22/hr
+Cardigan Granny Squares  $980.00  $280.00  $700.00        71.4%       18.0       $38.89/hr
+Tote Bag Boho Trapillo   $380.00  $95.00   $285.00        75.0%       4.5        $63.33/hr
 ```
 
 ### 5.2 Total Physical Inventory Valuation
@@ -251,13 +253,13 @@ SELECT
     printf('$%.2f', SUM(costo_materiales * cantidad_stock) / 100.0) AS inversion_total_materiales,
     printf('$%.2f', SUM(precio * cantidad_stock) / 100.0) AS valor_comercial_total,
     printf('$%.2f', SUM((precio - costo_materiales) * cantidad_stock) / 100.0) AS ganancia_potencial
-FROM amigurumis;
+FROM creaciones;
 ```
 *Expected Result:*
 ```
 total_unidades_stock  inversion_total_materiales  valor_comercial_total  ganancia_potencial
 --------------------  --------------------------  ---------------------  ------------------
-18                    $1190.00                    $4600.00               $3410.00
+24                    $2150.00                    $7140.00               $4990.00
 ```
 
 ---
@@ -271,10 +273,10 @@ Run these standalone commands from your terminal shell to verify functionality w
 sqlite3 database/database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
 
 # 2. Check catalog stock list
-sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
+sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM creaciones;"
 
 # 3. Check active orders
-sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
+sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, creacion_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
 
 # 4. Re-run setup anytime to restore pristine seed data (CLI only)
 php setup.php

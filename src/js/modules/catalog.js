@@ -90,7 +90,7 @@ export function initCatalog() {
   }
 
   // Activar acciones del artesano en tarjetas si hay sesión activa
-  const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
+  const isArtisanSession = localStorage.getItem('crochet_session_active') === 'true' || localStorage.getItem('amigurumi_session_active') === 'true';
   if (isArtisanSession) {
     document.querySelectorAll('.artisan-card-actions').forEach(el => {
       el.classList.remove('d-none');
@@ -101,7 +101,7 @@ export function initCatalog() {
   document.querySelectorAll('.btn-card-delete').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.getAttribute('data-name') || 'esta pieza';
-      const nameSpan = document.getElementById('deleteAmigurumiName');
+      const nameSpan = document.getElementById('deleteCreacionName') || document.getElementById('deleteAmigurumiName');
       if (nameSpan) nameSpan.textContent = name;
     });
   });

@@ -107,13 +107,13 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 ?>
 <!-- NAVEGACIÓN SUPERIOR: RETORNO AL INVENTARIO -->
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-  <a href="amigurumis.php" class="btn btn-outline-secondary btn-craft-outline-stitched d-inline-flex align-items-center gap-2 px-3 py-2">
+  <a href="creaciones.php" class="btn btn-outline-secondary btn-craft-outline-stitched d-inline-flex align-items-center gap-2 px-3 py-2">
     <i class="bi bi-arrow-left"></i>
     <span class="fw-semibold small">Volver al Inventario</span>
   </a>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 align-items-center breadcrumb-craft-ribbon px-3 py-2">
-      <li class="breadcrumb-item"><a href="amigurumis.php" class="text-decoration-none text-muted small"><i class="bi bi-box-seam me-1"></i>Inventario</a></li>
+      <li class="breadcrumb-item"><a href="creaciones.php" class="text-decoration-none text-muted small"><i class="bi bi-box-seam me-1"></i>Inventario</a></li>
       <li class="breadcrumb-item active small text-primary fw-bold" aria-current="page"><?= $isEditing ? 'Modificar #' . $editId : 'Nueva Creación' ?></li>
     </ol>
   </nav>
@@ -147,9 +147,9 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
         </div>
       </div>
 
-      <form id="amigurumiForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('<?= $isEditing ? '¡Creación actualizada con éxito! En Fase 4 se conectará con POST /api/actualizar.php' : '¡Creación registrada con éxito! En Fase 4 se conectará con POST /api/crear.php' ?>');">
+      <form id="creacionForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('<?= $isEditing ? '¡Creación actualizada con éxito! En Fase 4 se conectará con POST /api/actualizar.php' : '¡Creación registrada con éxito! En Fase 4 se conectará con POST /api/crear.php' ?>');">
         <!-- ID Oculto para Modo Edición -->
-        <input type="hidden" id="amigurumiId" value="<?= $isEditing ? $editId : '' ?>">
+        <input type="hidden" id="creacionId" value="<?= $isEditing ? $editId : '' ?>">
 
         <!-- Nombre del Amigurumi / Creación -->
         <div class="mb-3">
@@ -253,7 +253,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 
         <!-- CARGA DE FOTOGRAFÍA CON PREVIEW OCULTO -->
         <div class="mb-4">
-          <label class="form-label fw-bold small d-block">Fotografía del Amigurumi (Formatos: JPG, PNG, WEBP &bull; Máx 5MB)</label>
+          <label class="form-label fw-bold small d-block">Fotografía de la Creación (Formatos: JPG, PNG, WEBP &bull; Máx 5MB)</label>
           
           <div class="upload-dropzone" id="uploadDropzone" onclick="document.getElementById('inputImagen').click()">
             <?= svg('decorations/nube-ovillo', ['width' => 64, 'height' => 48, 'class' => 'mx-auto mb-2 d-block']) ?>
@@ -280,7 +280,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
         <!-- BOTONES DE ACCIÓN INFERIORES -->
         <hr class="divider-stitched my-3">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2">
-          <a href="amigurumis.php" class="btn btn-outline-secondary px-3 py-2 d-inline-flex align-items-center gap-2">
+          <a href="creaciones.php" class="btn btn-outline-secondary px-3 py-2 d-inline-flex align-items-center gap-2">
             <i class="bi bi-arrow-left"></i> Volver al Inventario
           </a>
 
@@ -311,7 +311,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
       </div>
 
       <p class="text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">
-        Monitorea en tiempo real la salud financiera de tu amigurumi conforme modificas precio, costo de estambre y horas dedicadas:
+        Monitorea en tiempo real la salud financiera de tu pieza de crochet conforme modificas precio, costo de estambre y horas dedicadas:
       </p>
 
       <!-- Desglose Financiero Directo -->

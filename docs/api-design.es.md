@@ -1,6 +1,6 @@
 # Diseño de API y Especificaciones de Endpoints
-
-Este documento describe los endpoints modulares de estilo REST en PHP, las convenciones de códigos de estado HTTP, los esquemas de respuesta JSON y el manejo estándar de errores para el Micro-ERP de Amigurumis.
+ 
+Este documento describe los endpoints modulares de estilo REST en PHP, las convenciones de códigos de estado HTTP, los esquemas de respuesta JSON y el manejo estándar de errores para el Micro-ERP de Creaciones en Crochet Artesanal.
 
 ---
 
@@ -139,7 +139,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
     "id": 3
   }
   ```
-- **Manejo de Restricción:** La regla `ON DELETE RESTRICT` de SQLite detiene la eliminación si el usuario tiene piezas de amigurumi asociadas.
+- **Manejo de Restricción:** La regla `ON DELETE RESTRICT` de SQLite detiene la eliminación si el usuario tiene creaciones asociadas (`fk_creaciones_artesano`).
 - **Respuesta Exitosa (200 OK):**
   ```json
   {
@@ -151,19 +151,19 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```json
   {
     "success": false,
-    "error": "No se puede eliminar el usuario porque tiene piezas de amigurumi asociadas. Reasigne o elimine las piezas primero."
+    "error": "No se puede eliminar el usuario porque tiene piezas de crochet asociadas. Reasigne o elimine las creaciones primero."
   }
   ```
 
 ---
 
-## 4. Endpoints del Catálogo de Amigurumis
+## 4. Endpoints del Catálogo de Creaciones (`creaciones`)
 
 ### `GET /api/leer.php`
 - **Acceso:** Público
 - **Parámetros de Consulta (Query Params):**
-  - `id` (opcional, entero): Retorna un único objeto de amigurumi.
-  - `categoria` (opcional, texto): Filtra por categoría temática.
+  - `id` (opcional, entero): Retorna un único objeto de creación.
+  - `categoria` (opcional, texto): Filtra por categoría temática (Amigurumis & Figuras, Prendas & Ropa, Bolsos & Accesorios, Hogar & Decoración, Bebé & Infantil).
   - `artesano_id` (opcional, entero): Filtra creaciones de un artesano específico.
   - `stock` (opcional, texto): Filtra por disponibilidad (`in` para `cantidad_stock > 0`, `on-demand` para `es_sobre_encargo = 1`, `out` para `cantidad_stock = 0`).
   - `precio_min` / `precio_max` (opcional, decimal): Rango de presupuesto.
@@ -195,24 +195,24 @@ Todas las respuestas del backend siguen una estructura homogénea:
       "actualizado_en": null
     },
     {
-      "id": 3,
-      "artesano_id": 2,
-      "artesano_nombre": "artesana_ana",
-      "nombre": "Ajolote Rosado Pastel",
-      "categoria": "Amigurumis & Figuras",
-      "material": "Hilo Chenille Terciopelo",
-      "dimensiones": "14.0 x 10.0 cm",
-      "precio": 32000,
-      "precio_formato": "$320.00 MXN",
-      "costo_materiales": 8500,
-      "costo_formato": "$85.00 MXN",
-      "margen_ganancia": "$235.00 MXN",
-      "cantidad_stock": 0,
-      "horas_tejido": 4.5,
-      "descripcion": "Ajolote confeccionado bajo pedido con hilaza aterciopelada.",
-      "imagen_url": "uploads/ajolote.jpg",
-      "es_sobre_encargo": 1,
-      "creado_en": "2026-09-10 14:15:00",
+      "id": 4,
+      "artesano_id": 1,
+      "artesano_nombre": "admin",
+      "nombre": "Cardigan Granny Squares",
+      "categoria": "Prendas & Ropa",
+      "material": "Lana Merino Fina & Algodón",
+      "dimensiones": "Talla M (95x58 cm)",
+      "precio": 98000,
+      "precio_formato": "$980.00 MXN",
+      "costo_materiales": 28000,
+      "costo_formato": "$280.00 MXN",
+      "margen_ganancia": "$700.00 MXN",
+      "cantidad_stock": 2,
+      "horas_tejido": 18.0,
+      "descripcion": "Cardigan artesanal confeccionado con cuadros tradicionales de la abuela florales.",
+      "imagen_url": "uploads/cardigan.jpg",
+      "es_sobre_encargo": 0,
+      "creado_en": "2026-09-10 14:30:00",
       "actualizado_en": null
     }
   ]
@@ -224,7 +224,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
 - **Seguridad y Atribución:** El backend extrae automáticamente `$_SESSION['user_id']` y lo asigna a `artesano_id`.
 - **Carga Real de Archivos de Imagen (`multipart/form-data`):**
   - Acepta un archivo binario en el campo `imagen`.
-  - El backend valida tipo MIME (`image/jpeg`, `image/png`, `image/webp`), peso máximo ($\le 5\text{MB}$), genera un nombre único (`amig_UUID.jpg`), lo traslada al directorio local `/uploads` y almacena la ruta relativa `uploads/amig_UUID.jpg` en la base de datos.
+  - El backend valida tipo MIME (`image/jpeg`, `image/png`, `image/webp`), peso máximo ($\le 5\text{MB}$), genera un nombre único (`crochet_UUID.jpg`), lo traslada al directorio local `/uploads` y almacena la ruta relativa `uploads/crochet_UUID.jpg` en la base de datos.
 - **Campos en Form-Data:**
   - `nombre` (texto, 2-100 car.)
   - `categoria` (texto, 2-50 car.)
@@ -241,9 +241,9 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```json
   {
     "success": true,
-    "message": "Amigurumi registrado exitosamente",
-    "id": 3,
-    "imagen_url": "uploads/amig_66e01b8a9c.jpg"
+    "message": "Creación registrada exitosamente",
+    "id": 6,
+    "imagen_url": "uploads/crochet_66e01b8a9c.jpg"
   }
   ```
 
@@ -255,14 +255,14 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```json
   {
     "success": true,
-    "message": "Amigurumi actualizado exitosamente"
+    "message": "Creación actualizada exitosamente"
   }
   ```
 
 ### `POST /api/eliminar.php`
 - **Acceso:** Protegido (Sesión requerida: `admin`)
 - **Política de Gestión de Archivos Huérfanos:**
-  - Si el amigurumi tiene pedidos asociados, la regla `ON DELETE RESTRICT` de SQLite aborta la operación y retorna **HTTP 409 Conflict**.
+  - Si la creación tiene pedidos asociados, la regla `ON DELETE RESTRICT` de SQLite aborta la operación y retorna **HTTP 409 Conflict**.
   - Si no tiene pedidos, se consulta `imagen_url` y, si existe físicamente en `/uploads/`, se elimina mediante `unlink()` antes del `DELETE` SQL.
 - **Cuerpo de la Solicitud (JSON):**
   ```json
@@ -274,14 +274,14 @@ Todas las respuestas del backend siguen una estructura homogénea:
   ```json
   {
     "success": true,
-    "message": "Amigurumi y archivo de imagen eliminados correctamente"
+    "message": "Creación y archivo de imagen eliminados correctamente"
   }
   ```
 - **Respuesta de Conflicto (409 Conflict):**
   ```json
   {
     "success": false,
-    "error": "No se puede eliminar el amigurumi porque tiene pedidos asociados. Debe cancelar o archivar los pedidos primero."
+    "error": "No se puede eliminar la creación porque tiene pedidos asociados. Debe cancelar o archivar los pedidos primero."
   }
   ```
 
@@ -293,11 +293,11 @@ Todas las respuestas del backend siguen una estructura homogénea:
 - **Acceso:** **Público** (Activado desde `modal_checkout.php` en catálogo o detalle)
 - **Seguridad e Integridad:**
   - El cliente NO proporciona `precio_final` ni `estado_pedido`.
-  - El backend consulta `amigurumis.precio` y calcula `precio_final = precio * cantidad`.
+  - El backend consulta `creaciones.precio` y calcula `precio_final = precio * cantidad`.
   - Asigna por defecto `estado_pedido = 'Pendiente'` y `estado_pago = 'Pendiente'`.
 - **Transacción Atómica y Descuento de Inventario:** Ejecutado en transacción PDO (`BEGIN TRANSACTION`):
-  1. Si `amigurumis.es_sobre_encargo == 0`, verifica que `cantidad <= amigurumis.cantidad_stock`. Si no alcanza, revierte con **HTTP 422**.
-  2. Si hay stock, descuenta: `UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id`.
+  1. Si `creaciones.es_sobre_encargo == 0`, verifica que `cantidad <= creaciones.cantidad_stock`. Si no alcanza, revierte con **HTTP 422**.
+  2. Si hay stock, descuenta: `UPDATE creaciones SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :creacion_id`.
   3. Inserta el pedido vinculando `cliente_contacto`.
   4. Confirma la transacción (`COMMIT`).
 - **Cuerpo de la Solicitud (JSON):**
@@ -305,7 +305,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
   {
     "cliente_nombre": "Mariana Gómez",
     "cliente_contacto": "+52 55 4892 1039",
-    "amigurumi_id": 1,
+    "creacion_id": 1,
     "cantidad": 1,
     "fecha_entrega": "2026-09-25",
     "notas": "Empaque de regalo con moño rosa"
@@ -330,7 +330,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
   {
     "cliente_nombre": "Sofía Morales",
     "cliente_contacto": "+52 55 1234 5678",
-    "amigurumi_id": 2,
+    "creacion_id": 2,
     "cantidad": 2,
     "fecha_entrega": "2026-10-05",
     "estado_pago": "Anticipo 50%",
@@ -361,8 +361,8 @@ Todas las respuestas del backend siguen una estructura homogénea:
         "id": 1,
         "cliente_nombre": "Mariana Gómez",
         "cliente_contacto": "+52 55 4892 1039",
-        "amigurumi_id": 1,
-        "amigurumi_nombre": "Dragón Ignis",
+        "creacion_id": 1,
+        "creacion_nombre": "Dragón Ignis",
         "cantidad": 1,
         "fecha_entrega": "2026-09-24",
         "estado_pedido": "En Proceso",
@@ -378,7 +378,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
 
 ### `POST /api/actualizar_pedido.php`
 - **Acceso:** Protegido (Sesión requerida: `admin` o `artesano`)
-- **Restitución Automática:** Si `estado_pedido` pasa a `'Cancelado'`, el backend ejecuta una transacción atómica que incrementa `amigurumis.cantidad_stock += pedidos.cantidad`.
+- **Restitución Automática:** Si `estado_pedido` pasa a `'Cancelado'`, el backend ejecuta una transacción atómica que incrementa `creaciones.cantidad_stock += pedidos.cantidad`.
 - **Cuerpo de la Solicitud (JSON):**
   ```json
   {

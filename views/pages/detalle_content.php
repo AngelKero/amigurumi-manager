@@ -29,7 +29,7 @@
         <a href="formulario.php?id=1" class="btn btn-craft-outline btn-craft-outline-stitched btn-sm" id="btnEditarCreacion">
           <i class="bi bi-pencil-square me-1"></i>Editar Creación
         </a>
-        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarAmigurumi" id="btnEliminarCreacion">
+        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarCreacion" id="btnEliminarCreacion">
           <i class="bi bi-trash3 me-1"></i>Eliminar Pieza
         </button>
       </div>

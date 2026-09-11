@@ -37,7 +37,7 @@ id  username  rol    creado_en
 1   admin     admin  2026-09-10 16:19:40
 ```
 
-### 2.2 Ver Catálogo de Amigurumis con Moneda Formateada ($ MXN)
+### 2.2 Ver Catálogo de Creaciones con Moneda Formateada ($ MXN)
 Debido a que los precios y costos de materiales se almacenan en centavos (`INTEGER`), divida entre `100.0` para visualizar pesos mexicanos:
 
 ```sql
@@ -50,7 +50,7 @@ SELECT
     printf('$%.2f', costo_materiales / 100.0) AS costo_mat,
     cantidad_stock AS stock,
     horas_tejido AS hrs
-FROM amigurumis;
+FROM creaciones;
 ```
 *Resultado Esperado:*
 ```
@@ -63,26 +63,26 @@ id  nombre                   categoria              dimensiones        precio_ve
 5   Tote Bag Boho Trapillo   Bolsos & Accesorios    35 x 30 cm         $380.00       $95.00     6      4.5
 ```
 
-### 2.3 Ver Pedidos de Encargo Vinculados con Productos y Artesanos
-Verifica la relación entre `pedidos`, `amigurumis` y `usuarios`:
+### 2.3 Ver Pedidos de Encargo Vinculados con Creaciones y Artesanos
+Verifica la relación entre `pedidos`, `creaciones` y `usuarios`:
 
 ```sql
 SELECT 
     p.id AS pedido_id,
     p.cliente_nombre AS cliente,
-    a.nombre AS producto,
+    c.nombre AS creacion,
     u.username AS artesano,
     p.cantidad,
     printf('$%.2f', p.precio_final / 100.0) AS total_orden,
     p.estado_pedido AS estado,
     p.fecha_entrega
 FROM pedidos p
-JOIN amigurumis a ON p.amigurumi_id = a.id
-JOIN usuarios u ON a.artesano_id = u.id;
+JOIN creaciones c ON p.creacion_id = c.id
+JOIN usuarios u ON c.artesano_id = u.id;
 ```
 *Resultado Esperado:*
 ```
-pedido_id  cliente        producto               artesano  cantidad  total_orden  estado      fecha_entrega
+pedido_id  cliente        creacion               artesano  cantidad  total_orden  estado      fecha_entrega
 ---------  -------------  ---------------------  --------  --------  -----------  ----------  -------------
 1          Mariana Gómez  Dragón Ignis           admin     1         $450.00      En Proceso  2026-09-24
 2          Carlos Mendoza Ajolote Rosado Pastel  admin     2         $640.00      Pendiente   2026-09-30
@@ -95,7 +95,7 @@ pedido_id  cliente        producto               artesano  cantidad  total_orden
 > [!IMPORTANT]
 > Asegúrese de ejecutar `PRAGMA foreign_keys = ON;` antes de correr estas pruebas. SQLite no valida claves foráneas a menos que se activen explícitamente por conexión.
 
-### Prueba 3.1: Intento de Eliminar Usuario con Amigurumis Asociados (`ON DELETE RESTRICT`)
+### Prueba 3.1: Intento de Eliminar Usuario con Creaciones Asociadas (`ON DELETE RESTRICT`)
 ```sql
 PRAGMA foreign_keys = ON;
 DELETE FROM usuarios WHERE id = 1;
@@ -104,30 +104,30 @@ DELETE FROM usuarios WHERE id = 1;
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(El usuario está protegido contra borrado porque existen amigurumis que referencian `artesano_id = 1`)*
+*(El usuario está protegido contra borrado porque existen creaciones que referencian `artesano_id = 1`)*
 
-### Prueba 3.2: Intento de Eliminar Amigurumi con Pedidos Asociados (`ON DELETE RESTRICT`)
+### Prueba 3.2: Intento de Eliminar Creación con Pedidos Asociados (`ON DELETE RESTRICT`)
 ```sql
 PRAGMA foreign_keys = ON;
-DELETE FROM amigurumis WHERE id = 1;
+DELETE FROM creaciones WHERE id = 1;
 ```
 *Resultado Esperado:*
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(El amigurumi está protegido contra borrado porque el pedido #1 referencia `amigurumi_id = 1`)*
+*(La creación está protegida contra borrado porque el pedido #1 referencia `creacion_id = 1`)*
 
-### Prueba 3.3: Intento de Insertar Pedido con Amigurumi Inexistente
+### Prueba 3.3: Intento de Insertar Pedido con Creación Inexistente
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, precio_final)
 VALUES ('Cliente Fantasma', 999, 1, 35000);
 ```
 *Resultado Esperado:*
 ```text
 Runtime error: FOREIGN KEY constraint failed (19)
 ```
-*(Inserción rechazada porque `amigurumi_id = 999` no existe)*
+*(Inserción rechazada porque `creacion_id = 999` no existe)*
 
 ---
 
@@ -136,7 +136,7 @@ Runtime error: FOREIGN KEY constraint failed (19)
 ### Prueba 4.1: Prevención de Precios Negativos (`precio >= 1`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio)
 VALUES (1, 'Pieza Inválida', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', -5000);
 ```
 *Resultado Esperado:*
@@ -147,7 +147,7 @@ Runtime error: CHECK constraint failed: precio >= 1 AND precio <= 9999999 (19)
 ### Prueba 4.2: Prevención de Inventario Negativo (`cantidad_stock >= 0`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, cantidad_stock)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio, cantidad_stock)
 VALUES (1, 'Pieza Sin Stock', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', 25000, -3);
 ```
 *Resultado Esperado:*
@@ -158,7 +158,7 @@ Runtime error: CHECK constraint failed: cantidad_stock >= 0 AND cantidad_stock <
 ### Prueba 4.3: Prevención de Cantidad Cero en Pedidos (`cantidad >= 1`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, precio_final)
 VALUES ('Ana López', 2, 0, 18000);
 ```
 *Resultado Esperado:*
@@ -169,7 +169,7 @@ Runtime error: CHECK constraint failed: cantidad >= 1 AND cantidad <= 1000 (19)
 ### Prueba 4.4: Prevención de Estado de Pedido Inválido
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, amigurumi_id, cantidad, estado_pedido, precio_final)
+INSERT INTO pedidos (cliente_nombre, creacion_id, cantidad, estado_pedido, precio_final)
 VALUES ('Ana López', 2, 1, 'Desconocido', 18000);
 ```
 *Resultado Esperado:*
@@ -185,7 +185,7 @@ Runtime error: CHECK constraint failed: estado_pedido IN (
 ### Prueba 4.5: Validación de Bandera de Encargo Exclusivo (`es_sobre_encargo IN (0, 1)`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, es_sobre_encargo)
+INSERT INTO creaciones (artesano_id, nombre, categoria, material, dimensiones, precio, es_sobre_encargo)
 VALUES (1, 'Pieza Invalida Encargo', 'Amigurumis & Figuras', 'Algodón', '15.0 cm', 30000, 5);
 ```
 *Resultado Esperado:*
@@ -196,7 +196,7 @@ Runtime error: CHECK constraint failed: es_sobre_encargo IN (0, 1) (19)
 ### Prueba 4.6: Validación de Estado de Cobro del Pedido (`chk_pedidos_estado_pago`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, estado_pago, precio_final)
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, creacion_id, cantidad, estado_pago, precio_final)
 VALUES ('Valeria Luna', '5512345678', 1, 1, 'Fiado 100%', 45000);
 ```
 *Resultado Esperado:*
@@ -207,7 +207,7 @@ Runtime error: CHECK constraint failed: estado_pago IN ('Pendiente', 'Anticipo 5
 ### Prueba 4.7: Longitud de Contacto del Cliente (`chk_pedidos_cliente_contacto <= 50`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, precio_final)
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, creacion_id, cantidad, precio_final)
 VALUES ('Valeria Luna', 'Este contacto es deliberadamente demasiado largo y excede los cincuenta caracteres permitidos por SQLite', 1, 1, 45000);
 ```
 *Resultado Esperado:*
@@ -231,7 +231,7 @@ SELECT
     printf('%.1f%%', ((precio - costo_materiales) * 100.0) / precio) AS margen_pct,
     horas_tejido AS hrs_labor,
     printf('$%.2f/hr', ((precio - costo_materiales) / 100.0) / horas_tejido) AS retorno_por_hora
-FROM amigurumis;
+FROM creaciones;
 ```
 *Resultado Esperado:*
 ```
@@ -240,6 +240,8 @@ nombre                   p_venta  c_mat    ganancia_neta  margen_pct  hrs_labor 
 Dragón Ignis             $450.00  $120.00  $330.00        73.3%       6.5        $50.77/hr
 Mini Suculenta en Maceta $180.00  $45.00   $135.00        75.0%       2.0        $67.50/hr
 Ajolote Rosado Pastel    $320.00  $85.00   $235.00        73.4%       4.5        $52.22/hr
+Cardigan Granny Squares  $980.00  $280.00  $700.00        71.4%       18.0       $38.89/hr
+Tote Bag Boho Trapillo   $380.00  $95.00   $285.00        75.0%       4.5        $63.33/hr
 ```
 
 ### 5.2 Valuación Total del Inventario Físico
@@ -251,13 +253,13 @@ SELECT
     printf('$%.2f', SUM(costo_materiales * cantidad_stock) / 100.0) AS inversion_total_materiales,
     printf('$%.2f', SUM(precio * cantidad_stock) / 100.0) AS valor_comercial_total,
     printf('$%.2f', SUM((precio - costo_materiales) * cantidad_stock) / 100.0) AS ganancia_potencial
-FROM amigurumis;
+FROM creaciones;
 ```
 *Resultado Esperado:*
 ```
 total_unidades_stock  inversion_total_materiales  valor_comercial_total  ganancia_potencial
 --------------------  --------------------------  ---------------------  ------------------
-18                    $1190.00                    $4600.00               $3410.00
+24                    $2150.00                    $7140.00               $4990.00
 ```
 
 ---
@@ -271,10 +273,10 @@ Ejecute estos comandos directamente desde su terminal bash/zsh sin ingresar a la
 sqlite3 database/database.sqlite "PRAGMA foreign_keys = ON; DELETE FROM usuarios WHERE id = 1;"
 
 # 2. Listar catálogo e inventario
-sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM amigurumis;"
+sqlite3 -column -header database/database.sqlite "SELECT id, nombre, cantidad_stock, printf('$%.2f', precio/100.0) AS precio FROM creaciones;"
 
 # 3. Listar pedidos activos
-sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, amigurumi_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
+sqlite3 -column -header database/database.sqlite "SELECT id, cliente_nombre, creacion_id, cantidad, estado_pedido, printf('$%.2f', precio_final/100.0) AS total FROM pedidos;"
 
 # 4. Restaurar base de datos a estado inicial limpio (Solo CLI)
 php setup.php

@@ -1,6 +1,6 @@
 <?php
 /**
- * Handmade Amigurumi Micro-ERP - Database Setup & Seeder Script (CLI Only)
+ * Handmade Crochet Creations Micro-ERP - Database Setup & Seeder Script (CLI Only)
  * 
  * Multi-layered Security: Strictly blocked from browser/HTTP execution.
  * Initializes the SQLite database file inside the protected `database/` directory
@@ -101,12 +101,12 @@ try {
 
     // 7. Verify seeded records
     $userCount = (int)$pdo->query('SELECT COUNT(*) FROM usuarios')->fetchColumn();
-    $amigurumiCount = (int)$pdo->query('SELECT COUNT(*) FROM amigurumis')->fetchColumn();
+    $creacionCount = (int)$pdo->query('SELECT COUNT(*) FROM creaciones')->fetchColumn();
     $orderCount = (int)$pdo->query('SELECT COUNT(*) FROM pedidos')->fetchColumn();
 
     outputMessage("Verificación de registros creados:", 'bold');
     outputMessage("• Usuarios registrados: {$userCount}", 'success');
-    outputMessage("• Amigurumis en catálogo: {$amigurumiCount}", 'success');
+    outputMessage("• Creaciones en catálogo: {$creacionCount}", 'success');
     outputMessage("• Pedidos vinculados: {$orderCount}", 'success');
 
     // 8. Verify admin credentials hash
