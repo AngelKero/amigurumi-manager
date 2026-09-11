@@ -1,0 +1,208 @@
+/* ==========================================================================
+   04-COMPONENTS: ARTISAN PANEL LEFT SIDEBAR
+   Algodón Nórdico Design System
+   ========================================================================== */
+
+.panel-sidebar-card {
+  background: #FFFFFF;
+  border-radius: var(--craft-radius);
+  border: 1px solid var(--craft-border);
+  box-shadow: var(--craft-shadow-sm);
+  padding: 1.5rem 1.25rem;
+  position: sticky;
+  top: 85px;
+  z-index: 10;
+  transition: box-shadow 0.3s ease;
+}
+
+.panel-sidebar-card:hover {
+  box-shadow: var(--craft-shadow-md);
+}
+
+/* Artisan Profile Mini-Card */
+.panel-profile-box {
+  background: linear-gradient(135deg, var(--craft-surface-muted) 0%, #FAF6EE 100%);
+  border: 1.5px dashed rgba(217, 156, 82, 0.4);
+  border-radius: calc(var(--craft-radius) - 4px);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  position: relative;
+}
+
+.panel-profile-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--craft-primary);
+  color: #FFFFFF;
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
+  font-size: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(142, 91, 116, 0.25);
+  outline: 2px dashed rgba(255, 255, 255, 0.7);
+  outline-offset: -4px;
+}
+
+.panel-profile-username {
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
+  color: var(--craft-text-main);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.panel-profile-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8C531B;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.2rem 0.65rem;
+}
+
+/* Panel Navigation Section */
+.panel-nav-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--craft-text-muted);
+  margin-bottom: 0.6rem;
+  padding-left: 0.5rem;
+}
+
+.panel-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border-radius: calc(var(--craft-radius-sm) + 2px);
+  color: var(--craft-text-main);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.panel-nav-link i {
+  font-size: 1.05rem;
+  color: var(--craft-primary);
+  transition: transform 0.2s ease;
+}
+
+.panel-nav-link:hover {
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
+  border-color: rgba(142, 91, 116, 0.2);
+  transform: translateX(3px);
+}
+
+.panel-nav-link:hover i {
+  transform: scale(1.15);
+}
+
+/* Active Navigation Item */
+.panel-nav-link.active {
+  background-color: var(--craft-primary);
+  color: #FFFFFF;
+  border-color: var(--craft-primary);
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.25);
+  outline: 1.5px dashed rgba(255, 255, 255, 0.55);
+  outline-offset: -3px;
+}
+
+.panel-nav-link.active i {
+  color: #FFFFFF;
+}
+
+.panel-nav-link.active .panel-nav-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+/* Navigation Pill Badges */
+.panel-nav-badge {
+  font-size: 0.72rem;
+  font-family: var(--craft-font-mono);
+  font-weight: 700;
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--craft-radius-pill);
+}
+
+/* Secondary Actions */
+.panel-nav-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.panel-nav-footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--craft-radius-pill);
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.panel-nav-footer-btn.btn-view-store {
+  background-color: var(--craft-secondary-subtle);
+  color: var(--craft-secondary-text);
+  border: 1px dashed rgba(82, 133, 124, 0.4);
+}
+
+.panel-nav-footer-btn.btn-view-store:hover {
+  background-color: #DFECE9;
+  transform: translateY(-1px);
+}
+
+.panel-nav-footer-btn.btn-logout-sidebar {
+  background-color: #FFF5F5;
+  color: #C53030;
+  border: 1px dashed rgba(197, 48, 48, 0.35);
+  cursor: pointer;
+  width: 100%;
+}
+
+.panel-nav-footer-btn.btn-logout-sidebar:hover {
+  background-color: #FED7D7;
+}
+
+@media (max-width: 991.98px) {
+  .panel-sidebar-card {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+  .panel-nav-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .panel-nav-link {
+    flex: 1 1 calc(50% - 0.5rem);
+  }
+}

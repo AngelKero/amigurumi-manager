@@ -11,11 +11,15 @@ export function initAuth() {
   // Verificar si la sesión simulada del artesano está activa
   const isArtisanSession = localStorage.getItem('amigurumi_session_active') === 'true';
 
-  if (isArtisanSession && navArtisanDropdown && btnNavLogin && navUserBadge) {
-    navArtisanDropdown.classList.remove('d-none');
-    btnNavLogin.classList.add('d-none');
-    navUserBadge.classList.remove('d-none');
-    navUserBadge.classList.add('d-flex');
+  if (isArtisanSession) {
+    if (btnNavLogin) btnNavLogin.classList.add('d-none');
+    if (navUserBadge) {
+      navUserBadge.classList.remove('d-none');
+      navUserBadge.classList.add('d-flex');
+    }
+    if (navArtisanDropdown) {
+      navArtisanDropdown.classList.remove('d-none');
+    }
   }
 
   // Manejar botones de cierre de sesión
@@ -24,7 +28,7 @@ export function initAuth() {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem('amigurumi_session_active');
-      window.location.reload();
+      window.location.href = 'index.php';
     });
   });
 
@@ -51,7 +55,7 @@ export function initAuth() {
           const modalInstance = window.bootstrap.Modal.getInstance(loginModalEl);
           if (modalInstance) modalInstance.hide();
         }
-        window.location.reload();
+        window.location.href = 'amigurumis.php';
       } else {
         if (alertPlaceholder) {
           alertPlaceholder.textContent = 'Credenciales inválidas. Usuario o contraseña incorrectos.';

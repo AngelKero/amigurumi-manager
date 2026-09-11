@@ -1,0 +1,209 @@
+/* ==========================================================================
+   04-COMPONENTS: ARTISAN AMIGURUMIS MANAGEMENT & INVENTORY TABLE
+   Algodón Nórdico Design System
+   ========================================================================== */
+
+/* Header & Banner for Artisan Module */
+.artisan-module-header {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 100%);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--craft-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Administrative Table Container */
+.table-artisan-amigurumis {
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-artisan-amigurumis thead th {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-family: var(--craft-font-body);
+  font-weight: 700;
+  font-size: 0.765rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px dashed rgba(142, 91, 116, 0.2);
+  white-space: nowrap;
+}
+
+.table-artisan-amigurumis tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--craft-border);
+  font-size: 0.885rem;
+  background-color: #FFFFFF;
+  transition: background-color 0.2s ease;
+}
+
+.table-artisan-amigurumis tbody tr:hover td {
+  background-color: #FDFAFC;
+}
+
+/* Amigurumi Thumbnail Mat */
+.amigurumi-thumb-frame {
+  width: 54px;
+  height: 54px;
+  border-radius: calc(var(--craft-radius-sm) + 2px);
+  background: #FFFFFF;
+  border: 1px solid var(--craft-border);
+  outline: 1.5px dashed rgba(142, 91, 116, 0.3);
+  outline-offset: -3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(30, 37, 45, 0.04);
+  flex-shrink: 0;
+}
+
+.amigurumi-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* In-Situ Quick Stock Stepper */
+.quick-stock-control {
+  display: inline-flex;
+  align-items: center;
+  background: var(--craft-surface-muted);
+  border: 1.5px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.quick-stock-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: #FFFFFF;
+  color: var(--craft-text-main);
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.quick-stock-btn:hover:not(:disabled) {
+  background: var(--craft-primary);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+.quick-stock-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.quick-stock-val {
+  min-width: 32px;
+  text-align: center;
+  font-family: var(--craft-font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--craft-text-main);
+}
+
+/* Financial Economics Badge Pills */
+.badge-profit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--craft-font-mono);
+  font-weight: 700;
+  font-size: 0.785rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--craft-radius-pill);
+  background-color: var(--craft-secondary-subtle);
+  color: var(--craft-secondary-text);
+  border: 1px solid rgba(82, 133, 124, 0.25);
+}
+
+.badge-hourly-rate {
+  font-family: var(--craft-font-mono);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #8C531B;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.2rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Stock Status Badges */
+.badge-stock-alert {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #F87171;
+  border-radius: var(--craft-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+}
+
+.badge-stock-critical {
+  background-color: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+  border-radius: var(--craft-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+}
+
+/* Action Button Group */
+.artisan-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--craft-border);
+  background: #FFFFFF;
+  color: var(--craft-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.artisan-action-btn:hover {
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
+  border-color: var(--craft-primary);
+  transform: translateY(-2px);
+}
+
+.artisan-action-btn.btn-delete:hover {
+  background-color: #FFF5F5;
+  color: #C53030;
+  border-color: #FEB2B2;
+}
+
+/* Responsive Table Wrapper */
+@media (max-width: 991.98px) {
+  .table-responsive-craft {
+    border: 1px solid var(--craft-border);
+    border-radius: var(--craft-radius);
+    background: #FFFFFF;
+  }
+}

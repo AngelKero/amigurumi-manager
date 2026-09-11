@@ -11,6 +11,7 @@ import { initMarginCalculator } from './modules/margin-calculator.js';
 import { initDropzone } from './modules/dropzone.js';
 import { initOrders } from './modules/orders.js';
 import { initUsers } from './modules/users.js';
+import { initAmigurumis } from './modules/amigurumis.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Inicialización global de sesión y autenticación
@@ -24,4 +25,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initDropzone();
   initOrders();
   initUsers();
+  initAmigurumis();
 });

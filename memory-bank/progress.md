@@ -16,6 +16,7 @@
 | **Hero Image & Showcase** | Fotografía Macro Hero de Gran Formato | **Completed & Verified** | Generada fotografía de estudio artesanal nórdica en `assets/img/hero_amigurumi.jpg` e integrada con marco pespunteado acolchado de 540px en `views/pages/catalogo_content.php`, abarcando un espacio protagónico. |
 | **Pagination & Footer** | Estación Textil y Master Footer Nórdico | **Completed & Verified** | Rediseñados la paginación (`pagination.css`, `catalogo_content.php`) con botones pill bordados y contador reactivo, y el master footer (`footer.css`, `footer.php`) con 4 columnas, tarjeta de garantía nórdica y WhatsApp. |
 | **Content Decoupling** | Desacoplamiento de Término "Nórdico" | **Completed & Verified** | Eliminadas todas las referencias a "nórdico" de productos, colecciones, talleres, materiales y garantías, preservándolo estrictamente como nombre del tema CSS. |
+| **Panel & Amigurumis CRUD** | Rediseño de Navegación, Sidebar de Panel & Vista CRUD Amigurumis | **Completed & Verified** | Eliminado botón de catálogo y dropdown del header; acceso al panel mediante clic en el badge `@admin (Artesano Titular)`. Creado menú lateral izquierdo (`panel_sidebar.php`) con todas las áreas administrativas y pantalla completa de gestión de Amigurumis (`amigurumis.php`) con KPIs, búsqueda/filtros reactivos, ordenación multieje, ajuste de stock in-situ, toggle de modalidad de encargo, ficha técnica de inspección modal y eliminación con salvaguarda FK. |
 | **Phase 3** | Backend & Connection (Clean Architecture) | **Awaiting Explicit Approval** | Implement `src/` modular backend (Autoloader, Singleton Database, Repositories/DAO, Services, Middleware) and `api/` controllers. |
 | **Phase 4** | CRUD Operations & Fullstack Wiring | **Pending** | Wire modular frontend with clean backend endpoints via AJAX fetch. |
 | **Phase 5** | Documentation & Final Delivery | **In Progress (README & Docs Hub created)** | Created `README.md` and master documentation hub `docs/README.md`. |
@@ -36,6 +37,9 @@
 - Agent Rules & Workflows in `.agents/` fully updated with learned project patterns (Rules 16 to 21).
 - 100% of PHP and JS code validated via `php -l` and `node --check` with 0 errors.
 - Estación de Paginación Textil (`pagination.css`) con botones pill pespunteados, contador dinámico reactivo en `catalog.js`, y Master Footer Nórdico (`footer.css`, `footer.php`) con 4 columnas, garantía artesanal y contacto WhatsApp.
+- Panel del Artesano con Menú Lateral Izquierdo (`views/components/panel_sidebar.php` & `src/css/04-components/sidebar.css`) integrado automáticamente en vistas administrativas (`amigurumis.php`, `pedidos.php`, `usuarios.php`, `formulario.php`).
+- Pantalla de Gestión de Amigurumis (`amigurumis.php`, `amigurumis_content.php`, `amigurumis.js`, `amigurumis.css`) con KPIs en vivo, búsqueda y filtros multidimensionales, ajuste de stock in-situ, toggle interactivo de modalidad (`es_sobre_encargo`), ficha técnica de inspección modal (`modal_inspect_amigurumi.php`) y modal de eliminación con salvaguarda `ON DELETE RESTRICT`.
+- Header depurado (`navbar.php`): eliminado botón de catálogo y dropdown superfluo; acceso directo al panel administrativo mediante clic en `@admin (Artesano Titular)`.
 
 ## What's Left to Build
 - Phase 3: Modular Backend (`src/Core/`, `src/Database/`, `src/Middleware/`, `src/Services/`, `src/Repositories/`).

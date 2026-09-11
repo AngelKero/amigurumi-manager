@@ -1,42 +1,36 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Disociación de "Nórdico" (Exclusividad para el Tema CSS / Sistema de Diseño) (Completado y Verificado)
+## Current Task: Rediseño de Navegación del Header, Panel Administrativo con Sidebar Izquierdo y Vista CRUD de Amigurumis (Completado y Verificado)
 
 - **User Request:**
-  - *"Debes quitar cualquie referencia a que es nordico, lo nordico solo es el tema de css no los productos u otra cosa"*
+  - *"No es nesesario el boton de catalogo, y el panel de artesano lo debes de quitar del header, para ingresar al panel debes de dar click donde dice tu nombre (@admin (Artesano Titular) ), dentro del panel debe de haber un menu lateral izquierdo con todo lo que se puede administrar, y por cierto falta una pantalla de la lista de amigurimis con posibilidad de hacer todas las operaciones crud y mas cosas (para eso lee la base de datos)"*
 
-- **Principio Establecido:**
-  - El término "Algodón Nórdico" pertenece estricta y únicamente al **tema y sistema de diseño CSS** (paleta de colores, tokens, tipografías y pespuntes).
-  - Los **productos (amigurumis), descripciones, materiales, colecciones, talleres artesanos y garantías de confección** son 100% artesanales y NO deben presentarse como "nórdicos".
-
-- **Ajustes Realizados:**
-  - **Catálogo (`views/pages/catalogo_content.php`):**
-    - `Admin (Taller Nórdico)` &rarr; `Admin (Taller Principal)`.
-    - `Colección Textil Algodón Nórdico` &rarr; `Colección Textil Artesanal`.
-    - `lanas nórdicas y algodón mercerizado` &rarr; `hilazas suaves y algodón mercerizado`.
-    - `Colección Artesanal Amigurumi Algodón Nórdico` &rarr; `Colección Artesanal de Amigurumis`.
-    - `Favorito del Taller • Colección Nórdica` &rarr; `Favorito del Taller • Colección Artesanal`.
-    - `Colección Nórdica 2026` &rarr; `Colección Textil 2026`.
-    - Dropdown de filtro `@admin (Taller Nórdico)` &rarr; `@admin (Taller Principal)`.
-  - **Detalle (`views/pages/detalle_content.php`):**
-    - Código de taller `#TT-001-NORDIC` &rarr; `#TT-001-ARTISAN`.
-    - `Inspirado en leyendas nórdicas...` &rarr; `Inspirado en criaturas fantásticas de fuego sereno...`.
-  - **Footer (`views/components/footer.php`):**
-    - `Compromiso de Calidad Nórdica` &rarr; `Compromiso de Calidad Artesanal`.
-    - `Tejido punto a punto con lana nórdica` &rarr; `Tejido punto a punto con amor artesanal`.
-    - `Algodón Nórdico v2.7` &rarr; `Micro-ERP Artesanal v2.7`.
-  - **Gestión de Usuarios (`views/pages/usuarios_content.php` & `src/js/modules/users.js`):**
-    - Subtítulo `Taller Textil Nórdico` &rarr; `Taller Textil Principal`.
-  - **Formulario (`views/pages/formulario_content.php`):**
-    - `distintivo morado nórdico` &rarr; `distintivo morado artesanal`.
-  - **SVGs (`assets/svg/`):**
-    - `osito-nordico.svg`: Cinta inferior cambiada a `🐻 Osito Artesanal • Lana Cardada`.
-    - `madeja-textil.svg`: Faja de papel rotulada cambiada de `Nórdico` a `Artesanal`.
-  - **Documentación (`docs/svg-assets-and-helper.md`):**
-    - Ajustadas descripciones de recursos vectoriales para eliminar referencias a lanas y maderas nórdicas en productos.
+- **Resultados de Implementación:**
+  1. **Depuración del Header (`views/components/navbar.php`):**
+     - Enlace `Catálogo` eliminado de la barra superior (el logotipo de marca enlaza limpiamente a la raíz).
+     - Dropdown `Panel del Artesano` eliminado de la barra superior.
+     - Badge `@admin (Artesano Titular)` convertido en enlace interactivo directo al panel (`amigurumis.php`).
+  2. **Menú Lateral Izquierdo Unificado (`views/components/panel_sidebar.php`):**
+     - Integrado automáticamente en todas las vistas de administración (`amigurumis.php`, `pedidos.php`, `usuarios.php`, `formulario.php`) a través de `views/layouts/main.php` en rejilla responsiva de 2 columnas (`col-lg-3` sidebar / `col-lg-9` contenido).
+     - Incluye tarjeta de perfil del artesano, enlaces activos con pespunte y badges de conteo (`Inventario & Piezas`, `Nuevo Amigurumi`, `Control Pedidos`, `Equipo y Usuarios`, `Simulador Margen`), botón de retorno a tienda pública y cierre de sesión.
+  3. **Nueva Pantalla Administrativa de Amigurumis (`amigurumis.php` & `views/pages/amigurumis_content.php`):**
+     - Basada fielmente en el esquema relacional DDL de la base de datos (`seed.sql`).
+     - **Tarjetas KPI Superiores:** Modelos registrados (3), Unidades en almacén (16), Valor total de inventario ($3,960.00 MXN) e Inversión en insumos ($1,020.00 MXN).
+     - **Barra de Búsqueda y Filtrado:** Búsqueda en vivo (nombre, material, descripción), categoría, estado de stock (en stock, bajo stock, agotado, sobre encargo), artesano autor y ordenación multieje.
+     - **Tabla Administrativa (`table-artisan-amigurumis`):**
+       - Miniatura con marco pespunteado, nombre en `Fraunces`, categoría textil y medidas (`tamano_cm`).
+       - Desglose económico: Precio venta, costo materiales, margen neto monetario ($), margen porcentual (%) y tasa de retorno horario ($/hr).
+       - Ajuste rápido de existencias in-situ (`+` / `-`) que recalcula stock, badges de estado y KPIs en vivo.
+       - Modalidad de encargo con distintivo `es_sobre_encargo`.
+       - Artesano creador responsable.
+       - Acciones CRUD: Modal de Ficha Técnica detallada (`modal_inspect_amigurumi.php`), edición directa (`formulario.php?id=X`) y eliminación con salvaguarda de clave foránea (`modal_eliminar_amigurumi.php`).
+  4. **Módulos Frontend y Estilos ITCSS:**
+     - Creado `src/js/modules/amigurumis.js` e inicializado en `src/js/main.js`.
+     - Actualizado `src/js/modules/auth.js` para redirección directa al panel.
+     - Creados `src/css/04-components/sidebar.css` y `src/css/04-components/amigurumis.css`, registrados en `src/css/styles.css`.
 
 - **Verificaciones Ejecutadas:**
-  - `php -l` limpio en todas las vistas y componentes modificados (0 errores).
-  - `node --check` limpio en `src/js/modules/users.js` (0 errores).
-  - `git diff` verificado exhaustivamente: 0 referencias espurias a "nórdico" en productos o textos de negocio.
+  - `php -l` limpio en todas las vistas y controladores (0 errores sintácticos).
+  - `node --check` limpio en todos los módulos JS (0 errores).
+  - Servidor HTTP probado vía curl: `index.php`, `amigurumis.php`, `pedidos.php`, `usuarios.php`, `formulario.php` devuelven HTTP 200 OK y renderizado completo.
 

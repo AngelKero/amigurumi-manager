@@ -48,8 +48,8 @@
           <i class="bi bi-tools"></i> Taller ERP
         </h6>
         <ul class="footer-links-list">
+          <li><a href="amigurumis.php" class="footer-link"><i class="bi bi-chevron-right"></i> Inventario Piezas</a></li>
           <li><a href="formulario.php" class="footer-link"><i class="bi bi-chevron-right"></i> Nueva Creación</a></li>
-          <li><a href="formulario.php" class="footer-link"><i class="bi bi-chevron-right"></i> Simulador Margen</a></li>
           <li><a href="pedidos.php" class="footer-link"><i class="bi bi-chevron-right"></i> Gestión Pedidos</a></li>
           <li><a href="usuarios.php" class="footer-link"><i class="bi bi-chevron-right"></i> Equipo Taller</a></li>
         </ul>

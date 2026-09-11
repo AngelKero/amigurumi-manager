@@ -48,13 +48,31 @@ $modals = $modals ?? [];
   <?php require __DIR__ . '/../components/navbar.php'; ?>
 
   <!-- Main View Container Slot -->
+  <?php 
+  $isPanelPage = in_array($activePage, ['amigurumis', 'pedidos', 'usuarios', 'formulario']);
+  ?>
   <main class="py-4">
     <div class="container-xl">
-      <?php 
-      if (isset($contentView) && file_exists($contentView)) {
-        require $contentView;
-      }
-      ?>
+      <?php if ($isPanelPage): ?>
+        <div class="row g-4">
+          <div class="col-12 col-lg-3 col-xl-3">
+            <?php require __DIR__ . '/../components/panel_sidebar.php'; ?>
+          </div>
+          <div class="col-12 col-lg-9 col-xl-9">
+            <?php 
+            if (isset($contentView) && file_exists($contentView)) {
+              require $contentView;
+            }
+            ?>
+          </div>
+        </div>
+      <?php else: ?>
+        <?php 
+        if (isset($contentView) && file_exists($contentView)) {
+          require $contentView;
+        }
+        ?>
+      <?php endif; ?>
     </div>
   </main>
 
