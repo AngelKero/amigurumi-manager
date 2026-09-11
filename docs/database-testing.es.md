@@ -45,7 +45,7 @@ SELECT
     id,
     nombre,
     categoria,
-    tamano_cm,
+    dimensiones,
     printf('$%.2f', precio / 100.0) AS precio_venta,
     printf('$%.2f', costo_materiales / 100.0) AS costo_mat,
     cantidad_stock AS stock,
@@ -54,11 +54,13 @@ FROM amigurumis;
 ```
 *Resultado Esperado:*
 ```
-id  nombre                   categoria           tamano_cm  precio_venta  costo_mat  stock  hrs
---  -----------------------  ------------------  ---------  ------------  ---------  -----  ---
-1   Dragón Ignis             Fantasía            18.5       $450.00       $120.00    4      6.5
-2   Mini Suculenta en Maceta Plantas / Botánica  10.0       $180.00       $45.00     12     2.0
-3   Ajolote Rosado Pastel    Animales / Fauna    14.0       $320.00       $85.00     2      4.5
+id  nombre                   categoria              dimensiones        precio_venta  costo_mat  stock  hrs
+--  -----------------------  ---------------------  -----------------  ------------  ---------  -----  ---
+1   Dragón Ignis             Amigurumis & Figuras   18.5 cm (Alto)     $450.00       $120.00    4      6.5
+2   Mini Suculenta en Maceta Hogar & Decoración     10.0 cm x 8.0 cm   $180.00       $45.00     12     2.0
+3   Ajolote Rosado Pastel    Amigurumis & Figuras   14.0 x 10.0 cm     $320.00       $85.00     0      4.5
+4   Cardigan Granny Squares  Prendas & Ropa         Talla M (95x58 cm) $980.00       $280.00    2      18.0
+5   Tote Bag Boho Trapillo   Bolsos & Accesorios    35 x 30 cm         $380.00       $95.00     6      4.5
 ```
 
 ### 2.3 Ver Pedidos de Encargo Vinculados con Productos y Artesanos
@@ -131,11 +133,11 @@ Runtime error: FOREIGN KEY constraint failed (19)
 
 ## 4. Pruebas de Restricciones CHECK
 
-### Prueba 4.1: Prevención de Precio Negativo (`precio >= 1`)
+### Prueba 4.1: Prevención de Precios Negativos (`precio >= 1`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, tamano_cm, precio)
-VALUES (1, 'Pieza Inválida', 'Fantasía', 'Algodón', 12.0, -5000);
+INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio)
+VALUES (1, 'Pieza Inválida', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', -5000);
 ```
 *Resultado Esperado:*
 ```text
@@ -145,8 +147,8 @@ Runtime error: CHECK constraint failed: precio >= 1 AND precio <= 9999999 (19)
 ### Prueba 4.2: Prevención de Inventario Negativo (`cantidad_stock >= 0`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, tamano_cm, precio, cantidad_stock)
-VALUES (1, 'Pieza Sin Stock', 'Fantasía', 'Algodón', 12.0, 25000, -3);
+INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, cantidad_stock)
+VALUES (1, 'Pieza Sin Stock', 'Amigurumis & Figuras', 'Algodón', '12.0 cm', 25000, -3);
 ```
 *Resultado Esperado:*
 ```text
@@ -180,11 +182,11 @@ Runtime error: CHECK constraint failed: estado_pedido IN (
     ) (19)
 ```
 
-### Prueba 4.5: Validación de Confección Sobre Encargo (`es_sobre_encargo IN (0, 1)`)
+### Prueba 4.5: Validación de Bandera de Encargo Exclusivo (`es_sobre_encargo IN (0, 1)`)
 ```sql
 PRAGMA foreign_keys = ON;
-INSERT INTO amigurumis (artesano_id, nombre, categoria, material, tamano_cm, precio, es_sobre_encargo)
-VALUES (1, 'Pieza Encargo Inválido', 'Fantasía', 'Algodón', 15.0, 30000, 5);
+INSERT INTO amigurumis (artesano_id, nombre, categoria, material, dimensiones, precio, es_sobre_encargo)
+VALUES (1, 'Pieza Invalida Encargo', 'Amigurumis & Figuras', 'Algodón', '15.0 cm', 30000, 5);
 ```
 *Resultado Esperado:*
 ```text

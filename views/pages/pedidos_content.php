@@ -14,8 +14,8 @@ $mockOrders = [
     'cliente_contacto' => '+52 55 4892 1039',
     'cliente_wa' => '525548921039',
     'producto_nombre' => 'Dragón Ignis',
-    'producto_categoria' => 'Fantasía',
-    'producto_tamano' => '18.5 cm',
+    'producto_categoria' => 'Amigurumis & Figuras',
+    'producto_dimensiones' => '18.5 cm (Alto)',
     'svg_slug' => 'amigurumis/dragon-ignis',
     'cantidad' => 1,
     'total' => 450.00,
@@ -23,7 +23,7 @@ $mockOrders = [
     'estado' => 'En Proceso',
     'fecha_entrega' => '2026-09-24',
     'notas' => "Empaque para regalo con listón verde bosque y dedicatoria para Sofía.",
-    'search' => '1 mariana gomez mariana.g@example.com dragon ignis fantasia'
+    'search' => '1 mariana gomez mariana.g@example.com dragon ignis amigurumis figuras'
   ],
   [
     'id' => 2,
@@ -32,8 +32,8 @@ $mockOrders = [
     'cliente_contacto' => '+52 55 9301 8472',
     'cliente_wa' => '525593018472',
     'producto_nombre' => 'Ajolote Rosado Pastel',
-    'producto_categoria' => 'Animales / Fauna',
-    'producto_tamano' => '14.0 cm',
+    'producto_categoria' => 'Amigurumis & Figuras',
+    'producto_dimensiones' => '14.0 x 10.0 cm',
     'svg_slug' => 'amigurumis/ajolote-pastel',
     'cantidad' => 2,
     'total' => 640.00,
@@ -41,7 +41,7 @@ $mockOrders = [
     'estado' => 'Pendiente',
     'fecha_entrega' => '2026-09-30',
     'notas' => 'Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias.',
-    'search' => '2 carlos mendoza carlos.m@example.com ajolote rosado pastel animales fauna'
+    'search' => '2 carlos mendoza carlos.m@example.com ajolote rosado pastel amigurumis figuras'
   ]
 ];
 
@@ -218,7 +218,7 @@ foreach ($mockOrders as $ord) {
                 <i class="bi bi-box-seam me-1"></i><?= $pedido['cantidad'] ?> <?= $pedido['cantidad'] > 1 ? 'unidades' : 'unidad' ?>
               </span>
               <small class="text-muted font-monospace" style="font-size: 0.74rem;">
-                <i class="bi bi-rulers me-1"></i><?= $pedido['producto_tamano'] ?>
+                <i class="bi bi-rulers me-1"></i><?= htmlspecialchars($pedido['producto_dimensiones'] ?? $pedido['producto_tamano']) ?>
               </small>
             </div>
           </div>

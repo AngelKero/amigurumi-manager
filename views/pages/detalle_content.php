@@ -101,7 +101,7 @@
           <!-- Badges de Categoría y Stock (QW-1 WCAG AA Dark Spruce Contrast) -->
           <div class="d-flex justify-content-between align-items-center mb-3">
             <span class="badge badge-textile-tag fs-6" id="detalleCategoryBadge">
-              <i class="bi bi-tag me-1"></i>Fantasía
+              <i class="bi bi-tag me-1"></i>Amigurumis & Figuras
             </span>
             <span class="badge badge-stock-in fs-6" id="detalleStockBadge">
               <i class="bi bi-check-circle-fill me-1"></i>En Stock: 4 unidades
@@ -130,9 +130,9 @@
               <tbody>
                 <tr>
                   <td class="text-muted small" style="width: 45%;">
-                    <i class="bi bi-rulers spec-icon"></i> Altura / Envergadura:
+                    <i class="bi bi-rulers spec-icon"></i> Dimensiones / Talla:
                   </td>
-                  <td class="fw-bold text-dark font-monospace" id="detalleTamano">18.5 cm</td>
+                  <td class="fw-bold text-dark font-monospace" id="detalleTamano">18.5 cm (Alto)</td>
                 </tr>
                 <tr>
                   <td class="text-muted small">
@@ -204,7 +204,7 @@
               <span>Agotado para Entrega Inmediata</span>
             </div>
             <p class="small text-muted mb-2">
-              No hay piezas terminadas en inventario físico actualmente. Sin embargo, nuestro taller artesanal puede tejerla especialmente para ti bajo encargo programado (5 a 7 días hábiles de confección).
+              No hay piezas terminadas en inventario físico actualmente. Sin embargo, nuestro taller artesanal puede confeccionarla especialmente para ti bajo encargo programado (5 a 10 días hábiles de tejido artesanal).
             </p>
             <button class="btn btn-craft-outline btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
               <i class="bi bi-magic me-1"></i> Solicitar Encargo Especial

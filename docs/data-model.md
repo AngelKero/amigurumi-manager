@@ -31,7 +31,7 @@ erDiagram
         string nombre "TEXT NOT NULL (2-100 chars)"
         string categoria "TEXT NOT NULL (App whitelist)"
         string material "TEXT NOT NULL (3-80 chars)"
-        real tamano_cm "REAL NOT NULL (> 0.0, <= 250.0)"
+        string dimensiones "TEXT NOT NULL (2-100 chars)"
         integer precio "INTEGER NOT NULL (Retail cents)"
         integer costo_materiales "INTEGER NOT NULL (Cost cents)"
         integer cantidad_stock "INTEGER NOT NULL (Units count >= 0)"
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     nombre TEXT NOT NULL CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     categoria TEXT NOT NULL CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     material TEXT NOT NULL CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
-    tamano_cm REAL NOT NULL CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
+    dimensiones TEXT NOT NULL CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
     precio INTEGER NOT NULL CHECK(precio >= 1 AND precio <= 9999999),
     costo_materiales INTEGER NOT NULL DEFAULT 0 CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
     cantidad_stock INTEGER NOT NULL DEFAULT 0 CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),

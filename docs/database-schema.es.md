@@ -22,7 +22,7 @@ erDiagram
         string nombre "TEXT NOT NULL (2-100 caracteres)"
         string categoria "TEXT NOT NULL (Lista blanca de la app)"
         string material "TEXT NOT NULL (3-80 caracteres)"
-        real tamano_cm "REAL NOT NULL (> 0.0, <= 250.0)"
+        string dimensiones "TEXT NOT NULL (2-100 caracteres)"
         integer precio "INTEGER NOT NULL (Precio en centavos)"
         integer costo_materiales "INTEGER NOT NULL (Costo en centavos)"
         integer cantidad_stock "INTEGER NOT NULL (Unidades físicas >= 0)"
@@ -81,13 +81,14 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     nombre TEXT NOT NULL,
     categoria TEXT NOT NULL,
     material TEXT NOT NULL,
-    tamano_cm REAL NOT NULL,
+    dimensiones TEXT NOT NULL,
     precio INTEGER NOT NULL,
     costo_materiales INTEGER NOT NULL DEFAULT 0,
     cantidad_stock INTEGER NOT NULL DEFAULT 0,
     horas_tejido REAL DEFAULT 0.0,
     descripcion TEXT,
     imagen_url TEXT,
+    es_sobre_encargo INTEGER NOT NULL DEFAULT 0,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
     -- Restricciones de tabla
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     CONSTRAINT chk_amigurumis_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     CONSTRAINT chk_amigurumis_categoria CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     CONSTRAINT chk_amigurumis_material CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
-    CONSTRAINT chk_amigurumis_tamano CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
+    CONSTRAINT chk_amigurumis_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
     CONSTRAINT chk_amigurumis_precio CHECK(precio >= 1 AND precio <= 9999999),
     CONSTRAINT chk_amigurumis_costo_materiales CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
     CONSTRAINT chk_amigurumis_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
@@ -159,7 +160,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `nombre` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-100 | Nombre de la creación o personaje tejido. |
 | `categoria` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-50 | Clasificación temática (validada en lista blanca de la app). |
 | `material` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 3-80 | Tipo de hilo o fibra principal (ej. 100% Algodón, Chenille). |
-| `tamano_cm` | Decimal | `REAL` | **No** | *Ninguno* | `> 0.0 AND <= 250.0` | Altura o dimensión física de la pieza en centímetros. |
+| `dimensiones` | Texto | `TEXT` | **No** | *Ninguno* | Longitud 2-100 | Dimensiones 2D/3D (ej. 140x100 cm), talla de prendas o medidas de amigurumi. |
 | `precio` | Moneda (Centavos) | `INTEGER` | **No** | *Ninguno* | `1` a `9999999` | Precio de venta al público en centavos ($150.50 MXN = 15050). |
 | `costo_materiales`| Moneda (Centavos) | `INTEGER` | **No** | `0` | `0` a `9999999` | Inversión en insumos (hilo, ojos, vellón) en centavos. |
 | `cantidad_stock` | Entero | `INTEGER` | **No** | `0` | `0` a `10000` | Unidades físicas disponibles en existencia. |

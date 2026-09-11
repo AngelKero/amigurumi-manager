@@ -67,7 +67,12 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
         <span class="badge-textile-tag">
           <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($item['categoria']) ?>
         </span>
-        <small class="text-muted"><i class="bi bi-rulers me-1"></i><?= number_format($item['tamano_cm'], 1) ?> cm</small>
+        <?php 
+          $dimensionDisplay = !empty($item['dimensiones']) 
+            ? htmlspecialchars($item['dimensiones']) 
+            : (!empty($item['tamano_cm']) ? number_format($item['tamano_cm'], 1) . ' cm' : 'Estándar');
+        ?>
+        <small class="text-muted"><i class="bi bi-rulers me-1"></i><?= $dimensionDisplay ?></small>
       </div>
       
       <!-- Clickable Title -->

@@ -6,39 +6,39 @@
 $editId = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $isEditing = $editId !== null && $editId > 0;
 
-// Seed amigurumis data for pre-population in edit mode
+// Seed crochet data for pre-population in edit mode
 $seedItems = [
   1 => [
     'nombre' => 'Dragón Ignis',
-    'categoria' => 'Fantasía',
+    'categoria' => 'Amigurumis & Figuras',
     'material' => '100% Algodón Mercerizado',
-    'tamano_cm' => 18.5,
+    'dimensiones' => '18.5 cm (Alto)',
     'precio' => 450.00,
     'costo' => 120.00,
     'horas' => 6.5,
     'stock' => 4,
     'es_sobre_encargo' => 0,
-    'descripcion' => 'Amigurumi de dragón mítico tejido a mano con técnica crochet japonesa, escamas en relieve y fibra siliconada antialérgica.',
+    'descripcion' => 'Amigurumi de dragón mítico tejido a mano con técnica crochet, escamas en relieve y fibra siliconada antialérgica.',
     'imagen_preview' => 'uploads/dragon.jpg'
   ],
   2 => [
     'nombre' => 'Mini Suculenta en Maceta',
-    'categoria' => 'Plantas / Botánica',
+    'categoria' => 'Hogar & Decoración',
     'material' => 'Algodón Rústico y Lana Acrílica',
-    'tamano_cm' => 10.0,
+    'dimensiones' => '10.0 cm x 8.0 cm',
     'precio' => 180.00,
     'costo' => 45.00,
     'horas' => 2.0,
     'stock' => 12,
     'es_sobre_encargo' => 0,
-    'descripcion' => 'Pequeña maceta tejida con suculenta en relieve botánico. No requiere riego, ideal para escritorios.',
+    'descripcion' => 'Pequeña maceta tejida con suculenta en relieve botánico. No requiere riego, ideal para escritorios y repisas.',
     'imagen_preview' => ''
   ],
   3 => [
     'nombre' => 'Ajolote Rosado Pastel',
-    'categoria' => 'Animales / Fauna',
+    'categoria' => 'Amigurumis & Figuras',
     'material' => 'Hilo Chenille Terciopelo',
-    'tamano_cm' => 14.0,
+    'dimensiones' => '14.0 x 10.0 cm',
     'precio' => 320.00,
     'costo' => 85.00,
     'horas' => 4.5,
@@ -46,14 +46,40 @@ $seedItems = [
     'es_sobre_encargo' => 1,
     'descripcion' => 'Tierno ajolote mexicano con textura aterciopelada ultra suave, branquias externas kawaii y ojos de seguridad.',
     'imagen_preview' => ''
+  ],
+  4 => [
+    'nombre' => 'Cardigan Granny Squares',
+    'categoria' => 'Prendas & Ropa',
+    'material' => 'Lana Merino y Algodón Soft',
+    'dimensiones' => 'Talla M (95 x 58 cm)',
+    'precio' => 980.00,
+    'costo' => 280.00,
+    'horas' => 18.0,
+    'stock' => 2,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Cardigan bohemio tejido a mano con cuadros de la abuela (granny squares) florales en paleta nórdica y botones de madera rústica.',
+    'imagen_preview' => ''
+  ],
+  5 => [
+    'nombre' => 'Tote Bag Boho Trapillo',
+    'categoria' => 'Bolsos & Accesorios',
+    'material' => 'Trapillo de Algodón Reciclado',
+    'dimensiones' => '35 x 30 cm (Asas: 25 cm)',
+    'precio' => 380.00,
+    'costo' => 95.00,
+    'horas' => 4.5,
+    'stock' => 6,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Bolsa estilo tote bag resistente tejida con punto espiga tupido, base ovalada reforzada y asas dobles ergonómicas.',
+    'imagen_preview' => ''
   ]
 ];
 
 $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] : [
   'nombre' => $isEditing ? 'Creación #' . $editId : '',
-  'categoria' => 'Fantasía',
+  'categoria' => 'Amigurumis & Figuras',
   'material' => '',
-  'tamano_cm' => '',
+  'dimensiones' => '',
   'precio' => '',
   'costo' => '',
   'horas' => '',
@@ -67,7 +93,7 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
 $valPrecio = (isset($currentItem['precio']) && is_numeric($currentItem['precio'])) ? (float)$currentItem['precio'] : null;
 $valCosto = (isset($currentItem['costo']) && is_numeric($currentItem['costo'])) ? (float)$currentItem['costo'] : null;
 $valHoras = (isset($currentItem['horas']) && is_numeric($currentItem['horas'])) ? (float)$currentItem['horas'] : null;
-$valTamano = (isset($currentItem['tamano_cm']) && is_numeric($currentItem['tamano_cm'])) ? (float)$currentItem['tamano_cm'] : null;
+$valDimensiones = $currentItem['dimensiones'] ?? '';
 $valStock = (isset($currentItem['stock']) && is_numeric($currentItem['stock'])) ? (int)$currentItem['stock'] : null;
 
 // Parámetros calculados iniciales para el simulador financiero
@@ -104,13 +130,13 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
         <div>
           <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
             <?= svg('branding/isotipo-ovillo-corazon', ['width' => 18, 'height' => 18]) ?>
-            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección Textil' ?></span>
+            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección en Crochet' ?></span>
           </div>
           <h3 class="fw-bold font-theme-display text-dark mb-1" id="formTitle">
-            <?= $isEditing ? 'Modificar Creación Artesanal' : 'Registrar Nueva Creación Artesanal' ?>
+            <?= $isEditing ? 'Modificar Creación de Crochet' : 'Registrar Nueva Creación de Crochet' ?>
           </h3>
           <p class="text-muted small mb-0">
-            <?= $isEditing ? 'Actualiza los parámetros físicos, costos o inventario de la pieza.' : 'Completa las especificaciones físicas y económicas de la nueva pieza.' ?>
+            <?= $isEditing ? 'Actualiza las dimensiones, costos o inventario de la pieza.' : 'Completa las especificaciones físicas, dimensiones y parámetros económicos.' ?>
           </p>
         </div>
         <div>
@@ -125,10 +151,10 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
         <!-- ID Oculto para Modo Edición -->
         <input type="hidden" id="amigurumiId" value="<?= $isEditing ? $editId : '' ?>">
 
-        <!-- Nombre del Amigurumi -->
+        <!-- Nombre del Amigurumi / Creación -->
         <div class="mb-3">
           <label for="inputNombre" class="form-label fw-bold small">Nombre de la Creación (*)</label>
-          <input type="text" class="form-control form-control-lg input-craft-pill" id="inputNombre" placeholder="Ej. Dragón Ignis, Mini Cactus, etc." value="<?= htmlspecialchars($currentItem['nombre']) ?>" required minlength="2" maxlength="100">
+          <input type="text" class="form-control form-control-lg input-craft-pill" id="inputNombre" placeholder="Ej. Dragón Ignis, Cardigan Granny Squares, etc." value="<?= htmlspecialchars($currentItem['nombre']) ?>" required minlength="2" maxlength="100">
           <div class="form-text text-muted">Entre 2 y 100 caracteres. Será el título principal visible en el catálogo.</div>
         </div>
 
@@ -137,27 +163,28 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
           <div class="col-12 col-sm-6">
             <label for="inputCategoria" class="form-label fw-bold small">Categoría (*)</label>
             <select class="form-select select-craft-pill" id="inputCategoria" required>
-              <option value="Fantasía" <?= $currentItem['categoria'] === 'Fantasía' ? 'selected' : '' ?>>Fantasía</option>
-              <option value="Plantas / Botánica" <?= $currentItem['categoria'] === 'Plantas / Botánica' ? 'selected' : '' ?>>Plantas / Botánica</option>
-              <option value="Animales / Fauna" <?= $currentItem['categoria'] === 'Animales / Fauna' ? 'selected' : '' ?>>Animales / Fauna</option>
-              <option value="Navidad / Temporada" <?= $currentItem['categoria'] === 'Navidad / Temporada' ? 'selected' : '' ?>>Navidad / Temporada</option>
-              <option value="Llaveros / Accesorios" <?= $currentItem['categoria'] === 'Llaveros / Accesorios' ? 'selected' : '' ?>>Llaveros / Accesorios</option>
+              <option value="Amigurumis & Figuras" <?= $currentItem['categoria'] === 'Amigurumis & Figuras' ? 'selected' : '' ?>>Amigurumis & Figuras</option>
+              <option value="Prendas & Ropa" <?= $currentItem['categoria'] === 'Prendas & Ropa' ? 'selected' : '' ?>>Prendas & Ropa (Tops, Suéteres, Gorros)</option>
+              <option value="Bolsos & Accesorios" <?= $currentItem['categoria'] === 'Bolsos & Accesorios' ? 'selected' : '' ?>>Bolsos & Accesorios (Tote Bags, Monederos)</option>
+              <option value="Hogar & Decoración" <?= $currentItem['categoria'] === 'Hogar & Decoración' ? 'selected' : '' ?>>Hogar & Decoración (Mantas, Cojines, Tapices)</option>
+              <option value="Bebé & Infantil" <?= $currentItem['categoria'] === 'Bebé & Infantil' ? 'selected' : '' ?>>Bebé & Infantil (Mantas Apego, Zapatitos)</option>
             </select>
           </div>
           <div class="col-12 col-sm-6">
             <label for="inputMaterial" class="form-label fw-bold small">Material Textil Principal (*)</label>
-            <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Ej. 100% Algodón Mercerizado" value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
+            <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Ej. 100% Algodón Mercerizado, Lana Merino..." value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
           </div>
         </div>
 
-        <!-- Tamaño y Cantidad en Stock -->
+        <!-- Dimensiones / Talla y Cantidad en Stock -->
         <div class="row g-3 mb-3">
           <div class="col-12 col-sm-6">
-            <label for="inputTamano" class="form-label fw-bold small">Tamaño / Altura (*)</label>
+            <label for="inputDimensiones" class="form-label fw-bold small">Dimensiones / Talla (*)</label>
             <div class="input-group input-group-craft">
-              <input type="number" step="0.1" min="0.1" max="250.0" class="form-control" id="inputTamano" placeholder="15.0" value="<?= $valTamano !== null ? number_format($valTamano, 1, '.', '') : '' ?>" required>
-              <span class="input-group-text">cm</span>
+              <span class="input-group-text"><i class="bi bi-rulers text-primary"></i></span>
+              <input type="text" class="form-control" id="inputDimensiones" placeholder="Ej. 18.5 cm alto, 140 x 100 cm, o Talla M" value="<?= htmlspecialchars($valDimensiones) ?>" required maxlength="100">
             </div>
+            <div class="form-text text-muted" style="font-size: 0.7rem;">Talla/medidas en prendas; largo x ancho en mantas; altura en amigurumis.</div>
           </div>
           <div class="col-12 col-sm-6">
             <label for="inputStock" class="form-label fw-bold small">Stock Físico Inicial (*)</label>

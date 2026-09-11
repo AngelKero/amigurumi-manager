@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     nombre TEXT NOT NULL,
     categoria TEXT NOT NULL,
     material TEXT NOT NULL,
-    tamano_cm REAL NOT NULL,
+    dimensiones TEXT NOT NULL,
     precio INTEGER NOT NULL,
     costo_materiales INTEGER NOT NULL DEFAULT 0,
     cantidad_stock INTEGER NOT NULL DEFAULT 0,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
 
     -- 3. Longitud de Categoría
     -- QUÉ HACE: Asegura entre 2 y 50 caracteres para clasificar la creación.
-    -- REGLA DE NEGOCIO: Clasificación taxonómica consistente (Fantasía, Plantas / Botánica, Animales / Fauna, etc.).
+    -- REGLA DE NEGOCIO: Clasificación taxonómica consistente (Amigurumis & Figuras, Prendas & Ropa, Bolsos & Accesorios, etc.).
     CONSTRAINT chk_amigurumis_categoria 
         CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
 
@@ -102,11 +102,11 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     CONSTRAINT chk_amigurumis_material 
         CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
 
-    -- 5. Rango de Tamaño Físico (cm)
-    -- QUÉ HACE: Valida que la altura/largo sea mayor a 0 cm y menor o igual a 250 cm (2.5 metros).
-    -- REGLA DE NEGOCIO: Evita dimensiones negativas, cero o desproporcionadas para amigurumis artesanales.
-    CONSTRAINT chk_amigurumis_tamano 
-        CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
+    -- 5. Rango de Dimensiones Físicas y Talla
+    -- QUÉ HACE: Valida que la cadena de dimensiones tenga entre 2 y 100 caracteres sin espacios vacíos exclusivos.
+    -- REGLA DE NEGOCIO: Admite dimensiones 2D/3D (ej. '140 x 100 cm', '35 x 30 cm'), medidas de amigurumi (ej. '18.5 cm alto') o tallas de prendas (ej. 'Talla M (95 x 58 cm)').
+    CONSTRAINT chk_amigurumis_dimensiones 
+        CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
 
     -- 6. Precio de Venta al Público (Almacenado en Centavos)
     -- QUÉ HACE: Obliga a que el precio sea entero entre 1 centavo ($0.01 MXN) y 9,999,999 centavos ($99,999.99 MXN).
@@ -269,19 +269,19 @@ VALUES
     datetime('now', '-8 days', 'localtime')
 );
 
--- 4.2 Three Distinct Amigurumis
--- Item 1: Fantasía category (@admin)
+-- 4.2 Five Distinct Crochet Creations
+-- Item 1: Amigurumis & Figuras category (@admin)
 INSERT INTO amigurumis (
-    id, artesano_id, nombre, categoria, material, tamano_cm, precio,
+    id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     1,
     1,
     'Dragón Ignis',
-    'Fantasía',
+    'Amigurumis & Figuras',
     '100% Algodón Mercerizado',
-    18.5,
+    '18.5 cm (Alto)',
     45000,
     12000,
     4,
@@ -293,18 +293,18 @@ INSERT INTO amigurumis (
     NULL
 );
 
--- Item 2: Plantas / Botánica category (@admin)
+-- Item 2: Hogar & Decoración category (@admin)
 INSERT INTO amigurumis (
-    id, artesano_id, nombre, categoria, material, tamano_cm, precio,
+    id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     2,
     1,
     'Mini Suculenta en Maceta',
-    'Plantas / Botánica',
+    'Hogar & Decoración',
     'Algodón Rústico y Lana Acrílica',
-    10.0,
+    '10.0 cm x 8.0 cm',
     18000,
     4500,
     12,
@@ -316,18 +316,18 @@ INSERT INTO amigurumis (
     NULL
 );
 
--- Item 3: Animales / Fauna category (@artesana_ana) - Confección Exclusiva Bajo Encargo
+-- Item 3: Amigurumis & Figuras category (@artesana_ana) - Confección Exclusiva Bajo Encargo
 INSERT INTO amigurumis (
-    id, artesano_id, nombre, categoria, material, tamano_cm, precio,
+    id, artesano_id, nombre, categoria, material, dimensiones, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
     imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     3,
     2,
     'Ajolote Rosado Pastel',
-    'Animales / Fauna',
+    'Amigurumis & Figuras',
     'Hilo Chenille Terciopelo',
-    14.0,
+    '14.0 x 10.0 cm',
     32000,
     8500,
     0,
@@ -336,6 +336,52 @@ INSERT INTO amigurumis (
     'uploads/ajolote.jpg',
     1,
     datetime('now', '-1 days', 'localtime'),
+    NULL
+);
+
+-- Item 4: Prendas & Ropa category (@admin)
+INSERT INTO amigurumis (
+    id, artesano_id, nombre, categoria, material, dimensiones, precio,
+    costo_materiales, cantidad_stock, horas_tejido, descripcion,
+    imagen_url, es_sobre_encargo, creado_en, actualizado_en
+) VALUES (
+    4,
+    1,
+    'Cardigan Granny Squares',
+    'Prendas & Ropa',
+    'Lana Merino y Algodón Soft',
+    'Talla M (95 x 58 cm)',
+    98000,
+    28000,
+    2,
+    18.0,
+    'Cardigan bohemio tejido a mano con cuadros de la abuela (granny squares) florales en paleta nórdica y botones de madera rústica.',
+    'uploads/cardigan_granny.jpg',
+    0,
+    datetime('now', '-6 days', 'localtime'),
+    NULL
+);
+
+-- Item 5: Bolsos & Accesorios category (@artesana_ana)
+INSERT INTO amigurumis (
+    id, artesano_id, nombre, categoria, material, dimensiones, precio,
+    costo_materiales, cantidad_stock, horas_tejido, descripcion,
+    imagen_url, es_sobre_encargo, creado_en, actualizado_en
+) VALUES (
+    5,
+    2,
+    'Tote Bag Boho Trapillo',
+    'Bolsos & Accesorios',
+    'Trapillo de Algodón Reciclado',
+    '35 x 30 cm (Asas: 25 cm)',
+    38000,
+    9500,
+    6,
+    4.5,
+    'Bolsa estilo tote bag resistente tejida con punto espiga tupido, base ovalada reforzada y asas dobles ergonómicas.',
+    'uploads/tote_bag.jpg',
+    0,
+    datetime('now', '-2 days', 'localtime'),
     NULL
 );
 
@@ -354,7 +400,7 @@ INSERT INTO pedidos (
     'En Proceso',
     'Anticipo 50%',
     45000,
-    'Empaque para regalo con listón verde bosque y dedicatoria para graduación.',
+    'Empaque para regalo con listón verde bosque y dedicatoria para Sofía.',
     datetime('now', '-2 days', 'localtime')
 );
 
@@ -372,6 +418,6 @@ INSERT INTO pedidos (
     'Pendiente',
     'Pendiente',
     64000,
-    'Incluir tarjeta de felicitación personalizada de cumpleaños para mellizos.',
+    'Cliente solicita que ambos ajolotes lleven un tono ligeramente más pastel en las branquias.',
     datetime('now', '-4 hours', 'localtime')
 );

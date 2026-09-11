@@ -12,9 +12,9 @@ $catalogItems = [
     'artesano_username' => 'admin',
     'artesano_nombre' => 'Admin (Taller Principal)',
     'nombre' => 'Dragón Ignis',
-    'categoria' => 'Fantasía',
-    'material' => 'Algodón Mercerizado',
-    'tamano_cm' => 18.5,
+    'categoria' => 'Amigurumis & Figuras',
+    'material' => '100% Algodón Mercerizado',
+    'dimensiones' => '18.5 cm (Alto)',
     'precio' => 450.00,
     'precio_centavos' => 45000,
     'costo_materiales' => 12000,
@@ -28,10 +28,10 @@ $catalogItems = [
     'artesano_id' => 1,
     'artesano_username' => 'admin',
     'artesano_nombre' => 'Admin (Taller Principal)',
-    'nombre' => 'Mini Suculenta Maceta',
-    'categoria' => 'Plantas / Botánica',
-    'material' => 'Algodón Rústico',
-    'tamano_cm' => 10.0,
+    'nombre' => 'Mini Suculenta en Maceta',
+    'categoria' => 'Hogar & Decoración',
+    'material' => 'Algodón Rústico y Lana Acrílica',
+    'dimensiones' => '10.0 cm x 8.0 cm',
     'precio' => 180.00,
     'precio_centavos' => 18000,
     'costo_materiales' => 4500,
@@ -46,9 +46,9 @@ $catalogItems = [
     'artesano_username' => 'artesana_ana',
     'artesano_nombre' => 'Ana Diseñadora',
     'nombre' => 'Ajolote Rosado Pastel',
-    'categoria' => 'Animales / Fauna',
-    'material' => 'Hilo Chenille Soft',
-    'tamano_cm' => 14.0,
+    'categoria' => 'Amigurumis & Figuras',
+    'material' => 'Hilo Chenille Terciopelo',
+    'dimensiones' => '14.0 x 10.0 cm',
     'precio' => 320.00,
     'precio_centavos' => 32000,
     'costo_materiales' => 8500,
@@ -56,6 +56,40 @@ $catalogItems = [
     'es_sobre_encargo' => 1,
     'descripcion' => 'Ajolote mexicano extra suave confeccionado en hilo chenille velvet. Se elabora exclusivamente bajo encargo.',
     'svg_illustration' => svg('ajolote-pastel', ['class' => 'card-product-img'])
+  ],
+  [
+    'id' => 4,
+    'artesano_id' => 1,
+    'artesano_username' => 'admin',
+    'artesano_nombre' => 'Admin (Taller Principal)',
+    'nombre' => 'Cardigan Granny Squares',
+    'categoria' => 'Prendas & Ropa',
+    'material' => 'Lana Merino y Algodón Soft',
+    'dimensiones' => 'Talla M (95 x 58 cm)',
+    'precio' => 980.00,
+    'precio_centavos' => 98000,
+    'costo_materiales' => 28000,
+    'cantidad_stock' => 2,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Cardigan bohemio tejido a mano con cuadros de la abuela (granny squares) florales y botones de madera rústica.',
+    'svg_illustration' => svg('cardigan-granny', ['class' => 'card-product-img'])
+  ],
+  [
+    'id' => 5,
+    'artesano_id' => 2,
+    'artesano_username' => 'artesana_ana',
+    'artesano_nombre' => 'Ana Diseñadora',
+    'nombre' => 'Tote Bag Boho Trapillo',
+    'categoria' => 'Bolsos & Accesorios',
+    'material' => 'Trapillo de Algodón Reciclado',
+    'dimensiones' => '35 x 30 cm (Asas: 25 cm)',
+    'precio' => 380.00,
+    'precio_centavos' => 38000,
+    'costo_materiales' => 9500,
+    'cantidad_stock' => 6,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Bolsa estilo tote bag resistente tejida con punto espiga tupido, base ovalada reforzada y asas dobles ergonómicas.',
+    'svg_illustration' => svg('tote-bag', ['class' => 'card-product-img'])
   ]
 ];
 ?>
@@ -69,16 +103,16 @@ $catalogItems = [
     <div class="col-lg-6 text-center text-lg-start">
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag fs-6 mb-3">
         <?= svg('branding/isotipo-hebra-nordica', ['width' => 20, 'height' => 20]) ?>
-        <span>Colección Textil Artesanal</span>
+        <span>Colección Textil en Crochet</span>
         <span class="badge bg-white text-muted font-monospace border ms-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">Stock en Vivo</span>
       </div>
       
       <h1 class="display-5 fw-extrabold mb-3" style="color: var(--craft-text-main);">
-        Creaciones Amigurumi con Alma y Ternura
+        Creaciones en Crochet con Alma y Ternura
       </h1>
       
       <p class="lead mb-4" style="color: var(--craft-text-muted); font-size: 1.1rem;">
-        Piezas artesanales tejidas a mano punto a punto con hilazas suaves y algodón mercerizado hipoalergénico. Monitorea inventarios reales o encarga piezas exclusivas a tu medida.
+        Prendas, amigurumis, bolsos y piezas de decoración tejidas a mano punto a punto con hilazas suaves y fibras naturales. Monitorea inventarios reales o encarga confecciones a tu medida.
       </p>
       
       <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
@@ -155,14 +189,20 @@ $catalogItems = [
       <button type="button" class="btn-chip-textile active" data-category="all">
         <i class="bi bi-sparkles me-1"></i>Todas las Colecciones
       </button>
-      <button type="button" class="btn-chip-textile" data-category="Fantasía">
-        <i class="bi bi-tag-fill me-1"></i>Fantasía
+      <button type="button" class="btn-chip-textile" data-category="Amigurumis & Figuras">
+        <i class="bi bi-balloon-heart me-1"></i>Amigurumis & Figuras
       </button>
-      <button type="button" class="btn-chip-textile" data-category="Plantas / Botánica">
-        <i class="bi bi-flower1 me-1"></i>Plantas / Botánica
+      <button type="button" class="btn-chip-textile" data-category="Prendas & Ropa">
+        <i class="bi bi-person-hearts me-1"></i>Prendas & Ropa
       </button>
-      <button type="button" class="btn-chip-textile" data-category="Animales / Fauna">
-        <i class="bi bi-balloon-heart me-1"></i>Animales / Fauna
+      <button type="button" class="btn-chip-textile" data-category="Bolsos & Accesorios">
+        <i class="bi bi-handbag me-1"></i>Bolsos & Accesorios
+      </button>
+      <button type="button" class="btn-chip-textile" data-category="Hogar & Decoración">
+        <i class="bi bi-flower1 me-1"></i>Hogar & Decoración
+      </button>
+      <button type="button" class="btn-chip-textile" data-category="Bebé & Infantil">
+        <i class="bi bi-stars me-1"></i>Bebé & Infantil
       </button>
     </div>
 
@@ -182,9 +222,11 @@ $catalogItems = [
       <div class="col-6 col-md-2">
         <select id="filterCategory" class="form-select select-craft-pill">
           <option value="all" selected>Categoría: Todas</option>
-          <option value="Fantasía">Fantasía</option>
-          <option value="Plantas / Botánica">Plantas / Botánica</option>
-          <option value="Animales / Fauna">Animales / Fauna</option>
+          <option value="Amigurumis & Figuras">Amigurumis & Figuras</option>
+          <option value="Prendas & Ropa">Prendas & Ropa</option>
+          <option value="Bolsos & Accesorios">Bolsos & Accesorios</option>
+          <option value="Hogar & Decoración">Hogar & Decoración</option>
+          <option value="Bebé & Infantil">Bebé & Infantil</option>
         </select>
       </div>
 

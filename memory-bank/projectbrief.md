@@ -1,12 +1,12 @@
-# Project Brief: Handmade Amigurumi Micro-ERP & Catalog System
+# Project Brief: Handmade Crochet Creations Micro-ERP & Catalog System
 
 ## Overview
-An academic web development project to build a responsive, dynamic web application designed as a **Relational Micro-ERP** for handmade amigurumi crochet creations. The system manages user authentication, product catalog, physical stock inventory, material costs, labor tracking, and custom client commission orders with full relational integrity and CRUD functionality.
+An academic web development project to build a responsive, dynamic web application designed as a **Relational Micro-ERP** for handmade crochet textile creations (including amigurumis, garments/clothing, bags/accessories, and home decor). The system manages user authentication, product catalog, physical stock inventory, material costs, labor tracking, and custom client commission orders with full relational integrity and CRUD functionality.
 
 ## Core Objectives
-1. **Catalog & Showcase:** Display creations in a responsive card grid with dynamic stock availability badges and rich specifications.
+1. **Catalog & Showcase:** Display crochet creations in a responsive card grid with dynamic stock availability badges and rich specifications (dimensions, sizing, materials).
 2. **Business & Inventory Metrics:** Track physical inventory (`cantidad_stock`), yarn investment (`costo_materiales`), and manual labor hours (`horas_tejido`) to compute net margins and hourly return rates.
-3. **Order & Commission Tracking:** Record client custom orders (`pedidos`) linked relationally to catalog amigurumi items (`amigurumi_id`), locking in order prices (`precio_final`) and tracking fulfillment stages (`estado_pedido`).
+3. **Order & Commission Tracking:** Record client custom orders (`pedidos`) linked relationally to catalog crochet items (`amigurumi_id`), locking in order prices (`precio_final`) and tracking fulfillment stages (`estado_pedido`).
 4. **Authentication & Session Security:** Secure backend endpoints using native PHP password hashing (`password_hash`) and server-side sessions (`session_start()`), preventing unauthorized modifications.
 5. **Clean Architectural Separation:** Built using clean semantic HTML5, Bootstrap 5, Vanilla JavaScript, and native PHP PDO with SQLite 3 (enforcing `PRAGMA foreign_keys = ON;`).
 

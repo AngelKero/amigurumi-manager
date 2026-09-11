@@ -12,9 +12,9 @@ $amigurumisList = [
     'artesano_username' => 'admin',
     'artesano_nombre' => 'Admin (Taller Principal)',
     'nombre' => 'Dragón Ignis',
-    'categoria' => 'Fantasía',
+    'categoria' => 'Amigurumis & Figuras',
     'material' => '100% Algodón Mercerizado',
-    'tamano_cm' => 18.5,
+    'dimensiones' => '18.5 cm (Alto)',
     'precio' => 450.00,
     'precio_centavos' => 45000,
     'costo_materiales' => 120.00,
@@ -33,9 +33,9 @@ $amigurumisList = [
     'artesano_username' => 'admin',
     'artesano_nombre' => 'Admin (Taller Principal)',
     'nombre' => 'Mini Suculenta en Maceta',
-    'categoria' => 'Plantas / Botánica',
+    'categoria' => 'Hogar & Decoración',
     'material' => 'Algodón Rústico y Lana Acrílica',
-    'tamano_cm' => 10.0,
+    'dimensiones' => '10.0 cm x 8.0 cm',
     'precio' => 180.00,
     'precio_centavos' => 18000,
     'costo_materiales' => 45.00,
@@ -54,9 +54,9 @@ $amigurumisList = [
     'artesano_username' => 'artesana_ana',
     'artesano_nombre' => 'Ana Diseñadora',
     'nombre' => 'Ajolote Rosado Pastel',
-    'categoria' => 'Animales / Fauna',
+    'categoria' => 'Amigurumis & Figuras',
     'material' => 'Hilo Chenille Terciopelo',
-    'tamano_cm' => 14.0,
+    'dimensiones' => '14.0 x 10.0 cm',
     'precio' => 320.00,
     'precio_centavos' => 32000,
     'costo_materiales' => 85.00,
@@ -68,6 +68,48 @@ $amigurumisList = [
     'imagen_url' => 'uploads/ajolote.jpg',
     'svg_slug' => 'amigurumis/ajolote-pastel',
     'pedidos_asociados' => 1
+  ],
+  [
+    'id' => 4,
+    'artesano_id' => 1,
+    'artesano_username' => 'admin',
+    'artesano_nombre' => 'Admin (Taller Principal)',
+    'nombre' => 'Cardigan Granny Squares',
+    'categoria' => 'Prendas & Ropa',
+    'material' => 'Lana Merino y Algodón Soft',
+    'dimensiones' => 'Talla M (95 x 58 cm)',
+    'precio' => 980.00,
+    'precio_centavos' => 98000,
+    'costo_materiales' => 280.00,
+    'costo_materiales_centavos' => 28000,
+    'cantidad_stock' => 2,
+    'horas_tejido' => 18.0,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Cardigan bohemio tejido a mano con cuadros de la abuela (granny squares) florales en paleta nórdica y botones de madera rústica.',
+    'imagen_url' => 'uploads/cardigan_granny.jpg',
+    'svg_slug' => 'amigurumis/cardigan-granny',
+    'pedidos_asociados' => 0
+  ],
+  [
+    'id' => 5,
+    'artesano_id' => 2,
+    'artesano_username' => 'artesana_ana',
+    'artesano_nombre' => 'Ana Diseñadora',
+    'nombre' => 'Tote Bag Boho Trapillo',
+    'categoria' => 'Bolsos & Accesorios',
+    'material' => 'Trapillo de Algodón Reciclado',
+    'dimensiones' => '35 x 30 cm (Asas: 25 cm)',
+    'precio' => 380.00,
+    'precio_centavos' => 38000,
+    'costo_materiales' => 95.00,
+    'costo_materiales_centavos' => 9500,
+    'cantidad_stock' => 6,
+    'horas_tejido' => 4.5,
+    'es_sobre_encargo' => 0,
+    'descripcion' => 'Bolsa estilo tote bag resistente tejida con punto espiga tupido, base ovalada reforzada y asas dobles ergonómicas.',
+    'imagen_url' => 'uploads/tote_bag.jpg',
+    'svg_slug' => 'amigurumis/tote-bag',
+    'pedidos_asociados' => 0
   ]
 ];
 
@@ -97,7 +139,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
         <span>Almacén &amp; Catálogo del Taller</span>
       </div>
-      <h2 class="fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones de Amigurumis</h2>
+      <h2 class="fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones en Crochet</h2>
       <p class="text-muted small mb-0" style="max-width: 650px;">
         Control administrativo de piezas, costos de insumos, márgenes de labor, existencias físicas y modalidades de confección.
       </p>
@@ -196,9 +238,11 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
         <label for="filterCategorySelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Categoría</label>
         <select id="filterCategorySelect" class="form-select select-craft-pill">
           <option value="all" selected>Todas las categorías</option>
-          <option value="Fantasía">Fantasía</option>
-          <option value="Plantas / Botánica">Plantas / Botánica</option>
-          <option value="Animales / Fauna">Animales / Fauna</option>
+          <option value="Amigurumis & Figuras">Amigurumis & Figuras</option>
+          <option value="Prendas & Ropa">Prendas & Ropa</option>
+          <option value="Bolsos & Accesorios">Bolsos & Accesorios</option>
+          <option value="Hogar & Decoración">Hogar & Decoración</option>
+          <option value="Bebé & Infantil">Bebé & Infantil</option>
         </select>
       </div>
 
@@ -255,7 +299,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
        data-nombre="<?= htmlspecialchars($item['nombre']) ?>"
        data-categoria="<?= htmlspecialchars($item['categoria']) ?>"
        data-material="<?= htmlspecialchars($item['material']) ?>"
-       data-tamano="<?= $item['tamano_cm'] ?>"
+       data-dimensiones="<?= htmlspecialchars($item['dimensiones']) ?>"
        data-precio="<?= $item['precio'] ?>"
        data-costo="<?= $item['costo_materiales'] ?>"
        data-stock="<?= $item['cantidad_stock'] ?>"
@@ -302,7 +346,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
               <?= htmlspecialchars($item['categoria']) ?>
             </span>
             <small class="text-muted font-monospace" style="font-size: 0.74rem;">
-              <i class="bi bi-rulers me-1"></i><?= $item['tamano_cm'] ?> cm
+              <i class="bi bi-rulers me-1"></i><?= htmlspecialchars($item['dimensiones']) ?>
             </small>
           </div>
           <small class="text-muted d-block text-truncate mt-1" style="font-size: 0.74rem;" title="<?= htmlspecialchars($item['material']) ?>">

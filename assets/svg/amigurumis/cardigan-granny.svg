@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="100%" height="100%">
+  <defs>
+    <filter id="softShadowCardigan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1E252D" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="woolGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FBF8F5"/>
+      <stop offset="100%" stop-color="#F1ECE6"/>
+    </linearGradient>
+    <pattern id="stitchPattern" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M2,8 Q8,4 14,8 Q8,12 2,8" fill="none" stroke="rgba(142,91,116,0.18)" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+
+  <!-- Ambient Glow Backdrop -->
+  <circle cx="200" cy="180" r="140" fill="#F7EFF3" opacity="0.65"/>
+  <circle cx="200" cy="180" r="110" fill="#EBF4F2" opacity="0.5"/>
+
+  <!-- Cardigan Group with Shadow -->
+  <g filter="url(#softShadowCardigan)">
+    <!-- Main Cardigan Body Silhouette -->
+    <path d="M 120 70 
+             C 145 62, 170 58, 200 58 
+             C 230 58, 255 62, 280 70 
+             L 340 145 
+             L 305 185 
+             L 275 145 
+             L 275 285 
+             C 275 292, 268 298, 260 298 
+             L 140 298 
+             C 132 298, 125 292, 125 285 
+             L 125 145 
+             L 95 185 
+             L 60 145 
+             Z" 
+          fill="url(#woolGradient)" stroke="#E4E8ED" stroke-width="2"/>
+
+    <!-- Knit Texture Overlay -->
+    <path d="M 125 72 L 275 72 L 275 295 L 125 295 Z" fill="url(#stitchPattern)" opacity="0.6"/>
+
+    <!-- Left & Right Sleeves Ribbed Cuffs -->
+    <path d="M 60 145 L 95 185 L 85 195 L 50 155 Z" fill="#8E5B74" opacity="0.25"/>
+    <path d="M 340 145 L 305 185 L 315 195 L 350 155 Z" fill="#8E5B74" opacity="0.25"/>
+    <path d="M 50 155 L 85 195" stroke="#8E5B74" stroke-width="3" stroke-dasharray="3,3"/>
+    <path d="M 350 155 L 315 195" stroke="#8E5B74" stroke-width="3" stroke-dasharray="3,3"/>
+
+    <!-- Granny Squares Matrix Left Side (3 Squares) -->
+    <!-- Square L1 -->
+    <g transform="translate(135, 120)">
+      <rect width="42" height="42" rx="4" fill="#8E5B74" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#D99C52"/>
+      <circle cx="21" cy="21" r="8" fill="#F7EFF3"/>
+      <circle cx="21" cy="21" r="4" fill="#52857C"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+    <!-- Square L2 -->
+    <g transform="translate(135, 170)">
+      <rect width="42" height="42" rx="4" fill="#52857C" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#EBF4F2"/>
+      <circle cx="21" cy="21" r="8" fill="#8E5B74"/>
+      <circle cx="21" cy="21" r="4" fill="#D99C52"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+    <!-- Square L3 -->
+    <g transform="translate(135, 220)">
+      <rect width="42" height="42" rx="4" fill="#D99C52" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#F7EFF3"/>
+      <circle cx="21" cy="21" r="8" fill="#52857C"/>
+      <circle cx="21" cy="21" r="4" fill="#8E5B74"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+
+    <!-- Granny Squares Matrix Right Side (3 Squares) -->
+    <!-- Square R1 -->
+    <g transform="translate(223, 120)">
+      <rect width="42" height="42" rx="4" fill="#52857C" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#D99C52"/>
+      <circle cx="21" cy="21" r="8" fill="#F7EFF3"/>
+      <circle cx="21" cy="21" r="4" fill="#8E5B74"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+    <!-- Square R2 -->
+    <g transform="translate(223, 170)">
+      <rect width="42" height="42" rx="4" fill="#8E5B74" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#F7EFF3"/>
+      <circle cx="21" cy="21" r="8" fill="#52857C"/>
+      <circle cx="21" cy="21" r="4" fill="#D99C52"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+    <!-- Square R3 -->
+    <g transform="translate(223, 220)">
+      <rect width="42" height="42" rx="4" fill="#EBF4F2" stroke="#8E5B74" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="14" fill="#8E5B74"/>
+      <circle cx="21" cy="21" r="8" fill="#D99C52"/>
+      <circle cx="21" cy="21" r="4" fill="#52857C"/>
+      <rect width="42" height="42" rx="4" fill="none" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </g>
+
+    <!-- Center Placket & Opening with Running Stitches -->
+    <path d="M 188 62 L 188 296" stroke="#8E5B74" stroke-width="3"/>
+    <path d="M 212 62 L 212 296" stroke="#8E5B74" stroke-width="3"/>
+    <rect x="188" y="62" width="24" height="234" fill="#F7EFF3" stroke="#8E5B74" stroke-width="1.5"/>
+    <line x1="192" y1="65" x2="192" y2="293" stroke="rgba(142,91,116,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="208" y1="65" x2="208" y2="293" stroke="rgba(142,91,116,0.4)" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+    <!-- Wooden Buttons on Center Placket -->
+    <g transform="translate(200, 110)">
+      <circle cx="0" cy="0" r="5" fill="#D99C52" stroke="#8E5B74" stroke-width="1"/>
+      <circle cx="-1.5" cy="0" r="0.8" fill="#52857C"/>
+      <circle cx="1.5" cy="0" r="0.8" fill="#52857C"/>
+    </g>
+    <g transform="translate(200, 160)">
+      <circle cx="0" cy="0" r="5" fill="#D99C52" stroke="#8E5B74" stroke-width="1"/>
+      <circle cx="-1.5" cy="0" r="0.8" fill="#52857C"/>
+      <circle cx="1.5" cy="0" r="0.8" fill="#52857C"/>
+    </g>
+    <g transform="translate(200, 210)">
+      <circle cx="0" cy="0" r="5" fill="#D99C52" stroke="#8E5B74" stroke-width="1"/>
+      <circle cx="-1.5" cy="0" r="0.8" fill="#52857C"/>
+      <circle cx="1.5" cy="0" r="0.8" fill="#52857C"/>
+    </g>
+    <g transform="translate(200, 260)">
+      <circle cx="0" cy="0" r="5" fill="#D99C52" stroke="#8E5B74" stroke-width="1"/>
+      <circle cx="-1.5" cy="0" r="0.8" fill="#52857C"/>
+      <circle cx="1.5" cy="0" r="0.8" fill="#52857C"/>
+    </g>
+
+    <!-- Collar V-Neck Ribbing -->
+    <path d="M 160 62 Q 200 100 240 62" fill="none" stroke="#8E5B74" stroke-width="3.5"/>
+    <path d="M 160 62 Q 200 100 240 62" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+    <!-- Bottom Hem Ribbing -->
+    <path d="M 125 290 L 275 290 L 275 298 L 125 298 Z" fill="#8E5B74" opacity="0.3"/>
+    <line x1="125" y1="294" x2="275" y2="294" stroke="#8E5B74" stroke-width="1.5" stroke-dasharray="4,2"/>
+  </g>
+
+  <!-- Little Decorative Yarn Bow at Shoulder -->
+  <g transform="translate(265, 80)">
+    <ellipse cx="-4" cy="-2" rx="4" ry="2.5" fill="#8E5B74" transform="rotate(-25)"/>
+    <ellipse cx="4" cy="-2" rx="4" ry="2.5" fill="#8E5B74" transform="rotate(25)"/>
+    <circle cx="0" cy="0" r="2" fill="#D99C52"/>
+  </g>
+</svg>

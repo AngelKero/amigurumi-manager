@@ -52,9 +52,9 @@
           <div class="col-12 col-md-7">
             <h4 class="fw-bold font-theme-display text-dark mb-1" id="inspectAmigurumiTitle">Dragón Ignis</h4>
             <div class="d-flex align-items-center gap-2 mb-3">
-              <span class="badge-textile-tag" id="inspectCategoryBadge">Fantasía</span>
+              <span class="badge-textile-tag" id="inspectCategoryBadge">Amigurumis & Figuras</span>
               <span class="text-muted small">&bull;</span>
-              <span class="text-muted small font-monospace" id="inspectTamano">18.5 cm</span>
+              <span class="text-muted small font-monospace" id="inspectTamano">18.5 cm (Alto)</span>
             </div>
 
             <!-- Resumen Financiero del Taller -->

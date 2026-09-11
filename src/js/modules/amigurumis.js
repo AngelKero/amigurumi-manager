@@ -245,7 +245,7 @@ export function initAmigurumis() {
       const nombre = card.getAttribute('data-nombre');
       const categoria = card.getAttribute('data-categoria');
       const material = card.getAttribute('data-material');
-      const tamano = card.getAttribute('data-tamano');
+      const tamano = card.getAttribute('data-dimensiones') || card.getAttribute('data-tamano') || '';
       const precio = parseFloat(card.getAttribute('data-precio') || '0');
       const costo = parseFloat(card.getAttribute('data-costo') || '0');
       const stock = parseInt(card.getAttribute('data-stock') || '0', 10);
@@ -280,7 +280,11 @@ export function initAmigurumis() {
       if (idEl) idEl.textContent = `#${id}`;
       if (titleEl) titleEl.textContent = nombre;
       if (catEl) catEl.textContent = categoria;
-      if (tamEl) tamEl.textContent = `${tamano} cm`;
+      if (tamEl) {
+        tamEl.textContent = (tamano.includes('cm') || tamano.includes('Talla') || !tamano)
+          ? tamano 
+          : `${tamano} cm`;
+      }
       if (precioEl) precioEl.textContent = `$${precio.toFixed(2)}`;
       if (costoEl) costoEl.textContent = `$${costo.toFixed(2)}`;
       if (margenEl) margenEl.textContent = `$${margen.toFixed(2)}`;

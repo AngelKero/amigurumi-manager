@@ -1,28 +1,51 @@
-# Active Context: Amigurumi Micro-ERP & Catalog
+# Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Current Task: Corrección de Duplicación y Desbordamiento en KPI Ingresos Activos (Completado y Verificado)
+## Current Task: Generalización Exitosa a Crochet Integral (Prendas, Accesorios, Hogar, Bebé y Amigurumis)
 
 - **User Request:**
-  - *"esta se sigue viendo mal"* (adjunta captura del KPI 'Ingresos Activos' mostrando `$1,090.00 MXN` con un segundo `MXN` en verde gigante en una línea separada y otro `MXN` a la derecha).
+  - *"Vamos a hacer modificaciones algo importantes pero no mucho, el sistema no se va a limitar unicamente a amigurumis, si no que a crotchet en general, por lo que hay que hacer un analisis de que cambios o cosas serian necesarias (por ejemplo en vez de tamaño manejar dimensiones). Usa todas tus skills o con la investigacion que vas a hacer en internet descarga nuevas que te sirvan a aterrizar el producto. En si en la base de datos seran las mismas tablas pero puede que con unos cuantos cambios"*
 
-- **Causa Raíz Identificada:**
-  1. En `views/pages/pedidos_content.php`, el contenedor incluía un `<span>MXN</span>` estático junto a `#kpiOrdersIngresos`.
-  2. En `src/js/modules/orders.js`, la función `formatPesos(totalRevenue)` agregaba por defecto el sufijo `' MXN'`, provocando que `#kpiOrdersIngresos` recibiera `"$1,090.00 MXN"`. Al no caber en la tarjeta, el `MXN` del string saltaba a una segunda línea con tipografía gigante verde `font-theme-display`, coexistiendo con el `MXN` gris estático.
-  3. En `amigurumis.php`, los KPIs numéricos y monetarios no llevan sufijo dentro de la cifra principal ni palabras como `órdenes` o `pedidos`, sino el número limpio (`2`, `1`, `1`, `$1,090.00`) con icono temático en la cabecera.
+- **Alcance y Arquitectura Implementada:**
+  1. **Evolución del Esquema Relacional (3 Tablas Preservadas):**
+     - Se mantuvo intacta la estructura de 3 tablas (`usuarios`, `amigurumis`, `pedidos`) para evitar rupturas de claves foráneas.
+     - Campo migrado: `tamano_cm REAL NOT NULL` -> `dimensiones TEXT NOT NULL` con restricción estricta `chk_amigurumis_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100)`.
+     - Permite almacenar medidas 2D/3D (ej. `'140 x 100 cm'`, `'35 x 30 cm'`), tallas de prendas (ej. `'Talla M (95 x 58 cm)'`) y alturas de amigurumis (ej. `'18.5 cm (Alto)'`).
+  2. **Taxonomía Canónica de Crochet (5 Categorías Oficiales):**
+     - `Amigurumis & Figuras`
+     - `Prendas & Ropa` (Tops, Suéteres, Cardigans, Gorros)
+     - `Bolsos & Accesorios` (Tote Bags, Monederos, Cuellos)
+     - `Hogar & Decoración` (Mantas, Cojines, Suculentas, Tapices)
+     - `Bebé & Infantil` (Mantas de apego, Zapatitos, Sonajeros)
+  3. **Suite Vectorial Ampliada (`assets/svg/amigurumis/`):**
+     - Creado `cardigan-granny.svg`: Ilustración artesanal de cardigan con cuadros de la abuela florales en paleta Algodón Nórdico y botones de madera.
+     - Creado `tote-bag.svg`: Ilustración artesanal de tote bag con tejido espiga, textura de trapillo, chevrons decorativos y borla boho.
+  4. **Semillas Realistas (`database/seed.sql` & `database.sqlite`):**
+     - 5 creaciones representativas de la taxonomía:
+       1. *Dragón Ignis* (Amigurumi, $450 MXN, 18.5 cm alto, stock 4)
+       2. *Mini Suculenta en Maceta* (Hogar, $180 MXN, 10x8 cm, stock 12)
+       3. *Ajolote Rosado Pastel* (Amigurumi, $320 MXN, 14x10 cm, bajo encargo)
+       4. *Cardigan Granny Squares* (Prenda, $980 MXN, Talla M, stock 2)
+       5. *Tote Bag Boho Trapillo* (Bolso, $380 MXN, 35x30 cm, stock 6)
+  5. **Sincronización Total de Vistas y Componentes PHP:**
+     - `views/components/product_card.php`: Soporte nativo para `$item['dimensiones']` con fallback.
+     - `views/pages/catalogo_content.php`: Hero banner generalizado a crochet, 5 chips textiles de categoría, dropdown sincronizado y 5 items pre-cargados.
+     - `views/pages/detalle_content.php`: Ficha técnica con fila *"Dimensiones / Talla"*, categoría actualizada y tiempos de entrega para prendas (5-10 días).
+     - `views/pages/amigurumis_content.php`: Array de 5 items, cabecera de taller, selector de categorías y renderizado de `dimensiones` en cards 3x.
+     - `views/pages/formulario_content.php`: Selector con las 5 categorías de crochet y campo de texto `#inputDimensiones`.
+     - `views/components/modal_nuevo_pedido.php`: Selector enriquecido con las 5 piezas del catálogo.
+     - `views/pages/pedidos_content.php`: Renderizado de dimensiones en tarjetas pespunteadas de pedidos.
+  6. **Sincronización de JavaScript:**
+     - `src/js/modules/amigurumis.js`: Extracción de `data-dimensiones` y formateo inteligente en modal de inspección.
+     - `src/js/modules/catalog.js`: Filtrado reactivo por las 5 nuevas categorías.
+     - `src/js/modules/orders.js`: Compatibilidad total con dimensiones de producto.
+  7. **Documentación Técnica Bilingüe Actualizada:**
+     - `docs/database-schema.md` y `docs/database-schema.es.md`
+     - `docs/data-model.md` y `docs/data-model.es.md`
+     - `docs/database-testing.md` y `docs/database-testing.es.md`
+     - `docs/api-design.md` y `docs/api-design.es.md`
+     - `memory-bank/techContext.md`, `productContext.md` y `progress.md`
 
-- **Solución Implementada:**
-  1. Eliminado el `<span>MXN</span>` redundante en `pedidos_content.php`.
-  2. Invocado `formatPesos(totalRevenue, false)` en `orders.js` para entregar únicamente `"$1,090.00"` sin sufijo.
-  3. Aplicado `text-nowrap` a `#kpiOrdersIngresos` para blindar contra cualquier salto de línea.
-  4. Homogeneizados los 4 KPIs con icono temático superior (`bi-journal-text`, `bi-hourglass-split`, `bi-gear-wide-connected`, `bi-cash-coin`) y número limpio sin palabras concatenadas.
-  5. Verificado mediante `php -l`, `node --check` y respuesta HTML en `http://localhost:8000/pedidos.php`.
-  2. **Reparación Estructural de las Cards de Pedidos (`.card-admin-pedido`):**
-     - Se eliminó el layout comprimido de 68px lateral que provocaba el desbordamiento y corte de texto (`2 unida`).
-     - Se implementó el **Marco Fotográfico Acolchado Pespunteado Centrado** (`.order-card-photo-frame`, 135px de altura) idéntico al de `amigurumis.php`, con fondo suave, outline pespunteado y SVG del amigurumi con sombra y micro-animación al hover.
-     - El título del amigurumi, el tag textil de categoría, el tag de cantidad (`.order-qty-tag`) y la medida en cm ahora ocupan el ancho completo de la card con `d-flex flex-wrap align-items-center gap-2`, eliminando por completo cualquier riesgo de recorte o desbordamiento.
-     - Se refinaron los bloques de cliente con botón directo de WhatsApp, franja financiera estilizada y notas de personalización con limitación a 2 líneas.
-  3. **Sincronización de CSS y JavaScript:**
-     - [`src/css/04-components/orders.css`](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/orders.css) actualizado con la nueva arquitectura visual.
-     - [`src/js/modules/orders.js`](file:///Users/angelzaragoza/Desktop/proyecto-web/src/js/modules/orders.js) adaptado para actualizar solo las cifras numéricas de los KPIs y generar el template de card centrado al registrar encargos manuales.
-  4. **Validación:**
-     - Sintaxis PHP (`php -l`) y JS (`node --check`) validadas con 0 errores; respuesta HTTP 200 OK en `http://localhost:8000/pedidos.php`.
+- **Verificación y Pruebas:**
+  - Sintaxis PHP (`php -l`) y JS (`node --check`) validadas con 0 errores en todos los archivos modificados.
+  - Verificación HTTP en `http://localhost:8000/` (`index.php`, `detalle.php`, `amigurumis.php`, `formulario.php`, `pedidos.php`): Todos responden HTTP 200 OK.
+  - Base de datos `database/database.sqlite` regenerada mediante `setup.php` con integridad referencial activa.

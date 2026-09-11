@@ -30,9 +30,11 @@
           <div class="mb-3">
             <label for="manualAmigurumiSelect" class="form-label fw-bold small">Pieza del Catálogo (*)</label>
             <select class="form-select select-craft-pill" id="manualAmigurumiSelect" required>
-              <option value="1" data-price="450" data-name="Dragón Ignis" selected>Dragón Ignis — $450.00 MXN (Stock: 4)</option>
-              <option value="2" data-price="180" data-name="Mini Suculenta Maceta">Mini Suculenta Maceta — $180.00 MXN (Stock: 12)</option>
+              <option value="1" data-price="450" data-name="Dragón Ignis" selected>Dragón Ignis — $450.00 MXN (Amigurumi, Stock: 4)</option>
+              <option value="2" data-price="180" data-name="Mini Suculenta en Maceta">Mini Suculenta en Maceta — $180.00 MXN (Hogar, Stock: 12)</option>
               <option value="3" data-price="320" data-name="Ajolote Rosado Pastel">Ajolote Rosado Pastel — $320.00 MXN (Bajo encargo)</option>
+              <option value="4" data-price="980" data-name="Cardigan Granny Squares">Cardigan Granny Squares — $980.00 MXN (Prenda, Stock: 2)</option>
+              <option value="5" data-price="380" data-name="Tote Bag Boho Trapillo">Tote Bag Boho Trapillo — $380.00 MXN (Bolso, Stock: 6)</option>
               <option value="custom" data-price="500" data-name="Diseño Personalizado a Medida">✨ Encargo Especial / Personalizado — $500.00 MXN</option>
             </select>
           </div>

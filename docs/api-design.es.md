@@ -178,9 +178,9 @@ Todas las respuestas del backend siguen una estructura homogénea:
       "artesano_id": 1,
       "artesano_nombre": "admin",
       "nombre": "Dragón Ignis",
-      "categoria": "Fantasía",
+      "categoria": "Amigurumis & Figuras",
       "material": "100% Algodón Mercerizado",
-      "tamano_cm": 18.5,
+      "dimensiones": "18.5 cm (Alto)",
       "precio": 45000,
       "precio_formato": "$450.00 MXN",
       "costo_materiales": 12000,
@@ -199,9 +199,9 @@ Todas las respuestas del backend siguen una estructura homogénea:
       "artesano_id": 2,
       "artesano_nombre": "artesana_ana",
       "nombre": "Ajolote Rosado Pastel",
-      "categoria": "Animales / Fauna",
-      "material": "Hilo Chenille Soft",
-      "tamano_cm": 14.0,
+      "categoria": "Amigurumis & Figuras",
+      "material": "Hilo Chenille Terciopelo",
+      "dimensiones": "14.0 x 10.0 cm",
       "precio": 32000,
       "precio_formato": "$320.00 MXN",
       "costo_materiales": 8500,
@@ -229,7 +229,7 @@ Todas las respuestas del backend siguen una estructura homogénea:
   - `nombre` (texto, 2-100 car.)
   - `categoria` (texto, 2-50 car.)
   - `material` (texto, 3-80 car.)
-  - `tamano_cm` (número flotante > 0)
+  - `dimensiones` (texto, 2-100 car.)
   - `precio` (decimal en pesos o entero en centavos)
   - `costo_materiales` (decimal en pesos o entero en centavos)
   - `cantidad_stock` (entero >= 0)

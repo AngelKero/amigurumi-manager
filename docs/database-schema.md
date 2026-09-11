@@ -22,7 +22,7 @@ erDiagram
         string nombre "TEXT NOT NULL (2-100 chars)"
         string categoria "TEXT NOT NULL (App whitelist)"
         string material "TEXT NOT NULL (3-80 chars)"
-        real tamano_cm "REAL NOT NULL (> 0.0, <= 250.0)"
+        string dimensiones "TEXT NOT NULL (2-100 chars)"
         integer precio "INTEGER NOT NULL (Cents)"
         integer costo_materiales "INTEGER NOT NULL (Cents)"
         integer cantidad_stock "INTEGER NOT NULL (Units count >= 0)"
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     nombre TEXT NOT NULL,
     categoria TEXT NOT NULL,
     material TEXT NOT NULL,
-    tamano_cm REAL NOT NULL,
+    dimensiones TEXT NOT NULL,
     precio INTEGER NOT NULL,
     costo_materiales INTEGER NOT NULL DEFAULT 0,
     cantidad_stock INTEGER NOT NULL DEFAULT 0,
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     CONSTRAINT chk_amigurumis_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
     CONSTRAINT chk_amigurumis_categoria CHECK(length(trim(categoria)) >= 2 AND length(categoria) <= 50),
     CONSTRAINT chk_amigurumis_material CHECK(length(trim(material)) >= 3 AND length(material) <= 80),
-    CONSTRAINT chk_amigurumis_tamano CHECK(tamano_cm > 0.0 AND tamano_cm <= 250.0),
+    CONSTRAINT chk_amigurumis_dimensiones CHECK(length(trim(dimensiones)) >= 2 AND length(dimensiones) <= 100),
     CONSTRAINT chk_amigurumis_precio CHECK(precio >= 1 AND precio <= 9999999),
     CONSTRAINT chk_amigurumis_costo_materiales CHECK(costo_materiales >= 0 AND costo_materiales <= 9999999),
     CONSTRAINT chk_amigurumis_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
@@ -165,7 +165,7 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `nombre` | Text | `TEXT` | **No** | *None* | Length 2-100 | Creation / character name. |
 | `categoria` | Text | `TEXT` | **No** | *None* | Length 2-50 | Thematic grouping (app-level whitelist). |
 | `material` | Text | `TEXT` | **No** | *None* | Length 3-80 | Primary yarn composition. |
-| `tamano_cm` | Float | `REAL` | **No** | *None* | `> 0.0 AND <= 250.0` | Physical dimension in cm. |
+| `dimensiones` | Text | `TEXT` | **No** | *None* | Length 2-100 | Physical dimensions (2D/3D), clothing size (e.g. Talla M), or height. |
 | `precio` | Currency (Cents) | `INTEGER` | **No** | *None* | `1` to `9999999` | Retail price in cents ($150.50 = 15050). |
 | `costo_materiales`| Currency (Cents) | `INTEGER` | **No** | `0` | `0` to `9999999` | Raw materials cost in cents. |
 | `cantidad_stock` | Integer | `INTEGER` | **No** | `0` | `0` to `10000` | Physical stock count. |
