@@ -15,18 +15,10 @@
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
 
-## Current State: Phase 2 "Algodón Nórdico" & UI/UX Audit Execution Completed
-- **User Decision & Rules Enshrinement:**
-  - Implemented **Proposal B ("Algodón Nórdico")** across all views (`css/styles.css`, `index.html`, `detalle.html`, `pedidos.html`, `formulario.html`, `js/app.js`).
-  - Created permanent agent rule in `.agents/rules/ui-ux-design-system.md` (`trigger: always_on`) codifying palette tokens, *Outfit* + *Plus Jakarta Sans* typography, cloud animations, pill radiuses, and mandatory heuristic guardrails.
-  - Linked design system compliance into `.agents/rules/general.md`.
-- **Delivered Enhancements:**
-  1. Palette & Typography: Dusty Heather Plum (`#8E5B74`), Nordic Spruce (`#52857C` with `#235048` high-contrast text), Nordic Honey (`#D99C52`), Alabaster Porcelain (`#F8F9FB`), and Google Fonts *Outfit* & *Plus Jakarta Sans*.
-  2. Cloud Aesthetics: Micro-animations (`floatSoft`, `floatGentle`, `pulseGlow`), ultra-soft cloud shadows, and pill-shaped badge radiuses (`50px`).
-  3. Catalog Hero Banner: Dreamy cloud-soft hero banner in `index.html` with welcoming artisan greeting, verified craft imagery, and quick action buttons.
-  4. Audit Remediations:
-     - **[CR-1]**: Out-of-stock guard on `detalle.html` (`stock === 0` disables direct checkout, shows "Agotado para Entrega Inmediata", and offers custom commission trigger).
-     - **[CR-2]**: Stepper quantity bounds `[-] [ 1 ] [+]` bounded by physical stock & mobile stacked order cards (`#mobileOrdersContainer`) on `pedidos.html`.
-     - **[QW-1]**: WCAG AA compliant text contrast for stock badges (`#235048` on `#EBF4F2` = 6.2:1 contrast).
-     - **[QW-2]**: Cancellation confirmation modal with stock restitution notification & lead-time notice (5-7 business days).
-- **Phase Gate Status:** Phase 2 (Layout & UI) is fully refined and ready for formal user sign-off before commencing **Phase 3 - Backend & Connection** (`conexion.php`, `auth_guard.php`).
+## Current State: Phase 2 Atmosphere Refinement - Floating Background Clouds & Yarn SVGs
+- **User Request:** Add floating decorative SVG icons of clouds and yarn/threads to the catalog page (`index.html`) background to amplify the soft, dreamy, floating ambiance of "Algodón Nórdico".
+- **Execution Plan:**
+  1. Add atmospheric background decorative container (`.floating-bg-decorations`) in `index.html` featuring high-quality, lightweight inline SVG elements of puffy clouds, yarn balls with thread loops, and delicate craft sparkles.
+  2. Enhance `css/styles.css` with fixed background positioning, non-obstructive pointer events (`pointer-events: none; z-index: 0;`), staggered float animations (`@keyframes floatDrift1`, `@keyframes floatDrift2`), and delicate powdery opacity (15%–30%) matching Nordic Plum and Spruce tints.
+  3. Ensure zero impact on interactivity, performance, and responsive layout.
+- **Phase Gate Status:** In Phase 2 Layout & UI refinement. Delivering background atmosphere and verifying live in browser.
