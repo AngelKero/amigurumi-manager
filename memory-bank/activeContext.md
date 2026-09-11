@@ -14,16 +14,18 @@
   - `memory-bank/techContext.md`
   - `memory-bank/activeContext.md`
   - `memory-bank/progress.md`
-- **Phase Gate Status:** Phase 1 (Database Implementation, Seeding & Testing) completed and approved. **Phase 2 (Layout & UI) Completed**: Generated official production views (`index.html`, `detalle.html`, `formulario.html`, `pedidos.html`), `css/styles.css`, and `js/app.js` with all user-requested refinements.
+- **Phase Gate Status:** Phase 1 (Database Implementation, Seeding & Testing) completed and approved. **Phase 2 (Layout & UI) Completed & Audited**: Generated official production views (`index.html`, `detalle.html`, `formulario.html`, `pedidos.html`), `css/styles.css`, and `js/app.js`. Installed AI Agent Skill (`Design Auditor`) and generated comprehensive UI/UX audit report `.docs/ui-ux-skill-report.md`.
 
-## Immediate Focus: Phase 2 Review & Phase 3 Gate Transition
-Phase 2 UI implementation completed with official production views:
-1. `index.html`: Public catalog and inventory showcase with clickable product card images/titles, sorting dropdown (Precio / Más recientes), dynamic stock badges, disabled button on stock=0 ("Agotado"), and clean public navbar.
-2. `detalle.html`: Comprehensive creation specification with subtle text return link, artisan guarantee/shipping badge block, and client checkout modal with quantity stepper `[-] [ 1 ] [+]` bounded by stock.
-3. `formulario.html`: Artisan creation and edit form featuring a hidden image preview element on file selection, and a live margin calculator providing dual visual feedback (margin % and effective hourly rate).
-4. `pedidos.html`: Orders dashboard with KPI metric cards, status filters, table transition dropdowns, order inspection modal, and order cancellation modal explicitly detailing automatic stock restoration.
-5. `css/styles.css` & `js/app.js`: Warm artisan design system (terracotta, sage green, linen cream) and client-side UI interactivity.
+## Immediate Focus: Live Browser UI/UX Evaluation via Chrome (`http://127.0.0.1:5500/index.html`)
+1. **Live Browser Audit Completed in Chrome:** Active tab successfully positioned at `http://127.0.0.1:5500/index.html`. Full end-to-end verification performed across catalog, stepper modals, artisan margin math simulator, orders table, and error routes.
+2. **AI Agent Skill Output:** Evaluated via `Design Auditor` (`Ashutos1997/claude-design-auditor-skill` v1.2.13). Full reports available in `.docs/ui-ux-skill-report.md` and `.docs/ui-ux-skill-report.es.md`.
+3. **Recordings & Visual Evidence:**
+   - Chrome live navigation recording: `chrome_return_index_1789083404263.webp`
+   - Complete multi-page audit recording: `ui_ux_browser_audit_1789082444550.webp`
+   - Key screenshots captured: Homepage catalog, Navbar modal, Stepper bounds, Detail specs, Artisan form simulator, and Orders dashboard.
 
 ## Next Steps
-1. Present Phase 2 production views to the user.
-2. Await explicit user sign-off on Phase 2 before proceeding to **Phase 3 - Backend & Connection** (`conexion.php`, `auth_guard.php`).
+1. User selects preferred visual design system from the 3 proposals (Tierra & Telar, Algodón Nórdico, Café & Crochet).
+2. Await user confirmation before altering any CSS tokens.
+3. Upon approval, proceed to **Phase 3 - Backend & Connection** (`conexion.php`, `auth_guard.php`).
+
