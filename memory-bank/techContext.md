@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     horas_tejido REAL DEFAULT 0.0,
     descripcion TEXT,
     imagen_url TEXT,
+    es_sobre_encargo INTEGER NOT NULL DEFAULT 0,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
     -- Table Constraints
@@ -52,17 +53,20 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     CONSTRAINT chk_amigurumis_cantidad_stock CHECK(cantidad_stock >= 0 AND cantidad_stock <= 10000),
     CONSTRAINT chk_amigurumis_horas_tejido CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
     CONSTRAINT chk_amigurumis_descripcion CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
-    CONSTRAINT chk_amigurumis_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500)
+    CONSTRAINT chk_amigurumis_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+    CONSTRAINT chk_amigurumis_es_sobre_encargo CHECK(es_sobre_encargo IN (0, 1))
 );
 
 -- 3. Table: pedidos (Orders & Commissions)
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL,
+    cliente_contacto TEXT NOT NULL DEFAULT '',
     amigurumi_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1,
     fecha_entrega TEXT,
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente',
+    estado_pago TEXT NOT NULL DEFAULT 'Pendiente',
     precio_final INTEGER NOT NULL,
     notas TEXT,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
@@ -73,7 +77,9 @@ CREATE TABLE IF NOT EXISTS pedidos (
     CONSTRAINT chk_pedidos_fecha_entrega CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
     CONSTRAINT chk_pedidos_estado CHECK(estado_pedido IN ('Pendiente', 'En Proceso', 'Entregado', 'Cancelado')),
     CONSTRAINT chk_pedidos_precio_final CHECK(precio_final >= 1 AND precio_final <= 9999999),
-    CONSTRAINT chk_pedidos_notas CHECK(notas IS NULL OR length(notas) <= 1000)
+    CONSTRAINT chk_pedidos_notas CHECK(notas IS NULL OR length(notas) <= 1000),
+    CONSTRAINT chk_pedidos_cliente_contacto CHECK(length(trim(cliente_contacto)) <= 50),
+    CONSTRAINT chk_pedidos_estado_pago CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado'))
 );
 
 -- Performance Indexes

@@ -17,8 +17,11 @@
  *   'svg_illustration' => '...' // optional custom SVG
  * ]
  */
-$isOutOfStock = ($item['cantidad_stock'] ?? 0) === 0;
+$isOnDemand = !empty($item['es_sobre_encargo']);
+$isOutOfStock = (!$isOnDemand && ($item['cantidad_stock'] ?? 0) === 0);
 $stockCount = (int)($item['cantidad_stock'] ?? 0);
+$artisanUser = $item['artesano_username'] ?? 'admin';
+$priceCents = (int)($item['precio_centavos'] ?? round($item['precio'] * 100));
 $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
 ?>
 <article class="col product-grid-item" 
@@ -26,12 +29,19 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
          data-material="<?= htmlspecialchars($item['material']) ?>" 
          data-category="<?= htmlspecialchars($item['categoria']) ?>" 
          data-stock="<?= $stockCount ?>" 
-         data-price="<?= number_format($item['precio'], 2, '.', '') ?>">
+         data-price="<?= number_format($item['precio'], 2, '.', '') ?>"
+         data-price-cents="<?= $priceCents ?>"
+         data-artisan="<?= htmlspecialchars($artisanUser) ?>"
+         data-on-demand="<?= $isOnDemand ? '1' : '0' ?>">
   <div class="card card-product card-stitched h-100 <?= $isOutOfStock ? 'opacity-90' : '' ?>">
     <!-- Clickable Image / Preview -->
     <a href="<?= $detailUrl ?>" class="card-product-img-wrapper text-decoration-none">
       <div class="card-product-badge-float">
-        <?php if ($isOutOfStock): ?>
+        <?php if ($isOnDemand): ?>
+          <span class="badge badge-textile-tag shadow-sm" style="background-color: var(--craft-primary-subtle); color: var(--craft-primary); border: 1.5px dashed var(--craft-primary);">
+            <i class="bi bi-magic me-1"></i>Bajo Encargo (5-7 d)
+          </span>
+        <?php elseif ($isOutOfStock): ?>
           <span class="badge badge-stock-out shadow-sm">
             <i class="bi bi-dash-circle me-1"></i>Agotado (0 disp.)
           </span>
@@ -87,7 +97,11 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
           <small class="text-muted d-block" style="font-size: 0.75rem;">MXN / Unidad</small>
         </div>
 
-        <?php if ($isOutOfStock): ?>
+        <?php if ($isOnDemand): ?>
+          <button class="btn btn-craft-primary btn-craft-stitched btn-sm btn-buy-product" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+            <i class="bi bi-magic me-1"></i> Encargar
+          </button>
+        <?php elseif ($isOutOfStock): ?>
           <button class="btn btn-outline-secondary btn-sm" disabled title="Sin stock físico inmediato disponible">
             <i class="bi bi-slash-circle me-1"></i> Agotado
           </button>
@@ -100,7 +114,7 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
 
       <!-- Acciones Contextuales del Artesano (Visibles con sesión activa) -->
       <div class="artisan-card-actions d-none pt-2 mt-2 border-top d-flex justify-content-between align-items-center">
-        <small class="text-muted font-monospace" style="font-size: 0.7rem;">ID: #<?= $item['id'] ?> &bull; @admin</small>
+        <small class="text-muted font-monospace" style="font-size: 0.7rem;">ID: #<?= $item['id'] ?> &bull; @<?= htmlspecialchars($artisanUser) ?></small>
         <div class="btn-group btn-group-sm">
           <a href="formulario.php?id=<?= $item['id'] ?>" class="btn btn-outline-secondary btn-sm py-0 px-2" title="Editar amigurumi">
             <i class="bi bi-pencil-square"></i>

@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     horas_tejido REAL DEFAULT 0.0,
     descripcion TEXT,
     imagen_url TEXT,
+    es_sobre_encargo INTEGER NOT NULL DEFAULT 0,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
 
@@ -141,7 +142,13 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     -- QUÉ HACE: Permite NULL o texto de hasta 500 caracteres sin espacios vacíos exclusivos.
     -- REGLA DE NEGOCIO: Almacena la ruta relativa del archivo en el servidor local (/uploads/...).
     CONSTRAINT chk_amigurumis_imagen_url 
-        CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500)
+        CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+
+    -- 12. Distintivo de Confección Sobre Encargo
+    -- QUÉ HACE: Flag binario (0 o 1) que indica si la pieza se elabora exclusivamente bajo encargo personalizado.
+    -- REGLA DE NEGOCIO: Permite piezas sin stock inmediato (stock = 0) que no están "Agotadas" sino que se tejen a pedido.
+    CONSTRAINT chk_amigurumis_es_sobre_encargo 
+        CHECK(es_sobre_encargo IN (0, 1))
 );
 
 -- Table: pedidos (Orders & Commissions)
@@ -151,10 +158,12 @@ CREATE TABLE IF NOT EXISTS pedidos (
     -- -------------------------------------------------------------------------
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL,
+    cliente_contacto TEXT NOT NULL DEFAULT '',
     amigurumi_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1,
     fecha_entrega TEXT,
     estado_pedido TEXT NOT NULL DEFAULT 'Pendiente',
+    estado_pago TEXT NOT NULL DEFAULT 'Pendiente',
     precio_final INTEGER NOT NULL,
     notas TEXT,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
@@ -205,7 +214,19 @@ CREATE TABLE IF NOT EXISTS pedidos (
     -- QUÉ HACE: Permite NULL o texto de hasta 1000 caracteres.
     -- REGLA DE NEGOCIO: Espacio para variantes personalizadas solicitadas por el cliente (colores, dedicatorias, empaque).
     CONSTRAINT chk_pedidos_notas 
-        CHECK(notas IS NULL OR length(notas) <= 1000)
+        CHECK(notas IS NULL OR length(notas) <= 1000),
+
+    -- 8. Medio de Contacto del Cliente (WhatsApp, Teléfono o Correo)
+    -- QUÉ HACE: Permite texto de hasta 50 caracteres para registrar teléfono/WhatsApp o email.
+    -- REGLA DE NEGOCIO: Habilita el canal de comunicación directa del artesano para confirmación y entrega.
+    CONSTRAINT chk_pedidos_cliente_contacto 
+        CHECK(length(trim(cliente_contacto)) <= 50),
+
+    -- 9. Estado Financiero / Cobro del Encargo
+    -- QUÉ HACE: Restringe el estado de cobro a: 'Pendiente', 'Anticipo 50%', 'Liquidado'.
+    -- REGLA DE NEGOCIO: Control de anticipos necesarios para compra de materia prima e hilazas antes de confeccionar.
+    CONSTRAINT chk_pedidos_estado_pago 
+        CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado'))
 );
 
 -- ------------------------------------------------------------------------------
@@ -222,23 +243,38 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 -- 4. INITIAL SEED MOCK DATA
 -- ------------------------------------------------------------------------------
 
--- 4.1 Admin User
+-- 4.1 Users (Admin, Artisan, Assistant)
 -- Password: 'admin123' (verified bcrypt hash via password_hash)
 INSERT INTO usuarios (id, username, password_hash, rol, creado_en)
-VALUES (
+VALUES 
+(
     1,
     'admin',
     '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
     'admin',
     datetime('now', 'localtime')
+),
+(
+    2,
+    'artesana_ana',
+    '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
+    'artesano',
+    datetime('now', '-10 days', 'localtime')
+),
+(
+    3,
+    'asistente_leo',
+    '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
+    'asistente',
+    datetime('now', '-8 days', 'localtime')
 );
 
 -- 4.2 Three Distinct Amigurumis
--- Item 1: Fantasía category
+-- Item 1: Fantasía category (@admin)
 INSERT INTO amigurumis (
     id, artesano_id, nombre, categoria, material, tamano_cm, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
-    imagen_url, creado_en, actualizado_en
+    imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     1,
     1,
@@ -252,15 +288,16 @@ INSERT INTO amigurumis (
     6.5,
     'Amigurumi de dragón fantástico tejido a crochet con escamas en relieve, alas articuladas y relleno sintético hipoalergénico de alta densidad.',
     'uploads/dragon_ignis.jpg',
+    0,
     datetime('now', '-5 days', 'localtime'),
     NULL
 );
 
--- Item 2: Plantas / Botánica category
+-- Item 2: Plantas / Botánica category (@admin)
 INSERT INTO amigurumis (
     id, artesano_id, nombre, categoria, material, tamano_cm, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
-    imagen_url, creado_en, actualizado_en
+    imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     2,
     1,
@@ -274,28 +311,30 @@ INSERT INTO amigurumis (
     2.0,
     'Pequeña maceta tejida con suculenta en relieve botánico. No requiere riego, ideal para escritorios, repisas y espacios de trabajo.',
     'uploads/suculenta.jpg',
+    0,
     datetime('now', '-3 days', 'localtime'),
     NULL
 );
 
--- Item 3: Animales / Fauna category
+-- Item 3: Animales / Fauna category (@artesana_ana) - Confección Exclusiva Bajo Encargo
 INSERT INTO amigurumis (
     id, artesano_id, nombre, categoria, material, tamano_cm, precio,
     costo_materiales, cantidad_stock, horas_tejido, descripcion,
-    imagen_url, creado_en, actualizado_en
+    imagen_url, es_sobre_encargo, creado_en, actualizado_en
 ) VALUES (
     3,
-    1,
+    2,
     'Ajolote Rosado Pastel',
     'Animales / Fauna',
     'Hilo Chenille Terciopelo',
     14.0,
     32000,
     8500,
-    2,
+    0,
     4.5,
-    'Tierno ajolote mexicano con textura aterciopelada ultra suave, branquias externas en color frambuesa y ojos de seguridad kawaii.',
+    'Tierno ajolote mexicano con textura aterciopelada ultra suave, branquias externas en color frambuesa y ojos de seguridad kawaii. Se elabora exclusivamente bajo encargo.',
     'uploads/ajolote.jpg',
+    1,
     datetime('now', '-1 days', 'localtime'),
     NULL
 );
@@ -303,15 +342,17 @@ INSERT INTO amigurumis (
 -- 4.3 Two Commission Orders (Linked via Foreign Key)
 -- Order 1: For Dragón Ignis (cantidad = 1, precio_final = 1 * 45000 = 45000)
 INSERT INTO pedidos (
-    id, cliente_nombre, amigurumi_id, cantidad, fecha_entrega,
-    estado_pedido, precio_final, notas, creado_en
+    id, cliente_nombre, cliente_contacto, amigurumi_id, cantidad, fecha_entrega,
+    estado_pedido, estado_pago, precio_final, notas, creado_en
 ) VALUES (
     1,
     'Mariana Gómez',
+    '+52 55 4892 1039',
     1,
     1,
     strftime('%Y-%m-%d', date('now', '+14 days')),
     'En Proceso',
+    'Anticipo 50%',
     45000,
     'Empaque para regalo con listón verde bosque y dedicatoria para graduación.',
     datetime('now', '-2 days', 'localtime')
@@ -319,14 +360,16 @@ INSERT INTO pedidos (
 
 -- Order 2: For Ajolote Rosado Pastel (cantidad = 2, precio_final = 2 * 32000 = 64000)
 INSERT INTO pedidos (
-    id, cliente_nombre, amigurumi_id, cantidad, fecha_entrega,
-    estado_pedido, precio_final, notas, creado_en
+    id, cliente_nombre, cliente_contacto, amigurumi_id, cantidad, fecha_entrega,
+    estado_pedido, estado_pago, precio_final, notas, creado_en
 ) VALUES (
     2,
     'Carlos Mendoza',
+    '+52 55 9301 8472',
     3,
     2,
     strftime('%Y-%m-%d', date('now', '+20 days')),
+    'Pendiente',
     'Pendiente',
     64000,
     'Incluir tarjeta de felicitación personalizada de cumpleaños para mellizos.',

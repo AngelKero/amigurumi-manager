@@ -8,35 +8,53 @@
 $catalogItems = [
   [
     'id' => 1,
+    'artesano_id' => 1,
+    'artesano_username' => 'admin',
+    'artesano_nombre' => 'Admin (Taller Nórdico)',
     'nombre' => 'Dragón Ignis',
     'categoria' => 'Fantasía',
     'material' => 'Algodón Mercerizado',
     'tamano_cm' => 18.5,
     'precio' => 450.00,
+    'precio_centavos' => 45000,
+    'costo_materiales' => 12000,
     'cantidad_stock' => 4,
+    'es_sobre_encargo' => 0,
     'descripcion' => 'Dragón mítico con escamas en relieve tejidas con hilo de algodón mercerizado y relleno antialérgico.',
     'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#f5ede7"/><circle cx="200" cy="150" r="85" fill="#c25e3e"/><path d="M140 100 Q160 50 180 90" stroke="#a84d30" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M260 100 Q240 50 220 90" stroke="#a84d30" stroke-width="12" fill="none" stroke-linecap="round"/><circle cx="175" cy="140" r="10" fill="#2d2621"/><circle cx="225" cy="140" r="10" fill="#2d2621"/><circle cx="178" cy="138" r="3" fill="#ffffff"/><circle cx="228" cy="138" r="3" fill="#ffffff"/><path d="M185 165 Q200 180 215 165" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/><text x="200" y="270" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#8c3f25" font-size="15">🧶 Tejido a Mano &bull; 100% Algodón</text></svg>'
   ],
   [
     'id' => 2,
+    'artesano_id' => 1,
+    'artesano_username' => 'admin',
+    'artesano_nombre' => 'Admin (Taller Nórdico)',
     'nombre' => 'Mini Suculenta Maceta',
     'categoria' => 'Plantas / Botánica',
     'material' => 'Algodón Rústico',
     'tamano_cm' => 10.0,
     'precio' => 180.00,
+    'precio_centavos' => 18000,
+    'costo_materiales' => 4500,
     'cantidad_stock' => 12,
+    'es_sobre_encargo' => 0,
     'descripcion' => 'Suculenta de escritorio que no requiere riego, tejida con algodón rústico en maceta color terracota.',
     'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#edf4ef"/><path d="M150 180 L160 250 L240 250 L250 180 Z" fill="#bfa085"/><ellipse cx="200" cy="150" rx="45" ry="30" fill="#5a7d66"/><ellipse cx="170" cy="140" rx="30" ry="20" fill="#6d947b"/><ellipse cx="230" cy="140" rx="30" ry="20" fill="#6d947b"/><circle cx="200" cy="120" r="22" fill="#7fa88e"/><text x="200" y="280" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#486552" font-size="15">🌿 Colección Botánica</text></svg>'
   ],
   [
     'id' => 3,
+    'artesano_id' => 2,
+    'artesano_username' => 'artesana_ana',
+    'artesano_nombre' => 'Ana Diseñadora',
     'nombre' => 'Ajolote Rosado Pastel',
     'categoria' => 'Animales / Fauna',
     'material' => 'Hilo Chenille Soft',
     'tamano_cm' => 14.0,
     'precio' => 320.00,
+    'precio_centavos' => 32000,
+    'costo_materiales' => 8500,
     'cantidad_stock' => 0,
-    'descripcion' => 'Ajolote mexicano extra suave confeccionado en hilo chenille velvet. Disponible bajo pedido por encargo.',
+    'es_sobre_encargo' => 1,
+    'descripcion' => 'Ajolote mexicano extra suave confeccionado en hilo chenille velvet. Se elabora exclusivamente bajo encargo.',
     'svg_illustration' => '<svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#faeff2"/><ellipse cx="200" cy="150" rx="80" ry="60" fill="#e8a2b5"/><path d="M120 140 Q90 120 125 105" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M115 155 Q80 150 115 135" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M280 140 Q310 120 275 105" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M285 155 Q320 150 285 135" stroke="#d4708c" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="170" cy="145" r="8" fill="#2d2621"/><circle cx="230" cy="145" r="8" fill="#2d2621"/><path d="M185 165 Q200 175 215 165" stroke="#2d2621" stroke-width="3" fill="none" stroke-linecap="round"/><text x="200" y="270" text-anchor="middle" font-family="\'Plus Jakarta Sans\', sans-serif" font-weight="700" fill="#a64964" font-size="15">✨ Hilo Chenille Aterciopelado</text></svg>'
   ]
 ];
@@ -108,10 +126,12 @@ $catalogItems = [
               <circle cx="135" cy="130" r="8" fill="#ffffff"/>
               <circle cx="185" cy="130" r="8" fill="#ffffff"/>
               <path d="M145 155 Q160 170 175 155" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
-              <text x="160" y="245" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#8e5b74" font-size="14">✨ Taller Textil Nórdico</text>
+              <text x="160" y="240" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#75475e" font-size="14">✨ Algodón Nórdico</text>
             </svg>
           </div>
-          <div class="hero-floating-cloud-badge">
+
+          <!-- Micro-Badge de Autoría Flotante -->
+          <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill bg-white shadow-sm border small fw-bold font-monospace" style="color: var(--craft-primary); font-size: 0.75rem;">
             <i class="bi bi-heart-fill text-danger me-1"></i> Favorito del Taller
           </div>
         </div>
@@ -129,7 +149,7 @@ $catalogItems = [
         <h5 class="fw-bold mb-0 text-dark">
           <i class="bi bi-sliders me-2 text-primary"></i>Explorador de Creaciones
         </h5>
-        <span class="text-muted small d-none d-md-inline">Filtra por temática, material o nivel de inventario</span>
+        <span class="text-muted small d-none d-md-inline">Filtra por temática, material, presupuesto o artesano</span>
       </div>
       <span class="badge bg-light text-muted font-monospace border px-3 py-2" id="filterResultsCount" style="border-radius: var(--craft-radius-pill);">
         <i class="bi bi-grid-fill text-primary me-1"></i><?= count($catalogItems) ?> piezas visibles
@@ -152,8 +172,8 @@ $catalogItems = [
       </button>
     </div>
 
-    <!-- Fila de Controles de Entrada Redondeados -->
-    <div class="row g-2 align-items-center">
+    <!-- Fila 1 de Controles: Búsqueda, Categoría, Stock, Ordenación y Reset -->
+    <div class="row g-2 align-items-center mb-2">
       <!-- Buscador por texto -->
       <div class="col-12 col-md-4">
         <div class="input-group">
@@ -179,6 +199,7 @@ $catalogItems = [
         <select id="filterStock" class="form-select select-craft-pill">
           <option value="all" selected>Stock: Todos</option>
           <option value="in">En Stock (> 0)</option>
+          <option value="on-demand">Bajo Encargo</option>
           <option value="out">Agotados (0)</option>
         </select>
       </div>
@@ -202,6 +223,39 @@ $catalogItems = [
         </button>
       </div>
     </div>
+
+    <!-- Fila 2 de Controles: Filtros Avanzados (Presupuesto Min/Max & Artesano Autor) [2.2.D] -->
+    <div class="row g-2 align-items-center pt-2 border-top" style="border-color: rgba(228, 232, 237, 0.7) !important;">
+      <!-- Rango de Presupuesto -->
+      <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-cash-coin text-primary me-1"></i>Presupuesto:</span>
+          <div class="input-group input-group-sm" style="max-width: 120px;">
+            <span class="input-group-text bg-white text-muted">$</span>
+            <input type="number" id="filterPriceMin" class="form-control" placeholder="Mín" min="0" max="10000" step="50">
+          </div>
+          <span class="text-muted small">—</span>
+          <div class="input-group input-group-sm" style="max-width: 120px;">
+            <span class="input-group-text bg-white text-muted">$</span>
+            <input type="number" id="filterPriceMax" class="form-control" placeholder="Máx" min="0" max="10000" step="50">
+          </div>
+          <small class="text-muted font-monospace d-none d-sm-inline" style="font-size: 0.72rem;">MXN</small>
+        </div>
+      </div>
+
+      <!-- Filtro por Artesano Titular -->
+      <div class="col-12 col-md-6">
+        <div class="d-flex align-items-center gap-2 justify-content-md-end">
+          <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-person-badge text-primary me-1"></i>Artesano:</span>
+          <select id="filterArtisan" class="form-select form-select-sm select-craft-pill" style="max-width: 260px;">
+            <option value="all" selected>Todos los Artesanos</option>
+            <option value="admin">@admin (Taller Nórdico)</option>
+            <option value="artesana_ana">@artesana_ana (Diseñadora)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
