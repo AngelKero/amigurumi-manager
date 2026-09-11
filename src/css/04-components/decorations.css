@@ -1,5 +1,5 @@
 /* ==========================================================================
-   04-COMPONENTS: ATMOSPHERIC BACKGROUND DECORATIONS (Floating SVGs)
+   04-COMPONENTS: ATMOSPHERIC BACKGROUND DECORATIONS (Floating SVG Clouds)
    ========================================================================== */
 
 .cloud-yarn-bg-decorations {
@@ -17,55 +17,60 @@
   position: absolute;
   pointer-events: none;
   user-select: none;
-  opacity: 0.22;
+  opacity: 0.65;
   transition: opacity 0.4s ease;
   will-change: transform;
 }
 
+/* Nube 1: Superior Izquierda (Pespunte) */
 .bg-cloud-1 {
-  width: 160px;
-  color: var(--craft-primary);
-  animation: floatDrift1 14s ease-in-out infinite alternate;
+  width: 320px;
+  max-width: 26vw;
+  animation: floatDrift1 18s ease-in-out infinite alternate;
 }
 
+/* Nube 2: Superior Derecha (Nube con Ovillo) */
 .bg-cloud-2 {
-  width: 210px;
-  color: var(--craft-secondary);
-  animation: floatDrift2 19s ease-in-out infinite alternate;
+  width: 360px;
+  max-width: 30vw;
+  animation: floatDrift2 22s ease-in-out infinite alternate;
 }
 
+/* Nube 3: Centro-Izquierda (Nube con Ovillo) */
 .bg-cloud-3 {
-  width: 145px;
-  color: var(--craft-primary);
-  animation: floatDrift1 16s ease-in-out infinite alternate-reverse;
+  width: 330px;
+  max-width: 27vw;
+  animation: floatDrift1 20s ease-in-out infinite alternate-reverse;
 }
 
-.bg-yarn-1 {
-  width: 88px;
-  color: var(--craft-primary);
-  animation: floatDrift2 13s ease-in-out infinite alternate;
+/* Nube 4: Centro-Derecha (Pespunte) */
+.bg-cloud-4 {
+  width: 310px;
+  max-width: 25vw;
+  animation: floatDrift2 24s ease-in-out infinite alternate;
 }
 
-.bg-yarn-2 {
-  width: 105px;
-  color: var(--craft-secondary);
-  animation: floatDrift1 17s ease-in-out infinite alternate-reverse;
+/* Nube 5: Inferior Izquierda (Pespunte) */
+.bg-cloud-5 {
+  width: 280px;
+  max-width: 22vw;
+  animation: floatDrift1 21s ease-in-out infinite alternate-reverse;
 }
 
-.bg-hook-1 {
-  width: 75px;
-  color: var(--craft-accent-gold);
-  animation: floatDrift2 15s ease-in-out infinite alternate;
+/* Ajustes Responsivos Móviles */
+@media (max-width: 768px) {
+  .bg-float-item {
+    opacity: 0.45;
+  }
+  .bg-cloud-1 { width: 180px; }
+  .bg-cloud-2 { width: 200px; }
+  .bg-cloud-3 { width: 190px; }
+  .bg-cloud-4 { width: 180px; }
+  .bg-cloud-5 { width: 170px; }
 }
 
-.bg-sparkle-1 {
-  width: 26px;
-  color: var(--craft-accent-gold);
-  animation: pulseGlow 6s ease-in-out infinite;
-}
-
-.bg-sparkle-2 {
-  width: 32px;
-  color: var(--craft-primary);
-  animation: pulseGlow 8s ease-in-out infinite alternate;
+@media (prefers-reduced-motion: reduce) {
+  .bg-float-item {
+    animation: none !important;
+  }
 }
