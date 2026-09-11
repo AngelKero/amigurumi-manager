@@ -1,12 +1,21 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: Phase 2 Craft Detailing Enhancement for Product Detail View (`detalle.html`)
-- **User Request:** "dentro de detalle tambien hay mucha oportunidad" (acompañado de captura de pantalla de `detalle.html`).
-- **Critical Issues & Opportunities Identified:**
-  1. **Bootstrap Default Blue Eradication:** Bootstrap's `text-primary` and `border-primary` default to `#0d6efd` (electric blue), causing the price `$450.00` and multiple icons to clash with the "Algodón Nórdico" palette. Global overrides to `--craft-primary` (`#8E5B74`) planned in `styles.css`.
-  2. **Breadcrumb Craft Ribbon (`.breadcrumb-craft-ribbon`):** Replace plain white card with a stitched ribbon bar with dashed borders and needle/spool dividers.
-  3. **Left Column Elevation:** Add `.card-stitched` to the photo card, frame the amigurumi illustration in `.product-photo-stitched-frame` (quilted photo mat with inset running stitch), replace thumbnails with `.thumb-textile-item` with embroidered active states, and upgrade artisan authorship to a warm parchment `.artisan-workshop-seal-card` with golden honey stitches.
-  4. **Right Column Elevation:** Style price as `.price-tag-craft` in *Outfit* 800 with currency pill, add `.table-craft-specs` with dashed thread dividers and pill spec icons, frame description in `.story-quote-craft` with a vertical plum seam, and style the UI/UX audit stock switcher as a sleek mini-toolbar.
-  5. **Modal Quilted Seams:** Apply `.modal-content-stitched` with dashed inset seams to the checkout and login dialogs.
-- **Current Milestone:** Planning Mode complete. Implementation plan generated in `implementation_plan.md` (with `request_feedback: true`).
-- **Phase Gate Status:** In Phase 2 Layout & UI refinement. Awaiting user approval of `implementation_plan.md` before executing changes.
+## Current State: Fullstack Architecture Plan & README Created
+- **User Request:**
+  - El frontend también debe ser refactorizado antes de proceder con el backend.
+  - Diseñar las vistas en un sistema de componentes (en archivos PHP).
+  - Modularizar el CSS y el JS (eliminar los monolitos de `styles.css` y `app.js`).
+  - Planear la arquitectura completa del frontend antes de continuar con el backend.
+  - Crear un `README.md` con las instrucciones para iniciar el servidor local con un solo comando.
+- **Actions Executed:**
+  - **Plan Integral de Arquitectura:** Actualizado [.docs/architecture-refactor-plan.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.docs/architecture-refactor-plan.md) con:
+    1. *Sistema de Vistas PHP:* `views/layouts/main.php`, componentes reutilizables en `views/components/` (`navbar.php`, `footer.php`, `background_decorations.php`, modales, `product_card.php`), y vistas de contenido en `views/pages/`.
+    2. *Arquitectura CSS Modular:* Desglose de `styles.css` en capas (`01-settings/`, `02-base/`, `03-animations/`, `04-components/`).
+    3. *Arquitectura JS Modular:* Desglose de `app.js` en ES Modules (`js/main.js` y `js/modules/auth.js`, `catalog.js`, `detail.js`, `checkout.js`, `margin-calculator.js`, `dropzone.js`, `orders.js`).
+    4. *Arquitectura Backend:* `src/` modular (Core, Database Singleton, Repositories/DAO, Services, Middleware) y fachada de controladores en `api/`.
+  - **Documentación README:** Creado [README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/README.md) con:
+    - Comando de inicio inmediato: `php -S localhost:8000`.
+    - Inicialización de BD: `php setup.php` (CLI-only).
+    - Credenciales de prueba (`admin` / `admin123`).
+    - Explicación de arquitectura y requerimientos.
+- **Phase Gate Status:** Halting and awaiting explicit user approval of the Frontend & Backend Architecture Plan before moving or refactoring code files.
