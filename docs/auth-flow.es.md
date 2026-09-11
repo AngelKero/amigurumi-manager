@@ -88,16 +88,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
 | Recurso / Endpoint | Nivel de Acceso | Requisito de Autenticación | Propósito |
 | :--- | :--- | :--- | :--- |
-| `index.html` (Vista de Catálogo) | **Público** | Ninguno | Permite a clientes y visitantes explorar creaciones. |
-| `detalle.html` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones, autoría, stock y botón de compra directa. |
+| `index.php` (Vista de Catálogo) | **Público** | Ninguno | Permite a clientes y visitantes explorar creaciones y filtrar piezas. |
+| `detalle.php` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones, autoría, stock y modal de compra directa. |
 | `api/solicitar_pedido.php` | **Público** | Ninguno | Checkout de clientes; descuenta stock y fija precio atómicamente. |
 | `api/leer.php` | **Público** | Ninguno | Retorna el catálogo o una pieza en formato JSON con nombre de artesano. |
 | `api/login.php` | **Público** | Solo invitados (Modal en Navbar) | Valida credenciales e inicia la sesión del usuario. |
 | `api/logout.php` | **Protegido** | Autenticado | Destruye la sesión activa y limpia las cookies. |
-| `formulario.html` (Crear / Editar) | **Protegido** | Sesión requerida | Creación y edición con subida de imágenes a `/uploads/`. |
+| `formulario.php` (Crear / Editar) | **Protegido** | Sesión requerida | Creación y edición con subida de imágenes a `/uploads/`. |
 | `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra amigurumi, guarda imagen en `/uploads`, asigna `artesano_id`. |
 | `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o autor) | Modifica catálogo, costos, inventario y actualiza archivo de imagen. |
-| `api/eliminar.php` | **Protegido** | Sesión requerida (`admin`) | Elimina una pieza (sujeto a la restricción de pedidos). |
-| `api/usuarios.php` | **Protegido** | Exclusivo rol `admin` | CRUD completo de gestión de usuarios (ver, crear, editar, eliminar). |
-| `pedidos.html` y `api/pedidos.php`| **Protegido** | Sesión requerida (`admin`, `artesano`) | Gestión de pedidos, cambios de estado y encargos. |
+| `api/eliminar.php` | **Protegido** | Sesión requerida (`admin`) | Elimina una pieza (sujeto a la regla `ON DELETE RESTRICT`). |
+| `usuarios.php` & `api/usuarios.php` | **Protegido** | Exclusivo rol `admin` | Directorio de artesanos, alta de cuentas y modificación de roles. |
+| `pedidos.php` & `api/pedidos.php` | **Protegido** | Sesión requerida (`admin`, `artesano`) | Dashboard de pedidos, registro manual, filtros y trazabilidad. |
 | `api/actualizar_pedido.php` | **Protegido** | Sesión requerida (`admin`, `artesano`) | Actualiza estado; reintegra stock si se marca como `'Cancelado'`. |
+
+---
+
+## 5. Salvaguarda de Acceso y No Democión del Administrador Titular
+
+Para evitar condiciones de pérdida de gobierno del sistema (*admin lockout*):
+- **Regla Inviolable:** La cuenta principal con `id = 1` (`@admin`) bajo ninguna circunstancia puede ser degradada a rol `artesano` o `asistente`, ni eliminada del sistema.
+- **Validación en Cliente y Servidor:** Tanto el modal interactivo de edición de roles (`modal_editar_rol_usuario.php` y `users.js`) como el backend interceptan cualquier intento de modificar el rol del ID #1, rechazando la operación con una alerta informativa de salvaguarda de seguridad.
+

@@ -180,6 +180,39 @@ Runtime error: CHECK constraint failed: estado_pedido IN (
     ) (19)
 ```
 
+### Prueba 4.5: Validación de Confección Sobre Encargo (`es_sobre_encargo IN (0, 1)`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO amigurumis (artesano_id, nombre, categoria, material, tamano_cm, precio, es_sobre_encargo)
+VALUES (1, 'Pieza Encargo Inválido', 'Fantasía', 'Algodón', 15.0, 30000, 5);
+```
+*Resultado Esperado:*
+```text
+Runtime error: CHECK constraint failed: es_sobre_encargo IN (0, 1) (19)
+```
+
+### Prueba 4.6: Validación de Estado de Cobro del Pedido (`chk_pedidos_estado_pago`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, estado_pago, precio_final)
+VALUES ('Valeria Luna', '5512345678', 1, 1, 'Fiado 100%', 45000);
+```
+*Resultado Esperado:*
+```text
+Runtime error: CHECK constraint failed: estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado') (19)
+```
+
+### Prueba 4.7: Longitud de Contacto del Cliente (`chk_pedidos_cliente_contacto <= 50`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, precio_final)
+VALUES ('Valeria Luna', 'Este contacto es deliberadamente demasiado largo y excede los cincuenta caracteres permitidos por SQLite', 1, 1, 45000);
+```
+*Resultado Esperado:*
+```text
+Runtime error: CHECK constraint failed: length(trim(cliente_contacto)) <= 50 (19)
+```
+
 ---
 
 ## 5. Consultas de Métricas de Negocio (Micro-ERP)

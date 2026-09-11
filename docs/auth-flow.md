@@ -88,16 +88,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
 | Resource / Endpoint | Access Tier | Authentication Requirement | Purpose |
 | :--- | :--- | :--- | :--- |
-| `index.html` (Catalog View) | **Public** | None | Allows potential customers to browse amigurumi creations. |
-| `detalle.html` (Item Details) | **Public** | None | Displays detailed specifications, availability, and checkout trigger. |
+| `index.php` (Catalog View) | **Public** | None | Allows potential customers to browse and filter amigurumi creations. |
+| `detalle.php` (Item Details) | **Public** | None | Displays detailed specifications, availability, and public checkout trigger. |
 | `api/solicitar_pedido.php` | **Public** | None | Public client checkout; deducts stock and locks price atomically. |
 | `api/leer.php` | **Public** | None | Returns JSON catalog list or single item with artisan attribution. |
 | `api/login.php` | **Public** | Guest only (Navbar Modal) | Authenticates credentials and starts user session. |
 | `api/logout.php` | **Protected** | Authenticated | Destroys current session and clears cookies. |
-| `formulario.html` (Add / Edit) | **Protected** | Session required | Creation and editing interface with image uploads. |
+| `formulario.php` (Add / Edit) | **Protected** | Session required | Creation and editing interface with image uploads. |
 | `api/crear.php` | **Protected** | Session required (`admin` or `artesano`) | Inserts new amigurumi, saves image to `/uploads`, binds `artesano_id`. |
 | `api/actualizar.php` | **Protected** | Session required (`admin` or creator) | Modifies catalog details, costs, stock, and local image file. |
-| `api/eliminar.php` | **Protected** | Session required (`admin`) | Deletes an amigurumi (subject to order constraint). |
-| `api/usuarios.php` | **Protected** | Session required (`admin` strictly) | Full User Management CRUD (view, create, update, delete artisans). |
-| `pedidos.html` & `api/pedidos.php`| **Protected** | Session required (`admin`, `artesano`) | Full order dashboard, commission tracking, and delivery log. |
+| `api/eliminar.php` | **Protected** | Session required (`admin`) | Deletes an amigurumi (subject to SQLite `ON DELETE RESTRICT`). |
+| `usuarios.php` & `api/usuarios.php` | **Protected** | Session required (`admin` strictly) | Full User Management CRUD (view, create, role edit, delete artisans). |
+| `pedidos.php` & `api/pedidos.php` | **Protected** | Session required (`admin`, `artesano`) | Full order dashboard, manual commissions, filters, and delivery log. |
 | `api/actualizar_pedido.php` | **Protected** | Session required (`admin`, `artesano`) | Updates order state; restocks units if marked `'Cancelado'`. |
+
+---
+
+## 5. Root Administrator Lockout Prevention Safeguard
+
+To guarantee system governance and prevent accidental administrative lockout:
+- **Inviolable Rule:** The primary administrator account with `id = 1` (`@admin`) can under no circumstances be demoted to `artesano` or `asistente`, nor deleted from the system.
+- **Client and Server Enforcement:** Both the interactive role-editing modal (`modal_editar_rol_usuario.php` and `users.js`) and backend controllers reject role modifications targeting user ID #1, presenting an informative security safeguard alert.
+

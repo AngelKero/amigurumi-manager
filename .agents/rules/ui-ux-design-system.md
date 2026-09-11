@@ -119,4 +119,17 @@ To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views
     - Authorship must be displayed in a warm parchment card (`#FFFDF9`) framed by golden honey dashed stitches (`1.5px dashed #E0A868`) with a crest avatar and official workshop registration.
 15. **Tailored Specifications Table & Story Quote (`.table-craft-specs`, `.story-quote-craft`):**
     - Technical specifications must use dashed thread dividers (`1px dashed var(--craft-border)`), plum micro-badges for spec icons, and artisan descriptions framed with a 3.5px primary left border and lino-tinted background.
+16. **Team Directory & Artisan Management Aesthetic (`.table-artisan-team`, `.avatar-artisan-initials`):**
+    - The team directory (`usuarios.php`) uses soft circular avatars with primary/secondary tinted background initials, high-contrast role badges (`badge-role-admin`, `badge-role-artesano`, `badge-role-asistente`), and stitched role modification triggers.
+17. **Root Administrator Lockout Safeguard (ID #1):**
+    - The root admin user (`id: 1`, `@admin`) must NEVER have their administrator role downgraded or deleted. The UI must disable role editing controls for ID #1 with a lock indicator and clear explanation tooltip.
+18. **Advanced Catalog Filter Bar (`#filterPriceMin`, `#filterPriceMax`, `#filterArtisan`):**
+    - Price range inputs (Min/Max) and artisan author dropdowns must operate in complete two-way harmony with the textile category chips and keyword search, backed by an instant "Limpiar Filtros" reset trigger.
+19. **Universal Currency Formatting Standard:**
+    - All monetary values must be stored in database integers (cents) and formatted symmetrically using `src/Utils/CurrencyHelper.php` (PHP) and `src/js/modules/currency.js` (ES Modules). Floating point arithmetic artifacts (e.g. `$12.300000004`) are strictly forbidden.
+20. **Direct WhatsApp Commission Action & Tri-State Payment Badges:**
+    - Orders featuring customer phone contacts must render a direct WhatsApp button (`https://wa.me/...`). Payment statuses must strictly follow the Tri-State model: `Pendiente` (Nordic Honey amber), `Anticipo 50%` (Nordic Spruce), and `Liquidado` (Forest Craft Green).
+21. **On-Demand Exclusivity Badge (`es_sobre_encargo === 1`):**
+    - Catalog items flagged as `es_sobre_encargo = 1` must display the distinctive textile tag *"Bajo Encargo Exclusivo"*, disabling immediate stock checkout and redirecting the user to custom commission scheduling.
+
 

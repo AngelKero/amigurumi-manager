@@ -165,7 +165,8 @@ All JSON responses follow a predictable envelope structure:
   - `id` (optional, integer): Returns a single amigurumi object.
   - `categoria` (optional, string): Filter by category.
   - `artesano_id` (optional, integer): Filter by specific artisan creator.
-  - `stock` (optional, string): Filter by availability (`in_stock` for `cantidad_stock > 0`).
+  - `stock` (optional, string): Filter by availability (`in` for `cantidad_stock > 0`, `on-demand` for `es_sobre_encargo = 1`, `out` for `cantidad_stock = 0`).
+  - `precio_min` / `precio_max` (optional, decimal): Budget filter range.
 
 #### Response: Catalog Collection (200 OK)
 ```json
@@ -176,39 +177,41 @@ All JSON responses follow a predictable envelope structure:
       "id": 1,
       "artesano_id": 1,
       "artesano_nombre": "admin",
-      "nombre": "Totoro Clásico",
-      "categoria": "Pop Culture / Anime",
+      "nombre": "Dragón Ignis",
+      "categoria": "Fantasía",
       "material": "100% Algodón Mercerizado",
       "tamano_cm": 18.5,
-      "precio": 35000,
-      "precio_formato": "$350.00",
-      "costo_materiales": 8500,
-      "costo_formato": "$85.00",
-      "margen_ganancia": "$265.00",
+      "precio": 45000,
+      "precio_formato": "$450.00 MXN",
+      "costo_materiales": 12000,
+      "costo_formato": "$120.00 MXN",
+      "margen_ganancia": "$330.00 MXN",
       "cantidad_stock": 4,
-      "horas_tejido": 5.5,
-      "descripcion": "Tejido con hilo de algodón mercerizado, relleno siliconado hipoalergénico y ojos de seguridad.",
-      "imagen_url": "uploads/amigurumi_66e01a2b.jpg",
+      "horas_tejido": 6.5,
+      "descripcion": "Dragón mítico con escamas en relieve y relleno antialérgico.",
+      "imagen_url": "uploads/dragon.jpg",
+      "es_sobre_encargo": 0,
       "creado_en": "2026-09-10 14:00:00",
       "actualizado_en": null
     },
     {
-      "id": 2,
-      "artesano_id": 1,
-      "artesano_nombre": "admin",
-      "nombre": "Axolotl Rosado",
-      "categoria": "Animales",
-      "material": "Chenille / Terciopelo",
-      "tamano_cm": 22.0,
-      "precio": 42000,
-      "precio_formato": "$420.00",
-      "costo_materiales": 11000,
-      "costo_formato": "$110.00",
-      "margen_ganancia": "$310.00",
+      "id": 3,
+      "artesano_id": 2,
+      "artesano_nombre": "artesana_ana",
+      "nombre": "Ajolote Rosado Pastel",
+      "categoria": "Animales / Fauna",
+      "material": "Hilo Chenille Soft",
+      "tamano_cm": 14.0,
+      "precio": 32000,
+      "precio_formato": "$320.00 MXN",
+      "costo_materiales": 8500,
+      "costo_formato": "$85.00 MXN",
+      "margen_ganancia": "$235.00 MXN",
       "cantidad_stock": 0,
-      "horas_tejido": 6.0,
-      "descripcion": "Textura ultrasuave con branquias en relieve y detalles bordados a mano.",
-      "imagen_url": "uploads/amigurumi_66e01a3f.jpg",
+      "horas_tejido": 4.5,
+      "descripcion": "Ajolote confeccionado bajo pedido con hilaza aterciopelada.",
+      "imagen_url": "uploads/ajolote.jpg",
+      "es_sobre_encargo": 1,
       "creado_en": "2026-09-10 14:15:00",
       "actualizado_en": null
     }
@@ -222,23 +225,23 @@ All JSON responses follow a predictable envelope structure:
 - **Image Upload Handling (`multipart/form-data`):**
   - Accepts a binary file upload under field `imagen`.
   - Backend verifies MIME type (`image/jpeg`, `image/png`, `image/webp`), enforces size limit ($\le 5\text{MB}$), generates a unique filename (`amig_UUID.jpg`), moves it to the local `/uploads` directory, and writes the relative path `uploads/amig_UUID.jpg` into `imagen_url`.
-  - If no file is uploaded, falls back to a default placeholder path.
 - **Request Form-Data Fields:**
-  - `nombre` (text)
-  - `categoria` (text)
-  - `material` (text)
-  - `tamano_cm` (number)
-  - `precio` (decimal)
-  - `costo_materiales` (decimal)
-  - `cantidad_stock` (integer)
-  - `horas_tejido` (number)
-  - `descripcion` (text)
-  - `imagen` (file, optional)
+  - `nombre` (text, 2-100 chars)
+  - `categoria` (text, 2-50 chars)
+  - `material` (text, 3-80 chars)
+  - `tamano_cm` (number > 0)
+  - `precio` (decimal in pesos or integer in cents)
+  - `costo_materiales` (decimal in pesos or integer in cents)
+  - `cantidad_stock` (integer >= 0)
+  - `horas_tejido` (number >= 0)
+  - `descripcion` (text, max 2000 chars)
+  - `es_sobre_encargo` (integer: 0 or 1, default 0)
+  - `imagen` (binary file, optional)
 - **Response (201 Created):**
   ```json
   {
     "success": true,
-    "message": "Amigurumi registrado exitosamente con imagen local",
+    "message": "Amigurumi registrado exitosamente",
     "id": 3,
     "imagen_url": "uploads/amig_66e01b8a9c.jpg"
   }
@@ -248,6 +251,7 @@ All JSON responses follow a predictable envelope structure:
 - **Access:** Protected (Session required: `admin` or original artisan owner)
 - **Image Upload Handling:**
   - Can accept `multipart/form-data` with an updated `imagen` file. If a new image is provided, the backend saves it to `/uploads`, replaces `imagen_url`, and unlinks the previous local file.
+  - Accepts `es_sobre_encargo` along with standard attributes and mandatory `id`.
 - **Response (200 OK):**
   ```json
   {
@@ -259,9 +263,8 @@ All JSON responses follow a predictable envelope structure:
 ### `POST /api/eliminar.php`
 - **Access:** Protected (Session required: `admin`)
 - **Orphaned File Management Policy:**
-  - Before removing the record from the database, the backend MUST query the amigurumi's `imagen_url`.
-  - If `imagen_url` is present, points to a local file in `/uploads/`, and the file exists on disk, the backend MUST physically delete the file using PHP's `unlink()` before executing the database `DELETE`.
-  - If foreign key checks fail (e.g. because of associated orders in `pedidos` via `ON DELETE RESTRICT`), the deletion is aborted, returning HTTP 409, ensuring neither database records nor physical images are erroneously removed.
+  - If the amigurumi has associated orders in `pedidos`, SQLite's `ON DELETE RESTRICT` aborts the operation with **HTTP 409 Conflict**.
+  - If there are no orders, the backend verifies `imagen_url`, and if it points to a physical file in `/uploads/`, deletes it via PHP's `unlink()` before executing the SQL `DELETE`.
 - **Request Body (JSON):**
   ```json
   {
@@ -288,20 +291,21 @@ All JSON responses follow a predictable envelope structure:
 ## 5. Orders & Commissions Endpoints (`pedidos`)
 
 ### `POST /api/solicitar_pedido.php` (Public Client Checkout)
-- **Access:** **Public** (Allows customers to purchase directly from `detalle.html`)
+- **Access:** **Public** (Triggered from `modal_checkout.php` in catalog or detail views)
 - **Security & Integrity:**
   - The client does NOT provide `precio_final` or `estado_pedido`.
   - The backend automatically queries `amigurumis.precio` and computes `precio_final = amigurumis.precio * cantidad`.
-  - Defaults `estado_pedido` to `'Pendiente'`.
+  - Defaults `estado_pedido` and `estado_pago` to `'Pendiente'`.
 - **Atomic Inventory Transaction:** Wrapped in a database transaction (`BEGIN TRANSACTION`):
-  1. Validates that requested `cantidad` $\le \text{amigurumis.cantidad\_stock}$. If stock is insufficient, rolls back and returns **HTTP 422**.
-  2. Decrements physical stock: `UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id`.
-  3. Inserts order into `pedidos`.
+  1. If `amigurumis.es_sobre_encargo == 0`, validates requested `cantidad <= amigurumis.cantidad_stock`. If stock is insufficient, rolls back and returns **HTTP 422**.
+  2. If stock is available, decrements: `UPDATE amigurumis SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :amigurumi_id`.
+  3. Inserts order into `pedidos` storing `cliente_contacto`.
   4. Commits transaction.
 - **Request Body (JSON):**
   ```json
   {
     "cliente_nombre": "Mariana Gómez",
+    "cliente_contacto": "+52 55 4892 1039",
     "amigurumi_id": 1,
     "cantidad": 1,
     "fecha_entrega": "2026-09-25",
@@ -314,15 +318,35 @@ All JSON responses follow a predictable envelope structure:
     "success": true,
     "message": "Su pedido ha sido recibido y el stock ha sido reservado",
     "pedido_id": 5,
-    "precio_total": 35000,
-    "precio_total_formato": "$350.00"
+    "precio_total": 45000,
+    "precio_total_formato": "$450.00 MXN"
   }
   ```
-- **Error Response: Insufficient Stock (422 Unprocessable Entity):**
+
+### `POST /api/pedidos.php` (Manual Artisan Order Registration)
+- **Access:** Protected (Session required: `admin` or `artesano`)
+- **Purpose:** Registers direct commissions received through workshops, craft fairs, or WhatsApp.
+- **Request Body (JSON):**
   ```json
   {
-    "success": false,
-    "error": "Stock insuficiente para satisfacer su pedido. Stock disponible: 0 unidad(es)."
+    "cliente_nombre": "Sofía Morales",
+    "cliente_contacto": "+52 55 1234 5678",
+    "amigurumi_id": 2,
+    "cantidad": 2,
+    "fecha_entrega": "2026-10-05",
+    "estado_pago": "Anticipo 50%",
+    "notas": "Bordar iniciales 'SM' en la base"
+  }
+  ```
+- **Success Response (201 Created):**
+  ```json
+  {
+    "success": true,
+    "message": "Encargo manual agendado exitosamente",
+    "pedido_id": 6,
+    "precio_total": 36000,
+    "precio_total_formato": "$360.00 MXN",
+    "estado_pago": "Anticipo 50%"
   }
   ```
 
@@ -336,15 +360,17 @@ All JSON responses follow a predictable envelope structure:
     "data": [
       {
         "id": 1,
-        "cliente_nombre": "Lucía Morales",
+        "cliente_nombre": "Mariana Gómez",
+        "cliente_contacto": "+52 55 4892 1039",
         "amigurumi_id": 1,
-        "amigurumi_nombre": "Totoro Clásico",
-        "cantidad": 2,
-        "fecha_entrega": "2026-10-01",
+        "amigurumi_nombre": "Dragón Ignis",
+        "cantidad": 1,
+        "fecha_entrega": "2026-09-24",
         "estado_pedido": "En Proceso",
-        "precio_final": 70000,
-        "precio_final_formato": "$700.00",
-        "notas": "Versión con bufanda azul personalizada",
+        "estado_pago": "Anticipo 50%",
+        "precio_final": 45000,
+        "precio_final_formato": "$450.00 MXN",
+        "notas": "Detalles dorados en las alas",
         "creado_en": "2026-09-10 15:30:00"
       }
     ]
@@ -353,7 +379,7 @@ All JSON responses follow a predictable envelope structure:
 
 ### `POST /api/actualizar_pedido.php`
 - **Access:** Protected (Session required: `admin` or `artesano`)
-- **Cancellation & Restocking:** If `estado_pedido` transitions to `'Cancelado'`, the backend executes a transaction restoring `cantidad` back into `amigurumis.cantidad_stock`.
+- **Cancellation & Restocking:** If `estado_pedido` transitions to `'Cancelado'`, the backend executes an atomic transaction restoring `cantidad` back into `amigurumis.cantidad_stock`.
 - **Request Body (JSON):**
   ```json
   {
@@ -365,6 +391,8 @@ All JSON responses follow a predictable envelope structure:
   ```json
   {
     "success": true,
-    "message": "Estado del pedido actualizado a Cancelado y stock reintegrado al catálogo exitosamente"
+    "message": "Estado actualizado a Cancelado y stock restituido al inventario físico",
+    "unidades_reintegradas": 1
   }
   ```
+

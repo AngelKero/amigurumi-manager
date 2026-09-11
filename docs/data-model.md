@@ -38,6 +38,7 @@ erDiagram
         real horas_tejido "REAL (Labor hours >= 0.0)"
         string descripcion "TEXT (Max 2000 chars)"
         string imagen_url "TEXT (Max 500 chars)"
+        integer es_sobre_encargo "INTEGER NOT NULL DEFAULT 0 (0 or 1)"
         string creado_en "TEXT (ISO 8601 timestamp)"
         string actualizado_en "TEXT (ISO 8601 timestamp)"
     }
@@ -45,10 +46,12 @@ erDiagram
     PEDIDOS {
         integer id PK "INTEGER AUTOINCREMENT"
         string cliente_nombre "TEXT NOT NULL (2-100 chars)"
+        string cliente_contacto "TEXT NOT NULL (WhatsApp or phone, max 50 chars)"
         integer amigurumi_id FK "REFERENCES amigurumis(id)"
         integer cantidad "INTEGER NOT NULL (Units count >= 1)"
         string fecha_entrega "TEXT (YYYY-MM-DD)"
         string estado_pedido "TEXT (Pendiente, En Proceso, Entregado, Cancelado)"
+        string estado_pago "TEXT (Pendiente, Anticipo 50%, Liquidado)"
         integer precio_final "INTEGER NOT NULL (Locked cents)"
         string notas "TEXT (Max 1000 chars)"
         string creado_en "TEXT (ISO 8601 timestamp)"
@@ -88,6 +91,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     horas_tejido REAL DEFAULT 0.0 CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+    es_sobre_encargo INTEGER NOT NULL DEFAULT 0 CHECK(es_sobre_encargo IN (0, 1)),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
     FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -97,6 +101,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
+    cliente_contacto TEXT NOT NULL DEFAULT '' CHECK(length(trim(cliente_contacto)) <= 50),
     amigurumi_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1 CHECK(cantidad >= 1 AND cantidad <= 1000),
     fecha_entrega TEXT CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
@@ -105,6 +110,11 @@ CREATE TABLE IF NOT EXISTS pedidos (
         'En Proceso', 
         'Entregado', 
         'Cancelado'
+    )),
+    estado_pago TEXT NOT NULL DEFAULT 'Pendiente' CHECK(estado_pago IN (
+        'Pendiente',
+        'Anticipo 50%',
+        'Liquidado'
     )),
     precio_final INTEGER NOT NULL CHECK(precio_final >= 1 AND precio_final <= 9999999),
     notas TEXT CHECK(notas IS NULL OR length(notas) <= 1000),
@@ -120,3 +130,24 @@ CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
+
+---
+
+## 4. Physical Project Layout (Clean Architecture)
+
+```
+proyecto-web/
+├── views/                          # Modular PHP templates and components
+│   ├── layouts/main.php            # Master layout (<head>, nav, modals, footer)
+│   ├── components/                 # Modals, navbar, cards, footer
+│   └── pages/                      # Page views (catalog, detail, form, orders, users)
+├── src/                            # Modular source code
+│   ├── css/                        # ITCSS modular styling (01-settings to 04-components)
+│   ├── js/                         # Native ES Modules (main.js and modules/)
+│   └── Utils/                      # Shared utilities (CurrencyHelper.php)
+├── api/                            # Lightweight JSON controllers (Phase 3/4)
+├── database/                       # SQLite physical database and seed.sql
+├── uploads/                        # Real uploaded item photography
+└── docs/                           # Centralized documentation repository
+```
+

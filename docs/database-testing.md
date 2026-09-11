@@ -180,6 +180,39 @@ Runtime error: CHECK constraint failed: estado_pedido IN (
     ) (19)
 ```
 
+### Test 4.5: On-Demand Exclusivity Validation (`es_sobre_encargo IN (0, 1)`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO amigurumis (artesano_id, nombre, categoria, material, tamano_cm, precio, es_sobre_encargo)
+VALUES (1, 'Invalid On Demand Item', 'Fantasía', 'Algodón', 15.0, 30000, 5);
+```
+*Expected Result:*
+```text
+Runtime error: CHECK constraint failed: es_sobre_encargo IN (0, 1) (19)
+```
+
+### Test 4.6: Order Payment Status Validation (`chk_pedidos_estado_pago`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, estado_pago, precio_final)
+VALUES ('Valeria Luna', '5512345678', 1, 1, 'Unknown Payment', 45000);
+```
+*Expected Result:*
+```text
+Runtime error: CHECK constraint failed: estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado') (19)
+```
+
+### Test 4.7: Client Contact String Length Validation (`chk_pedidos_cliente_contacto <= 50`)
+```sql
+PRAGMA foreign_keys = ON;
+INSERT INTO pedidos (cliente_nombre, cliente_contacto, amigurumi_id, cantidad, precio_final)
+VALUES ('Valeria Luna', 'This contact value is purposefully longer than the maximum allowed fifty characters limit', 1, 1, 45000);
+```
+*Expected Result:*
+```text
+Runtime error: CHECK constraint failed: length(trim(cliente_contacto)) <= 50 (19)
+```
+
 ---
 
 ## 5. Micro-ERP Business Metrics Queries

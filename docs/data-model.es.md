@@ -38,6 +38,7 @@ erDiagram
         real horas_tejido "REAL (Horas de labor >= 0.0)"
         string descripcion "TEXT (Máx 2000 caracteres)"
         string imagen_url "TEXT (Máx 500 caracteres)"
+        integer es_sobre_encargo "INTEGER NOT NULL DEFAULT 0 (0 o 1)"
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
         string actualizado_en "TEXT (Marca de tiempo ISO 8601)"
     }
@@ -45,10 +46,12 @@ erDiagram
     PEDIDOS {
         integer id PK "INTEGER AUTOINCREMENT"
         string cliente_nombre "TEXT NOT NULL (2-100 caracteres)"
+        string cliente_contacto "TEXT NOT NULL (WhatsApp o teléfono, máx 50 car.)"
         integer amigurumi_id FK "REFERENCES amigurumis(id)"
         integer cantidad "INTEGER NOT NULL (Unidades solicitadas >= 1)"
         string fecha_entrega "TEXT (YYYY-MM-DD)"
         string estado_pedido "TEXT (Pendiente, En Proceso, Entregado, Cancelado)"
+        string estado_pago "TEXT (Pendiente, Anticipo 50%, Liquidado)"
         integer precio_final "INTEGER NOT NULL (Precio pactado en centavos)"
         string notas "TEXT (Máx 1000 caracteres)"
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
@@ -88,6 +91,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
     horas_tejido REAL DEFAULT 0.0 CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
+    es_sobre_encargo INTEGER NOT NULL DEFAULT 0 CHECK(es_sobre_encargo IN (0, 1)),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
     FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -97,6 +101,7 @@ CREATE TABLE IF NOT EXISTS amigurumis (
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_nombre TEXT NOT NULL CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
+    cliente_contacto TEXT NOT NULL DEFAULT '' CHECK(length(trim(cliente_contacto)) <= 50),
     amigurumi_id INTEGER NOT NULL,
     cantidad INTEGER NOT NULL DEFAULT 1 CHECK(cantidad >= 1 AND cantidad <= 1000),
     fecha_entrega TEXT CHECK(fecha_entrega IS NULL OR length(trim(fecha_entrega)) = 10),
@@ -105,6 +110,11 @@ CREATE TABLE IF NOT EXISTS pedidos (
         'En Proceso', 
         'Entregado', 
         'Cancelado'
+    )),
+    estado_pago TEXT NOT NULL DEFAULT 'Pendiente' CHECK(estado_pago IN (
+        'Pendiente',
+        'Anticipo 50%',
+        'Liquidado'
     )),
     precio_final INTEGER NOT NULL CHECK(precio_final >= 1 AND precio_final <= 9999999),
     notas TEXT CHECK(notas IS NULL OR length(notas) <= 1000),
@@ -120,3 +130,24 @@ CREATE INDEX IF NOT EXISTS idx_amigurumis_stock ON amigurumis(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_pedidos_amigurumi ON pedidos(amigurumi_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 ```
+
+---
+
+## 4. Estructura Física del Proyecto (Clean Architecture)
+
+```
+proyecto-web/
+├── views/                          # Plantillas y componentes modulares PHP
+│   ├── layouts/main.php            # Layout maestro (<head>, nav, modals, footer)
+│   ├── components/                 # Modales, navbar, tarjetas y footer
+│   └── pages/                      # Vistas de contenido (catálogo, detalle, formulario, pedidos, usuarios)
+├── src/                            # Código fuente modular protegido
+│   ├── css/                        # Estilos modulares ITCSS (01-settings a 04-components)
+│   ├── js/                         # JavaScript nativo en ES Modules (main.js y modules/)
+│   └── Utils/                      # Utilidades compartidas (CurrencyHelper.php)
+├── api/                            # Controladores JSON livianos (Fase 3/4)
+├── database/                       # Base de datos SQLite y seed.sql
+├── uploads/                        # Archivos de imágenes reales
+└── docs/                           # Documentación técnica centralizada
+```
+
