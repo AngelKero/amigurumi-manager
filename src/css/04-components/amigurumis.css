@@ -14,6 +14,67 @@
   overflow: hidden;
 }
 
+/* ==========================================================================
+   ADMINISTRATIVE 3X AMIGURUMIS CARD SYSTEM
+   ========================================================================== */
+
+.card-admin-amigurumi {
+  background: #FFFFFF;
+  border-radius: var(--craft-radius);
+  border: 1px solid var(--craft-border);
+  box-shadow: 0 4px 16px rgba(30, 37, 45, 0.04);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-admin-amigurumi:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(142, 91, 116, 0.12);
+}
+
+.card-admin-top {
+  background: linear-gradient(180deg, var(--craft-surface-muted) 0%, #FFFFFF 100%);
+}
+
+.admin-card-photo-frame {
+  height: 160px;
+  background: linear-gradient(135deg, #FAFAFA 0%, #F4EEF1 100%);
+  border-radius: calc(var(--craft-radius) - 6px);
+  border: 1px solid var(--craft-border);
+  outline: 1.5px dashed rgba(142, 91, 116, 0.28);
+  outline-offset: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease;
+}
+
+.card-admin-amigurumi:hover .admin-card-photo-frame {
+  outline-color: var(--craft-primary);
+}
+
+.admin-card-photo-img {
+  max-height: 130px;
+  width: auto;
+  max-width: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(142, 91, 116, 0.15));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-admin-amigurumi:hover .admin-card-photo-img {
+  transform: scale(1.06);
+}
+
+.admin-card-economics {
+  background-color: var(--craft-surface-muted);
+  border: 1px dashed rgba(142, 91, 116, 0.22);
+  border-radius: calc(var(--craft-radius-sm) + 2px);
+}
+
 /* Administrative Table Container */
 .table-artisan-amigurumis {
   margin-bottom: 0;

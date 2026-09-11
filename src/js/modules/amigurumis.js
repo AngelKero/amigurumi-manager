@@ -5,11 +5,11 @@
  */
 
 export function initAmigurumis() {
-  const table = document.getElementById('amigurumisTable');
-  if (!table) return;
+  const grid = document.getElementById('amigurumisGrid');
+  if (!grid) return;
 
-  const tbody = document.getElementById('amigurumisTableBody');
   const searchInput = document.getElementById('searchAmigurumiInput');
+  const countBadge = document.getElementById('amigurumisCountBadge');
   const filterCategory = document.getElementById('filterCategorySelect');
   const filterStockStatus = document.getElementById('filterStockStatusSelect');
   const filterArtisan = document.getElementById('filterArtisanSelect');
@@ -25,15 +25,15 @@ export function initAmigurumis() {
 
   // Recalcular métricas de almacén
   function updateKPIs() {
-    const rows = tbody.querySelectorAll('tr');
+    const cards = grid.querySelectorAll('.col[data-id]');
     let totalStock = 0;
     let totalValor = 0;
     let totalCostos = 0;
 
-    rows.forEach(tr => {
-      const stock = parseInt(tr.getAttribute('data-stock') || '0', 10);
-      const precio = parseFloat(tr.getAttribute('data-precio') || '0');
-      const costo = parseFloat(tr.getAttribute('data-costo') || '0');
+    cards.forEach(card => {
+      const stock = parseInt(card.getAttribute('data-stock') || '0', 10);
+      const precio = parseFloat(card.getAttribute('data-precio') || '0');
+      const costo = parseFloat(card.getAttribute('data-costo') || '0');
 
       totalStock += stock;
       totalValor += (stock * precio);
@@ -45,7 +45,7 @@ export function initAmigurumis() {
     if (kpiCostosEl) kpiCostosEl.textContent = `$${totalCostos.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
-  // Filtrar y ordenar la tabla de amigurumis
+  // Filtrar y ordenar la cuadrícula de amigurumis
   function filterAndSort() {
     const term = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const category = filterCategory ? filterCategory.value : 'all';
@@ -53,49 +53,55 @@ export function initAmigurumis() {
     const artisan = filterArtisan ? filterArtisan.value : 'all';
     const sortVal = sortSelect ? sortSelect.value : 'name-asc';
 
-    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const cards = Array.from(grid.querySelectorAll('.col[data-id]'));
+    const totalCount = cards.length;
     let visibleCount = 0;
 
-    rows.forEach(row => {
-      const nombre = (row.getAttribute('data-nombre') || '').toLowerCase();
-      const material = (row.getAttribute('data-material') || '').toLowerCase();
-      const descripcion = (row.getAttribute('data-descripcion') || '').toLowerCase();
-      const rowCategory = row.getAttribute('data-categoria') || '';
-      const rowArtisan = row.getAttribute('data-artisan') || '';
-      const rowStock = parseInt(row.getAttribute('data-stock') || '0', 10);
-      const isOnDemand = row.getAttribute('data-on-demand') === '1';
+    cards.forEach(card => {
+      const nombre = (card.getAttribute('data-nombre') || '').toLowerCase();
+      const material = (card.getAttribute('data-material') || '').toLowerCase();
+      const descripcion = (card.getAttribute('data-descripcion') || '').toLowerCase();
+      const cardCategory = card.getAttribute('data-categoria') || '';
+      const cardArtisan = card.getAttribute('data-artisan') || '';
+      const cardStock = parseInt(card.getAttribute('data-stock') || '0', 10);
+      const isOnDemand = card.getAttribute('data-on-demand') === '1';
 
       // Coincidencia de texto
       const matchSearch = !term || nombre.includes(term) || material.includes(term) || descripcion.includes(term);
 
       // Coincidencia de categoría
-      const matchCategory = (category === 'all') || (rowCategory === category);
+      const matchCategory = (category === 'all') || (cardCategory === category);
 
       // Coincidencia de artesano
-      const matchArtisan = (artisan === 'all') || (rowArtisan === artisan);
+      const matchArtisan = (artisan === 'all') || (cardArtisan === artisan);
 
       // Coincidencia de estado de stock
       let matchStock = true;
       if (stockStatus === 'in-stock') {
-        matchStock = (rowStock > 0);
+        matchStock = (cardStock > 0);
       } else if (stockStatus === 'low-stock') {
-        matchStock = (rowStock > 0 && rowStock <= 3);
+        matchStock = (cardStock > 0 && cardStock <= 3);
       } else if (stockStatus === 'out-of-stock') {
-        matchStock = (rowStock === 0 && !isOnDemand);
+        matchStock = (cardStock === 0 && !isOnDemand);
       } else if (stockStatus === 'on-demand') {
         matchStock = isOnDemand;
       }
 
       if (matchSearch && matchCategory && matchArtisan && matchStock) {
-        row.classList.remove('d-none');
+        card.classList.remove('d-none');
         visibleCount++;
       } else {
-        row.classList.add('d-none');
+        card.classList.add('d-none');
       }
     });
 
-    // Ordenar filas visibles
-    const sortedRows = rows.slice().sort((a, b) => {
+    // Actualizar badge de conteo
+    if (countBadge) {
+      countBadge.innerHTML = `<i class="bi bi-box2-heart me-1"></i>${visibleCount} de ${totalCount} piezas`;
+    }
+
+    // Ordenar tarjetas visibles
+    const sortedCards = cards.slice().sort((a, b) => {
       const nameA = (a.getAttribute('data-nombre') || '').toLowerCase();
       const nameB = (b.getAttribute('data-nombre') || '').toLowerCase();
       const priceA = parseFloat(a.getAttribute('data-precio') || '0');
@@ -128,33 +134,33 @@ export function initAmigurumis() {
       }
     });
 
-    sortedRows.forEach(r => tbody.appendChild(r));
+    sortedCards.forEach(c => grid.appendChild(c));
 
     // Controlar estado vacío
     if (emptyState) {
       if (visibleCount === 0) {
         emptyState.classList.remove('d-none');
-        table.classList.add('d-none');
+        grid.classList.add('d-none');
       } else {
         emptyState.classList.add('d-none');
-        table.classList.remove('d-none');
+        grid.classList.remove('d-none');
       }
     }
   }
 
-  // Ajuste rápido de stock in-situ
-  tbody.addEventListener('click', (e) => {
+  // Ajuste rápido de stock in-situ, encargo, inspección y eliminación sobre las cards
+  grid.addEventListener('click', (e) => {
     const incBtn = e.target.closest('.btn-stock-inc');
     const decBtn = e.target.closest('.btn-stock-dec');
 
     if (incBtn || decBtn) {
       const btn = incBtn || decBtn;
-      const row = btn.closest('tr');
-      if (!row) return;
+      const card = btn.closest('[data-id]');
+      if (!card) return;
 
-      const id = row.getAttribute('data-id');
-      let currentStock = parseInt(row.getAttribute('data-stock') || '0', 10);
-      const isOnDemand = row.getAttribute('data-on-demand') === '1';
+      const id = card.getAttribute('data-id');
+      let currentStock = parseInt(card.getAttribute('data-stock') || '0', 10);
+      const isOnDemand = card.getAttribute('data-on-demand') === '1';
 
       if (incBtn) {
         currentStock++;
@@ -163,7 +169,7 @@ export function initAmigurumis() {
       }
 
       // Actualizar atributo y valor visual
-      row.setAttribute('data-stock', currentStock);
+      card.setAttribute('data-stock', currentStock);
       const valEl = document.getElementById(`stockVal_${id}`);
       if (valEl) valEl.textContent = currentStock;
 
@@ -171,13 +177,13 @@ export function initAmigurumis() {
       const badgeContainer = document.getElementById(`stockBadgeContainer_${id}`);
       if (badgeContainer) {
         if (isOnDemand) {
-          badgeContainer.innerHTML = '<span class="badge bg-light text-muted font-monospace border" style="font-size: 0.7rem;">Bajo Encargo</span>';
+          badgeContainer.innerHTML = '<span class="badge bg-light text-muted font-monospace border" style="font-size: 0.68rem;">Bajo Encargo</span>';
         } else if (currentStock === 0) {
-          badgeContainer.innerHTML = '<span class="badge-stock-alert">Agotado</span>';
+          badgeContainer.innerHTML = '<span class="badge-stock-alert" style="font-size: 0.68rem;">Agotado</span>';
         } else if (currentStock <= 3) {
-          badgeContainer.innerHTML = '<span class="badge-stock-critical">Stock Crítico</span>';
+          badgeContainer.innerHTML = '<span class="badge-stock-critical" style="font-size: 0.68rem;">Stock Crítico</span>';
         } else {
-          badgeContainer.innerHTML = '<span class="badge badge-stock-in" style="font-size: 0.72rem;">En Existencia</span>';
+          badgeContainer.innerHTML = '<span class="badge badge-stock-in" style="font-size: 0.7rem;">En Existencia</span>';
         }
       }
 
@@ -187,13 +193,13 @@ export function initAmigurumis() {
     // Alternar modalidad de confección in-situ (es_sobre_encargo)
     const toggleEncargoBtn = e.target.closest('.btn-toggle-encargo');
     if (toggleEncargoBtn) {
-      const row = toggleEncargoBtn.closest('tr');
-      if (!row) return;
+      const card = toggleEncargoBtn.closest('[data-id]');
+      if (!card) return;
 
-      const id = row.getAttribute('data-id');
-      const currentOnDemand = row.getAttribute('data-on-demand') === '1';
+      const id = card.getAttribute('data-id');
+      const currentOnDemand = card.getAttribute('data-on-demand') === '1';
       const newOnDemand = !currentOnDemand;
-      row.setAttribute('data-on-demand', newOnDemand ? '1' : '0');
+      card.setAttribute('data-on-demand', newOnDemand ? '1' : '0');
 
       if (newOnDemand) {
         toggleEncargoBtn.className = 'btn-toggle-encargo badge badge-textile-tag text-primary border-primary border-0 bg-transparent p-1';
@@ -205,18 +211,18 @@ export function initAmigurumis() {
         toggleEncargoBtn.title = 'Click para cambiar a Bajo Encargo Exclusivo';
       }
 
-      // Actualizar insignia de estado de stock en la fila
-      const currentStock = parseInt(row.getAttribute('data-stock') || '0', 10);
+      // Actualizar insignia de estado de stock en la card
+      const currentStock = parseInt(card.getAttribute('data-stock') || '0', 10);
       const badgeContainer = document.getElementById(`stockBadgeContainer_${id}`);
       if (badgeContainer) {
         if (newOnDemand) {
-          badgeContainer.innerHTML = '<span class="badge bg-light text-muted font-monospace border" style="font-size: 0.7rem;">Bajo Encargo</span>';
+          badgeContainer.innerHTML = '<span class="badge bg-light text-muted font-monospace border" style="font-size: 0.68rem;">Bajo Encargo</span>';
         } else if (currentStock === 0) {
-          badgeContainer.innerHTML = '<span class="badge-stock-alert">Agotado</span>';
+          badgeContainer.innerHTML = '<span class="badge-stock-alert" style="font-size: 0.68rem;">Agotado</span>';
         } else if (currentStock <= 3) {
-          badgeContainer.innerHTML = '<span class="badge-stock-critical">Stock Crítico</span>';
+          badgeContainer.innerHTML = '<span class="badge-stock-critical" style="font-size: 0.68rem;">Stock Crítico</span>';
         } else {
-          badgeContainer.innerHTML = '<span class="badge badge-stock-in" style="font-size: 0.72rem;">En Existencia</span>';
+          badgeContainer.innerHTML = '<span class="badge badge-stock-in" style="font-size: 0.7rem;">En Existencia</span>';
         }
       }
     }
@@ -232,22 +238,22 @@ export function initAmigurumis() {
     // Modal de Inspección Técnica
     const inspectBtn = e.target.closest('.btn-inspect-amigurumi');
     if (inspectBtn) {
-      const row = inspectBtn.closest('tr');
-      if (!row) return;
+      const card = inspectBtn.closest('[data-id]');
+      if (!card) return;
 
-      const id = row.getAttribute('data-id');
-      const nombre = row.getAttribute('data-nombre');
-      const categoria = row.getAttribute('data-categoria');
-      const material = row.getAttribute('data-material');
-      const tamano = row.getAttribute('data-tamano');
-      const precio = parseFloat(row.getAttribute('data-precio') || '0');
-      const costo = parseFloat(row.getAttribute('data-costo') || '0');
-      const stock = parseInt(row.getAttribute('data-stock') || '0', 10);
-      const horas = parseFloat(row.getAttribute('data-horas') || '0');
-      const artisan = row.getAttribute('data-artisan');
-      const isOnDemand = row.getAttribute('data-on-demand') === '1';
-      const descripcion = row.getAttribute('data-descripcion');
-      const pedidos = parseInt(row.getAttribute('data-pedidos') || '0', 10);
+      const id = card.getAttribute('data-id');
+      const nombre = card.getAttribute('data-nombre');
+      const categoria = card.getAttribute('data-categoria');
+      const material = card.getAttribute('data-material');
+      const tamano = card.getAttribute('data-tamano');
+      const precio = parseFloat(card.getAttribute('data-precio') || '0');
+      const costo = parseFloat(card.getAttribute('data-costo') || '0');
+      const stock = parseInt(card.getAttribute('data-stock') || '0', 10);
+      const horas = parseFloat(card.getAttribute('data-horas') || '0');
+      const artisan = card.getAttribute('data-artisan');
+      const isOnDemand = card.getAttribute('data-on-demand') === '1';
+      const descripcion = card.getAttribute('data-descripcion');
+      const pedidos = parseInt(card.getAttribute('data-pedidos') || '0', 10);
 
       const margen = precio - costo;
       const retornoHora = horas > 0 ? (margen / horas) : 0;

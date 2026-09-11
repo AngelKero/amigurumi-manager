@@ -37,8 +37,7 @@
 - Agent Rules & Workflows in `.agents/` fully updated with learned project patterns (Rules 16 to 21).
 - 100% of PHP and JS code validated via `php -l` and `node --check` with 0 errors.
 - Estación de Paginación Textil (`pagination.css`) con botones pill pespunteados, contador dinámico reactivo en `catalog.js`, y Master Footer Nórdico (`footer.css`, `footer.php`) con 4 columnas, garantía artesanal y contacto WhatsApp.
-- Panel del Artesano con Menú Lateral Izquierdo (`views/components/panel_sidebar.php` & `src/css/04-components/sidebar.css`) integrado automáticamente en vistas administrativas (`amigurumis.php`, `pedidos.php`, `usuarios.php`, `formulario.php`).
-- Pantalla de Gestión de Amigurumis (`amigurumis.php`, `amigurumis_content.php`, `amigurumis.js`, `amigurumis.css`) con KPIs en vivo, búsqueda y filtros multidimensionales, ajuste de stock in-situ, toggle interactivo de modalidad (`es_sobre_encargo`), ficha técnica de inspección modal (`modal_inspect_amigurumi.php`) y modal de eliminación con salvaguarda `ON DELETE RESTRICT`.
+- Pantalla de Gestión de Amigurumis (`amigurumis.php`, `amigurumis_content.php`, `amigurumis.js`, `amigurumis.css`) con estación de filtrado en 2 niveles (cero textos recortados, etiquetas claras y contador de piezas), cuadrícula responsiva de Cards 3x (`.card-admin-amigurumi`) con marco fotográfico acolchado, KPIs en vivo, ajuste de stock in-situ, toggle interactivo de modalidad (`es_sobre_encargo`), ficha técnica de inspección modal (`modal_inspect_amigurumi.php`) y modal de eliminación con salvaguarda `ON DELETE RESTRICT`.
 - Header depurado (`navbar.php`): eliminado botón de catálogo y dropdown superfluo; acceso directo al panel administrativo mediante clic en `@admin (Artesano Titular)`.
 
 ## What's Left to Build
