@@ -79,11 +79,25 @@ $calcGanancia = $calcPrecio - $calcCosto;
 $calcMargen = $calcPrecio > 0 ? ($calcGanancia / $calcPrecio) * 100 : 0.0;
 $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 ?>
-<!-- 2-COLUMN RESPONSIVE SPLIT: FORMULARIO (col-12 col-xl-7) + SIMULADOR (col-12 col-xl-5) -->
+<!-- NAVEGACIÓN SUPERIOR: RETORNO AL INVENTARIO -->
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+  <a href="amigurumis.php" class="btn btn-outline-secondary btn-craft-outline-stitched d-inline-flex align-items-center gap-2 px-3 py-2">
+    <i class="bi bi-arrow-left"></i>
+    <span class="fw-semibold small">Volver al Inventario</span>
+  </a>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 align-items-center breadcrumb-craft-ribbon px-3 py-2">
+      <li class="breadcrumb-item"><a href="amigurumis.php" class="text-decoration-none text-muted small"><i class="bi bi-box-seam me-1"></i>Inventario</a></li>
+      <li class="breadcrumb-item active small text-primary fw-bold" aria-current="page"><?= $isEditing ? 'Modificar #' . $editId : 'Nueva Creación' ?></li>
+    </ol>
+  </nav>
+</div>
+
+<!-- 2-COLUMN RESPONSIVE SPLIT: FORMULARIO (col-12 col-lg-7 col-xl-8) + SIMULADOR (col-12 col-lg-5 col-xl-4) -->
 <div class="row g-4 mb-5">
 
   <!-- FORMULARIO DE ALTA / EDICIÓN -->
-  <div class="col-12 col-xl-7">
+  <div class="col-12 col-lg-7 col-xl-8">
     <div class="card border-0 shadow-sm p-4 bg-white card-stitched" style="border-radius: var(--craft-radius);">
       
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom pb-3 mb-4">
@@ -235,21 +249,15 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
           </div>
         </div>
 
-        <!-- BOTONES DE ACCIÓN -->
+        <!-- BOTONES DE ACCIÓN INFERIORES -->
         <hr class="divider-stitched my-3">
-        <div class="d-flex justify-content-between align-items-center pt-2">
-          <?php if ($isEditing): ?>
-            <a href="detalle.php?id=<?= $editId ?>" class="btn btn-outline-secondary btn-sm">
-              <i class="bi bi-arrow-left me-1"></i> Cancelar y Volver al Detalle
-            </a>
-          <?php else: ?>
-            <a href="pedidos.php" class="btn btn-outline-secondary btn-sm">
-              <i class="bi bi-box-seam me-1"></i> Ver Pedidos
-            </a>
-          <?php endif; ?>
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2">
+          <a href="amigurumis.php" class="btn btn-outline-secondary px-3 py-2 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i> Volver al Inventario
+          </a>
 
           <div class="d-flex gap-2">
-            <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+            <button type="reset" class="btn btn-outline-secondary px-3">Limpiar</button>
             <button type="submit" class="btn btn-craft-primary btn-craft-stitched px-4">
               <i class="bi bi-check-circle me-1"></i> <?= $isEditing ? 'Actualizar Creación' : 'Guardar Creación' ?>
             </button>
@@ -260,8 +268,8 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
     </div>
   </div>
 
-  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-xl-5) -->
-  <div class="col-12 col-xl-5" id="simuladorMargen">
+  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-lg-5 col-xl-4) -->
+  <div class="col-12 col-lg-5 col-xl-4" id="simuladorMargen">
     <div class="card sticky-margin-card p-3 p-sm-4 card-stitched">
       
       <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">

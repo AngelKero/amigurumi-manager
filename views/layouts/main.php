@@ -49,7 +49,7 @@ $modals = $modals ?? [];
 
   <!-- Main View Container Slot -->
   <?php 
-  $isPanelPage = in_array($activePage, ['amigurumis', 'pedidos', 'usuarios', 'formulario']);
+  $isPanelPage = in_array($activePage, ['amigurumis', 'pedidos', 'usuarios']);
   ?>
   <main class="py-4">
     <div class="container-xl">

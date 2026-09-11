@@ -1,33 +1,24 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current Task: Refactorización Ergonómica del Simulador de Márgenes (Completado y Verificado)
+## Current Task: Eliminación del Menú Lateral en Formulario y Navegación de Retorno al Inventario (Completado y Verificado)
 
 - **User Request:**
-  - *"El simulador sigue roto"*
+  - *"Mejor quita el menu izquierdo en el formulario y agrega dos botones, uno superior y otro inferior para regresar al inventario"*
 
-- **Diagnóstico Preciso del Problema Resuelto:**
-  1. **Ruptura de Textos en 'd-flex justify-content-between':**
-     - En la tarjeta del simulador (~280px-330px), los pares etiqueta-valor con textos largos colisionaban:
-       - `Ganancia Bruta:` y `$0.00 MXN` se partían en 4 líneas fragmentadas (`Ganancia` / `Bruta:` a la izquierda, `$0.00` / `MXN` a la derecha).
-       - `2. Retorno Efectivo por Hora:` (30 caracteres) y `$0.00 MXN/hr` (13 caracteres en `fs-5`) no cabían en una sola línea, fracturándose en `2. Retorno Efectivo` / `por Hora:` y `$0.00` / `MXN/hr`.
-       - En `Costo Materiales: - $0.00 MXN`, el signo `-` quedaba descolgado.
-  2. **Anomalía de Breakpoint XXL:**
-     - El simulador tenía `col-xxl-4`, lo cual provocaba que al abrir la ventana en pantallas grandes (`>= 1400px`), la columna del simulador se reducía de 41.6% (`col-xl-5`) a solo 33.3% (`col-xxl-4`), haciéndolo más angosto en monitores grandes.
-  3. **Pills de Feedback Desalineadas:**
-     - Los badges de feedback (`.margin-feedback-pill`) tenían ancho variable e irregular sin llenar el ancho del contenedor.
+- **Diagnóstico y Contexto:**
+  - En `formulario.php`, el menú lateral izquierdo consumía 3 de las 12 columnas del layout general (`col-lg-3`), lo que limitaba el formulario y el simulador de márgenes a `col-lg-9` (~855px–990px), forzando un ancho innecesariamente estrecho.
+  - Al remover el menú lateral de esta vista de confección enfocada, el formulario y el simulador se expanden fluidamente a lo largo de todo el `container-xl` (1140px a 1320px).
 
-- **Soluciones de Diseño Implementadas:**
-  1. **Micro-Cards de Métricas Dedicadas:**
-     - Se separó cada métrica clave (`Margen de Utilidad` y `Retorno por Hora`) en tarjetas estructuradas independientes (`.card-stitched bg-white`).
-     - Títulos concisos (`Margen de Utilidad`, `Retorno por Hora`) con subtítulos de apoyo y valores en `fs-4 font-monospace text-nowrap` que nunca se fracturan ni envuelven.
-     - Badges de feedback a ancho completo (`width: 100%; justify-content: center;`) como barras de estado uniformes.
-  2. **Formato Monetario Conciso y 'text-nowrap':**
-     - En `margin-calculator.js`, se implementó `formatPesos(retornoHora, false) + '/hr'` (`$0.00/hr`) y se blindó `displayGanancia` con `text-nowrap font-monospace`.
-     - En el desglose financiero, se utilizó `text-nowrap` en precios y ganancia.
-  3. **Corrección de Cuadrícula Responsive:**
-     - Asignado `col-12 col-xl-7` para el formulario y `col-12 col-xl-5` para el simulador tanto en `xl` como en `xxl`, garantizando entre 360px y 420px de anchura óptima para la tarjeta financiera.
-  4. **Blindaje de Desbordamiento y Padding:**
-     - `sticky-margin-card` con `overflow: hidden` y padding responsivo `p-3 p-sm-4`.
+- **Cambios Implementados:**
+  1. **Aislamiento en Layout Maestro (`views/layouts/main.php`):**
+     - Se excluyó `'formulario'` de `$isPanelPage`, reservando el sidebar exclusivamente para las vistas administrativas de gestión (`amigurumis.php`, `pedidos.php`, `usuarios.php`).
+     - El formulario ahora utiliza el 100% del contenedor sin interrupciones visuales laterales.
+  2. **Botón Superior de Retorno al Inventario (`views/pages/formulario_content.php`):**
+     - Se integró una barra de navegación superior con botón pespunteado `.btn-craft-outline-stitched` (`Volver al Inventario` hacia `amigurumis.php`) y una cinta de migas de pan artesanal (`breadcrumb-craft-ribbon`) que indica el estado actual (Nueva Creación o Modificación #ID).
+  3. **Botón Inferior de Retorno al Inventario (`views/pages/formulario_content.php`):**
+     - En la sección inferior de acciones del formulario, se sustituyeron los enlaces anteriores por un botón de acción secundario `Volver al Inventario` con icono de flecha hacia `amigurumis.php`, junto a los botones de `Limpiar` y `Guardar/Actualizar Creación`.
+  4. **Distribución Espaciosa del Grid:**
+     - Al disponer de todo el ancho del contenedor, la fila se organiza en `col-12 col-lg-7 col-xl-8` para el formulario y `col-12 col-lg-5 col-xl-4` para el simulador de márgenes, brindando entre 380px y 440px al simulador y más de 760px al formulario. Cero texto fragmentado.
 
 ## Next Steps:
 - Mantener validación continua del sistema y esperar instrucciones del usuario para avanzar a la Fase 3 (Backend & Conexión Limpia).
