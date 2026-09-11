@@ -185,9 +185,8 @@ $currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] 
         <div class="mb-4">
           <label class="form-label fw-bold small d-block">Fotografía del Amigurumi (Formatos: JPG, PNG, WEBP &bull; Máx 5MB)</label>
           
-          <!-- Dropzone de Selección -->
           <div class="upload-dropzone" id="uploadDropzone" onclick="document.getElementById('inputImagen').click()">
-            <i class="bi bi-cloud-arrow-up fs-1 text-primary d-block mb-2"></i>
+            <?= svg('decorations/nube-ovillo', ['width' => 64, 'height' => 48, 'class' => 'mx-auto mb-2 d-block']) ?>
             <strong class="d-block text-dark">
               <?= $isEditing ? 'Haz clic para reemplazar la fotografía existente' : 'Haz clic para buscar o arrastra una imagen aquí' ?>
             </strong>

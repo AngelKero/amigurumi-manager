@@ -9,7 +9,7 @@ $activePage = $activePage ?? 'catalogo';
   <div class="container-xl">
     <a class="navbar-brand p-0" href="index.php">
       <span class="brand-craft-badge">
-        <span class="brand-icon"><i class="bi bi-balloon-heart-fill"></i></span>
+        <span class="brand-icon"><?= svg('decorations/corazon-lana', ['width' => 18, 'height' => 18, 'style' => 'vertical-align: -2px;']) ?></span>
         <span>Amigurumi Manager</span>
       </span>
     </a>

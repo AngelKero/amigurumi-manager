@@ -58,14 +58,7 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
         <?= $item['svg_illustration'] ?>
       <?php else: ?>
         <!-- Default Craft Fallback Illustration -->
-        <svg viewBox="0 0 400 300" class="card-product-img" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="300" fill="#f7eff3"/>
-          <circle cx="200" cy="150" r="75" fill="#8e5b74" opacity="0.8"/>
-          <circle cx="175" cy="140" r="8" fill="#ffffff"/>
-          <circle cx="225" cy="140" r="8" fill="#ffffff"/>
-          <path d="M185 165 Q200 175 215 165" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <text x="200" y="260" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#75475e" font-size="14">🧶 Tejido a Mano</text>
-        </svg>
+        <?= svg('decorations/craft-placeholder', ['class' => 'card-product-img']) ?>
       <?php endif; ?>
     </a>
 

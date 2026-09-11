@@ -74,8 +74,8 @@
 
         <!-- Sello Oficial del Taller Artesanal (Algodón Nórdico) -->
         <div class="artisan-workshop-seal-card">
-          <div class="seal-avatar">
-            <i class="bi bi-patch-check-fill"></i>
+          <div class="seal-avatar p-0 d-flex align-items-center justify-content-center">
+            <?= svg('badges/sello-taller', ['width' => 40, 'height' => 40]) ?>
           </div>
           <div class="flex-grow-1">
             <div class="d-flex align-items-center flex-wrap gap-1 mb-1">

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="placeholderBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDFBF9"/>
+      <stop offset="100%" stop-color="#F4ECEF"/>
+    </linearGradient>
+    <linearGradient id="placeholderBall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A26B85"/>
+      <stop offset="100%" stop-color="#7B4761"/>
+    </linearGradient>
+    <linearGradient id="placeholderSpruce" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6AA096"/>
+      <stop offset="100%" stop-color="#52857C"/>
+    </linearGradient>
+    <linearGradient id="woodHook" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5BE8A"/>
+      <stop offset="100%" stop-color="#B87D38"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Mat with Soft Rounded Corners -->
+  <rect width="400" height="300" rx="20" fill="url(#placeholderBg)"/>
+  <rect x="12" y="12" width="376" height="276" rx="14" fill="none" stroke="#8E5B74" stroke-width="1.6" stroke-dasharray="6 5" opacity="0.25"/>
+
+  <!-- Ground Soft Shadow -->
+  <ellipse cx="200" cy="225" rx="130" ry="16" fill="#E8EEF4" opacity="0.7"/>
+
+  <!-- Crochet Work in Progress (Folded Scarf / Textile Piece) -->
+  <g transform="translate(130, 140)">
+    <path d="M 0 30 C 20 15 60 15 80 30 L 75 75 C 55 60 25 60 5 75 Z" fill="url(#placeholderSpruce)" stroke="#3E6B63" stroke-width="1.8"/>
+    <!-- Knit Texture Stitches -->
+    <path d="M 12 35 Q 40 48 68 35" fill="none" stroke="#FAF4F7" stroke-width="1.8" stroke-dasharray="4 3" opacity="0.8"/>
+    <path d="M 10 50 Q 40 63 70 50" fill="none" stroke="#FAF4F7" stroke-width="1.8" stroke-dasharray="4 3" opacity="0.8"/>
+    <path d="M 10 65 Q 40 78 70 65" fill="none" stroke="#FAF4F7" stroke-width="1.8" stroke-dasharray="4 3" opacity="0.8"/>
+  </g>
+
+  <!-- Big Cozy Berry Yarn Ball -->
+  <g transform="translate(195, 110)">
+    <circle cx="50" cy="50" r="44" fill="url(#placeholderBall)" stroke="#5A3044" stroke-width="2"/>
+    <!-- Thread Segments -->
+    <path d="M 20 40 C 35 20 65 20 80 40 C 65 60 35 60 20 40 Z" fill="none" stroke="#F7EFF3" stroke-width="2.5" stroke-dasharray="5 3" opacity="0.75"/>
+    <path d="M 25 62 C 40 80 60 80 75 62 C 60 44 40 44 25 62 Z" fill="none" stroke="#F7EFF3" stroke-width="2.5" stroke-dasharray="5 3" opacity="0.75"/>
+    <path d="M 50 10 C 50 40 50 60 50 90" fill="none" stroke="#F7EFF3" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>
+    <circle cx="50" cy="50" r="40" fill="none" stroke="#75475E" stroke-width="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- Wooden Crochet Hook Piercing the Yarn -->
+  <g transform="rotate(-38 220 90)">
+    <rect x="214" y="20" width="10" height="150" rx="5" fill="url(#woodHook)" stroke="#8C5B23" stroke-width="1.5"/>
+    <path d="M 214 165 C 214 180 220 182 220 172" fill="none" stroke="#8C5B23" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="219" cy="45" rx="3" ry="12" fill="#FFFFFF" opacity="0.3"/>
+  </g>
+
+  <!-- Flowing Trailing Thread forming a Heart Curve -->
+  <path d="M 195 155 C 160 170 145 190 120 190 C 105 190 95 180 100 168 C 106 156 125 156 130 168 C 135 180 120 195 105 205 C 80 220 140 230 180 228" fill="none" stroke="#8E5B74" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- Artisan Text Pill Banner -->
+  <g transform="translate(90, 245)">
+    <rect x="0" y="0" width="220" height="30" rx="15" fill="#FFFFFF" stroke="#8E5B74" stroke-width="1.5"/>
+    <rect x="3" y="3" width="214" height="24" rx="12" fill="none" stroke="#8E5B74" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+    <text x="110" y="20" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#75475E" font-size="12">
+      🧶 Confección Artesanal Textil
+    </text>
+  </g>
+</svg>

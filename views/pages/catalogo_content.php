@@ -118,16 +118,9 @@ $catalogItems = [
                class="img-fluid hero-crafted-img" 
                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
           
-          <!-- Fallback SVG Ilustrado -->
-          <div class="d-none bg-white p-4">
-            <svg viewBox="0 0 320 280" class="img-fluid" xmlns="http://www.w3.org/2000/svg">
-              <rect width="320" height="280" fill="#fdfbf9" rx="16"/>
-              <circle cx="160" cy="140" r="80" fill="#8e5b74" opacity="0.85"/>
-              <circle cx="135" cy="130" r="8" fill="#ffffff"/>
-              <circle cx="185" cy="130" r="8" fill="#ffffff"/>
-              <path d="M145 155 Q160 170 175 155" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
-              <text x="160" y="240" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" fill="#75475e" font-size="14">✨ Algodón Nórdico</text>
-            </svg>
+          <!-- Fallback SVG Ilustrado Mejorado -->
+          <div class="d-none bg-white p-2">
+            <?= svg('dragon-ignis', ['class' => 'img-fluid hero-crafted-img']) ?>
           </div>
 
           <!-- Micro-Badge de Autoría Flotante -->
