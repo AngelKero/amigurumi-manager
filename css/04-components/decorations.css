@@ -1,0 +1,71 @@
+/* ==========================================================================
+   04-COMPONENTS: ATMOSPHERIC BACKGROUND DECORATIONS (Floating SVGs)
+   ========================================================================== */
+
+.cloud-yarn-bg-decorations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-float-item {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.22;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+
+.bg-cloud-1 {
+  width: 160px;
+  color: var(--craft-primary);
+  animation: floatDrift1 14s ease-in-out infinite alternate;
+}
+
+.bg-cloud-2 {
+  width: 210px;
+  color: var(--craft-secondary);
+  animation: floatDrift2 19s ease-in-out infinite alternate;
+}
+
+.bg-cloud-3 {
+  width: 145px;
+  color: var(--craft-primary);
+  animation: floatDrift1 16s ease-in-out infinite alternate-reverse;
+}
+
+.bg-yarn-1 {
+  width: 88px;
+  color: var(--craft-primary);
+  animation: floatDrift2 13s ease-in-out infinite alternate;
+}
+
+.bg-yarn-2 {
+  width: 105px;
+  color: var(--craft-secondary);
+  animation: floatDrift1 17s ease-in-out infinite alternate-reverse;
+}
+
+.bg-hook-1 {
+  width: 75px;
+  color: var(--craft-accent-gold);
+  animation: floatDrift2 15s ease-in-out infinite alternate;
+}
+
+.bg-sparkle-1 {
+  width: 26px;
+  color: var(--craft-accent-gold);
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+.bg-sparkle-2 {
+  width: 32px;
+  color: var(--craft-primary);
+  animation: pulseGlow 8s ease-in-out infinite alternate;
+}

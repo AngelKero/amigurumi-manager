@@ -1,0 +1,18 @@
+/* ==========================================================================
+   02-BASE: TYPOGRAPHY (Outfit & Plus Jakarta Sans)
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--craft-font-display);
+  color: var(--craft-text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.font-body {
+  font-family: var(--craft-font-body);
+}
+
+.font-monospace {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}

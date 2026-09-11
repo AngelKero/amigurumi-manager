@@ -1,0 +1,43 @@
+/* ==========================================================================
+   01-SETTINGS: VARIABLES & DESIGN TOKENS (Algodón Nórdico)
+   ========================================================================== */
+
+:root {
+  /* Scandinavian Powdery Craft Palette (Proposal B) */
+  --craft-primary: #8E5B74;          /* Dusty Heather Plum (Brand & Primary CTA) */
+  --craft-primary-hover: #75475E;    /* Deep Plum */
+  --craft-primary-subtle: #F7EFF3;   /* Lavender Milk */
+  
+  --craft-secondary: #52857C;        /* Nordic Spruce / Frost Teal */
+  --craft-secondary-hover: #406B63;  /* Deep Spruce */
+  --craft-secondary-subtle: #EBF4F2; /* Glacier Mist */
+  --craft-secondary-text: #235048;   /* Dark Spruce (WCAG AAA/AA 6.2:1 contrast against #EBF4F2) */
+
+  --craft-accent-gold: #D99C52;      /* Nordic Honey (Warning & Alerts) */
+  --craft-accent-gold-subtle: #FDF5EB;
+  --craft-accent-rose: #C6788F;      /* Soft Heather Rose */
+
+  --craft-bg: #F8F9FB;               /* Alabaster Porcelain Canvas */
+  --craft-surface: #FFFFFF;          /* Crisp White Surface */
+  --craft-surface-muted: #F1F4F8;    /* Soft Frost Porcelain Tint */
+  --craft-border: #E4E8ED;          /* Crisp Frost Border */
+  --craft-border-light: #EEF2F6;
+
+  --craft-text-main: #1E252D;        /* Nordic Midnight Slate */
+  --craft-text-muted: #505963;       /* Granite Muted */
+  --craft-text-light: #87929E;       /* Cool Cashmere */
+
+  /* Cloud Elevation & Pill Radiuses */
+  --craft-radius: 18px;              /* Ultra-soft rounded corners */
+  --craft-radius-sm: 10px;
+  --craft-radius-pill: 50px;         /* Smooth pill tags */
+  
+  --craft-shadow-sm: 0 4px 16px rgba(30, 37, 45, 0.04);
+  --craft-shadow-md: 0 8px 24px rgba(30, 37, 45, 0.06);
+  --craft-shadow-lg: 0 14px 36px rgba(30, 37, 45, 0.09);
+  --craft-shadow-cloud: 0 16px 42px -8px rgba(142, 91, 116, 0.12);
+
+  /* Typography Pairings */
+  --craft-font-display: 'Outfit', sans-serif;
+  --craft-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}

@@ -1,0 +1,142 @@
+/* ==========================================================================
+   04-COMPONENTS: NAVBAR & ARTISAN HEADER
+   ========================================================================== */
+
+.navbar-craft {
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 2px dashed rgba(142, 91, 116, 0.22);
+  box-shadow: var(--craft-shadow-sm);
+  padding: 0.85rem 1rem;
+}
+
+.navbar-craft .navbar-brand {
+  font-family: var(--craft-font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--craft-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+}
+
+/* Crafted Brand Badge with Micro-Stitch */
+.brand-craft-badge {
+  background-color: #FAF4F7;
+  border: 1.5px dashed rgba(142, 91, 116, 0.35);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.3rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.brand-craft-badge:hover {
+  background-color: #F5EBF1;
+  border-color: var(--craft-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.15);
+}
+
+.navbar-craft .navbar-brand:hover {
+  color: var(--craft-primary-hover);
+}
+
+.navbar-craft .nav-link {
+  color: var(--craft-text-muted);
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--craft-radius-pill);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.navbar-craft .nav-link:hover {
+  color: var(--craft-primary);
+  background-color: var(--craft-primary-subtle);
+}
+
+.navbar-craft .nav-link.active {
+  color: var(--craft-primary);
+  font-weight: 700;
+  background-color: var(--craft-primary-subtle);
+  border: 1px dashed rgba(142, 91, 116, 0.38);
+}
+
+/* Artisan Master Seal Pill (Replaces Harsh Dark Badge) */
+.badge-artisan-seal {
+  background: #FFF9F0;
+  color: #8C531B;
+  border: 1.5px dashed #E0A868;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.45rem 1rem;
+  font-family: var(--craft-font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 2px 8px rgba(217, 156, 82, 0.12);
+  letter-spacing: -0.01em;
+}
+
+.badge-artisan-seal i {
+  color: #D99C52;
+  font-size: 0.95rem;
+}
+
+/* Craft Logout Pill Button */
+.btn-craft-logout {
+  background: #FDF2F0;
+  border: 1px dashed #F5C2BE;
+  color: #C0392B;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.42rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-craft-logout:hover {
+  background: #FCE8E6;
+  color: #A93226;
+  border-color: #E67E22;
+  transform: translateY(-1px);
+}
+
+/* Artisan Administration Top Bar */
+.artisan-panel-banner {
+  background: linear-gradient(135deg, #1E252D 0%, #2A3440 100%);
+  color: #F8F9FB;
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+  border-left: 5px solid var(--craft-accent-gold);
+}
+
+.artisan-panel-banner .btn-panel-action {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--craft-radius-pill);
+  transition: all 0.2s ease;
+}
+
+.artisan-panel-banner .btn-panel-action:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.artisan-panel-banner .btn-panel-action.active {
+  background-color: #ffffff;
+  color: #1E252D;
+  font-weight: 700;
+  border-color: #ffffff;
+}

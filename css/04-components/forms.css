@@ -1,0 +1,39 @@
+/* ==========================================================================
+   04-COMPONENTS: FORMS, DROPZONE & MARGIN CALCULATOR
+   ========================================================================== */
+
+/* Drag & Drop File Upload Box */
+.upload-dropzone {
+  border: 2px dashed var(--craft-border);
+  background-color: var(--craft-surface-muted);
+  border-radius: var(--craft-radius);
+  padding: 2.2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover, .upload-dropzone.dragover {
+  border-color: var(--craft-primary);
+  background-color: var(--craft-primary-subtle);
+}
+
+/* Sticky Margin Calculator Card */
+.sticky-margin-card {
+  position: sticky;
+  top: 5rem;
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+}
+
+.margin-feedback-pill {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--craft-radius-pill);
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}

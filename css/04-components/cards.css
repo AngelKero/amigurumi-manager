@@ -1,0 +1,126 @@
+/* ==========================================================================
+   04-COMPONENTS: PRODUCT CARDS & TEXTILE TAGS
+   ========================================================================== */
+
+.card-product {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+  overflow: hidden;
+  box-shadow: var(--craft-shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-product:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--craft-shadow-lg);
+  border-color: #D1D8E0;
+}
+
+.card-product-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--craft-surface-muted);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.card-product:hover .card-product-img {
+  transform: scale(1.05);
+}
+
+.card-product-badge-float {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+}
+
+/* Artisan Custom Badges - Pill Shaped */
+.badge-category {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-weight: 600;
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.775rem;
+}
+
+/* Woven Textile Care Label Tag with Running Stitches (Etiqueta Textil Cosida) */
+.badge-textile-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #FAF5F8;
+  color: var(--craft-primary);
+  font-family: var(--craft-font-display);
+  font-weight: 700;
+  font-size: 0.775rem;
+  border: 1px dashed rgba(142, 91, 116, 0.35);
+  border-left: 3.5px solid var(--craft-primary);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0 2px 6px rgba(142, 91, 116, 0.05);
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.badge-textile-tag::after {
+  content: "•••";
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  margin-left: 0.25rem;
+}
+
+/* Contrast Fix [QW-1]: Dark Spruce on Glacier Mist (>6.2:1 contrast ratio) */
+.badge-stock-in {
+  background-color: var(--craft-secondary-subtle);
+  color: var(--craft-secondary-text);
+  border: 1px solid rgba(82, 133, 124, 0.3);
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--craft-radius-pill);
+}
+
+.badge-stock-out {
+  background-color: #F1F4F8;
+  color: var(--craft-text-muted);
+  border: 1px solid var(--craft-border);
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--craft-radius-pill);
+}
+
+/* Craft Stitched Border Effect (Pespunte Artesanal Interior / Hilván) */
+.card-stitched {
+  position: relative;
+}
+
+.card-stitched::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px dashed rgba(142, 91, 116, 0.22);
+  border-radius: calc(var(--craft-radius) - 7px);
+  pointer-events: none;
+  z-index: 1;
+  transition: border-color 0.25s ease;
+}
+
+.card-stitched:hover::before {
+  border-color: rgba(142, 91, 116, 0.48);
+}

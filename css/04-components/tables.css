@@ -1,0 +1,79 @@
+/* ==========================================================================
+   04-COMPONENTS: DATA TABLES & MOBILE ORDER CARDS (CR-2)
+   ========================================================================== */
+
+/* Order Management Table */
+.table-craft {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-craft thead th {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--craft-border);
+  padding: 0.9rem 1.1rem;
+}
+
+.table-craft tbody td {
+  padding: 1.1rem;
+  border-bottom: 1px solid var(--craft-border-light);
+  vertical-align: middle;
+}
+
+.table-craft tbody tr:hover td {
+  background-color: #FAFBFD;
+}
+
+/* Mobile Order Cards (CR-2) */
+.order-card-mobile {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--craft-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card-mobile:hover {
+  box-shadow: var(--craft-shadow-md);
+  border-color: #D1D8E0;
+}
+
+/* Status Badges for Orders */
+.badge-order-pendiente {
+  background-color: #FFF6EC;
+  color: #B56C00;
+  border: 1px solid #FED8A5;
+  font-weight: 700;
+  border-radius: var(--craft-radius-pill);
+}
+
+.badge-order-proceso {
+  background-color: #EBF4F2;
+  color: var(--craft-secondary-text);
+  border: 1px solid #B8DDD6;
+  font-weight: 700;
+  border-radius: var(--craft-radius-pill);
+}
+
+.badge-order-entregado {
+  background-color: #EDF7ED;
+  color: #1E7E34;
+  border: 1px solid #C3E6CB;
+  font-weight: 700;
+  border-radius: var(--craft-radius-pill);
+}
+
+.badge-order-cancelado {
+  background-color: #FBEAE9;
+  color: #B82A20;
+  border: 1px solid #F5C2BE;
+  font-weight: 700;
+  border-radius: var(--craft-radius-pill);
+}

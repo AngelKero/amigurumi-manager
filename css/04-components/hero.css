@@ -1,0 +1,144 @@
+/* ==========================================================================
+   04-COMPONENTS: HERO BANNER & TEXTILE QUILTING
+   ========================================================================== */
+
+.hero-craft-nordic, .hero-cloud {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAF4F7 50%, #F1F6F5 100%);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--craft-shadow-cloud);
+}
+
+/* Hero Banner Inset Running Stitch Seam */
+.hero-cloud-stitched {
+  position: relative;
+}
+
+.hero-cloud-stitched > .hero-cloud-seam {
+  position: absolute;
+  inset: 10px;
+  border: 1.5px dashed rgba(142, 91, 116, 0.22);
+  border-radius: calc(var(--craft-radius) - 6px);
+  pointer-events: none;
+  z-index: 2;
+  transition: border-color 0.25s ease;
+}
+
+.hero-cloud-stitched:hover > .hero-cloud-seam {
+  border-color: rgba(142, 91, 116, 0.45);
+}
+
+.hero-cloud::before, .hero-craft-nordic .cloud-bg-orb-1 {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -50px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(142, 91, 116, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-cloud::after, .hero-craft-nordic .cloud-bg-orb-2 {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -50px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(82, 133, 124, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-craft-img-badge {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 28px;
+  box-shadow: 0 16px 40px rgba(142, 91, 116, 0.16);
+  border: 6px solid #FFFFFF;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero-craft-img-badge:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 48px rgba(142, 91, 116, 0.22);
+}
+
+/* Stitched Quilted Frame for Hero Craft Image */
+.hero-photo-stitched-frame {
+  position: relative;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 32px;
+  box-shadow: 0 16px 40px rgba(142, 91, 116, 0.16);
+  display: inline-block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-photo-stitched-frame::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1.5px dashed rgba(142, 91, 116, 0.28);
+  border-radius: 28px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hero-photo-stitched-frame:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 48px rgba(142, 91, 116, 0.22);
+}
+
+/* Trust Indicators with Craft Stitched Pills */
+.trust-chip-stitched {
+  background-color: #ffffff;
+  border: 1px dashed rgba(82, 133, 124, 0.4);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.4rem 0.95rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--craft-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.trust-chip-stitched:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(82, 133, 124, 0.14);
+  border-color: var(--craft-secondary);
+  color: var(--craft-text-main);
+}
+
+.hero-pill-badge {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.45rem 1.15rem;
+  font-size: 0.85rem;
+  color: var(--craft-primary);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--craft-shadow-sm);
+}
+
+.hero-craft-illustration-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-md);
+  overflow: hidden;
+}

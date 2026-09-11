@@ -1,0 +1,88 @@
+/* ==========================================================================
+   04-COMPONENTS: MODALS, STEPPERS & LEAD-TIME NOTICES
+   ========================================================================== */
+
+/* Modal Content with Inset Dashed Running Seam */
+.modal-content-stitched {
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-content-stitched::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1.5px dashed rgba(142, 91, 116, 0.2);
+  border-radius: calc(var(--craft-radius) - 6px);
+  pointer-events: none;
+  z-index: 1056;
+}
+
+/* Quantity Stepper Control in Checkout Modal (CR-2) */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--craft-border);
+  border-radius: var(--craft-radius-pill);
+  background: var(--craft-surface);
+  overflow: hidden;
+  box-shadow: var(--craft-shadow-sm);
+}
+
+.qty-stepper button {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--craft-text-main);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-stepper button:hover:not(:disabled) {
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
+}
+
+.qty-stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.qty-stepper input {
+  width: 48px;
+  height: 42px;
+  border: none;
+  text-align: center;
+  font-weight: 700;
+  font-family: var(--craft-font-display);
+  font-size: 1.05rem;
+  color: var(--craft-text-main);
+  background: transparent;
+  outline: none;
+}
+
+/* Lead Time Alert Box in Modal (QW-2) */
+.lead-time-notice {
+  background-color: #FAF6F8;
+  border-left: 4px solid var(--craft-primary);
+  border-radius: var(--craft-radius-sm);
+  padding: 0.85rem 1rem;
+  font-size: 0.825rem;
+  color: var(--craft-text-body);
+}
+
+/* Footer */
+.footer-craft {
+  background-color: var(--craft-surface);
+  border-top: 1px solid var(--craft-border);
+  padding: 2.5rem 0;
+  color: var(--craft-text-muted);
+  font-size: 0.875rem;
+  position: relative;
+  z-index: 1;
+}

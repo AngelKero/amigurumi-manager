@@ -1,0 +1,25 @@
+/* ==========================================================================
+   02-BASE: RESET & CORE LAYOUT
+   ========================================================================== */
+
+body {
+  background-color: var(--craft-bg);
+  color: var(--craft-text-main);
+  font-family: var(--craft-font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Micro Focus Outline */
+:focus-visible {
+  outline: 2.5px solid var(--craft-primary);
+  outline-offset: 2px;
+}

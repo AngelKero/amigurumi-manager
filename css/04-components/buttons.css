@@ -1,0 +1,82 @@
+/* ==========================================================================
+   04-COMPONENTS: BUTTONS & EMBROIDERED CTAS
+   ========================================================================== */
+
+.btn-craft-primary {
+  background-color: var(--craft-primary);
+  border-color: var(--craft-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.55rem 1.25rem;
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.25);
+  transition: all 0.2s ease;
+}
+
+/* Embroidered Button with Hand-Sewn Running Stitch */
+.btn-craft-stitched {
+  position: relative;
+  outline: 1.5px dashed rgba(255, 255, 255, 0.55);
+  outline-offset: -5px;
+  transition: all 0.25s ease, outline-color 0.25s ease;
+}
+
+.btn-craft-stitched:hover {
+  outline-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 22px rgba(142, 91, 116, 0.4);
+}
+
+.btn-craft-stitched:disabled {
+  outline-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-craft-primary:hover, .btn-craft-primary:focus {
+  background-color: var(--craft-primary-hover);
+  border-color: var(--craft-primary-hover);
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(142, 91, 116, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-craft-primary:disabled {
+  background-color: #D1D8E0 !important;
+  border-color: #D1D8E0 !important;
+  color: #717D8A !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  opacity: 0.85;
+}
+
+.btn-craft-outline {
+  background-color: transparent;
+  border: 1.5px solid var(--craft-border);
+  color: var(--craft-text-main);
+  font-weight: 600;
+  border-radius: var(--craft-radius-pill);
+  padding: 0.55rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-craft-outline:hover {
+  background-color: var(--craft-surface-muted);
+  border-color: var(--craft-text-muted);
+  color: var(--craft-text-main);
+}
+
+/* Secondary Button with Craft Dashed Running Stitch */
+.btn-craft-outline-stitched {
+  border: 1.5px dashed var(--craft-primary) !important;
+  color: var(--craft-primary) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.btn-craft-outline-stitched:hover {
+  background-color: var(--craft-primary-subtle) !important;
+  border-color: var(--craft-primary-hover) !important;
+  color: var(--craft-primary-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.18);
+}

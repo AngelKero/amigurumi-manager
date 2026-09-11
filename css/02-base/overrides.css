@@ -1,0 +1,31 @@
+/* ==========================================================================
+   02-BASE: OVERRIDES & STRICT ERADICATION OF BOOTSTRAP BLUE
+   ========================================================================== */
+
+.text-primary, .text-craft-primary {
+  color: var(--craft-primary) !important;
+}
+
+.text-craft-secondary {
+  color: var(--craft-secondary) !important;
+}
+
+.text-craft-secondary-text {
+  color: var(--craft-secondary-text) !important;
+}
+
+.text-craft-gold {
+  color: var(--craft-accent-gold) !important;
+}
+
+.border-primary, .border-craft-primary {
+  border-color: var(--craft-primary) !important;
+}
+
+.bg-primary, .bg-craft-primary {
+  background-color: var(--craft-primary) !important;
+}
+
+.hover-primary:hover {
+  color: var(--craft-primary) !important;
+}

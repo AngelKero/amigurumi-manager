@@ -1,0 +1,77 @@
+/* ==========================================================================
+   04-COMPONENTS: FILTER STATION & TEXTILE CATEGORY CHIPS
+   ========================================================================== */
+
+.filter-station-card {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  box-shadow: var(--craft-shadow-sm);
+  position: relative;
+}
+
+.btn-chip-textile {
+  background-color: #FAF6F8;
+  border: 1px dashed rgba(142, 91, 116, 0.35);
+  border-radius: var(--craft-radius-pill);
+  color: var(--craft-text-muted);
+  font-family: var(--craft-font-body);
+  font-weight: 600;
+  font-size: 0.825rem;
+  padding: 0.42rem 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-chip-textile:hover {
+  background-color: var(--craft-primary-subtle);
+  color: var(--craft-primary);
+  border-color: var(--craft-primary);
+  transform: translateY(-1px);
+}
+
+.btn-chip-textile.active {
+  background-color: var(--craft-primary);
+  color: #ffffff !important;
+  border-color: var(--craft-primary);
+  outline: 1.5px dashed rgba(255, 255, 255, 0.6);
+  outline-offset: -3px;
+  box-shadow: 0 4px 12px rgba(142, 91, 116, 0.28);
+}
+
+.btn-chip-textile.active i {
+  color: #ffffff !important;
+}
+
+.input-craft-pill {
+  border-radius: var(--craft-radius-pill) !important;
+  border: 1px solid var(--craft-border);
+  background-color: #FFFFFF;
+  padding-left: 1rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.input-craft-pill:focus {
+  border-color: var(--craft-primary);
+  box-shadow: 0 0 0 3px rgba(142, 91, 116, 0.12);
+}
+
+.select-craft-pill {
+  border-radius: var(--craft-radius-pill) !important;
+  border: 1px solid var(--craft-border);
+  background-color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--craft-text-main);
+  transition: all 0.2s ease;
+}
+
+.select-craft-pill:focus {
+  border-color: var(--craft-primary);
+  box-shadow: 0 0 0 3px rgba(142, 91, 116, 0.12);
+}
