@@ -1,10 +1,27 @@
 # Active Context: Amigurumi Micro-ERP & Catalog
 
-## Current State: Reestructuración Integral de Documentación & Refinamiento de Capacidades de Agente (COMPLETADO)
+## Current State: Tipografía Display con Personalidad Artesanal (COMPLETADO Y VERIFICADO)
 - **User Request:**
-  - Realizar una reestructuración completa de toda la documentación en `docs/` siguiendo la habilidad `clean-code-architect.md`.
-  - Revisar todos los cambios realizados en el proyecto, actualizar todo lo que haya cambiado.
-  - Con lo aprendido, refinar las capacidades del agente en `.agents/` (skills, rules, workflows).
+  - Instalar una fuente de tipo display que le aporte personalidad temática al sitio (crochet, amigurumis, artesanía textil nórdica).
+  - Aplicarla a los encabezados importantes de todas las pantallas públicas (`index.php`, `detalle.php`, etc.).
+- **Actions Executed:**
+  - **1. Selección e Importación de Tipografía:**
+    - Instalada la familia tipográfica **`Fraunces`** (`opsz,wght@9..144,600;700;800`) en [views/layouts/main.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/layouts/main.php) junto a `Fredoka`, `Outfit` y `Plus Jakarta Sans`.
+    - `Fraunces` aporta una personalidad orgánica, táctil y de libro artesanal escandinavo con terminales en gota que evocan madejas de lana y ganchillos de crochet.
+  - **2. Definición de Tokens en Sistema de Diseño:**
+    - Registrado `--craft-font-theme: 'Fraunces', Georgia, serif;` en [src/css/01-settings/variables.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/01-settings/variables.css).
+    - Creadas clases utilitarias `.font-theme-display` y reglas para `h1`, `h2` y `.display-1` a `.display-6` en [src/css/02-base/typography.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/02-base/typography.css).
+  - **3. Despliegue en Encabezados Públicos Clave:**
+    - **Hero Banner:** Título principal `"Creaciones Amigurumi con Alma y Ternura"` estilizado con `Fraunces` en [src/css/04-components/hero.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/hero.css).
+    - **Marca en Navbar:** Título `"Amigurumi Manager"` en [src/css/04-components/navbar.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/navbar.css).
+    - **Tarjetas del Catálogo:** Títulos de productos (`"Dragón Ignis"`, `"Mini Suculenta Maceta"`, `"Ajolote Rosado Pastel"`) en [src/css/04-components/cards.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/cards.css).
+    - **Ficha Técnica (`detalle.php`):** Título principal `#detalleTitle` y precio `#detallePriceDisplay` en [src/css/04-components/detail.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/detail.css).
+    - **Modal de Compra / Encargo:** Encabezados `.modal-title`, `#checkoutModalTitle` y `#modalProductName` en [src/css/04-components/modals.css](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/04-components/modals.css).
+    - **Secciones Públicas y Pie de Página:** Título de estación `"Explorador de Creaciones"`, estado vacío y marca en [views/components/footer.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/footer.php).
+  - **4. Verificación Visual en Navegador:**
+    - Validado mediante `browser_subagent` con capturas de pantalla de catálogo, detalle y modal de compra. Contraste superior a 14:1 (cumple WCAG 2.1 AAA).
+  - **5. Documentación de Reglas:**
+    - Actualizada la Sección 2 (Jerarquía Tipográfica) en [.agents/rules/ui-ux-design-system.md](file:///Users/angelzaragoza/Desktop/proyecto-web/.agents/rules/ui-ux-design-system.md).
 - **Actions Executed:**
   - **1. Reestructuración de Documentación Técnica (`docs/`) bajo Clean Architecture:**
     - Creado e indexado el concentrador maestro de documentación [docs/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/README.md) categorizando 17 archivos en 5 dominios claros:

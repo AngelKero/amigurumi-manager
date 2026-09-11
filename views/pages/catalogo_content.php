@@ -146,7 +146,7 @@ $catalogItems = [
   <div class="card-body p-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
       <div>
-        <h5 class="fw-bold mb-0 text-dark">
+        <h5 class="fw-bold mb-0 text-dark font-theme-display fs-4">
           <i class="bi bi-sliders me-2 text-primary"></i>Explorador de Creaciones
         </h5>
         <span class="text-muted small d-none d-md-inline">Filtra por temática, material, presupuesto o artesano</span>
@@ -276,7 +276,7 @@ $catalogItems = [
       <circle cx="50" cy="50" r="4" fill="currentColor"/>
     </svg>
   </div>
-  <h4 class="fw-bold text-dark mb-2">No se encontraron piezas artesanales</h4>
+  <h4 class="fw-bold text-dark mb-2 font-theme-display">No se encontraron piezas artesanales</h4>
   <p class="text-muted small mx-auto mb-4" style="max-width: 460px;">
     No hay ninguna creación en el catálogo que coincida con tu búsqueda o filtros actuales. Prueba a limpiar los filtros o buscar con otro término.
   </p>

@@ -32,9 +32,11 @@ All components, styles, and templates must strictly use the following semantic t
 
 ## 2. Typography Hierarchy
 
-- **Display & Headings:** Always use Google Font **`Outfit`** (`weights: 600, 700, 800`) for all `<h1>`–`<h6>`, brand titles, prices, and modal headers. Letter-spacing should be `-0.02em`.
+- **Artisan Theme Display (High Personality):** Always use Google Font **`Fraunces`** (`weights: 600, 700, 800`) for primary public headlines, hero banner titles (`.hero-cloud h1`), brand branding (`.brand-craft-badge`), product titles (`#detalleTitle`, `.card-product .card-title`), price highlights, and public checkout modal headers (`.modal-title`). Its soft curves and ball terminals evoke cozy woolen yarn and handcrafted crochet stitches.
+- **Modern Geometric Display & Subheads:** Always use Google Font **`Outfit`** (`weights: 600, 700, 800`) for secondary administrative subheads (`h3`–`h6`), KPI metric cards, and data badges. Letter-spacing should be `-0.02em`.
 - **Body & Controls:** Always use Google Font **`Plus Jakarta Sans`** (`weights: 400, 500, 600`) for body text, tables, form inputs, badges, and microcopy.
 - **Monospace Metrics:** Use standard monospace fonts for IDs (`#1`), timestamps (`2026-09-24`), stock integers, and currency denominations.
+
 
 ---
 

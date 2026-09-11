@@ -12,16 +12,17 @@
 }
 
 .navbar-craft .navbar-brand {
-  font-family: var(--craft-font-display);
-  font-weight: 800;
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
   font-size: 1.35rem;
   color: var(--craft-primary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   transition: color 0.2s ease;
 }
+
 
 /* Crafted Brand Badge with Micro-Stitch */
 .brand-craft-badge {

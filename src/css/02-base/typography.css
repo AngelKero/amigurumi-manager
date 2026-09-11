@@ -1,12 +1,28 @@
 /* ==========================================================================
-   02-BASE: TYPOGRAPHY (Outfit & Plus Jakarta Sans)
+   02-BASE: TYPOGRAPHY (Fraunces & Outfit & Plus Jakarta Sans)
    ========================================================================== */
 
-h1, h2, h3, h4, h5, h6, .font-display {
-  font-family: var(--craft-font-display);
+h1, h2, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6, .font-theme-display {
+  font-family: var(--craft-font-theme);
+  color: var(--craft-text-main);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+h3, h4, h5, h6, .font-display {
+  font-family: var(--craft-font-sans-display);
   color: var(--craft-text-main);
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.font-theme-display {
+  font-family: var(--craft-font-theme) !important;
+}
+
+.font-cute-display {
+  font-family: var(--craft-font-cute-display) !important;
 }
 
 .font-body {
@@ -16,3 +32,4 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .font-monospace {
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
+

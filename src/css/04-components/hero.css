@@ -11,6 +11,15 @@
   box-shadow: var(--craft-shadow-cloud);
 }
 
+.hero-cloud h1,
+.hero-cloud .display-5 {
+  font-family: var(--craft-font-theme);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+
 /* Hero Banner Inset Running Stitch Seam */
 .hero-cloud-stitched {
   position: relative;

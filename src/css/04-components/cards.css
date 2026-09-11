@@ -48,7 +48,23 @@
   z-index: 2;
 }
 
+/* Artisan Card Heading with Theme Display Font */
+.card-product .card-title,
+.card-product .card-title a {
+  font-family: var(--craft-font-theme);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  font-size: 1.25rem;
+  color: var(--craft-text-main);
+  transition: color 0.2s ease;
+}
+
+.card-product .card-title a:hover {
+  color: var(--craft-primary);
+}
+
 /* Artisan Custom Badges - Pill Shaped */
+
 .badge-category {
   background-color: var(--craft-surface-muted);
   color: var(--craft-text-muted);

@@ -38,6 +38,10 @@
   --craft-shadow-cloud: 0 16px 42px -8px rgba(142, 91, 116, 0.12);
 
   /* Typography Pairings */
-  --craft-font-display: 'Outfit', sans-serif;
+  --craft-font-theme: 'Fraunces', Georgia, serif;               /* Tactile Artisan Theme Display */
+  --craft-font-display: 'Fraunces', 'Outfit', serif;            /* High-Personality Display */
+  --craft-font-sans-display: 'Outfit', sans-serif;              /* Modern Geometric Display */
+  --craft-font-cute-display: 'Fredoka', cursive, sans-serif;    /* Plush Amigurumi Display */
   --craft-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
