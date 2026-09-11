@@ -98,41 +98,41 @@ foreach ($mockOrders as $ord) {
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Total Pedidos</div>
-      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
-        <span class="fs-2 fw-bold font-theme-display text-dark" id="kpiOrdersTotal"><?= $kpiTotal ?></span>
-        <span class="text-muted small fw-medium">órdenes</span>
+      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
+        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Total Pedidos</span>
+        <i class="bi bi-journal-text text-primary fs-5"></i>
       </div>
+      <div class="fs-2 fw-bold font-theme-display text-dark my-1" id="kpiOrdersTotal"><?= $kpiTotal ?></div>
       <div class="text-muted small" style="font-size: 0.76rem;">Registros en el sistema</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Pendientes</div>
-      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
-        <span class="fs-2 fw-bold font-theme-display text-warning-emphasis" id="kpiOrdersPendientes"><?= $kpiPendientes ?></span>
-        <span class="text-muted small fw-medium">en espera</span>
+      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
+        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Pendientes</span>
+        <i class="bi bi-hourglass-split text-warning fs-5"></i>
       </div>
+      <div class="fs-2 fw-bold font-theme-display text-warning-emphasis my-1" id="kpiOrdersPendientes"><?= $kpiPendientes ?></div>
       <div class="text-muted small" style="font-size: 0.76rem;">Esperando confección</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">En Confección</div>
-      <div class="d-flex align-items-baseline gap-2 mt-1 mb-1">
-        <span class="fs-2 fw-bold font-theme-display text-primary" id="kpiOrdersProceso"><?= $kpiProceso ?></span>
-        <span class="text-muted small fw-medium">activos</span>
+      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
+        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">En Confección</span>
+        <i class="bi bi-gear-wide-connected text-primary fs-5"></i>
       </div>
+      <div class="fs-2 fw-bold font-theme-display text-primary my-1" id="kpiOrdersProceso"><?= $kpiProceso ?></div>
       <div class="text-muted small" style="font-size: 0.76rem;">En el telar / crochet</div>
     </div>
   </div>
   <div class="col">
     <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.04em;">Ingresos Activos</div>
-      <div class="d-flex align-items-baseline gap-1.5 mt-1 mb-1">
-        <span class="fs-3 fw-bold font-theme-display text-success" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?></span>
-        <span class="text-muted font-monospace" style="font-size: 0.74rem;">MXN</span>
+      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
+        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Ingresos Activos</span>
+        <i class="bi bi-cash-coin text-success fs-5"></i>
       </div>
+      <div class="fs-2 fw-bold font-theme-display text-success my-1 text-nowrap" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?></div>
       <div class="text-muted small" style="font-size: 0.76rem;">Monto en pedidos vigentes</div>
     </div>
   </div>

@@ -235,7 +235,7 @@ export function initOrders() {
     if (kpiTotal) kpiTotal.textContent = totalAll;
     if (kpiPendientes) kpiPendientes.textContent = pendingCount;
     if (kpiProceso) kpiProceso.textContent = processCount;
-    if (kpiIngresos) kpiIngresos.textContent = formatPesos(totalRevenue);
+    if (kpiIngresos) kpiIngresos.textContent = formatPesos(totalRevenue, false);
 
     // Actualizar contadores en píldoras textiles de filtro
     const cAll = document.getElementById('countFilterAll');
