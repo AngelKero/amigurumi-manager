@@ -26,6 +26,7 @@
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius);
   box-shadow: var(--craft-shadow-md);
+  transition: all 0.25s ease;
 }
 
 .margin-feedback-pill {
@@ -37,3 +38,71 @@
   align-items: center;
   gap: 0.35rem;
 }
+
+/* ==========================================================================
+   CRAFT INPUT GROUP: SEAMLESS NON-WRAPPING PILL ADDONS
+   ========================================================================== */
+
+.input-group-craft {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.input-group-craft .input-group-text {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--craft-border) !important;
+  font-family: var(--craft-font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--craft-text-muted);
+  padding: 0.45rem 0.75rem;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.input-group-craft > .input-group-text:first-child {
+  border-top-left-radius: var(--craft-radius-pill) !important;
+  border-bottom-left-radius: var(--craft-radius-pill) !important;
+  border-right: none !important;
+}
+
+.input-group-craft > .form-control {
+  border-radius: 0 !important;
+  border: 1px solid var(--craft-border) !important;
+  min-width: 0 !important;
+  font-size: 0.875rem;
+  padding: 0.45rem 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  flex: 1 1 auto !important;
+}
+
+.input-group-craft > .form-control:first-child {
+  border-top-left-radius: var(--craft-radius-pill) !important;
+  border-bottom-left-radius: var(--craft-radius-pill) !important;
+}
+
+.input-group-craft > .form-control:last-child {
+  border-top-right-radius: var(--craft-radius-pill) !important;
+  border-bottom-right-radius: var(--craft-radius-pill) !important;
+}
+
+.input-group-craft > .input-group-text:last-child {
+  border-top-right-radius: var(--craft-radius-pill) !important;
+  border-bottom-right-radius: var(--craft-radius-pill) !important;
+  border-left: none !important;
+}
+
+.input-group-craft > .form-control:focus {
+  border-color: var(--craft-primary) !important;
+  box-shadow: 0 0 0 3px rgba(142, 91, 116, 0.12) !important;
+  z-index: 3;
+}
+
+.input-group-craft:focus-within > .input-group-text {
+  border-color: var(--craft-primary) !important;
+  transition: border-color 0.2s ease;
+}
+

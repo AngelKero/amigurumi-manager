@@ -39,6 +39,7 @@
 - Estación de Paginación Textil (`pagination.css`) con botones pill pespunteados, contador dinámico reactivo en `catalog.js`, y Master Footer Nórdico (`footer.css`, `footer.php`) con 4 columnas, garantía artesanal y contacto WhatsApp.
 - Pantalla de Gestión de Amigurumis (`amigurumis.php`, `amigurumis_content.php`, `amigurumis.js`, `amigurumis.css`) con estación de filtrado en 2 niveles (cero textos recortados, etiquetas claras y contador de piezas), cuadrícula responsiva de Cards 3x (`.card-admin-amigurumi`) con marco fotográfico acolchado, KPIs en vivo, ajuste de stock in-situ, toggle interactivo de modalidad (`es_sobre_encargo`), ficha técnica de inspección modal (`modal_inspect_amigurumi.php`) y modal de eliminación con salvaguarda `ON DELETE RESTRICT`.
 - Header depurado (`navbar.php`): eliminado botón de catálogo y dropdown superfluo; acceso directo al panel administrativo mediante clic en `@admin (Artesano Titular)`.
+- Ergonomía del Formulario de Creación (`formulario_content.php`, `forms.css`): adaptada cuadrícula responsiva a 2 columnas solo en resoluciones amplias (`xl`/`xxl`) y ancho completo fluido en pantallas estándar (`< 1200px`), erradicando compresión en 3 columnas. Implementado sistema antirruptura `.input-group-craft` con `nowrap`, impidiendo que los símbolos `$`, `cm`, `unidades` y `hrs` se desprendan o rompan de sus campos. Enlace `#simuladorMargen` conectado al sidebar.
 
 ## What's Left to Build
 - Phase 3: Modular Backend (`src/Core/`, `src/Database/`, `src/Middleware/`, `src/Services/`, `src/Repositories/`).

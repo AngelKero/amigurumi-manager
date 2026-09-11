@@ -79,25 +79,31 @@ $calcGanancia = $calcPrecio - $calcCosto;
 $calcMargen = $calcPrecio > 0 ? ($calcGanancia / $calcPrecio) * 100 : 0.0;
 $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 ?>
-<!-- 2-COLUMN SPLIT: FORMULARIO (col-lg-8) + SIMULADOR FINANCIERO (col-lg-4) -->
+<!-- 2-COLUMN RESPONSIVE SPLIT: FORMULARIO (col-12 col-xl-7 col-xxl-8) + SIMULADOR (col-12 col-xl-5 col-xxl-4) -->
 <div class="row g-4 mb-5">
 
   <!-- FORMULARIO DE ALTA / EDICIÓN -->
-  <div class="col-12 col-lg-8">
+  <div class="col-12 col-xl-7 col-xxl-8">
     <div class="card border-0 shadow-sm p-4 bg-white card-stitched" style="border-radius: var(--craft-radius);">
       
-      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom pb-3 mb-4">
         <div>
-          <h3 class="fw-bold mb-1" id="formTitle">
+          <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
+            <i class="bi bi-pencil-fill text-primary"></i>
+            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección' ?></span>
+          </div>
+          <h3 class="fw-bold font-theme-display text-dark mb-1" id="formTitle">
             <?= $isEditing ? 'Modificar Creación Artesanal' : 'Registrar Nueva Creación Artesanal' ?>
           </h3>
           <p class="text-muted small mb-0">
             <?= $isEditing ? 'Actualiza los parámetros físicos, costos o inventario de la pieza.' : 'Completa las especificaciones físicas y económicas de la nueva pieza.' ?>
           </p>
         </div>
-        <span class="badge badge-textile-tag fs-6" id="modeBadge">
-          <?= $isEditing ? 'Modo: Edición #' . $editId : 'Modo: Nuevo Registro' ?>
-        </span>
+        <div>
+          <span class="badge badge-artisan-seal" id="modeBadge" style="font-size: 0.8rem;">
+            <?= $isEditing ? 'Modo: Edición #' . $editId : 'Modo: Nuevo Registro' ?>
+          </span>
+        </div>
       </div>
 
       <form id="amigurumiForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('<?= $isEditing ? '¡Creación actualizada con éxito! En Fase 4 se conectará con POST /api/actualizar.php' : '¡Creación registrada con éxito! En Fase 4 se conectará con POST /api/crear.php' ?>');">
@@ -113,7 +119,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 
         <!-- Categoría y Material Textil -->
         <div class="row g-3 mb-3">
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-sm-6">
             <label for="inputCategoria" class="form-label fw-bold small">Categoría (*)</label>
             <select class="form-select select-craft-pill" id="inputCategoria" required>
               <option value="Fantasía" <?= $currentItem['categoria'] === 'Fantasía' ? 'selected' : '' ?>>Fantasía</option>
@@ -123,7 +129,7 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
               <option value="Llaveros / Accesorios" <?= $currentItem['categoria'] === 'Llaveros / Accesorios' ? 'selected' : '' ?>>Llaveros / Accesorios</option>
             </select>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-sm-6">
             <label for="inputMaterial" class="form-label fw-bold small">Material Textil Principal (*)</label>
             <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Ej. 100% Algodón Mercerizado" value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
           </div>
@@ -131,23 +137,23 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
 
         <!-- Tamaño y Cantidad en Stock -->
         <div class="row g-3 mb-3">
-          <div class="col-12 col-md-6">
-            <label for="inputTamano" class="form-label fw-bold small">Tamaño / Altura en cm (*)</label>
-            <div class="input-group">
-              <input type="number" step="0.1" min="0.1" max="250.0" class="form-control input-craft-pill" id="inputTamano" value="<?= $valTamano !== null ? number_format($valTamano, 1, '.', '') : '' ?>" required>
-              <span class="input-group-text bg-light text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">cm</span>
+          <div class="col-12 col-sm-6">
+            <label for="inputTamano" class="form-label fw-bold small">Tamaño / Altura (*)</label>
+            <div class="input-group input-group-craft">
+              <input type="number" step="0.1" min="0.1" max="250.0" class="form-control" id="inputTamano" placeholder="15.0" value="<?= $valTamano !== null ? number_format($valTamano, 1, '.', '') : '' ?>" required>
+              <span class="input-group-text">cm</span>
             </div>
           </div>
-          <div class="col-12 col-md-6">
-            <label for="inputStock" class="form-label fw-bold small">Cantidad en Stock Físico Inicial (*)</label>
-            <div class="input-group">
-              <input type="number" min="0" max="10000" class="form-control input-craft-pill" id="inputStock" value="<?= $valStock !== null ? $valStock : '' ?>" required>
-              <span class="input-group-text bg-light text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">unidades</span>
+          <div class="col-12 col-sm-6">
+            <label for="inputStock" class="form-label fw-bold small">Stock Físico Inicial (*)</label>
+            <div class="input-group input-group-craft">
+              <input type="number" min="0" max="10000" class="form-control" id="inputStock" placeholder="0" value="<?= $valStock !== null ? $valStock : '' ?>" required>
+              <span class="input-group-text">unidades</span>
             </div>
           </div>
         </div>
 
-        <!-- Distintivo de Confección Sobre Encargo [Propuesta BD 3 / DDL] -->
+        <!-- Distintivo de Confección Sobre Encargo -->
         <div class="mb-3 p-3 bg-white border rounded card-stitched" style="border-radius: var(--craft-radius-sm);">
           <div class="form-check form-switch mb-0">
             <input class="form-check-input" type="checkbox" role="switch" id="inputEsSobreEncargo" <?= !empty($currentItem['es_sobre_encargo']) ? 'checked' : '' ?> style="cursor: pointer;">
@@ -161,32 +167,38 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
         </div>
 
         <!-- Parámetros Económicos (Disparan el cálculo dinámico) -->
-        <div class="p-3 mb-4 rounded border" style="background-color: var(--craft-surface-muted);">
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <i class="bi bi-cash-stack text-primary"></i>
-            <span class="fw-bold small text-uppercase">Parámetros Económicos y Tiempo de Labor</span>
+        <div class="p-3 mb-4 rounded border card-stitched" style="background-color: var(--craft-surface-muted);">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-cash-stack text-primary fs-5"></i>
+            <div>
+              <strong class="d-block text-dark small text-uppercase" style="letter-spacing: 0.04em;">Parámetros Económicos y Tiempo de Labor</strong>
+              <span class="text-muted small" style="font-size: 0.72rem;">Los valores ingresados calculan el margen y retorno en el simulador en tiempo real.</span>
+            </div>
           </div>
           <div class="row g-3">
-            <div class="col-12 col-md-4">
-              <label for="inputPrecio" class="form-label fw-bold small">Precio Venta (MXN) (*)</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">$</span>
-                <input type="number" step="0.01" min="1" max="9999999" class="form-control fw-bold input-craft-pill" id="inputPrecio" value="<?= $valPrecio !== null ? number_format($valPrecio, 2, '.', '') : '' ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+            <div class="col-12 col-sm-6 col-md-4">
+              <label for="inputPrecio" class="form-label fw-bold small text-dark mb-1">Precio Venta (*)</label>
+              <div class="input-group input-group-craft">
+                <span class="input-group-text">$</span>
+                <input type="number" step="0.01" min="1" max="9999999" class="form-control fw-bold" id="inputPrecio" placeholder="0.00" value="<?= $valPrecio !== null ? number_format($valPrecio, 2, '.', '') : '' ?>" required>
               </div>
+              <div class="form-text text-muted" style="font-size: 0.7rem;">En pesos MXN</div>
             </div>
-            <div class="col-12 col-md-4">
-              <label for="inputCosto" class="form-label fw-bold small">Costo Materiales (MXN) (*)</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">$</span>
-                <input type="number" step="0.01" min="0" max="9999999" class="form-control input-craft-pill" id="inputCosto" value="<?= $valCosto !== null ? number_format($valCosto, 2, '.', '') : '' ?>" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+            <div class="col-12 col-sm-6 col-md-4">
+              <label for="inputCosto" class="form-label fw-bold small text-dark mb-1">Costo Materiales (*)</label>
+              <div class="input-group input-group-craft">
+                <span class="input-group-text">$</span>
+                <input type="number" step="0.01" min="0" max="9999999" class="form-control" id="inputCosto" placeholder="0.00" value="<?= $valCosto !== null ? number_format($valCosto, 2, '.', '') : '' ?>" required>
               </div>
+              <div class="form-text text-muted" style="font-size: 0.7rem;">Hilazas, ojos, relleno</div>
             </div>
-            <div class="col-12 col-md-4">
-              <label for="inputHoras" class="form-label fw-bold small">Horas Confeccionadas</label>
-              <div class="input-group">
-                <input type="number" step="0.25" min="0" max="500.0" class="form-control input-craft-pill" id="inputHoras" value="<?= $valHoras !== null ? number_format($valHoras, 2, '.', '') : '' ?>">
-                <span class="input-group-text bg-white text-muted" style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">hrs</span>
+            <div class="col-12 col-sm-12 col-md-4">
+              <label for="inputHoras" class="form-label fw-bold small text-dark mb-1">Horas de Tejido</label>
+              <div class="input-group input-group-craft">
+                <input type="number" step="0.25" min="0" max="500.0" class="form-control" id="inputHoras" placeholder="0.0" value="<?= $valHoras !== null ? number_format($valHoras, 2, '.', '') : '' ?>">
+                <span class="input-group-text">hrs</span>
               </div>
+              <div class="form-text text-muted" style="font-size: 0.7rem;">Labor manual invertida</div>
             </div>
           </div>
         </div>
@@ -248,8 +260,8 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
     </div>
   </div>
 
-  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-lg-4) -->
-  <div class="col-12 col-lg-4">
+  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-xl-5 col-xxl-4) -->
+  <div class="col-12 col-xl-5 col-xxl-4" id="simuladorMargen">
     <div class="card sticky-margin-card p-4 card-stitched">
       
       <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-3">
