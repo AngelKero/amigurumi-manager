@@ -18,4 +18,12 @@
     - Inicialización de BD: `php setup.php` (CLI-only).
     - Credenciales de prueba (`admin` / `admin123`).
     - Explicación de arquitectura y requerimientos.
-- **Phase Gate Status:** Halting and awaiting explicit user approval of the Frontend & Backend Architecture Plan before moving or refactoring code files.
+- **Frontend Refactor Executed & Verified (Phase 2.5):**
+  - Modularized PHP Views: `views/layouts/main.php`, components (`navbar.php`, `footer.php`, `background_decorations.php`, `product_card.php`, modales), page views (`views/pages/catalogo_content.php`, `detalle_content.php`, `formulario_content.php`, `pedidos_content.php`), and root entrypoints (`index.php`, `detalle.php`, `formulario.php`, `pedidos.php`).
+  - Modularized ITCSS: Layered stylesheet in `css/01-settings/`, `02-base/`, `03-animations/`, `04-components/`, orchestrated via `css/styles.css`.
+  - Modularized ES Modules: Domain-specific modules in `js/modules/` orchestrated via `js/main.js`.
+  - Comprehensive Live Verification: Fully audited via automated `browser_subagent` recording all interactions (filter chips, bounded checkout stepper, detail view out-of-stock guard simulation, margin calculator live update, order inspection and cancel order stock restitution dialog).
+- **Housekeeping Completed:** 
+  - Antiguas vistas estáticas (`index.html`, `detalle.html`, `formulario.html`, `pedidos.html`) archivadas en [`docs/archive/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/archive).
+  - Enlace simbólico duplicado `.docs` eliminado, dejando únicamente la carpeta canónica [`docs/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs).
+- **Phase Gate Status:** Halting and awaiting explicit user instruction before initiating Phase 3 (Backend & Connection: `src/` modular classes, autoloader, PDO singleton, and auth guard).

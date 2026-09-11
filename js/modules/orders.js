@@ -5,10 +5,10 @@
 
 export function initOrders() {
   // Modal de Cancelación y Restitución Física de Stock [QW-2]
-  const cancelButtons = document.querySelectorAll('.btn-cancel-order');
-  const cancelModalIdSpan = document.getElementById('cancelModalOrderId');
-  const cancelStockUnitsSpan = document.getElementById('cancelStockRestitutionUnits');
-  const cancelProductNameSpan = document.getElementById('cancelStockRestitutionProduct');
+  const cancelButtons = document.querySelectorAll('.btn-cancel-order, .btn-trigger-cancel-order');
+  const cancelModalIdSpan = document.getElementById('cancelModalOrderId') || document.getElementById('cancelOrderIdSpan');
+  const cancelStockUnitsSpan = document.getElementById('cancelStockRestitutionUnits') || document.getElementById('cancelStockUnitsSpan');
+  const cancelProductNameSpan = document.getElementById('cancelStockRestitutionProduct') || document.getElementById('cancelProductNameSpan');
 
   cancelButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -17,7 +17,7 @@ export function initOrders() {
       const product = btn.getAttribute('data-product') || 'Dragón Ignis';
 
       if (cancelModalIdSpan) cancelModalIdSpan.textContent = orderId;
-      if (cancelStockUnitsSpan) cancelStockUnitsSpan.textContent = `${qty} unidad(es)`;
+      if (cancelStockUnitsSpan) cancelStockUnitsSpan.textContent = `+${qty} unidad(es)`;
       if (cancelProductNameSpan) cancelProductNameSpan.textContent = product;
     });
   });

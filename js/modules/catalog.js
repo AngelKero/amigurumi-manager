@@ -4,12 +4,12 @@
  */
 
 export function initCatalog() {
-  const searchInput = document.getElementById('searchCatalog');
+  const searchInput = document.getElementById('filterSearch') || document.getElementById('searchCatalog');
   const filterCategory = document.getElementById('filterCategory');
   const filterStock = document.getElementById('filterStock');
-  const sortCatalog = document.getElementById('sortCatalog');
+  const sortCatalog = document.getElementById('filterSort') || document.getElementById('sortCatalog');
   const btnClearFilters = document.getElementById('btnClearFilters');
-  const productCards = document.querySelectorAll('.card-product-item');
+  const productCards = document.querySelectorAll('.product-grid-item, .card-product-item');
   const filterResultsCount = document.getElementById('filterResultsCount');
   const textileChips = document.querySelectorAll('.btn-chip-textile');
 
@@ -28,17 +28,18 @@ export function initCatalog() {
     let visibleCount = 0;
 
     productCards.forEach(item => {
-      const name = item.getAttribute('data-name') || '';
+      const name = (item.getAttribute('data-name') || '').toLowerCase();
+      const material = (item.getAttribute('data-material') || '').toLowerCase();
       const cat = item.getAttribute('data-category') || '';
-      const itemStock = parseInt(item.getAttribute('data-stock') || '0');
+      const itemStock = parseInt(item.getAttribute('data-stock') || '0', 10);
 
-      const matchesSearch = !query || name.includes(query);
+      const matchesSearch = !query || name.includes(query) || material.includes(query);
       const matchesCategory = category === 'all' || cat === category;
       let matchesStock = true;
 
-      if (stock === 'in_stock') {
+      if (stock === 'in' || stock === 'in_stock') {
         matchesStock = itemStock > 0;
-      } else if (stock === 'out_stock') {
+      } else if (stock === 'out' || stock === 'out_stock') {
         matchesStock = itemStock === 0;
       }
 
@@ -89,7 +90,7 @@ export function initCatalog() {
   // Ordenamiento
   if (sortCatalog) {
     sortCatalog.addEventListener('change', () => {
-      const container = document.getElementById('catalogProductsGrid');
+      const container = document.getElementById('productCardGrid') || document.getElementById('catalogProductsGrid');
       if (!container) return;
 
       const cardsArray = Array.from(productCards);
@@ -101,9 +102,9 @@ export function initCatalog() {
         const nameA = a.getAttribute('data-name') || '';
         const nameB = b.getAttribute('data-name') || '';
 
-        if (val === 'price_asc') return priceA - priceB;
-        if (val === 'price_desc') return priceB - priceA;
-        if (val === 'name_asc') return nameA.localeCompare(nameB);
+        if (val === 'price-asc' || val === 'price_asc') return priceA - priceB;
+        if (val === 'price-desc' || val === 'price_desc') return priceB - priceA;
+        if (val === 'name-asc' || val === 'name_asc') return nameA.localeCompare(nameB);
         return 0;
       });
 
@@ -117,7 +118,7 @@ export function initCatalog() {
       if (searchInput) searchInput.value = '';
       if (filterCategory) filterCategory.value = 'all';
       if (filterStock) filterStock.value = 'all';
-      if (sortCatalog) sortCatalog.value = 'newest';
+      if (sortCatalog) sortCatalog.value = (sortCatalog.options[0]?.value || 'recent');
 
       textileChips.forEach(c => {
         if (c.getAttribute('data-category') === 'all') {

@@ -5,15 +5,16 @@
 
 export function initDetail() {
   const stockBadge = document.getElementById('detalleStockBadge');
-  const btnCheckout = document.getElementById('btnDetalleCheckout');
-  const outOfStockNotice = document.getElementById('detalleOutOfStockNotice');
+  const btnCheckout = document.getElementById('btnDetalleCheckout') || document.getElementById('btnComprarDetalle');
+  const inStockContainer = document.getElementById('actionInStockContainer');
+  const outOfStockNotice = document.getElementById('detalleOutOfStockNotice') || document.getElementById('actionOutOfStockContainer');
   const modalStockBadge = document.getElementById('modalStockBadge');
   const checkoutStockMax = document.getElementById('checkoutStockMax');
   const checkoutStockNote = document.getElementById('checkoutStockNote');
   const btnSimIn = document.getElementById('btnSimulateStockIn');
   const btnSimOut = document.getElementById('btnSimulateStockOut');
 
-  if (!stockBadge || !btnCheckout) return;
+  if (!stockBadge) return;
 
   function setStockState(stock) {
     if (stock === 0) {
@@ -21,11 +22,17 @@ export function initDetail() {
       stockBadge.className = 'badge badge-stock-out fs-6';
       stockBadge.innerHTML = '<i class="bi bi-dash-circle me-1"></i>Agotado (0 disp.)';
       
-      btnCheckout.disabled = true;
-      btnCheckout.setAttribute('aria-disabled', 'true');
-      btnCheckout.innerHTML = '<i class="bi bi-slash-circle me-2"></i> Agotado para Entrega Inmediata';
+      if (btnCheckout) {
+        btnCheckout.disabled = true;
+        btnCheckout.setAttribute('aria-disabled', 'true');
+        btnCheckout.innerHTML = '<i class="bi bi-slash-circle me-2"></i> Agotado para Entrega Inmediata';
+      }
 
+      if (inStockContainer && inStockContainer !== btnCheckout.parentElement) {
+        inStockContainer.classList.add('d-none');
+      }
       if (outOfStockNotice) outOfStockNotice.classList.remove('d-none');
+
       if (modalStockBadge) {
         modalStockBadge.className = 'badge badge-stock-out';
         modalStockBadge.textContent = 'Agotado (Bajo encargo)';
@@ -37,11 +44,17 @@ export function initDetail() {
       stockBadge.className = 'badge badge-stock-in fs-6';
       stockBadge.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i>En Stock: ${stock} unidades`;
       
-      btnCheckout.disabled = false;
-      btnCheckout.removeAttribute('aria-disabled');
-      btnCheckout.innerHTML = '<i class="bi bi-bag-heart me-2"></i> Encargar / Comprar Ahora';
+      if (btnCheckout) {
+        btnCheckout.disabled = false;
+        btnCheckout.removeAttribute('aria-disabled');
+        btnCheckout.innerHTML = '<i class="bi bi-cart-plus me-2"></i> Adquirir Creación';
+      }
 
+      if (inStockContainer && inStockContainer !== btnCheckout.parentElement) {
+        inStockContainer.classList.remove('d-none');
+      }
       if (outOfStockNotice) outOfStockNotice.classList.add('d-none');
+
       if (modalStockBadge) {
         modalStockBadge.className = 'badge badge-stock-in';
         modalStockBadge.textContent = `Stock: ${stock} disp.`;
@@ -64,7 +77,7 @@ export function initDetail() {
   const notFoundAlert = document.getElementById('detalleNotFoundAlert');
   const mainContent = document.getElementById('detalleMainContent');
 
-  if (idParam === '9999' || (idParam && parseInt(idParam) > 10)) {
+  if (idParam === '9999' || (idParam && parseInt(idParam, 10) > 10)) {
     if (notFoundAlert && mainContent) {
       notFoundAlert.classList.remove('d-none');
       mainContent.classList.add('d-none');
@@ -80,7 +93,7 @@ export function initDetail() {
   if (btnSimOut) btnSimOut.addEventListener('click', () => setStockState(0));
 
   // Miniaturas textiles interactivas
-  const thumbnails = document.querySelectorAll('.card-thumb-item');
+  const thumbnails = document.querySelectorAll('.card-thumb-item, .thumb-textile-item');
   const svgCaption = document.getElementById('detailSvgCaption');
   const captionMap = {
     frontal: '🧶 Edición Especial Fantasía • Dragón Ignis (Vista Frontal)',
