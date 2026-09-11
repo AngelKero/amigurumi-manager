@@ -21,13 +21,14 @@
 - Transition of login interface to a reusable Navbar Modal.
 - Multi-layered security: CLI-only `setup.php`, `database/database.sqlite` isolation, and Apache `.htaccess` access control.
 - Phase 1 Database completed: `database/seed.sql`, `database/database.sqlite` initialized, verified via `docs/database-testing.md`.
-- Phase 2 Layout & UI completed:
-  - `index.html`: Clickable cards/titles, sorting dropdown, stock=0 disabled button, and stepper modal.
-  - `detalle.html`: Subtle return link, artisan guarantee badge block, specifications table, and stepper checkout modal.
-  - `formulario.html`: Hidden image preview, refined dual-metric live margin calculator, and artisan panel bar.
-  - `pedidos.html`: Orders dashboard, stock restoration cancellation modal, and order inspection modal.
-  - `css/styles.css`: Warm artisan design system with terracotta, sage green, and linen styling.
-  - `js/app.js`: Client-side interactivity for steppers, margin math, image preview, sorting, and modals.
+- Phase 2 Layout & UI completed & refined:
+  - Design System Rules: Enshrined Proposal B ("Algodón Nórdico") in `.agents/rules/ui-ux-design-system.md` and `.agents/rules/general.md`.
+  - `index.html`: Cloud-soft hero banner ("Nube Artesanal"), Outfit typography, verified craft imagery, floating micro-animations, and pill badges.
+  - `detalle.html`: Out-of-stock guard [CR-1] (`stock === 0` disables checkout CTA), darkened WCAG AA contrast (`#235048` on `#EBF4F2`), lead-time advisory (5-7 business days), and interactive state simulator.
+  - `pedidos.html`: Orders dashboard with stacked mobile card view [CR-2] (`#mobileOrdersContainer`), stock restitution confirmation modal [QW-2], and order inspection modal.
+  - `formulario.html`: Dual-metric real-time margin simulator with Algodón Nórdico status pills, dropzone image preview, and artisan navigation bar.
+  - `css/styles.css`: Complete Algodón Nórdico token overhaul, keyframe floating animations, pill radiuses (`50px`), and cloud elevation shadows.
+  - `js/app.js`: Out-of-stock guard listener, stock-bounded quantity steppers, margin formulas, and modal lifecycle handlers.
 
 ## What's Left to Build
 - Phase 3: PDO database connection (`conexion.php`) and session authentication middleware (`auth_guard.php`).

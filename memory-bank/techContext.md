@@ -1,9 +1,9 @@
 # Technical Context: Amigurumi Micro-ERP & Catalog
 
 ## Technology Stack
-- **Frontend Presentation:** Semantic HTML5, Bootstrap 5.3 (CDN), Bootstrap Icons (CDN).
-- **Custom Styling:** Minimal custom CSS (`css/styles.css`) for warm craft aesthetic accents, image previews, and status badge styling.
-- **Frontend Scripting:** Vanilla JavaScript (`js/app.js`) for DOM manipulation, dynamic Navbar Login Modal, profit margin calculations, checkout modals, and AJAX operations.
+- **Frontend Presentation:** Semantic HTML5, Bootstrap 5.3 (CDN), Bootstrap Icons (CDN), Google Fonts (*Outfit* display, *Plus Jakarta Sans* body).
+- **Custom Styling & Design System:** Proposal B ("Algodón Nórdico") implemented in `css/styles.css` with cloud-soft aesthetics, floating keyframe micro-animations, pill geometry (`border-radius: 50px`), and codified in `.agents/rules/ui-ux-design-system.md`.
+- **Frontend Scripting:** Vanilla JavaScript (`js/app.js`) for DOM manipulation, dynamic Navbar Login Modal, stock bounds, out-of-stock guards, profit margin calculations, checkout modals, and AJAX operations.
 - **Backend Language:** PHP 8.x (Native standard library, PDO, session management, native `password_hash`, file upload processing).
 - **Database:** SQLite 3 (`database.sqlite`) with `PRAGMA foreign_keys = ON;` and `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`.
 - **Local Server:** PHP Built-in development server (`php -S localhost:8000`).
