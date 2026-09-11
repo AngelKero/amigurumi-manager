@@ -15,7 +15,7 @@ $activePage = $activePage ?? 'creaciones';
   <!-- Perfil Mini del Artesano Titular -->
   <div class="panel-profile-box text-center">
     <div class="panel-profile-avatar mx-auto mb-2 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
-      <?= svg('branding/isotipo-osito-amigurumi', ['width' => 42, 'height' => 42]) ?>
+      <?= svg('branding/isotipo-ovillo-corazon', ['width' => 42, 'height' => 42]) ?>
     </div>
     <div class="panel-profile-username text-center">@admin</div>
     <div class="text-center mb-1">

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 65" width="100%" height="100%" role="img" aria-label="Logotipo Taller Artesanal">
-  <title>Logotipo: Taller Artesanal de Confección</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 65" width="100%" height="100%" role="img" aria-label="Logotipo Crochet Taller Artesanal">
+  <title>Logotipo: Crochet Taller Artesanal &amp; ERP</title>
   <defs>
     <linearGradient id="logoTallerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#8E5B74"/>
@@ -14,18 +14,18 @@
   <!-- Orilla de Costura Textil Izquierda (Care Tag) -->
   <path d="M4 12 L4 53" stroke="#8E5B74" stroke-width="4.5" stroke-linecap="round"/>
 
-  <!-- Nombre Principal en Caja Alta Cálida -->
+  <!-- Nombre Principal en Caja Alta Cálida: CROCHET -->
   <text x="24" y="34" 
-        font-family="'Fraunces', serif" 
+        font-family="'Fraunces', 'Georgia', serif" 
         font-weight="700" 
         font-size="22" 
         letter-spacing="0.08em" 
         fill="url(#logoTallerGrad)">
-    AMIGURUMI
+    CROCHET
   </text>
 
-  <!-- Descriptor de Oficio -->
-  <text x="180" y="33" 
+  <!-- Descriptor de Oficio: TALLER & ERP -->
+  <text x="146" y="33" 
         font-family="'Outfit', sans-serif" 
         font-weight="600" 
         font-size="14" 
@@ -45,7 +45,7 @@
   </text>
 
   <!-- Tres ojales textiles bordados a la derecha -->
-  <circle cx="290" cy="32.5" r="2.2" fill="#D99C52"/>
-  <circle cx="298" cy="32.5" r="2.2" fill="#8E5B74"/>
-  <circle cx="306" cy="32.5" r="2.2" fill="#52857C"/>
+  <circle cx="282" cy="32.5" r="2.2" fill="#D99C52"/>
+  <circle cx="291" cy="32.5" r="2.2" fill="#8E5B74"/>
+  <circle cx="300" cy="32.5" r="2.2" fill="#52857C"/>
 </svg>

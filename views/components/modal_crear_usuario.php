@@ -10,7 +10,7 @@
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
       <div class="modal-header border-bottom py-3 align-items-center" style="background-color: var(--craft-surface-muted);">
         <div class="d-flex align-items-center gap-2">
-          <?= svg('branding/isotipo-osito-amigurumi', ['width' => 28, 'height' => 28]) ?>
+          <?= svg('branding/isotipo-ovillo-corazon', ['width' => 28, 'height' => 28]) ?>
           <h5 class="modal-title fw-bold m-0" id="modalCrearUsuarioTitle" style="font-size: 1.05rem;">
             Registrar Miembro del Taller
           </h5>

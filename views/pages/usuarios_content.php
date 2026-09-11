@@ -168,7 +168,7 @@ $usuariosList = [
                     <i class="bi bi-pencil-square"></i>
                   </button>
                   <?php if ($u['creaciones_count'] > 0): ?>
-                    <button type="button" class="btn btn-outline-secondary disabled" title="Bloqueado por clave foránea: no se puede eliminar porque tiene <?= $u['creaciones_count'] ?> amigurumis asociados">
+                    <button type="button" class="btn btn-outline-secondary disabled" title="Bloqueado por clave foránea: no se puede eliminar porque tiene <?= $u['creaciones_count'] ?> creaciones asociadas">
                       <i class="bi bi-lock-fill text-muted"></i>
                     </button>
                   <?php else: ?>
@@ -189,7 +189,7 @@ $usuariosList = [
       <i class="bi bi-shield-lock-fill text-primary fs-5"></i>
       <div>
         <strong>Integridad Referencial Garantizada (`ON DELETE RESTRICT`):</strong>
-        Un artesano con creaciones registradas en catálogo no puede ser eliminado de la base de datos hasta que sus amigurumis sean transferidos o eliminados.
+        Un artesano con creaciones registradas en catálogo no puede ser eliminado de la base de datos hasta que sus creaciones sean transferidas o eliminadas.
       </div>
     </div>
 

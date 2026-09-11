@@ -148,13 +148,13 @@ $catalogItems = [
       <div class="hero-photo-stitched-frame mx-auto">
         <div class="position-relative overflow-hidden" style="border-radius: calc(var(--craft-radius) - 4px);">
           <img src="assets/img/hero_amigurumi.jpg" 
-               alt="Colección Artesanal de Amigurumis" 
+               alt="Colección Artesanal de Creaciones en Crochet" 
                class="img-fluid hero-crafted-img" 
                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
           
           <!-- Fallback SVG Ilustrado Mejorado -->
           <div class="d-none bg-white p-4 text-center">
-            <?= svg('amigurumis/dragon-ignis', ['class' => 'img-fluid', 'style' => 'max-height: 280px;']) ?>
+            <?= svg('creaciones/dragon-ignis', ['class' => 'img-fluid', 'style' => 'max-height: 280px;']) ?>
           </div>
 
           <!-- Micro-Badge de Autoría Flotante -->

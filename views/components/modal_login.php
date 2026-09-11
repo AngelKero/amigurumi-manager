@@ -21,7 +21,7 @@
         <div class="modal-body p-4">
           <div class="text-center mb-3">
             <div class="d-inline-block p-2 rounded-circle bg-light border shadow-xs mb-2">
-              <?= svg('branding/isotipo-osito-amigurumi', ['width' => 52, 'height' => 52]) ?>
+              <?= svg('branding/isotipo-ovillo-corazon', ['width' => 52, 'height' => 52]) ?>
             </div>
             <h6 class="fw-bold text-dark font-theme-display mb-1">Portal del Artesano</h6>
             <p class="text-muted small mb-0">

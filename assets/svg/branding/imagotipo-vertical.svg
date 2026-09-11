@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 200" width="100%" height="100%" role="img" aria-label="Imagotipo Vertical Amigurumi Manager">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 200" width="100%" height="100%" role="img" aria-label="Imagotipo Vertical Crochet Manager">
   <title>Imagotipo Vertical: Símbolo Central Superior y Wordmark Inferior</title>
   <defs>
     <linearGradient id="imagoVertOvillo" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -39,7 +39,7 @@
 
   <!-- ==================== 2. TEXTO INFERIOR ==================== -->
   <g id="imagoVertTexto">
-    <!-- Título Primario: AMIGURUMI -->
+    <!-- Título Primario: CROCHET -->
     <text x="110" y="132" 
           font-family="'Fraunces', 'Georgia', serif" 
           font-weight="800" 
@@ -47,7 +47,7 @@
           letter-spacing="-0.01em" 
           text-anchor="middle" 
           fill="#8E5B74">
-      Amigurumi
+      Crochet
     </text>
 
     <!-- Título Secundario: MANAGER -->
@@ -61,12 +61,7 @@
       MANAGER
     </text>
 
-    <!-- Puntos decorativos en las 'i' -->
-    <circle cx="70" cy="116" r="2.4" fill="#D99C52"/>
-    <circle cx="123" cy="116" r="2.4" fill="#D99C52"/>
-    <circle cx="152" cy="116" r="2.4" fill="#D99C52"/>
-
-    <!-- Línea decorativa pespunteada -->
+    <!-- Línea decorativa pespunteada con ojales -->
     <path d="M40 166 L180 166" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.4"/>
     <circle cx="40" cy="166" r="2" fill="#52857C"/>
     <circle cx="180" cy="166" r="2" fill="#D99C52"/>

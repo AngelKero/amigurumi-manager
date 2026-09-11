@@ -50,3 +50,32 @@
   2. `views/components/panel_sidebar.php`: Actualizada la clase activa para cubrir tanto `'creaciones'` como el alias retrocompatible `'amigurumis'`.
 - **Verificación:** Probado mediante HTTP curl en `http://localhost:8000/creaciones.php` validando la presencia de `aside.panel-sidebar-card`, estructura de columnas `col-lg-3` + `col-lg-9`, enlace activo en "Inventario & Creaciones", y comprobando que `index.php`, `detalle.php` y `formulario.php` mantienen su ancho completo limpio sin sidebar.
 
+## Hito Completado: Actualización Integral de Identidad Visual a Crochet General
+- **User Request:** *"Aun hay identidad visual que sigue haciendo referencia a que solo es amigurumis, cambiala, usa tus skills"*
+- **Acciones Ejecutadas con Skills (`brand-identity` & `logo-generator`):**
+  1. **Imagotipo Horizontal (`assets/svg/branding/imagotipo-horizontal.svg`):**
+     - Sustituido "Amigurumi Manager" por **"Crochet Manager"** (Fraunces 800 + Outfit 700).
+     - Calibrado el `viewBox` (`0 0 390 90`) y espaciados para erradicar cualquier recorte de texto en el margen derecho.
+     - Conservado el isotipo maestro de ovillo, gancho y corazón artesanal con bajada *"Micro-ERP • Control de Costos, Stock & Pedidos"*.
+  2. **Logotipo Taller Artesanal (`assets/svg/branding/logotipo-taller-artesanal.svg`):**
+     - Sustituido "AMIGURUMI TALLER & ERP" por **"CROCHET TALLER & ERP"** con serifa cálida `Fraunces` y ojales textiles bordados.
+     - Subtítulo ajustado: *"PIEZAS TEJIDAS A MANO • EDICIONES ARTESANALES"*.
+  3. **Isologo Sello Circular del Taller (`assets/svg/branding/isologo-sello-taller.svg`):**
+     - Texto en trayectoria curva perimetral actualizado a **"CROCHET MANAGER"**.
+     - Motivo central actualizado a un emblema universal de crochet: ovillo de hilaza texturizada con gancho dorado en diagonal y corazón de hebra.
+  4. **Isologo Medallón de Calidad (`assets/svg/branding/isologo-medallon-garantia.svg`):**
+     - Listón perimetral inferior actualizado a **"CROCHET MANAGER"** con tipografía Fraunces 700.
+  5. **Logotipos Wordmark (`logotipo-crochet-manager.svg` & `logotipo-amigurumi-manager.svg`):**
+     - Creado `logotipo-crochet-manager.svg` y sincronizado el wordmark estilizado con *"Crochet Manager"*.
+  6. **Imagotipo Vertical (`assets/svg/branding/imagotipo-vertical.svg`):**
+     - Actualizado a **"Crochet MANAGER"** con isotipo de ovillo/gancho central.
+  7. **Vistas y Componentes PHP:**
+     - `panel_sidebar.php`: Actualizado el avatar del perfil `@admin (Artesano Titular)` al isotipo maestro `isotipo-ovillo-corazon.svg`.
+     - `modal_login.php` y `modal_crear_usuario.php`: Actualizados los avatares e iconos de cabecera a `isotipo-ovillo-corazon.svg`.
+     - `usuarios_content.php`: Actualizado el microcopy de claves foráneas a *"creaciones asociadas"*.
+     - `catalogo_content.php`: Actualizado el texto alternativo del Hero a *"Colección Artesanal de Creaciones en Crochet"*.
+  8. **Documentación de Marca (`docs/identidad-visual.md`):**
+     - Actualizado el manual maestro a la versión 2.0.0 bajo la arquitectura unificada de Crochet Manager.
+- **Verificación:** 0 ocurrencias de "Amigurumi Manager" o "AMIGURUMI" en la suite de branding vectorial; validada la inyección limpia de `CROCHET MANAGER` y `CROCHET TALLER & ERP` en HTTP en vivo.
+
+
