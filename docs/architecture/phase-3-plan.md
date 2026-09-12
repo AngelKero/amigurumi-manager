@@ -14,10 +14,10 @@ La **Fase 3** implementa la capa de backend completa para el sistema **Crochet M
 | **3.2** | Autenticación Stateless & Bearer Middleware | ✅ **Completado & Verificado** | 69 / 69 OK | [subfase-3.2-auth.md](../testing/subfase-3.2-auth.md) |
 | **3.3** | Gestión de Usuarios, Roles RBAC & Bajas Lógicas | ✅ **Completado & Verificado** | 105 / 105 OK | [subfase-3.3-usuarios.md](../testing/subfase-3.3-usuarios.md) |
 | **3.4** | Catálogo, Creaciones & Ciclo de Vida de Fotos | ✅ **Completado & Verificado** | 126 / 126 OK | [subfase-3.4-creaciones.md](../testing/subfase-3.4-creaciones.md) |
-| **3.5** | Pedidos, Transacciones Atómicas & WhatsApp | ⏳ Pendiente | ~60 previstas | `docs/testing/subfase-3.5-pedidos.md` |
+| **3.5** | Pedidos, Transacciones Atómicas & WhatsApp | ✅ **Completado & Verificado** | 139 / 139 OK | [subfase-3.5-pedidos.md](../testing/subfase-3.5-pedidos.md) |
 | **3.6** | Auditoría Integral de Seguridad & Regresión | ⏳ Pendiente | Suite completa | `docs/testing/subfase-3.6-seguridad.md` |
 
-**Total Acumulado a la fecha:** **393 / 393 aserciones aprobadas (100% OK)**.
+**Total Acumulado a la fecha:** **532 / 532 aserciones aprobadas (100% OK)**.
 
 ---
 

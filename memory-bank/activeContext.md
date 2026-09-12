@@ -1,5 +1,45 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
+## Hito Completado & Verificado: Subfase 3.5: Pedidos, Transacciones Atómicas & Notificaciones WhatsApp (Fase 3)
+
+- **User Request:**
+  - _"Comienza con la siguiente fase"_ (Ejecutar e implementar Subfase 3.5).
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.6)**
+- **Alcance Implementado y Verificado de la Subfase 3.5:**
+  1. **`App\Repositories\PedidoRepository` (`app/Repositories/PedidoRepository.php`):**
+     - Capa de persistencia PDO con 100% prepared statements parametrizados sobre SQLite.
+     - `findById(int $id)`: Recuperación hidratada de pedidos con datos anidados de creación y artesano creador (`creacion_nombre`, `creacion_precio`, `creacion_artesano_id`, `creacion_artesano_username`).
+     - `listAll(array $filters, int $limit, int $offset, ?int $artesanoId = null)`: Listado con filtros (`estado_pedido`, `estado_pago`, `creacion_id`, `busqueda`, `activo`), ordenación multieje (`recientes`, `antiguos`, `precio_desc`, `precio_asc`, `cantidad_desc`) y aislamiento por creador (artesano solo ve pedidos de sus piezas; admin ve todos).
+     - `countAll(array $filters, ?int $artesanoId = null)`: Conteo total normalizado para paginación estructurada.
+     - `createAtomic(array $data, bool $isCustomOrder)`: Transacción serializada `BEGIN IMMEDIATE TRANSACTION` para validar stock disponible, decrementar `creaciones.cantidad_stock` (solo para stock físico; piezas por encargo o con `$isCustomOrder = true` no descuentan existencias) y congelar `precio_final = creacion.precio * cantidad` en el servidor. Lanza HTTP 409 si el stock es insuficiente.
+     - `updateStatus(int $id, string $estadoPedido, ?string $estadoPago = null)`: Actualización de avance de confección y cobro con `actualizado_en = datetime('now', 'localtime')`.
+     - `cancelOrderAtomic(int $id)`: Transacción serializada con **idempotencia estricta** (falla si ya estaba cancelado con HTTP 409 impidiendo doble restitución), actualiza `estado_pedido = 'Cancelado'`, `actualizado_en` y restituye exactamente las unidades reservadas a `creaciones.cantidad_stock`.
+     - `softDelete(int $id)` & `restore(int $id)`: Ciclo universal de baja lógica (`activo = 0`, `eliminado_en`) y reactivación formal sin borrados físicos.
+  2. **`App\Services\PedidoService` (`app/Services/PedidoService.php`):**
+     - `buildWhatsAppLink(string $phone, string $clientName, int $orderId, string $creationName)`: Normalización de teléfonos nacionales a formato internacional E.164 (+52 a 10 dígitos) y generación de URL `https://wa.me/...` con mensaje pre-redactado codificado en `rawurlencode`. Retorna `null` si el teléfono es inválido (< 8 dígitos).
+     - `requestPublicOrder(array $input)`: Endpoint público de compra/encargo (modal de checkout). El servidor calcula y congela `precio_final = creacion.precio * cantidad` (el cliente NUNCA envía el precio). Validación atómica de existencias y respuesta enriquecida con `precio_final_formateado` (`$450.00 MXN`).
+     - `createManualOrder(array $input, array $currentUser)`: Registro de encargos acordados fuera de línea por artesanos o administradores, con validaciones estrictas de dominio y protección IDOR (un artesano no puede crear pedidos para creaciones de otros).
+     - `listOrders(array $filters, int $page, int $limit, array $currentUser)`: Despacho paginado con aislamiento de artesano automático, paginación normalizada vía `PaginationHelper` y enriquecimiento dual (`precio_final_formateado`, `enlace_whatsapp`).
+     - `getOrderById(int $id, array $currentUser)`: Inspección detallada con salvaguarda IDOR (`ensureArtisanOwnership`) respondiendo HTTP 403 a terceros.
+     - `updateOrderStatus(int $id, string $orderStatus, ?string $paymentStatus, array $currentUser)`: Validación de estados permitidos y salvaguarda IDOR. Si el estado es `'Cancelado'`, delega automáticamente a `cancelOrder()`.
+     - `cancelOrder(int $id, array $currentUser)`: Cancelación atómica con restitución de inventario físico, feedback de unidades reintegradas y salvaguarda IDOR.
+     - `deleteOrder()` & `restoreOrder()`: Ciclo de baja lógica y reactivación con salvaguarda IDOR y detección de colisión HTTP 409.
+  3. **Suite de 5 Controladores REST Delgados en `api/pedidos/`:**
+     - `api/pedidos/index.php` (GET, protegido `RoleGuard::artisanOrAdmin()`, con filtros, paginación y aislamiento multi-artesano).
+     - `api/pedidos/solicitar.php` (POST, público, validación y transacción atómica).
+     - `api/pedidos/crear.php` (POST, protegido `RoleGuard::artisanOrAdmin()`, encargo manual).
+     - `api/pedidos/cambiar-estado.php` (POST, protegido, estados permitidos y `actualizado_en`).
+     - `api/pedidos/cancelar.php` (POST, protegido, cancelación idempotente y restitución de existencias).
+  4. **Suite Automatizada de Pruebas CLI & HTTP (`tests/test-subfase-3.5.php`):**
+     - **139 / 139 aserciones aprobadas exitosamente (100% OK en 565.57 ms)**.
+     - Registro de logs crudos en `logs/subfase-3.5-cli.log` y trazas HTTP curl completas en `logs/subfase-3.5-http.log`.
+     - **Total Acumulado Global Fase 3:** **532 / 532 aserciones aprobadas (100% OK en verde)** (3.1: 93, 3.2: 69, 3.3: 105, 3.4: 126, 3.5: 139).
+  5. **Reporte Ejecutivo Formal de QA:**
+     - Documentado en [`docs/testing/subfase-3.5-pedidos.md`](../docs/testing/subfase-3.5-pedidos.md) con evidencias JSON, verificación SQLite y compás de espera.
+  6. **Compás de Espera Inviolable:** Detención total para solicitar autorización explícita antes de la Subfase 3.6.
+
+---
+
 ## Hito Completado: Documentación Integral del Proceso de Todas las Fases (Fases 1 a 5 y Fase 0)
 
 - **User Requests Recientes:**

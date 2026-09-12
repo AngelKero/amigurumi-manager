@@ -7,15 +7,15 @@
 ## 📊 Estado de Reportes por Subfase
 
 | Subfase | Nombre del Dominio | Script CLI | Aserciones | Estado | Reporte Ejecutivo |
-| :---: | :--- | :--- | :---: | :---: | :--- |
+| :---: | :--- | :--- | :--- | :---: | :--- |
 | **3.1** | Infraestructura Nuclear & Core | `tests/test-subfase-3.1.php` | 93 / 93 (100%) | ✅ Aprobado | [Ver Reporte 3.1](./subfase-3.1-core.md) |
 | **3.2** | Autenticación Stateless & Bearer | `tests/test-subfase-3.2.php` | 69 / 69 (100%) | ✅ Aprobado | [Ver Reporte 3.2](./subfase-3.2-auth.md) |
 | **3.3** | Usuarios, Roles RBAC & Bajas Lógicas | `tests/test-subfase-3.3.php` | 105 / 105 (100%) | ✅ Aprobado | [Ver Reporte 3.3](./subfase-3.3-usuarios.md) |
 | **3.4** | Catálogo, Creaciones & Ciclo de Imágenes | `tests/test-subfase-3.4.php` | 126 / 126 (100%) | ✅ Aprobado | [Ver Reporte 3.4](./subfase-3.4-creaciones.md) |
-| **3.5** | Pedidos & Transacciones Atómicas | `tests/test-subfase-3.5.php` | Pendiente | ⏳ Siguiente | *En espera de aprobación* |
+| **3.5** | Pedidos & Transacciones Atómicas | `tests/test-subfase-3.5.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 3.5](./subfase-3.5-pedidos.md) |
 | **3.6** | Auditoría Integral de Seguridad | `tests/test-subfase-3.6.php` | Pendiente | ⏳ Siguiente | *En espera de aprobación* |
 
-**Total Acumulado Actual:** **393 / 393 Aserciones Aprobadas (100% OK)**
+**Total Acumulado Actual:** **532 / 532 Aserciones Aprobadas (100% OK)**
 
 
 ## 🏛️ Arquitectura de Testing en 3 Niveles
