@@ -39,6 +39,13 @@ class Request {
     }
 
     /**
+     * Alias de get() para obtener parámetros de la cadena de consulta (?param=val).
+     */
+    public static function query(?string $key = null, mixed $default = null): mixed {
+        return self::get($key, $default);
+    }
+
+    /**
      * Obtiene un parámetro enviado por formulario ($_POST) o todo el array.
      */
     public static function post(?string $key = null, mixed $default = null): mixed {

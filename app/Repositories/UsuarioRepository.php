@@ -222,4 +222,42 @@ class UsuarioRepository {
         $stmt = $this->pdo->query('SELECT COUNT(*) FROM usuarios');
         return (int)$stmt->fetchColumn();
     }
+
+    /**
+     * Obtiene una lista paginada de usuarios con el conteo de creaciones asociadas.
+     * 
+     * @param int $limit Límite de resultados
+     * @param int $offset Desplazamiento
+     * @return array Lista de usuarios con creaciones_asociadas
+     */
+    public function listAllWithCreationsCount(int $limit = 20, int $offset = 0): array {
+        $stmt = $this->pdo->prepare('
+            SELECT u.id, u.username, u.rol, u.creado_en, COUNT(c.id) AS creaciones_asociadas
+            FROM usuarios u
+            LEFT JOIN creaciones c ON c.artesano_id = u.id
+            GROUP BY u.id
+            ORDER BY u.id ASC
+            LIMIT :limit OFFSET :offset
+        ');
+        $stmt->bindValue(':limit', max(1, $limit), PDO::PARAM_INT);
+        $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+        return array_map(function ($row) {
+            $row['id'] = (int)$row['id'];
+            $row['creaciones_asociadas'] = (int)$row['creaciones_asociadas'];
+            return $row;
+        }, $rows);
+    }
+
+    /**
+     * Cuenta cuántas creaciones tiene registradas un usuario en el catálogo.
+     */
+    public function countCreationsByUser(int $userId): int {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM creaciones WHERE artesano_id = :user_id');
+        $stmt->execute([':user_id' => $userId]);
+        return (int)$stmt->fetchColumn();
+    }
 }
+
