@@ -142,15 +142,21 @@ proyecto-web/
 │       ├── CurrencyHelper.php         # Conversión bidireccional centavos enteros <-> pesos MXN y enriquecimiento
 │       ├── PaginationHelper.php       # Cálculo unificado de límites, offsets y metadatos de paginación
 │       └── SvgHelper.php              # Helper de renderizado vectorial SVG con caché en memoria
-├── docs/ (symlinked to .docs/)
-│   ├── README.md                      # (Documentation Hub & Navigation Map)
-│   ├── phase-3-backend-architecture-plan.md # (Master Architecture Plan for Phase 3)
-│   ├── data-model.md / .es.md         # (Master Architecture Index & Physical ERD)
-│   ├── database-schema.md / .es.md    # (Relational DDL, Data Dictionaries)
-│   ├── auth-flow.md / .es.md          # (Bearer Token Lifecycle & RBAC Matrix)
-│   ├── api-design.md / .es.md         # (REST Endpoints & Standard JSON Payloads)
-│   ├── database-testing.md / .es.md   # (SQLite Terminal Verification Guide)
-│   └── qa-audit-report.md             # (Comprehensive Multi-Axis Quality Assurance Report)
+├── docs/                              # 📚 DOCUMENTACIÓN MODULAR POR DOMINIOS (Zero Monoliths)
+│   ├── README.md                      # Hub maestro con mapa de navegación y dominios
+│   ├── api/                           # Estándares HTTP y especificación de endpoints REST
+│   │   ├── README.md, auth.md, creaciones.md, pedidos.md, usuarios.md
+│   ├── architecture/                  # Arquitectura limpia, contratos, seguridad y ADRs
+│   │   ├── README.md, phase-3-plan.md, contracts.md, security.md
+│   │   └── decisiones/                # Registro formal de ADRs (ADR-001 a ADR-015 + README.md)
+│   ├── database/                      # Modelo relacional físico, DDL SQLite y pruebas
+│   │   ├── README.md (con ERD Mermaid), schema.md, testing.md
+│   │   └── (setup.php y seed.sql residen en root y database/)
+│   ├── design-system/                 # "Algodón Nórdico": tokens, identidad, activos e interfaces
+│   │   ├── README.md, brand-identity.md, svg-assets.md, wireframes.md, audits.md
+│   ├── testing/                       # Protocolo de testing en 3 niveles y reportes ejecutivos QA
+│   │   ├── README.md, subfase-3.1-core.md, subfase-3.2-auth.md, subfase-3.3-usuarios.md, qa-audit-report.md
+│   └── archive/                       # Wireframes HTML y planes históricos consolidados
 ├── memory-bank/
 │   ├── projectbrief.md
 │   ├── productContext.md
@@ -206,5 +212,5 @@ proyecto-web/
 - **Atomic Stock Transactions & Idempotent Cancellation:** Creating an order requires `BEGIN IMMEDIATE TRANSACTION`, checking available stock and updating `cantidad_stock`. Cancelling an order via `POST /api/pedidos/cancelar.php` validates that it was not previously cancelled, restoring units to `cantidad_stock` and updating `actualizado_en`.
 - **Role-Based Protection & Root Admin Lockout:** Administrative routes are strictly locked to authenticated users (`admin` or `artesano`). User ID #1 is protected from role modification or deletion.
 - **Secure Image Uploads, Fallback SVG & Asset Lifecycle:** Binary files validated by MIME type, size limit ($\le 5\text{MB}$), unique cryptographic file naming, stored in `/uploads/`. If no image is provided, `CreacionService` automatically assigns a thematic SVG vector from `assets/svg/piezas/`. When updating a creation, the previous image file is unlinked (`unlink()`). However, **images are NEVER unlinked on soft-deletion (`activo = 0`)** so historical orders preserve product thumbnails.
-- **SQL Injection Prevention:** 100% parameterized PDO prepared statements.
 - **Universal Soft Deletion Standard (Zero Physical Deletions):** Direct SQL `DELETE FROM` statements are strictly prohibited across `usuarios`, `creaciones`, and `pedidos`. All removals execute `UPDATE <table> SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1`. Read queries filter `activo = 1` by default, protecting historical orders, creator attributions, and revoking active Bearer tokens instantly on deactivated accounts.
+- **Documentation Architecture Standard (Zero Monoliths):** Single monolithic markdown files are strictly prohibited. Documentation is partitioned into domain directories (`docs/api/`, `docs/architecture/`, `docs/database/`, `docs/design-system/`, `docs/testing/`, `docs/archive/`), formal numbered ADRs in `docs/architecture/decisiones/`, and each directory provides a dedicated `README.md` index reachable from the root `docs/README.md`.

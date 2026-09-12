@@ -1,6 +1,31 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Completado & Verificado: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores, Roles RBAC & Regla Universal de Borrado Lógico (Fase 3)
+## Hito Completado & Verificado: Modularización Integral de la Documentación & Erradicación de Monolitos (Zero Monoliths)
+
+- **User Request:**
+  - _"Al chile te lo tengo que decir, haz estado creando monilitos, pero no de codigo, si no de documentacion, debes de analizar como acomodar mejor la carpeta docs, crear carpetas, por cada archivo grande revisar si se puede separar en mas documentos y navegar por indices, etc. Usa alguna herramienta o skill para eso, sigue estadarades, si no busca alguna skill en internet. Y despues de todo eso actualiza tu memory bank y tus rules y workflows"_
+- **Estado:** **100% COMPLETADO, VERIFICADO Y GUARDAGIRADO**
+- **Alcance Implementado y Verificado:**
+  1. **Estructura Modular por Dominios (`docs/`):**
+     - `docs/README.md`: Hub maestro de navegación con tarjetas visuales, enlaces relativos y mapa de navegación.
+     - `docs/architecture/`: Documentación de arquitectura limpia (`README.md`, `phase-3-plan.md`, `contracts.md`, `security.md`).
+     - `docs/architecture/decisiones/`: Registro formal de Decisiones de Arquitectura (ADRs) numerados del `ADR-001` al `ADR-015` con índice en `decisiones/README.md`.
+     - `docs/api/`: Contratos de endpoints REST por recurso (`README.md`, `auth.md`, `creaciones.md`, `pedidos.md`, `usuarios.md`).
+     - `docs/database/`: Modelo relacional y pruebas (`README.md` con ERD Mermaid físico, `schema.md`, `testing.md`).
+     - `docs/design-system/`: Tokens y activos visuales (`README.md`, `brand-identity.md`, `svg-assets.md`, `wireframes.md`, `audits.md`).
+     - `docs/testing/`: Protocolo de pruebas en 3 niveles y reportes ejecutivos (`README.md`, `subfase-3.1-core.md`, `subfase-3.2-auth.md`, `subfase-3.3-usuarios.md`, `qa-audit-report.md`).
+     - `docs/archive/`: Wireframes históricos y planes consolidados previos.
+  2. **Erradicación Total de Monolitos:**
+     - Eliminados los 19 archivos planos antiguos (`docs/api-design.*`, `docs/phase-3-*`, `docs/database-schema.*`, `docs/data-model.*`, `docs/database-testing.*`, `docs/auth-flow.*`, `docs/identidad-visual.md`, `docs/svg-assets-and-helper.md`, `docs/wireframes.*`, `docs/ui-ux-*`).
+  3. **Guardarraíl en Reglas y Workflows:**
+     - Añadido **Documentation Architecture Guardrail (Zero Monoliths)** en `.agents/rules/general.md` y `.agents/workflows/general.md`.
+  4. **Estado Actual del Proyecto:**
+     - Subfases 3.1, 3.2 y 3.3 completadas y verificadas al 100% con 267/267 aserciones aprobadas.
+     - Subfase 3.4 (Catálogo y Ciclo de Vida de Creaciones) completamente planificada y especificada, en compás de espera de aprobación explícita del usuario para iniciar codificación.
+
+---
+
+## Hito Previo: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores, Roles RBAC & Regla Universal de Borrado Lógico (Fase 3)
 
 - **User Requests:**
   - _"No faltan operaciones en la api?, como modificar el nombre, restaurar contraseña en caso de perderla y eliminar usuarios?"_
@@ -42,8 +67,8 @@
      - [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php): **105/105 aserciones pasaron exitosamente (100% OK)** (incluye `reactivar.php`, `?estado=...` y login reactivado).
      - **Total Acumulado:** **267 / 267 aserciones aprobadas (100% OK en verde)**.
   8. Registro de logs crudos en `logs/subfase-3.1-cli.log`, `logs/subfase-3.2-cli.log`, `logs/subfase-3.3-cli.log` y trazas HTTP.
-  9. Documentación bilingüe humana en [`docs/api-design.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) y [`docs/api-design.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md) incorporando todos los endpoints, reglas de IDOR, ciclo de vida de imágenes sin borrado físico de fotos en soft-delete, y selección de Punto F (`GET /api/creaciones/artesanos.php`).
-  10. Documentación de esquemas relacionales en [`docs/database-schema.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md), [`docs/database-schema.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md), [`docs/data-model.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md) y [`docs/data-model.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.md) incorporando `pedidos.actualizado_en`.
+  9. Documentación modular de la API en [`docs/api/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/) (`README.md`, `auth.md`, `creaciones.md`, `pedidos.md`, `usuarios.md`) incorporando todos los endpoints, reglas de IDOR, ciclo de vida de imágenes sin borrado físico en soft-delete, y selección de Punto F (`GET /api/creaciones/artesanos.php`).
+  10. Documentación modular de base de datos en [`docs/database/`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database/) (`README.md`, `schema.md`, `testing.md`) incorporando `pedidos.actualizado_en` y el modelo físico ERD.
   11. Reportes ejecutivos formales de QA en `docs/testing/subfase-3.1-core.md`, `docs/testing/subfase-3.2-auth.md` (69 aserciones) y `docs/testing/subfase-3.3-usuarios.md` (105 aserciones).
   12. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.4.
 - **Entregables Implementados y Verificados:**

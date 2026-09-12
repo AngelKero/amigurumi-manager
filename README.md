@@ -45,33 +45,43 @@ Para acceder a las herramientas administrativas del taller textil (Nueva Creaci�
 
 ---
 
-## 🏛️ Arquitectura del Sistema (Clean Code & Modular)
+## 🏛️ Arquitectura del Sistema (Clean Architecture & Modular)
 
-El proyecto sigue una arquitectura desacoplada basada en la habilidad `clean-code-architect` y los principios SOLID, sin dependencias de frameworks externos:
+El proyecto sigue una arquitectura desacoplada basada en Clean Architecture y los principios SOLID, sin dependencias de frameworks externos:
 
 ```
 proyecto-web/
+├── app/                            # 🟢 CAPA BACKEND EXCLUSIVA (Protegida por .htaccess)
+│   ├── autoload.php                # Autoloader PSR-4 nativo & ErrorHandler global
+│   ├── config.php                  # Configuración centralizada de entorno
+│   ├── Core/                       # Database Singleton, TokenManager, ErrorHandler, Request, Response
+│   ├── Repositories/               # Capa de Persistencia (100% del SQL parametrizado)
+│   ├── Services/                   # Reglas de Negocio, validaciones y ciclo de vida
+│   ├── Middleware/                 # AuthGuard (Bearer token) y RoleGuard (RBAC)
+│   └── Utils/                      # Helpers de Servidor (CurrencyHelper, PaginationHelper, SvgHelper)
 ├── views/                          # Sistema de plantillas y componentes modulares PHP
 │   ├── layouts/main.php            # Layout maestro (<head>, scripts, decoraciones y modals)
 │   ├── components/                 # Barra de navegación, footer, tarjetas y modales
 │   └── pages/                      # Contenido específico de cada vista (catalogo, creaciones, etc.)
-├── src/                            # Código fuente modular (Backend y Activos Frontend)
+├── src/                            # 🔵 EXCLUSIVO FRONTEND (0 archivos PHP)
 │   ├── css/                        # Estilos modulares organizados por capas ITCSS (Algodón Nórdico)
-│   ├── js/                         # Scripts cliente desacoplados en ES Modules
-│   ├── Utils/                      # Helpers universales (CurrencyHelper, SvgHelper, etc.)
-│   ├── Core/                       # Autoloader y Formateador de Respuestas JSON
-│   ├── Database/                   # Conexión Singleton PDO SQLite con Foreign Keys
-│   ├── Middleware/                 # Guardián de sesión y autorización por rol
-│   ├── Repositories/               # Capa DAO (100% del SQL aislado)
-│   └── Services/                   # Reglas de negocio (anti-spoofing, subida de fotos y unlink)
-├── api/                            # Fachada de Controladores HTTP livianos (JSON APIs)
-│   ├── auth/                       # login.php, logout.php, me.php
-│   ├── creaciones/                 # leer.php, crear.php, actualizar.php, eliminar.php
-│   ├── pedidos/                    # solicitar.php, listar.php, actualizar_estado.php
-│   └── usuarios/                   # index.php (CRUD de administradores)
+│   └── js/                         # Scripts cliente desacoplados en ES Modules
+├── api/                            # 🌐 Controladores REST Delgados (JSON APIs)
+│   ├── auth/                       # login.php, logout.php, me.php, cambiar-password.php
+│   ├── creaciones/                 # index.php, artesanos.php, crear.php, actualizar.php, eliminar.php...
+│   ├── pedidos/                    # index.php, solicitar.php, crear.php, cambiar-estado.php, cancelar.php
+│   └── usuarios/                   # index.php, crear.php, cambiar-rol.php, actualizar.php, eliminar.php...
 ├── database/                       # Almacenamiento físico SQLite protegido (seed.sql, database.sqlite)
 ├── uploads/                        # Directorio para fotografías reales de creaciones
-└── docs/                           # Documentación técnica de arquitectura y pruebas
+├── tests/                          # 🧪 Suites automatizadas de pruebas CLI
+├── logs/                           # 🪵 Trazas de ejecución CLI y volcados HTTP (protegido)
+└── docs/                           # 📚 Documentación técnica modular por dominios (Zero Monoliths)
+    ├── README.md                   # Hub maestro de navegación
+    ├── api/                        # Especificación OpenAPI-friendly de endpoints REST
+    ├── architecture/               # Contratos, seguridad y registro de ADRs (ADR-001 a ADR-015)
+    ├── database/                   # Modelo físico relacional, DDL SQLite y guías CLI
+    ├── design-system/              # Tokens "Algodón Nórdico", identidad visual y auditorías
+    └── testing/                    # Protocolo de 3 niveles y reportes de QA
 ```
 
 ---

@@ -37,8 +37,8 @@ Because multiple independent artisans register and operate autonomously, the pla
 - **Frontend Logic:**
   - `src/js/main.js` and modular ES modules (`auth.js`, `catalog.js`, `creaciones.js`, `detail.js`, `margin-calculator.js`, `orders.js`, `users.js`, `currency.js`).
 - **Documentation & Verification:**
-  - Complete `docs/` architecture documents (`database-schema.md`, `auth-flow.md`, `api-design.md`, `data-model.md`, `database-testing.md`, `identidad-visual.md`, `svg-assets-and-helper.md`, `phase-3-backend-architecture-plan.md`, `README.md`).
-  - `README.md`: Architecture overview and local execution instructions.
+  - Complete modular `docs/` architecture documents organized into 5 domains (`docs/api/`, `docs/architecture/`, `docs/database/`, `docs/design-system/`, `docs/testing/`), numbered ADRs (`docs/architecture/decisiones/`), and master navigation hub `docs/README.md`.
+  - `README.md`: Root overview and local execution instructions.
 
 ## Development Roadmap (Database-First Approach)
 1. **Phase 1: Database Implementation, Seeding & Testing** (`database/seed.sql`, CLI-only `setup.php`, `database/database.sqlite`, `.htaccess`, SQLite constraints testing).
