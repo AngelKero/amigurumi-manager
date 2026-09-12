@@ -155,6 +155,24 @@ try {
 }
 TestHelper::assertTrue($caughtEmpty, 'authenticate() lanza InvalidArgumentException 422 ante campos vacíos');
 
+// Cambio de contraseña propio: clave actual errónea (HTTP 401)
+$caughtChangeWrong = false;
+try {
+    $authService->changePassword(1, 'clave_incorrecta', 'nuevaClave123');
+} catch (\RuntimeException $e) {
+    $caughtChangeWrong = ($e->getCode() === 401);
+}
+TestHelper::assertTrue($caughtChangeWrong, 'changePassword() lanza RuntimeException 401 ante clave actual errónea');
+
+// Cambio de contraseña propio: clave nueva demasiado corta (HTTP 422)
+$caughtChangeShort = false;
+try {
+    $authService->changePassword(1, 'admin123', '123');
+} catch (\InvalidArgumentException $e) {
+    $caughtChangeShort = ($e->getCode() === 422);
+}
+TestHelper::assertTrue($caughtChangeShort, 'changePassword() lanza InvalidArgumentException 422 ante clave menor a 6 caracteres');
+
 // =============================================================================
 // 3. MIDDLEWARE AUTHGUARD & ROLEGUARD
 // =============================================================================
@@ -277,6 +295,40 @@ TestHelper::assertTrue(
     in_array($corsRes['status'], [200, 204], true),
     'Preflight CORS OPTIONS en /api/auth/login.php responde con código válido (' . $corsRes['status'] . ')'
 );
+
+// 4.10 Cambio de contraseña propio vía HTTP POST /api/auth/cambiar-password.php
+$loginAnaRes = TestHelper::curl('POST', 'http://localhost:8000/api/auth/login.php', [
+    'Content-Type: application/json'
+], json_encode(['username' => 'artesana_ana', 'password' => 'admin123']));
+$anaToken = (string)($loginAnaRes['json']['datos']['token'] ?? '');
+
+// Intento con clave actual errónea
+$changeWrongRes = TestHelper::curl('POST', 'http://localhost:8000/api/auth/cambiar-password.php', [
+    'Authorization: Bearer ' . $anaToken,
+    'Content-Type: application/json',
+], json_encode(['password_actual' => 'clave_falsa_999', 'nueva_password' => 'miNuevaClave2026']));
+TestHelper::assertSame(401, $changeWrongRes['status'], 'HTTP POST /api/auth/cambiar-password.php con clave errónea devuelve 401');
+
+// Cambio exitoso
+$changeSuccessRes = TestHelper::curl('POST', 'http://localhost:8000/api/auth/cambiar-password.php', [
+    'Authorization: Bearer ' . $anaToken,
+    'Content-Type: application/json',
+], json_encode(['password_actual' => 'admin123', 'nueva_password' => 'miNuevaClave2026']));
+TestHelper::assertSame(200, $changeSuccessRes['status'], 'HTTP POST /api/auth/cambiar-password.php con datos válidos devuelve 200 OK');
+TestHelper::assertTrue($changeSuccessRes['json']['exito'] ?? false, 'Respuesta de cambio de clave contiene exito: true');
+
+// Verificar login con la nueva contraseña
+$loginNewPassRes = TestHelper::curl('POST', 'http://localhost:8000/api/auth/login.php', [
+    'Content-Type: application/json'
+], json_encode(['username' => 'artesana_ana', 'password' => 'miNuevaClave2026']));
+TestHelper::assertSame(200, $loginNewPassRes['status'], 'Login exitoso con la nueva clave cambiada por el usuario');
+
+// Restaurar clave original de artesana_ana para mantener idempotencia
+$newAnaToken = (string)($loginNewPassRes['json']['datos']['token'] ?? '');
+TestHelper::curl('POST', 'http://localhost:8000/api/auth/cambiar-password.php', [
+    'Authorization: Bearer ' . $newAnaToken,
+    'Content-Type: application/json',
+], json_encode(['password_actual' => 'miNuevaClave2026', 'nueva_password' => 'admin123']));
 
 // =============================================================================
 // RESUMEN FINAL

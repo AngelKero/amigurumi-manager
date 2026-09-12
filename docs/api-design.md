@@ -17,28 +17,36 @@ Welcome to the comprehensive **Crochet Manager REST API (Micro-ERP & Textile Cat
    - [2.7 Stateless Bearer Authentication (HMAC-SHA256)](#27-stateless-bearer-authentication-hmac-sha256)
    - [2.8 Role-Based Access Control (RBAC)](#28-role-based-access-control-rbac)
    - [2.9 Zero HTML Error Leaks (`App\Core\ErrorHandler`)](#29-zero-html-error-leaks-appcoreerrorhandler)
+   - [2.10 Universal Logical Deletion Standard (Zero Physical Deletions)](#210-universal-logical-deletion-standard-zero-physical-deletions)
 3. [Module 1: Authentication & Session (`api/auth/`)](#3-module-1-authentication--session-apiauth)
    - [`POST /api/auth/login.php` — Log In](#post-apiauthloginphp--log-in)
    - [`POST /api/auth/logout.php` — Log Out](#post-apiauthlogoutphp--log-out)
    - [`GET /api/auth/me.php` — Retrieve Active Profile](#get-apiauthmephp--retrieve-active-profile)
+   - [`POST /api/auth/cambiar-password.php` — Change Own Password](#post-apiauthcambiar-passwordphp--change-own-password)
 4. [Module 2: Creator Directory & RBAC Roles (`api/usuarios/`)](#4-module-2-creator-directory--rbac-roles-apiusuarios)
-   - [`GET /api/usuarios/index.php` — Creator Directory](#get-apiusuariosindexphp--creator-directory)
+   - [`GET /api/usuarios/index.php` — Creator Directory & State Filter](#get-apiusuariosindexphp--creator-directory--state-filter)
    - [`POST /api/usuarios/crear.php` — Register Creator](#post-apiusuarioscrearphp--register-creator)
    - [`POST /api/usuarios/cambiar-rol.php` — Modify Role & Root Safeguard](#post-apiusuarioscambiar-rolphp--modify-role--root-safeguard)
+   - [`POST /api/usuarios/actualizar.php` — Modify Username / Profile](#post-apiusuariosactualizarphp--modify-username--profile)
+   - [`POST /api/usuarios/restablecer-password.php` — Reset Password (Admin Recovery)](#post-apiusuariosrestablecer-passwordphp--reset-password-admin-recovery)
+   - [`POST /api/usuarios/eliminar.php` — Delete User & Safeguards](#post-apiusuarioseliminarphp--delete-user--safeguards)
+   - [`POST /api/usuarios/reactivar.php` — Reactivate User Account](#post-apiusuariosreactivarphp--reactivate-user-account)
 5. [Module 3: Catalog, Creations & Inventory (`api/creaciones/`)](#5-module-3-catalog-creations--inventory-apicreaciones)
    - [`GET /api/creaciones/index.php` — Public Catalog with Multi-Axis Filters](#get-apicreacionesindexphp--public-catalog-with-multi-axis-filters)
+   - [`GET /api/creaciones/artesanos.php` — Public Artisans Filter Directory](#get-apicreacionesartesanosphp--public-artisans-filter-directory)
    - [`GET /api/creaciones/detalle.php` — Complete Technical Sheet](#get-apicreacionesdetallephp--complete-technical-sheet)
    - [`POST /api/creaciones/crear.php` — Register Creation (Upload & SVG Fallback)](#post-apicreacionescrearphp--register-creation-upload--svg-fallback)
    - [`POST /api/creaciones/actualizar.php` — Edit Creation & `unlink()` Lifecycle](#post-apicreacionesactualizarphp--edit-creation--unlink-lifecycle)
    - [`POST /api/creaciones/eliminar.php` — Delete with Referential Safeguard](#post-apicreacioneseliminarphp--delete-with-referential-safeguard)
+   - [`POST /api/creaciones/restaurar.php` — Restore Archived Creation](#post-apicreacionesrestaurarphp--restore-archived-creation)
    - [`POST /api/creaciones/ajustar-stock.php` — In-Situ Quick Stock Adjustment](#post-apicreacionesajustar-stockphp--in-situ-quick-stock-adjustment)
    - [`POST /api/creaciones/toggle-encargo.php` — Toggle Commission Mode](#post-apicreacionestoggle-encargophp--toggle-commission-mode)
 6. [Module 4: Orders, Commissions & Stock Transactions (`api/pedidos/`)](#6-module-4-orders-commissions--stock-transactions-apipedidos)
    - [`POST /api/pedidos/solicitar.php` — Public Client Checkout with Atomic Reservation](#post-apipedidossolicitarphp--public-client-checkout-with-atomic-reservation)
-   - [`GET /api/pedidos/index.php` — Artisan Orders Dashboard](#get-apipedidosindexphp--artisan-orders-dashboard)
+   - [`GET /api/pedidos/index.php` — Artisan Orders Dashboard & Multi-Artisan Isolation](#get-apipedidosindexphp--artisan-orders-dashboard--multi-artisan-isolation)
    - [`POST /api/pedidos/crear.php` — Manual Commission Entry (WhatsApp / Market)](#post-apipedidoscrearphp--manual-commission-entry-whatsapp--market)
    - [`POST /api/pedidos/cambiar-estado.php` — Update Crafting & Tri-State Payment](#post-apipedidoscambiar-estadophp--update-crafting--tri-state-payment)
-   - [`POST /api/pedidos/cancelar.php` — Cancellation with Physical Stock Restitution](#post-apipedidoscancelarphp--cancellation-with-physical-stock-restitution)
+   - [`POST /api/pedidos/cancelar.php` — Idempotent Cancellation with Physical Stock Restitution](#post-apipedidoscancelarphp--idempotent-cancellation-with-physical-stock-restitution)
 7. [Frontend Developer Quickstart Guide (Modern JavaScript)](#7-frontend-developer-quickstart-guide-modern-javascript)
 
 ---
@@ -202,6 +210,20 @@ Captures all PHP errors, clears buffers via `ob_end_clean()`, and returns standa
 
 ---
 
+### 2.10 Universal Logical Deletion Standard (Zero Physical Deletions)
+Universal architectural rule across database and API:
+- **No Physical Deletions:** Destructive `DELETE FROM` statements are completely banned across all entities (`usuarios`, `creaciones`, `pedidos`).
+- **Transparent Soft Deletion:** Deletions are performed via:
+  ```sql
+  UPDATE <table> SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1;
+  ```
+- **Historical Integrity & Audit Trail:** Relational foreign keys (`ON DELETE RESTRICT`) and historic attribution remain fully preserved.
+- **Active Filter by Default:** Catalog, panel listings, credentials lookup, and token checks filter `activo = 1` by default.
+- **Immediate Token Revocation:** Deactivating an account invalidates any active Bearer Token on the very next request (**HTTP 401 Unauthorized**).
+- **Duplicate Deletion Handling:** Attempting to delete an already inactive resource yields **HTTP 409 Conflict**.
+
+---
+
 ## 3. Module 1: Authentication & Session (`api/auth/`)
 
 ### `POST /api/auth/login.php` — Log In
@@ -264,15 +286,35 @@ Captures all PHP errors, clears buffers via `ob_end_clean()`, and returns standa
 
 ---
 
+### `POST /api/auth/cambiar-password.php` — Change Own Password
+- **Access:** Authenticated (`AuthGuard: any active authenticated user`)
+- **Method:** `POST`
+- **Headers:** `Authorization: Bearer <token>`, `Content-Type: application/json`
+- **Body:** `{"password_actual": "current_pass_123", "nueva_password": "NewSecurePassword2026!"}`
+- **Validation:** Validates current password bcrypt hash, requires new password length $\ge 6$ chars.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Contraseña actualizada exitosamente.",
+  "datos": {
+    "id": 2,
+    "username": "artesana_ana"
+  }
+}
+```
+
+---
+
 ## 4. Module 2: Creator Directory & RBAC Roles (`api/usuarios/`)
 
 All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 
-### `GET /api/usuarios/index.php` — Creator Directory
+### `GET /api/usuarios/index.php` — Creator Directory & State Filter
 - **Access:** `admin`
 - **Method:** `GET`
 - **Header:** `Authorization: Bearer <token>`
-- **Query:** `?pagina=1&limite=20`
+- **Query:** `?pagina=1&limite=20&estado=activos|inactivos|todos`
 - **Success Response (HTTP 200 OK):**
 ```json
 {
@@ -283,10 +325,20 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
       "id": 1,
       "username": "admin",
       "rol": "admin",
+      "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
+      "eliminado_en": null,
       "creaciones_asociadas": 3
     }
-  ]
+  ],
+  "paginacion": {
+    "total_items": 3,
+    "pagina_actual": 1,
+    "total_paginas": 1,
+    "limite": 20,
+    "tiene_siguiente": false,
+    "tiene_anterior": false
+  }
 }
 ```
 
@@ -381,14 +433,48 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 - **Safeguards:**
   1. Root Admin Safeguard (ID #1): Cannot be deleted (HTTP 403 Forbidden).
   2. Active Session Self-Deletion: Cannot delete currently logged in account (HTTP 403 Forbidden).
-  3. Referential Integrity Check: If user owns creations in `creaciones`, deletion is blocked (HTTP 409 Conflict).
+  3. Referential Integrity Check: If user owns active creations in `creaciones`, deletion is blocked (HTTP 409 Conflict).
+  4. Logical Soft Deletion: Modifies `activo = 0` and sets `eliminado_en = datetime(...)`.
+  5. Inactive Account Detection: Attempting to delete an already inactive user yields HTTP 409 Conflict.
 - **Success Response (HTTP 200 OK):**
 ```json
 {
   "exito": true,
-  "mensaje": "Usuario eliminado exitosamente de la plataforma.",
+  "mensaje": "Usuario eliminado lógicamente de la plataforma.",
   "datos": {
-    "id": 4
+    "id": 4,
+    "activo": 0
+  }
+}
+```
+- **Error Response (HTTP 409 Conflict - Already Inactive):**
+```json
+{
+  "exito": false,
+  "error": {
+    "codigo": 409,
+    "mensaje": "El usuario ya se encuentra inactivo o fue eliminado previamente."
+  }
+}
+```
+
+---
+
+### `POST /api/usuarios/reactivar.php` — Reactivate User Account
+- **Access:** `admin`
+- **Method:** `POST`
+- **Headers:** `Authorization: Bearer <token>`, `Content-Type: application/json`
+- **Body:** `{"id": 4}`
+- **Operation:** Sets `activo = 1`, `eliminado_en = NULL`, allowing the user to log in again and reusing their account without violating SQLite `UNIQUE(username)`.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Cuenta de usuario reactivada exitosamente.",
+  "datos": {
+    "id": 4,
+    "username": "artesano_carlos",
+    "activo": 1
   }
 }
 ```
@@ -441,6 +527,32 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 
 ---
 
+### `GET /api/creaciones/artesanos.php` — Public Artisans Filter Directory
+- **Access:** Public
+- **Method:** `GET`
+- **Purpose:** Public endpoint listing all active creators who currently have published items in the catalog. Used to populate `#filterArtisan` in `index.php`.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Listado de creadores con piezas activas obtenido exitosamente.",
+  "datos": [
+    {
+      "id": 1,
+      "username": "admin",
+      "total_creaciones": 3
+    },
+    {
+      "id": 2,
+      "username": "artesana_ana",
+      "total_creaciones": 2
+    }
+  ]
+}
+```
+
+---
+
 ### `GET /api/creaciones/detalle.php` — Technical Sheet
 - **Access:** Public
 - **Query:** `?id=1` (Required)
@@ -468,27 +580,42 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 
 ---
 
-### `POST /api/creaciones/actualizar.php` — Edit Creation & `unlink()`
-- **Access:** Authenticated (`admin` or piece author).
-- **Image Lifecycle:** Unlinks previous custom image from `/uploads/` via `unlink()`.
+### `POST /api/creaciones/actualizar.php` — Edit Creation & `unlink()` Lifecycle
+- **Access:** Authenticated (`admin` or creation author).
+- **IDOR Safeguard:** An artisan can only edit their own creations (`artesano_id === currentUserId`). Non-admins modifying other creators' items receive **HTTP 403 Forbidden**.
+- **Image Lifecycle:** Unlinks previous custom image file from `/uploads/` via `unlink()` **only when** a new replacement image file is successfully uploaded.
 
 ---
 
 ### `POST /api/creaciones/eliminar.php` — Delete with Referential Safeguard
-- **Access:** Authenticated (`admin` or author).
-- **Referential Integrity:** If orders exist in `pedidos`, SQLite `ON DELETE RESTRICT` raises **HTTP 409 Conflict**.
+- **Access:** Authenticated (`admin` or creation author).
+- **IDOR Safeguard:** An artisan can only delete pieces they authored.
+- **Soft Deletion & Zero `unlink()`:** Performs logical deletion (`activo = 0`, `eliminado_en = datetime(...)`). Never physically removes the row and **never deletes the image file from `uploads/`**, ensuring historic orders continue displaying piece thumbnails.
+- **Referential Integrity:** If active orders exist in `pedidos`, backend prevents deletion and returns **HTTP 409 Conflict**.
+- **Success Response (HTTP 200 OK):** `{"exito": true, "mensaje": "Creación eliminada lógicamente del inventario.", "datos": {"id": 6, "activo": 0}}`.
+
+---
+
+### `POST /api/creaciones/restaurar.php` — Restore Archived Creation
+- **Access:** Authenticated (`admin` or creation author).
+- **Method:** `POST`
+- **Body:** `{"id": 6}`
+- **Operation:** Sets `activo = 1`, `eliminado_en = NULL`, restoring piece visibility in public catalog.
+- **Success Response (HTTP 200 OK):** `{"exito": true, "mensaje": "Creación restaurada exitosamente en el catálogo.", "datos": {"id": 6, "activo": 1}}`.
 
 ---
 
 ### `POST /api/creaciones/ajustar-stock.php` — In-Situ Quick Stock Adjustment
-- **Access:** Authenticated (`admin, artesano`)
+- **Access:** Authenticated (`admin` or piece author)
+- **IDOR Safeguard:** An artisan can only adjust stock for their own creations.
 - **Body:** `{"id": 1, "delta": 1}`
 - **Success Response (HTTP 200 OK):** Returns updated `cantidad_stock`.
 
 ---
 
 ### `POST /api/creaciones/toggle-encargo.php` — Toggle Commission Mode
-- **Access:** Authenticated (`admin, artesano`)
+- **Access:** Authenticated (`admin` or piece author)
+- **IDOR Safeguard:** An artisan can only toggle mode for their own creations.
 - **Body:** `{"id": 1}`
 - **Success Response (HTTP 200 OK):** Toggles `es_sobre_encargo` between `0` and `1`.
 
@@ -520,10 +647,11 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 
 ---
 
-### `GET /api/pedidos/index.php` — Orders Dashboard
+### `GET /api/pedidos/index.php` — Orders Dashboard & Multi-Artisan Isolation
 - **Access:** Authenticated (`admin, artesano`)
+- **Multi-Artisan Isolation:** Artisans only see orders for pieces they crafted (`creaciones.artesano_id = currentUserId`). Admins see all platform orders.
 - **Query:** `pagina`, `limite`, `estado`, `estado_pago`.
-- **Success Response (HTTP 200 OK):** Paginated orders list with customer contact, crafting notes, and payment status.
+- **Success Response (HTTP 200 OK):** Paginated orders list including `actualizado_en` timestamp, customer contact, and payment badges.
 
 ---
 
@@ -533,16 +661,18 @@ All endpoints under `api/usuarios/` require `RoleGuard: admin`.
 
 ---
 
-### `POST /api/pedidos/cambiar-estado.php` — Update Crafting & Payment
-- **Access:** Authenticated (`admin, artesano`)
+### `POST /api/pedidos/cambiar-estado.php` — Update Crafting & Tri-State Payment
+- **Access:** Authenticated (`admin` or author of the ordered creation)
 - **Body:** `{"id": 1, "estado_pedido": "Entregado", "estado_pago": "Liquidado"}`
+- **Audit Timestamp:** Sets `actualizado_en = datetime('now', 'localtime')`.
 
 ---
 
-### `POST /api/pedidos/cancelar.php` — Cancellation with Physical Stock Restitution
-- **Access:** Authenticated (`admin, artesano`)
+### `POST /api/pedidos/cancelar.php` — Idempotent Cancellation with Physical Stock Restitution
+- **Access:** Authenticated (`admin` or author of the ordered creation)
 - **Body:** `{"id": 1}`
-- **Atomic Restitution:** Cancels order and re-integrates units into `creaciones.cantidad_stock`.
+- **Idempotency Safeguard:** If order is already in state `'Cancelado'`, returns **HTTP 409 Conflict** to prevent double restocking.
+- **Atomic Restitution:** Cancels order, sets `actualizado_en`, and re-integrates units into `creaciones.cantidad_stock`.
 - **Success Response (HTTP 200 OK):**
 ```json
 {

@@ -30,57 +30,93 @@ class UsuarioRepository {
      * Busca un usuario por su nombre de usuario exacto.
      * 
      * @param string $username Nombre de usuario
+     * @param bool $onlyActive Filtrar únicamente cuentas activas (default: true)
      * @return array|null Registro completo asociativo o null si no existe
      */
-    public function findByUsername(string $username): ?array {
-        $stmt = $this->pdo->prepare('
-            SELECT id, username, password_hash, rol, creado_en 
+    public function findByUsername(string $username, bool $onlyActive = true): ?array {
+        $sql = '
+            SELECT id, username, password_hash, rol, activo, creado_en, eliminado_en 
             FROM usuarios 
-            WHERE username = :username 
-            LIMIT 1
-        ');
+            WHERE username = :username
+        ';
+        if ($onlyActive) {
+            $sql .= ' AND activo = 1';
+        }
+        $sql .= ' LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':username' => trim($username)]);
         $user = $stmt->fetch();
 
-        return is_array($user) ? $user : null;
+        if (!is_array($user)) {
+            return null;
+        }
+
+        $user['id'] = (int)$user['id'];
+        $user['activo'] = (int)$user['activo'];
+        return $user;
     }
 
     /**
      * Busca un usuario por su identificador primario.
      * 
      * @param int $id Identificador del usuario
+     * @param bool $onlyActive Filtrar únicamente cuentas activas (default: true)
      * @return array|null Registro completo o null si no existe
      */
-    public function findById(int $id): ?array {
-        $stmt = $this->pdo->prepare('
-            SELECT id, username, password_hash, rol, creado_en 
+    public function findById(int $id, bool $onlyActive = true): ?array {
+        $sql = '
+            SELECT id, username, password_hash, rol, activo, creado_en, eliminado_en 
             FROM usuarios 
-            WHERE id = :id 
-            LIMIT 1
-        ');
+            WHERE id = :id
+        ';
+        if ($onlyActive) {
+            $sql .= ' AND activo = 1';
+        }
+        $sql .= ' LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
         $user = $stmt->fetch();
 
-        return is_array($user) ? $user : null;
+        if (!is_array($user)) {
+            return null;
+        }
+
+        $user['id'] = (int)$user['id'];
+        $user['activo'] = (int)$user['activo'];
+        return $user;
     }
 
     /**
      * Busca un usuario por su identificador excluyendo el hash de contraseña (vista segura).
      * 
      * @param int $id Identificador del usuario
+     * @param bool $onlyActive Filtrar únicamente cuentas activas (default: true)
      * @return array|null Datos seguros del usuario o null
      */
-    public function findByIdSafe(int $id): ?array {
-        $stmt = $this->pdo->prepare('
-            SELECT id, username, rol, creado_en 
+    public function findByIdSafe(int $id, bool $onlyActive = true): ?array {
+        $sql = '
+            SELECT id, username, rol, activo, creado_en, eliminado_en 
             FROM usuarios 
-            WHERE id = :id 
-            LIMIT 1
-        ');
+            WHERE id = :id
+        ';
+        if ($onlyActive) {
+            $sql .= ' AND activo = 1';
+        }
+        $sql .= ' LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
         $user = $stmt->fetch();
 
-        return is_array($user) ? $user : null;
+        if (!is_array($user)) {
+            return null;
+        }
+
+        $user['id'] = (int)$user['id'];
+        $user['activo'] = (int)$user['activo'];
+        return $user;
     }
 
     /**
@@ -123,8 +159,8 @@ class UsuarioRepository {
         }
 
         $stmt = $this->pdo->prepare('
-            INSERT INTO usuarios (username, password_hash, rol, creado_en)
-            VALUES (:username, :password_hash, :rol, datetime("now", "localtime"))
+            INSERT INTO usuarios (username, password_hash, rol, activo, creado_en)
+            VALUES (:username, :password_hash, :rol, 1, datetime("now", "localtime"))
         ');
 
         $stmt->execute([
@@ -143,7 +179,7 @@ class UsuarioRepository {
         $stmt = $this->pdo->prepare('
             UPDATE usuarios 
             SET password_hash = :password_hash 
-            WHERE id = :id
+            WHERE id = :id AND activo = 1
         ');
 
         return $stmt->execute([
@@ -159,7 +195,7 @@ class UsuarioRepository {
         $stmt = $this->pdo->prepare('
             UPDATE usuarios 
             SET username = :username 
-            WHERE id = :id
+            WHERE id = :id AND activo = 1
         ');
 
         return $stmt->execute([
@@ -188,7 +224,7 @@ class UsuarioRepository {
         $stmt = $this->pdo->prepare('
             UPDATE usuarios 
             SET rol = :rol 
-            WHERE id = :id
+            WHERE id = :id AND activo = 1
         ');
 
         return $stmt->execute([
@@ -198,7 +234,13 @@ class UsuarioRepository {
     }
 
     /**
-     * Elimina un usuario con salvaguarda para el administrador raíz (ID #1).
+     * Realiza la baja lógica (soft delete) de un usuario en el sistema.
+     * Marca activo = 0 y registra la marca temporal de baja en eliminado_en.
+     * 
+     * Salvaguarda estricta: el administrador raíz (ID #1) nunca puede desactivarse ni eliminarse.
+     * 
+     * @param int $id Identificador del usuario
+     * @return bool True si se realizó la baja lógica, false si fue denegado o no existía
      */
     public function delete(int $id): bool {
         // Regla de salvaguarda de cuenta raíz: ID #1 nunca puede eliminarse
@@ -206,8 +248,33 @@ class UsuarioRepository {
             return false;
         }
 
-        $stmt = $this->pdo->prepare('DELETE FROM usuarios WHERE id = :id');
-        return $stmt->execute([':id' => $id]);
+        $stmt = $this->pdo->prepare('
+            UPDATE usuarios 
+            SET activo = 0, 
+                eliminado_en = datetime("now", "localtime") 
+            WHERE id = :id AND activo = 1
+        ');
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Reactiva una cuenta de usuario previamente dada de baja de forma lógica.
+     * 
+     * @param int $id Identificador del usuario a reactivar
+     * @return bool True si se reactivó con éxito, false si no existía o ya estaba activo
+     */
+    public function reactivate(int $id): bool {
+        $stmt = $this->pdo->prepare('
+            UPDATE usuarios 
+            SET activo = 1, 
+                eliminado_en = NULL 
+            WHERE id = :id AND activo = 0
+        ');
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -215,46 +282,22 @@ class UsuarioRepository {
      * 
      * @param int $limit Límite de resultados
      * @param int $offset Desplazamiento
+     * @param bool|null $onlyActive true para activos, false para inactivos, null para todos
      * @return array Lista de usuarios
      */
-    public function listAll(int $limit = 20, int $offset = 0): array {
-        $stmt = $this->pdo->prepare('
-            SELECT id, username, rol, creado_en 
+    public function listAll(int $limit = 20, int $offset = 0, ?bool $onlyActive = true): array {
+        $sql = '
+            SELECT id, username, rol, activo, creado_en, eliminado_en 
             FROM usuarios 
-            ORDER BY id ASC 
-            LIMIT :limit OFFSET :offset
-        ');
-        $stmt->bindValue(':limit', max(1, $limit), PDO::PARAM_INT);
-        $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
-        $stmt->execute();
+        ';
+        if ($onlyActive === true) {
+            $sql .= ' WHERE activo = 1 ';
+        } elseif ($onlyActive === false) {
+            $sql .= ' WHERE activo = 0 ';
+        }
+        $sql .= ' ORDER BY id ASC LIMIT :limit OFFSET :offset';
 
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * Obtiene el conteo total de usuarios registrados en el sistema.
-     */
-    public function countAll(): int {
-        $stmt = $this->pdo->query('SELECT COUNT(*) FROM usuarios');
-        return (int)$stmt->fetchColumn();
-    }
-
-    /**
-     * Obtiene una lista paginada de usuarios con el conteo de creaciones asociadas.
-     * 
-     * @param int $limit Límite de resultados
-     * @param int $offset Desplazamiento
-     * @return array Lista de usuarios con creaciones_asociadas
-     */
-    public function listAllWithCreationsCount(int $limit = 20, int $offset = 0): array {
-        $stmt = $this->pdo->prepare('
-            SELECT u.id, u.username, u.rol, u.creado_en, COUNT(c.id) AS creaciones_asociadas
-            FROM usuarios u
-            LEFT JOIN creaciones c ON c.artesano_id = u.id
-            GROUP BY u.id
-            ORDER BY u.id ASC
-            LIMIT :limit OFFSET :offset
-        ');
+        $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':limit', max(1, $limit), PDO::PARAM_INT);
         $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
         $stmt->execute();
@@ -262,16 +305,78 @@ class UsuarioRepository {
         $rows = $stmt->fetchAll();
         return array_map(function ($row) {
             $row['id'] = (int)$row['id'];
+            $row['activo'] = (int)$row['activo'];
+            return $row;
+        }, $rows);
+    }
+
+    /**
+     * Obtiene el conteo total de usuarios registrados en el sistema.
+     * 
+     * @param bool|null $onlyActive true para activos, false para inactivos, null para todos
+     */
+    public function countAll(?bool $onlyActive = true): int {
+        $sql = 'SELECT COUNT(*) FROM usuarios';
+        if ($onlyActive === true) {
+            $sql .= ' WHERE activo = 1';
+        } elseif ($onlyActive === false) {
+            $sql .= ' WHERE activo = 0';
+        }
+        $stmt = $this->pdo->query($sql);
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * Obtiene una lista paginada de usuarios con el conteo de creaciones asociadas activas.
+     * 
+     * @param int $limit Límite de resultados
+     * @param int $offset Desplazamiento
+     * @param bool|null $onlyActive true para activos, false para inactivos, null para todos
+     * @return array Lista de usuarios con creaciones_asociadas
+     */
+    public function listAllWithCreationsCount(int $limit = 20, int $offset = 0, ?bool $onlyActive = true): array {
+        $sql = '
+            SELECT u.id, u.username, u.rol, u.activo, u.creado_en, u.eliminado_en, COUNT(c.id) AS creaciones_asociadas
+            FROM usuarios u
+            LEFT JOIN creaciones c ON c.artesano_id = u.id AND c.activo = 1
+        ';
+        if ($onlyActive === true) {
+            $sql .= ' WHERE u.activo = 1 ';
+        } elseif ($onlyActive === false) {
+            $sql .= ' WHERE u.activo = 0 ';
+        }
+        $sql .= '
+            GROUP BY u.id
+            ORDER BY u.id ASC
+            LIMIT :limit OFFSET :offset
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', max(1, $limit), PDO::PARAM_INT);
+        $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+        return array_map(function ($row) {
+            $row['id'] = (int)$row['id'];
+            $row['activo'] = (int)$row['activo'];
             $row['creaciones_asociadas'] = (int)$row['creaciones_asociadas'];
             return $row;
         }, $rows);
     }
 
     /**
-     * Cuenta cuántas creaciones tiene registradas un usuario en el catálogo.
+     * Cuenta cuántas creaciones activas tiene registradas un usuario en el catálogo.
+     * 
+     * @param int $userId Identificador del usuario
+     * @param bool $onlyActive Filtrar únicamente creaciones activas (default: true)
      */
-    public function countCreationsByUser(int $userId): int {
-        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM creaciones WHERE artesano_id = :user_id');
+    public function countCreationsByUser(int $userId, bool $onlyActive = true): int {
+        $sql = 'SELECT COUNT(*) FROM creaciones WHERE artesano_id = :user_id';
+        if ($onlyActive) {
+            $sql .= ' AND activo = 1';
+        }
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':user_id' => $userId]);
         return (int)$stmt->fetchColumn();
     }

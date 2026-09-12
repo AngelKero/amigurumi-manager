@@ -66,8 +66,9 @@ class Database {
             $dsn = "sqlite:{$dbPath}";
             $pdo = new PDO($dsn, null, null, $options);
 
-            // Activación obligatoria de integridad referencial
+            // Activación obligatoria de integridad referencial y tolerancia a bloqueos
             $pdo->exec('PRAGMA foreign_keys = ON;');
+            $pdo->exec('PRAGMA busy_timeout = 5000;');
 
             self::$instance = $pdo;
         }
@@ -88,6 +89,7 @@ class Database {
     public static function setInstance(?PDO $pdo): void {
         if ($pdo !== null) {
             $pdo->exec('PRAGMA foreign_keys = ON;');
+            $pdo->exec('PRAGMA busy_timeout = 5000;');
         }
         self::$instance = $pdo;
     }

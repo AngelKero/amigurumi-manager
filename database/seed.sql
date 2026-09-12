@@ -27,7 +27,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
     username TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     rol TEXT NOT NULL DEFAULT 'admin',
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    eliminado_en TEXT DEFAULT NULL,
 
     -- =========================================================================
     -- RESTRICCIONES DE LA TABLA (CONSTRAINTS) Y DOCUMENTACIÓN
@@ -49,7 +51,13 @@ CREATE TABLE IF NOT EXISTS usuarios (
     -- QUÉ HACE: Limita el valor del campo rol exclusivamente a ('admin', 'artesano', 'asistente').
     -- REGLA DE NEGOCIO: Seguridad basada en roles (RBAC); solo perfiles autorizados pueden operar el Micro-ERP.
     CONSTRAINT chk_usuarios_rol 
-        CHECK(rol IN ('admin', 'artesano', 'asistente'))
+        CHECK(rol IN ('admin', 'artesano', 'asistente')),
+
+    -- 4. Borrado Lógico (Soft Delete)
+    -- QUÉ HACE: Restringe el campo activo a 1 (cuenta activa) o 0 (cuenta desactivada/eliminada lógicamente).
+    -- REGLA DE NEGOCIO: Cero eliminaciones físicas; las bajas preservan la autoría e integridad histórica.
+    CONSTRAINT chk_usuarios_activo 
+        CHECK(activo IN (0, 1))
 );
 
 -- Table: creaciones (Core Catalog & Physical Inventory in Crochet)
@@ -70,8 +78,10 @@ CREATE TABLE IF NOT EXISTS creaciones (
     descripcion TEXT,
     imagen_url TEXT,
     es_sobre_encargo INTEGER NOT NULL DEFAULT 0,
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
 
     -- =========================================================================
     -- RESTRICCIONES DE LA TABLA (CONSTRAINTS) Y DOCUMENTACIÓN
@@ -149,7 +159,13 @@ CREATE TABLE IF NOT EXISTS creaciones (
     -- QUÉ HACE: Flag binario (0 o 1) que indica si la pieza se elabora exclusivamente bajo encargo personalizado.
     -- REGLA DE NEGOCIO: Permite piezas sin stock inmediato (stock = 0) que no están "Agotadas" sino que se tejen a pedido.
     CONSTRAINT chk_creaciones_es_sobre_encargo 
-        CHECK(es_sobre_encargo IN (0, 1))
+        CHECK(es_sobre_encargo IN (0, 1)),
+
+    -- 13. Borrado Lógico (Soft Delete)
+    -- QUÉ HACE: Restringe el campo activo a 1 (pieza activa en catálogo) o 0 (retirada/eliminada lógicamente).
+    -- REGLA DE NEGOCIO: Protege pedidos históricos asociados (evita fallos de integridad referencial).
+    CONSTRAINT chk_creaciones_activo 
+        CHECK(activo IN (0, 1))
 );
 
 -- Table: pedidos (Orders & Commissions)
@@ -167,7 +183,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
     estado_pago TEXT NOT NULL DEFAULT 'Pendiente',
     precio_final INTEGER NOT NULL,
     notas TEXT,
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
 
     -- =========================================================================
     -- RESTRICCIONES DE LA TABLA (CONSTRAINTS) Y DOCUMENTACIÓN
@@ -227,18 +246,27 @@ CREATE TABLE IF NOT EXISTS pedidos (
     -- QUÉ HACE: Restringe el estado de cobro a: 'Pendiente', 'Anticipo 50%', 'Liquidado'.
     -- REGLA DE NEGOCIO: Control de anticipos necesarios para compra de materia prima e hilazas antes de confeccionar.
     CONSTRAINT chk_pedidos_estado_pago 
-        CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado'))
+        CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado')),
+
+    -- 10. Borrado Lógico (Soft Delete)
+    -- QUÉ HACE: Restringe el campo activo a 1 (pedido activo/vigente) o 0 (archivado/eliminado lógicamente).
+    -- REGLA DE NEGOCIO: Registro contable inviolable; ningún pedido se destruye físicamente de la base de datos.
+    CONSTRAINT chk_pedidos_activo 
+        CHECK(activo IN (0, 1))
 );
 
 -- ------------------------------------------------------------------------------
 -- 3. QUERY PERFORMANCE INDEXES
 -- ------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_usuarios_activo ON usuarios(activo);
 CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
 CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_creaciones_activo ON creaciones(activo);
 CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
+CREATE INDEX IF NOT EXISTS idx_pedidos_activo ON pedidos(activo);
 
 -- ------------------------------------------------------------------------------
 -- 4. INITIAL SEED MOCK DATA

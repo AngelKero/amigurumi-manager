@@ -181,9 +181,62 @@ try {
 }
 TestHelper::assertTrue($caughtCreationsConflict, 'deleteUser() de usuario con creaciones lanza HTTP 409 por integridad referencial');
 
-// 1.17 Eliminación exitosa de usuario temporal sin creaciones
+// 1.17 Eliminación lógica exitosa de usuario temporal sin creaciones
 $deleteResult = $service->deleteUser($renameId);
-TestHelper::assertTrue($deleteResult, 'deleteUser() permite eliminar usuario regular sin creaciones');
+TestHelper::assertTrue($deleteResult, 'deleteUser() permite baja lógica de usuario regular sin creaciones');
+
+// 1.18 Verificación de persistencia de baja lógica en SQLite (activo = 0, eliminado_en no nulo)
+$activeCheck = $repo->findByIdSafe($renameId, true);
+TestHelper::assertNull($activeCheck, 'Usuario dado de baja no aparece en consultas con onlyActive = true');
+
+$softDeletedUser = $repo->findByIdSafe($renameId, false);
+TestHelper::assertTrue(is_array($softDeletedUser), 'El registro físico persiste en SQLite (cero borrado físico)');
+TestHelper::assertSame(0, (int)$softDeletedUser['activo'], 'El campo activo es 0 tras la baja lógica');
+TestHelper::assertTrue(!empty($softDeletedUser['eliminado_en']), 'El campo eliminado_en registra la marca temporal de baja');
+
+// 1.19 Intento de dar de baja nuevamente a un usuario ya inactivo (HTTP 409)
+$caughtAlreadyInactive = false;
+try {
+    $service->deleteUser($renameId);
+} catch (\RuntimeException $e) {
+    $caughtAlreadyInactive = ($e->getCode() === 409);
+}
+TestHelper::assertTrue($caughtAlreadyInactive, 'deleteUser() en usuario ya inactivo lanza RuntimeException 409');
+
+// 1.20 Intento de autenticación con cuenta dada de baja lógicamente (HTTP 401)
+$authService = new AuthService($repo);
+$caughtInactiveLogin = false;
+try {
+    $authService->authenticate($updatedUser['username'], 'NuevaClaveValida2026');
+} catch (\RuntimeException $e) {
+    $caughtInactiveLogin = ($e->getCode() === 401);
+}
+TestHelper::assertTrue($caughtInactiveLogin, 'AuthService::authenticate() rechaza con HTTP 401 a usuarios con baja lógica');
+
+// 1.21 Reactivación de cuenta desactivada lógicamente (reactivateUser)
+$reactivatedUser = $service->reactivateUser($renameId);
+TestHelper::assertSame(1, (int)$reactivatedUser['activo'], 'reactivateUser() retorna activo = 1');
+
+$checkReactivated = $repo->findByIdSafe($renameId, true);
+TestHelper::assertNotNull($checkReactivated, 'Usuario reactivado vuelve a aparecer en consultas de activos');
+TestHelper::assertNull($checkReactivated['eliminado_en'], 'Usuario reactivado tiene eliminado_en = NULL');
+
+// 1.22 Intento de reactivar usuario ya activo (HTTP 409)
+$caughtAlreadyActive = false;
+try {
+    $service->reactivateUser($renameId);
+} catch (\RuntimeException $e) {
+    $caughtAlreadyActive = ($e->getCode() === 409);
+}
+TestHelper::assertTrue($caughtAlreadyActive, 'reactivateUser() en usuario ya activo lanza RuntimeException 409');
+
+// 1.23 Filtrado de listado por estado (inactivos y todos)
+$inactiveList = $service->listUsers(1, 20, false);
+TestHelper::assertTrue(is_array($inactiveList['usuarios']), 'listUsers con onlyActive=false retorna array');
+
+$allList = $service->listUsers(1, 20, null);
+TestHelper::assertTrue(is_array($allList['usuarios']), 'listUsers con onlyActive=null retorna array');
+TestHelper::assertTrue(count($allList['usuarios']) >= count($inactiveList['usuarios']), 'Total de todos los usuarios es mayor o igual a inactivos');
 
 // =============================================================================
 // 2. MIDDLEWARE DE ACCESO: ROLEGUARD (ADMINONLY)
@@ -503,23 +556,91 @@ $logTrace('21. POST /api/usuarios/eliminar.php (Artesano No Autorizado: HTTP 403
 
 TestHelper::assertSame(403, $forbiddenDeleteRes['status'], 'HTTP POST /api/usuarios/eliminar.php con artesano devuelve 403 Forbidden');
 
-// 3.22 POST /api/usuarios/eliminar.php borrando usuario temporal sin creaciones (HTTP 200 OK)
+// 3.22 POST /api/usuarios/eliminar.php baja lógica de usuario temporal sin creaciones (HTTP 200 OK)
 $deleteHttpRes = TestHelper::curl('POST', 'http://localhost:8000/api/usuarios/eliminar.php', [
     'Authorization: Bearer ' . $adminToken,
     'Content-Type: application/json'
 ], json_encode([
     'id' => $newUserId
 ]));
-$logTrace('22. POST /api/usuarios/eliminar.php (Eliminación Exitosa sin Creaciones: HTTP 200 OK)', $deleteHttpRes);
+$logTrace('22. POST /api/usuarios/eliminar.php (Baja Lógica Exitosa: HTTP 200 OK)', $deleteHttpRes);
 
-TestHelper::assertSame(200, $deleteHttpRes['status'], 'HTTP POST /api/usuarios/eliminar.php en usuario sin creaciones devuelve 200 OK');
+TestHelper::assertSame(200, $deleteHttpRes['status'], 'HTTP POST /api/usuarios/eliminar.php devuelve 200 OK');
 TestHelper::assertTrue($deleteHttpRes['json']['exito'] ?? false, 'Respuesta de eliminación contiene exito: true');
+TestHelper::assertSame(0, (int)($deleteHttpRes['json']['datos']['activo'] ?? 1), 'Respuesta confirma activo: 0 (baja lógica)');
+TestHelper::assertSame('Usuario eliminado lógicamente de la plataforma.', $deleteHttpRes['json']['mensaje'] ?? '', 'Mensaje confirma baja lógica');
+
+// 3.23 POST /api/usuarios/eliminar.php en usuario ya inactivo (HTTP 409 Conflict)
+$alreadyDeletedRes = TestHelper::curl('POST', 'http://localhost:8000/api/usuarios/eliminar.php', [
+    'Authorization: Bearer ' . $adminToken,
+    'Content-Type: application/json'
+], json_encode([
+    'id' => $newUserId
+]));
+$logTrace('23. POST /api/usuarios/eliminar.php (Usuario Ya Inactivo: HTTP 409 Conflict)', $alreadyDeletedRes);
+
+TestHelper::assertSame(409, $alreadyDeletedRes['status'], 'HTTP POST /api/usuarios/eliminar.php en usuario inactivo devuelve 409 Conflict');
+TestHelper::assertFalse($alreadyDeletedRes['json']['exito'] ?? true, 'Respuesta 409 contiene exito: false');
+
+// 3.24 POST /api/usuarios/reactivar.php con artesano (HTTP 403 Forbidden)
+$forbiddenReactivateRes = TestHelper::curl('POST', 'http://localhost:8000/api/usuarios/reactivar.php', [
+    'Authorization: Bearer ' . $artisanToken,
+    'Content-Type: application/json'
+], json_encode([
+    'id' => $newUserId
+]));
+$logTrace('24. POST /api/usuarios/reactivar.php (Artesano No Autorizado: HTTP 403)', $forbiddenReactivateRes);
+TestHelper::assertSame(403, $forbiddenReactivateRes['status'], 'HTTP POST /api/usuarios/reactivar.php con artesano devuelve 403 Forbidden');
+
+// 3.25 POST /api/usuarios/reactivar.php con admin (HTTP 200 OK)
+$reactivateHttpRes = TestHelper::curl('POST', 'http://localhost:8000/api/usuarios/reactivar.php', [
+    'Authorization: Bearer ' . $adminToken,
+    'Content-Type: application/json'
+], json_encode([
+    'id' => $newUserId
+]));
+$logTrace('25. POST /api/usuarios/reactivar.php (Reactivación Exitosa: HTTP 200 OK)', $reactivateHttpRes);
+TestHelper::assertSame(200, $reactivateHttpRes['status'], 'HTTP POST /api/usuarios/reactivar.php devuelve 200 OK');
+TestHelper::assertTrue($reactivateHttpRes['json']['exito'] ?? false, 'Respuesta de reactivación contiene exito: true');
+TestHelper::assertSame(1, (int)($reactivateHttpRes['json']['datos']['activo'] ?? 0), 'Respuesta confirma activo: 1 tras reactivación');
+
+// 3.26 POST /api/usuarios/reactivar.php en usuario ya activo (HTTP 409 Conflict)
+$alreadyActiveHttpRes = TestHelper::curl('POST', 'http://localhost:8000/api/usuarios/reactivar.php', [
+    'Authorization: Bearer ' . $adminToken,
+    'Content-Type: application/json'
+], json_encode([
+    'id' => $newUserId
+]));
+$logTrace('26. POST /api/usuarios/reactivar.php (Usuario Ya Activo: HTTP 409 Conflict)', $alreadyActiveHttpRes);
+TestHelper::assertSame(409, $alreadyActiveHttpRes['status'], 'HTTP POST /api/usuarios/reactivar.php en usuario ya activo devuelve 409 Conflict');
+
+// 3.27 Login con usuario reactivado (HTTP 200 OK)
+$loginReactivatedRes = TestHelper::curl('POST', 'http://localhost:8000/api/auth/login.php', [
+    'Content-Type: application/json'
+], json_encode([
+    'username' => $renamedHttpTag,
+    'password' => 'NuevaClaveManual2026'
+]));
+$logTrace('27. POST /api/auth/login.php (Login de Usuario Reactivado: HTTP 200 OK)', $loginReactivatedRes);
+TestHelper::assertSame(200, $loginReactivatedRes['status'], 'Login exitoso de cuenta tras ser reactivada por admin');
+
+// 3.28 GET /api/usuarios/index.php con filtro estado=inactivos (HTTP 200 OK)
+$listInactiveRes = TestHelper::curl('GET', 'http://localhost:8000/api/usuarios/index.php?estado=inactivos', [
+    'Authorization: Bearer ' . $adminToken
+]);
+$logTrace('28. GET /api/usuarios/index.php?estado=inactivos (HTTP 200 OK)', $listInactiveRes);
+TestHelper::assertSame(200, $listInactiveRes['status'], 'GET /api/usuarios/index.php?estado=inactivos devuelve 200 OK');
+TestHelper::assertTrue(is_array($listInactiveRes['json']['datos'] ?? null), 'Listado de inactivos retorna array de datos');
+
+// 3.29 GET /api/usuarios/index.php con filtro estado=todos (HTTP 200 OK)
+$listAllStatusRes = TestHelper::curl('GET', 'http://localhost:8000/api/usuarios/index.php?estado=todos', [
+    'Authorization: Bearer ' . $adminToken
+]);
+$logTrace('29. GET /api/usuarios/index.php?estado=todos (HTTP 200 OK)', $listAllStatusRes);
+TestHelper::assertSame(200, $listAllStatusRes['status'], 'GET /api/usuarios/index.php?estado=todos devuelve 200 OK');
 
 // Guardar log de trazas HTTP
 file_put_contents(dirname(__DIR__) . '/logs/subfase-3.3-http.log', $httpLogBuffer);
-
-// Limpieza final de seguridad por si no se hubiera eliminado
-$repo->delete($newUserId);
 
 // =============================================================================
 // RESUMEN FINAL

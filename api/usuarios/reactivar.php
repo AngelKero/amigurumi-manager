@@ -1,8 +1,10 @@
 <?php
 /**
- * REST Controller: Delete Platform User
- * Endpoint: POST /api/usuarios/eliminar.php
+ * REST Controller: Reactivate Deactivated User
+ * Endpoint: POST /api/usuarios/reactivar.php
  * Algodón Nórdico Design System
+ * 
+ * Permite al administrador reactivar una cuenta dada de baja de forma lógica (activo = 1).
  */
 
 declare(strict_types=1);
@@ -23,20 +25,19 @@ if (Request::method() !== 'POST') {
 }
 
 // 3. Control de acceso estricto: solo administradores
-$currentUser = RoleGuard::adminOnly();
-$currentUserId = (int)($currentUser['id'] ?? 0);
+RoleGuard::adminOnly();
 
-// 4. Extracción de ID a eliminar
+// 4. Extracción de ID a reactivar
 $id = (int)Request::input('id', 0);
 
-// 5. Delegación a la capa de servicio con salvaguardas
+// 5. Delegación a la capa de servicio
 try {
     $usuarioService = new UsuarioService();
-    $usuarioService->deleteUser($id, $currentUserId);
+    $result = $usuarioService->reactivateUser($id);
 
     Response::success(
-        ['id' => $id, 'activo' => 0],
-        'Usuario eliminado lógicamente de la plataforma.',
+        $result,
+        "Usuario '{$result['username']}' reactivado exitosamente en la plataforma.",
         200
     );
 } catch (InvalidArgumentException $e) {

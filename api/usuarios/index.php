@@ -25,14 +25,21 @@ if (Request::method() !== 'GET') {
 // 3. Control de acceso estricto: solo administradores
 RoleGuard::adminOnly();
 
-// 4. Extracción de parámetros de paginación
+// 4. Extracción de parámetros de paginación y estado
 $page = (int)Request::query('pagina', 1);
 $limit = (int)Request::query('limite', 20);
+$estado = strtolower(trim((string)Request::query('estado', 'activos')));
+
+$onlyActive = match ($estado) {
+    'inactivos' => false,
+    'todos'     => null,
+    default     => true,
+};
 
 // 5. Delegación a la capa de servicio
 try {
     $usuarioService = new UsuarioService();
-    $result = $usuarioService->listUsers($page, $limit);
+    $result = $usuarioService->listUsers($page, $limit, $onlyActive);
 
     Response::success(
         $result['usuarios'],

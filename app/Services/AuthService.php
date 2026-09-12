@@ -100,4 +100,50 @@ class AuthService {
     public function getProfile(int $userId): ?array {
         return $this->usuarioRepo->findByIdSafe($userId);
     }
+
+    /**
+     * Permite a un usuario autenticado cambiar su propia contraseña verificando la clave actual.
+     * 
+     * @param int $userId ID del usuario en sesión
+     * @param string $currentPassword Contraseña actual en texto plano
+     * @param string $newPassword Nueva contraseña en texto plano (mínimo 6 caracteres)
+     * @return array{id: int, username: string}
+     * @throws InvalidArgumentException Si los datos son inválidos (HTTP 422)
+     * @throws RuntimeException Si la clave actual es errónea (HTTP 401) o el usuario no existe (HTTP 404)
+     */
+    public function changePassword(int $userId, string $currentPassword, string $newPassword): array {
+        $currentPassword = trim($currentPassword);
+        $newPassword = trim($newPassword);
+
+        if ($currentPassword === '' || $newPassword === '') {
+            throw new InvalidArgumentException('La contraseña actual y la nueva contraseña son obligatorias.', 422);
+        }
+
+        if (strlen($newPassword) < 6) {
+            throw new InvalidArgumentException('La nueva contraseña debe tener al menos 6 caracteres.', 422);
+        }
+
+        $user = $this->usuarioRepo->findById($userId, true);
+        if ($user === null || (int)($user['activo'] ?? 1) !== 1) {
+            throw new RuntimeException('Usuario no encontrado o cuenta inactiva.', 404);
+        }
+
+        if (!password_verify($currentPassword, (string)$user['password_hash'])) {
+            throw new RuntimeException('La contraseña actual es incorrecta.', 401);
+        }
+
+        $cost = (int)(Config::get('auth.bcrypt_cost', 10));
+        $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => $cost]);
+
+        $updated = $this->usuarioRepo->updatePassword($userId, $newHash);
+        if (!$updated) {
+            throw new RuntimeException('Error interno al actualizar la contraseña en el repositorio.', 500);
+        }
+
+        return [
+            'id'       => $userId,
+            'username' => (string)$user['username'],
+        ];
+    }
 }
+

@@ -13,7 +13,9 @@ erDiagram
         string username UK "TEXT UNIQUE (3-50 caracteres)"
         string password_hash "TEXT (bcrypt/argon2)"
         string rol "TEXT (admin, artesano, asistente)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 o 1)"
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
+        string eliminado_en "TEXT (Marca de tiempo ISO 8601 o NULL)"
     }
 
     CREACIONES {
@@ -30,8 +32,10 @@ erDiagram
         string descripcion "TEXT (Máx 2000 caracteres)"
         string imagen_url "TEXT (Máx 500 caracteres)"
         integer es_sobre_encargo "INTEGER NOT NULL (0 o 1)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 o 1)"
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
         string actualizado_en "TEXT (Marca de tiempo ISO 8601)"
+        string eliminado_en "TEXT (Marca de tiempo ISO 8601 o NULL)"
     }
 
     PEDIDOS {
@@ -45,7 +49,10 @@ erDiagram
         string estado_pago "TEXT (Pendiente, Anticipo 50%, Liquidado)"
         integer precio_final "INTEGER NOT NULL (Precio pactado en centavos)"
         string notas "TEXT (Máx 1000 caracteres)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 o 1)"
         string creado_en "TEXT (Marca de tiempo ISO 8601)"
+        string actualizado_en "TEXT (Marca de tiempo ISO 8601 o NULL)"
+        string eliminado_en "TEXT (Marca de tiempo ISO 8601 o NULL)"
     }
 
     USUARIOS ||--o{ CREACIONES : "confecciona / registra"
@@ -68,11 +75,14 @@ CREATE TABLE IF NOT EXISTS usuarios (
     username TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     rol TEXT NOT NULL DEFAULT 'admin',
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    eliminado_en TEXT DEFAULT NULL,
     -- Restricciones de tabla
     CONSTRAINT uq_usuarios_username UNIQUE (username),
     CONSTRAINT chk_usuarios_username CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
-    CONSTRAINT chk_usuarios_rol CHECK(rol IN ('admin', 'artesano', 'asistente'))
+    CONSTRAINT chk_usuarios_rol CHECK(rol IN ('admin', 'artesano', 'asistente')),
+    CONSTRAINT chk_usuarios_activo CHECK(activo IN (0, 1))
 );
 
 -- ========================================================
@@ -92,8 +102,10 @@ CREATE TABLE IF NOT EXISTS creaciones (
     descripcion TEXT,
     imagen_url TEXT,
     es_sobre_encargo INTEGER NOT NULL DEFAULT 0,
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
     -- Restricciones de tabla
     CONSTRAINT fk_creaciones_artesano FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT chk_creaciones_nombre CHECK(length(trim(nombre)) >= 2 AND length(nombre) <= 100),
@@ -106,7 +118,8 @@ CREATE TABLE IF NOT EXISTS creaciones (
     CONSTRAINT chk_creaciones_horas_tejido CHECK(horas_tejido IS NULL OR (horas_tejido >= 0.0 AND horas_tejido <= 500.0)),
     CONSTRAINT chk_creaciones_descripcion CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     CONSTRAINT chk_creaciones_imagen_url CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
-    CONSTRAINT chk_creaciones_es_sobre_encargo CHECK(es_sobre_encargo IN (0, 1))
+    CONSTRAINT chk_creaciones_es_sobre_encargo CHECK(es_sobre_encargo IN (0, 1)),
+    CONSTRAINT chk_creaciones_activo CHECK(activo IN (0, 1))
 );
 
 -- ========================================================
@@ -123,7 +136,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
     estado_pago TEXT NOT NULL DEFAULT 'Pendiente',
     precio_final INTEGER NOT NULL,
     notas TEXT,
+    activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
     -- Restricciones de tabla
     CONSTRAINT fk_pedidos_creacion FOREIGN KEY (creacion_id) REFERENCES creaciones(id) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT chk_pedidos_cliente_nombre CHECK(length(trim(cliente_nombre)) >= 2 AND length(cliente_nombre) <= 100),
@@ -133,18 +149,22 @@ CREATE TABLE IF NOT EXISTS pedidos (
     CONSTRAINT chk_pedidos_precio_final CHECK(precio_final >= 1 AND precio_final <= 9999999),
     CONSTRAINT chk_pedidos_notas CHECK(notas IS NULL OR length(notas) <= 1000),
     CONSTRAINT chk_pedidos_cliente_contacto CHECK(length(trim(cliente_contacto)) <= 50),
-    CONSTRAINT chk_pedidos_estado_pago CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado'))
+    CONSTRAINT chk_pedidos_estado_pago CHECK(estado_pago IN ('Pendiente', 'Anticipo 50%', 'Liquidado')),
+    CONSTRAINT chk_pedidos_activo CHECK(activo IN (0, 1))
 );
 
 -- ========================================================
 -- Índices para Optimización de Consultas
 -- ========================================================
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_usuarios_activo ON usuarios(activo);
 CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
 CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_creaciones_activo ON creaciones(activo);
 CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
+CREATE INDEX IF NOT EXISTS idx_pedidos_activo ON pedidos(activo);
 ```
 
 ---
@@ -158,7 +178,9 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `username` | Texto | `TEXT` | **No** | *Ninguno* | `UNIQUE`, Longitud 3-50 | Nombre de usuario del artesano o administrador. |
 | `password_hash` | Texto | `TEXT` | **No** | *Ninguno* | Cadena de hash válida | Generado por PHP `password_hash($pwd, PASSWORD_DEFAULT)`. |
 | `rol` | Enumeración | `TEXT` | **No** | `'admin'` | En `admin`, `artesano`, `asistente` | Nivel de autorización y permisos en el sistema. |
+| `activo` | Booleano / Flag | `INTEGER` | **No** | `1` | `CHECK(activo IN (0, 1))` | 1 = activo/vigente, 0 = baja lógica (cuenta desactivada). |
 | `creado_en` | Marca de tiempo | `TEXT` | **No** | `datetime('now', 'localtime')` | Formato ISO 8601 | Fecha y hora de creación de la cuenta. |
+| `eliminado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Fecha y hora en que se aplicó la baja lógica (si aplica). |
 
 ### 3.2 Tabla: `creaciones`
 | Campo | Tipo Lógico | Clase SQLite | Nulable | Valor por Defecto | Restricciones | Descripción |
@@ -176,8 +198,10 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `descripcion` | Texto Largo | `TEXT` | **Sí** | `NULL` | Longitud `<= 2000` | Notas de confección, cuidados de lavado y especificaciones. |
 | `imagen_url` | URL Web | `TEXT` | **Sí** | `NULL` | Longitud `<= 500` | Enlace a la fotografía de la pieza o ruta local. |
 | `es_sobre_encargo`| Bandera Binaria| `INTEGER` | **No** | `0` | En `0, 1` | 1 si la pieza se teje exclusivamente sobre pedido sin stock inmediato. |
+| `activo` | Booleano / Flag | `INTEGER` | **No** | `1` | `CHECK(activo IN (0, 1))` | 1 = visible/activo en catálogo, 0 = baja lógica (archivada). |
 | `creado_en` | Marca de tiempo | `TEXT` | **No** | `datetime('now', 'localtime')` | Formato ISO 8601 | Fecha y hora de registro de la pieza. |
 | `actualizado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Auditoría de fecha de última modificación. |
+| `eliminado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Fecha y hora en que se aplicó la baja lógica (si aplica). |
 
 ### 3.3 Tabla: `pedidos`
 | Campo | Tipo Lógico | Clase SQLite | Nulable | Valor por Defecto | Restricciones | Descripción |
@@ -192,16 +216,27 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 | `estado_pago` | Enumeración | `TEXT` | **No** | `'Pendiente'` | En `Pendiente`, `Anticipo 50%`, `Liquidado` | Estado financiero y de cobro del encargo artesanal. |
 | `precio_final` | Moneda (Centavos) | `INTEGER` | **No** | *Ninguno* | `1` a `9999999` | Precio total pactado bloqueado al momento de la orden en centavos. |
 | `notas` | Texto | `TEXT` | **Sí** | `NULL` | Longitud `<= 1000` | Instrucciones de personalización (color de accesorios, mensaje de regalo). |
+| `activo` | Booleano / Flag | `INTEGER` | **No** | `1` | `CHECK(activo IN (0, 1))` | 1 = pedido activo/vigente, 0 = baja lógica (archivado). |
 | `creado_en` | Marca de tiempo | `TEXT` | **No** | `datetime('now', 'localtime')` | Formato ISO 8601 | Fecha y hora de alta del pedido. |
+| `actualizado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Auditoría de última modificación de estado de pedido o cobro. |
+| `eliminado_en` | Marca de tiempo | `TEXT` | **Sí** | `NULL` | Formato ISO 8601 | Fecha y hora en que se aplicó la baja lógica (si aplica). |
 
 ---
 
 ## 4. Reglas de Integridad Referencial y Negocio
 - **Activación Forzosa de Claves Foráneas:** Ejecución de `PRAGMA foreign_keys = ON;` al inicializar cualquier conexión PDO.
-- **Atribución de Autoría (`artesano_id`):** Cada creación está vinculada al artesano que la registró. Un usuario no puede eliminarse si tiene creaciones registradas en el catálogo (`ON DELETE RESTRICT`).
-- **Protección contra Eliminaciones Accidentales (`ON DELETE RESTRICT`):** Una creación no se puede eliminar de la base de datos si existen encargos (activos o históricos) asociados a su ID (`fk_pedidos_creacion`).
+- **Regla Universal de Cero Eliminaciones Físicas (Baja Lógica):** En toda la base de datos y API, **no existen las eliminaciones físicas (`DELETE FROM`)**. Todas las operaciones de baja se ejecutan exclusivamente mediante actualización lógica:
+  ```sql
+  UPDATE <table> 
+  SET activo = 0, 
+      eliminado_en = datetime('now', 'localtime') 
+  WHERE id = :id AND activo = 1;
+  ```
+  Las consultas por defecto de catálogo, listados, autenticación y búsquedas filtran estrictamente por `activo = 1`. Los registros inactivados se preservan físicamente en SQLite, garantizando una auditoría contable incorruptible y evitando cualquier ruptura de integridad relacional histórica.
+- **Atribución de Autoría (`artesano_id`):** Cada creación está vinculada al artesano que la registró. Un usuario no puede darse de baja si tiene creaciones activas en el catálogo.
+- **Protección contra Eliminaciones Accidentales (`ON DELETE RESTRICT`):** Las claves foráneas cuentan con `ON DELETE RESTRICT`. Como nunca se eliminan físicamente filas, se garantiza la total consistencia histórica de encargos pasados.
 - **Inmutabilidad de Precios (`precio_final`):** Calculado de forma segura en el servidor (`creaciones.precio * pedidos.cantidad`) y congelado en `pedidos.precio_final` al crear la orden. Actualizaciones posteriores del catálogo no alteran el histórico contable.
 - **Control de Cantidades (`cantidad`):** Cada pedido puede registrar múltiples unidades de un mismo diseño, permitiendo el cálculo exacto de ingresos e insumos requeridos.
 - **Descuento Atómico de Inventario:** La creación de un pedido requiere una transacción de base de datos (`BEGIN TRANSACTION`). El backend verifica que `cantidad <= creaciones.cantidad_stock` y descuenta el stock físico (`UPDATE creaciones SET cantidad_stock = cantidad_stock - :cantidad`).
-- **Reintegro de Stock por Cancelación:** Si se actualiza el pedido a `'Cancelado'` mediante `POST /api/pedidos/cancelar.php` (o `POST /api/pedidos/cambiar-estado.php`), se ejecuta una transacción que restituye las unidades apartadas a `creaciones.cantidad_stock`.
-- **Limpieza de Archivos Físicos (Cero Archivos Huérfanos):** Al eliminar un registro de creación mediante `POST /api/creaciones/eliminar.php`, el backend debe consultar `imagen_url` y eliminar el archivo físico asociado de `/uploads/` mediante `unlink()` de PHP antes o durante la eliminación. Si la eliminación es bloqueada por pedidos asociados (`ON DELETE RESTRICT`), el archivo físico se preserva en disco.
+- **Reintegro de Stock por Cancelación (Idempotente):** Si se cancela un pedido mediante `POST /api/pedidos/cancelar.php`, se verifica que el estado no sea previamente `'Cancelado'` para evitar dobles reintegros, y se ejecuta una transacción atómica que restituye las unidades apartadas a `creaciones.cantidad_stock` y registra la marca temporal en `actualizado_en`.
+- **Ciclo de Vida de Imágenes con Borrado Lógico (Cero `unlink()` en Soft Delete):** Al darse de baja lógica una creación (`activo = 0`), **NUNCA se elimina físicamente la fotografía de disco (`uploads/`)**. Los pedidos históricos vinculados a esa pieza requieren seguir visualizando la miniatura del producto. La llamada a `unlink()` está **estrictamente reservada** para el reemplazo de una imagen durante la actualización (`actualizar.php`), cuando una nueva foto sustituye a la anterior.

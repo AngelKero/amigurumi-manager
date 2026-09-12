@@ -65,25 +65,32 @@ proyecto-web/
 │   ├── auth/
 │   │   ├── login.php                  # POST: Autenticar credenciales y devolver Bearer Token
 │   │   ├── logout.php                 # POST: Invalidación de estado de autenticación
-│   │   └── me.php                     # GET: Información del usuario activo (valida Bearer Token)
+│   │   ├── me.php                     # GET: Información del usuario activo (valida Bearer Token)
+│   │   └── cambiar-password.php       # POST: Autoservicio de cambio de contraseña para usuario autenticado
 │   ├── creaciones/
 │   │   ├── index.php                  # GET: Listar catálogo con filtros (búsqueda, categoría, autor, precio)
+│   │   ├── artesanos.php              # GET: Directorio público de creadores con piezas activas para #filterArtisan
 │   │   ├── detalle.php                # GET: Ficha técnica detallada por ID
-│   │   ├── crear.php                  # POST: Registrar nueva creación con foto (AuthGuard: artesano/admin)
-│   │   ├── actualizar.php             # POST: Actualizar datos de creación (AuthGuard: creador/admin)
-│   │   ├── eliminar.php               # POST: Borrado con salvaguarda FK y unlink (AuthGuard)
-│   │   ├── ajustar-stock.php          # POST: Incremento/decremento rápido in-situ (AuthGuard)
-│   │   └── toggle-encargo.php         # POST: Alternar modalidad de encargo (AuthGuard)
+│   │   ├── crear.php                  # POST: Registrar nueva creación con foto o fallback SVG (artesano/admin)
+│   │   ├── actualizar.php             # POST: Actualizar datos de creación & unlink de foto previa (autor/admin)
+│   │   ├── eliminar.php               # POST: Baja lógica sin unlink & salvaguarda referencial (autor/admin)
+│   │   ├── restaurar.php              # POST: Revertir baja lógica y restaurar en catálogo (autor/admin)
+│   │   ├── ajustar-stock.php          # POST: Incremento/decremento rápido in-situ (autor/admin)
+│   │   └── toggle-encargo.php         # POST: Alternar modalidad de encargo (autor/admin)
 │   ├── pedidos/
-│   │   ├── index.php                  # GET: Listar pedidos filtrados por estado/búsqueda (AuthGuard)
-│   │   ├── solicitar.php              # POST: Checkout público de clientes (transaccional)
+│   │   ├── index.php                  # GET: Listar pedidos filtrados por estado/búsqueda con aislamiento multi-artesano
+│   │   ├── solicitar.php              # POST: Checkout público de clientes (transaccional atómico)
 │   │   ├── crear.php                  # POST: Registro de encargo manual por el artesano (AuthGuard)
-│   │   ├── cambiar-estado.php         # POST: Avanzar estado de producción (AuthGuard)
-│   │   └── cancelar.php               # POST: Cancelar y restituir stock físico atómicamente (AuthGuard)
+│   │   ├── cambiar-estado.php         # POST: Avanzar estado de confección/cobro con timestamp actualizado_en
+│   │   └── cancelar.php               # POST: Cancelación idempotente y restitución física de stock atómica
 │   └── usuarios/
-│       ├── index.php                  # GET: Directorio de creadores y equipo (AuthGuard: admin)
-│       ├── crear.php                  # POST: Registrar nuevo artesano/colaborador (AuthGuard: admin)
-│       └── cambiar-rol.php            # POST: Modificar rol con salvaguarda ID #1 (AuthGuard: admin)
+│       ├── index.php                  # GET: Directorio de creadores paginado con filtro ?estado= (admin)
+│       ├── crear.php                  # POST: Registrar nuevo artesano/colaborador (admin)
+│       ├── cambiar-rol.php            # POST: Modificar rol con salvaguarda ID #1 (admin)
+│       ├── actualizar.php             # POST: Modificar nombre de usuario con validación de unicidad (admin)
+│       ├── restablecer-password.php   # POST: Recuperación administrativa de contraseña manual/autogenerada (admin)
+│       ├── eliminar.php               # POST: Baja lógica de usuario con salvaguardas ID #1, auto y creaciones (admin)
+│       └── reactivar.php              # POST: Reactivar cuenta inactiva restaurando activo = 1 (admin)
 │
 ├── database/
 │   ├── database.sqlite                # Base de datos SQLite 3 física protegida
@@ -613,226 +620,187 @@ graph LR
    - Prueban métodos unitarios de clases y ejecutan peticiones HTTP reales vía `curl` contra el servidor embebido local (`localhost:8000`).
    - Protegidos por doble blindaje: guardia de entorno CLI (`php_sapi_name() === 'cli'`) y bloqueo en `.htaccess`.
 3. **Nivel 3 — Logs Crudos y Trazas en `logs/` (Temporales, Fuera de Git):**
-   - Almacenan volcados completos de salida de terminal y cabeceras detalladas (`curl -i -v`).
-   - Carpeta blindada por `.htaccess` (`Require all denied`) y excluida en `.gitignore` (`/logs/*` excepto `.gitkeep` y `.htaccess`) para no saturar el control de versiones con archivos voluminosos.
+   - Almacenan volcados completos de salida de terminal y cabeceras detalladas (`cur### 🔹 Subfase 3.1: Base del Backend & Infraestructura Nuclear (Core Foundations) — ✅ COMPLETADA & VERIFICADA
 
----
-
-## 🔄 6. Plan Detallado por Subfases de la Fase 3 (Desarrollo, Testing Exhaustivo & Documentación)
-
-Para garantizar un desarrollo quirúrgico, verificable y seguro, la **Fase 3 se divide en 6 subfases funcionales secuenciales**. Al finalizar cada subfase, se ejecutará un **protocolo de pruebas exhaustivo (CLI y HTTP curl)** y se **documentarán todos los contratos y avances** antes de proceder a la siguiente.
-
-```mermaid
-graph TD
-    S1[Subfase 3.1: Base & Infraestructura Nuclear] -->|Pruebas CLI + Doc| S2[Subfase 3.2: Autenticación Bearer & Middleware]
-    S2 -->|Pruebas HTTP + Doc| S3[Subfase 3.3: Gestión de Usuarios & Roles RBAC]
-    S3 -->|Pruebas RBAC + Doc| S4[Subfase 3.4: Catálogo & Ciclo de Creaciones]
-    S4 -->|Pruebas Upload/Stock + Doc| S5[Subfase 3.5: Pedidos, Transacciones & Restitución]
-    S5 -->|Pruebas Atómicas + Doc| S6[Subfase 3.6: Auditoría Integral & Cierre Fase 3]
-    S6 -->|Handoff Aprobado| F4[Inicio de Fase 4: Cableado Frontend]
-```
-
----
-
-### 🔹 Subfase 3.1: Base del Backend & Infraestructura Nuclear (Core Foundations)
-
-* **Objetivo:** Establecer los cimientos limpios de `app/`, aislar el backend de `src/`, configurar la conexión SQLite, el gestor criptográfico de tokens y los 5 estándares técnicos nucleares (CORS, Config, ErrorHandler, CurrencyHelper, PaginationHelper).
-* **Componentes a Implementar:**
+* **Objetivo:** Establecer los cimientos limpios de `app/`, aislar el backend de `src/`, configurar la conexión SQLite con `PRAGMA busy_timeout = 5000;`, el gestor criptográfico de tokens y los 5 estándares técnicos nucleares (CORS, Config, ErrorHandler, CurrencyHelper, PaginationHelper).
+* **Componentes Implementados:**
   1. `app/autoload.php`: Autocargador PSR-4 nativo con `spl_autoload_register` (mapeo `App\` a `app/`, sin Composer) e inicialización de `ErrorHandler::register()`.
   2. `app/config.php`: Archivo canónico de configuración centralizada (`app`, `auth`, `database`, `uploads`, `pagination`, `cors`) protegido de accesos web.
   3. `app/Core/Config.php`: Clase in-memory con caché estática y método `Config::get(string $key, mixed $default = null)` con soporte para notación de puntos.
   4. `app/Core/ErrorHandler.php`: Manejador global (`set_error_handler`, `set_exception_handler`, `register_shutdown_function`) que purga búferes (`ob_end_clean()`) y emite JSON 500 puro sin fugas de HTML.
-  5. `app/Core/Database.php`: Singleton PDO SQLite con `PRAGMA foreign_keys = ON;`, `ERRMODE_EXCEPTION` y `FETCH_ASSOC`, leyendo la ruta de BD desde `Config::get('database.path')`.
-  6. `app/Core/Request.php`: Abstracción de peticiones, sanitización, parseo JSON/multipart y extracción de Bearer tokens (`bearerToken()`).
+  5. `app/Core/Database.php`: Singleton PDO SQLite con `PRAGMA foreign_keys = ON;`, `PRAGMA busy_timeout = 5000;`, `ERRMODE_EXCEPTION` y `FETCH_ASSOC`, leyendo la ruta de BD desde `Config::get('database.path')`.
+  6. `app/Core/Request.php`: Abstracción de peticiones, sanitización, parseo JSON/multipart, extracción de Bearer tokens (`bearerToken()`) y método de conveniencia `query()`.
   7. `app/Core/Response.php`: Emisor estandarizado de respuestas JSON (`status`, `data`, `error`, códigos HTTP) e implementación del método `Response::handleCors()` (HTTP 204 No Content para preflight `OPTIONS`).
   8. `app/Core/TokenManager.php`: Generación y validación de tokens Bearer HMAC-SHA256 con payload, expiración de 24 horas y `hash_equals()`.
   9. Migración y enriquecimiento de utilidades:
      - `app/Utils/CurrencyHelper.php`: Trasladado desde `src/Utils/` y dotado de `mxnToCents()`, `centsToMxn()`, `formatCents()`, `enrichCreation()` y `enrichOrder()`.
      - `app/Utils/PaginationHelper.php`: Helper unificado para cálculo de `limit`, `offset` y construcción del bloque canónico de metadatos `paginacion`.
      - `app/Utils/SvgHelper.php`: Trasladado desde `src/Utils/` a `app/Utils/` (dejando `src/` 100% exclusivo para frontend `css/` y `js/`).
-  10. Actualización de `.htaccess`: Bloqueo web directo a `app/` (HTTP 403) y paso de cabecera `Authorization` a PHP en entornos FastCGI/Apache.
-* **Protocolo de Pruebas Exhaustivas al Finalizar:**
-  - Script CLI (`tests/test_core.php`):
-    - Validar que el autoloader resuelva clases bajo namespace `App\` sin fallos.
-    - Validar que `Config::get('auth.jwt_ttl_seconds')` devuelva `86400` y `Config::get('pagination.creaciones_default')` devuelva `12`.
-    - Validar que `Database::getInstance()` mantenga una sola instancia PDO y que `PRAGMA foreign_keys;` devuelva `1`.
-    - Validar `CurrencyHelper::mxnToCents("$1,250.50 MXN") === 125050` y `CurrencyHelper::formatCents(125050) === "$1,250.50"`.
-    - Validar `PaginationHelper::params()` y `buildMeta()` calculando páginas y banderas booleanas exactas.
-    - Disparar una excepción en script de prueba y comprobar que `ErrorHandler` emita JSON 500 con cero etiquetas HTML (`<html>`, `<br>`, etc.).
-    - Generar un token con `TokenManager::generate()` y verificarlo exitosamente con `TokenManager::verify()`.
-    - Probar token expirado y token adulterado (deben retornar `null`).
-  - Pruebas HTTP curl:
-    - Solicitar `http://localhost:8000/app/config.php` $\rightarrow$ Verificar respuesta **HTTP 403 Forbidden**.
-    - Solicitar `http://localhost:8000/app/Core/Database.php` $\rightarrow$ Verificar respuesta **HTTP 403 Forbidden**.
-    - Ejecutar `curl -X OPTIONS -I http://localhost:8000/api/creaciones/index.php` $\rightarrow$ Verificar respuesta **HTTP 204 No Content** y cabeceras CORS presentes.
-* **Protocolo de Cierre & Documentación:**
-  - Registrar los resultados de las pruebas CLI en `docs/` y sincronizar `memory-bank/activeContext.md` y `techContext.md`.
+  10. Actualización de `.htaccess`: Bloqueo web directo a `app/`, `database/`, `logs/`, `tests/`, `memory-bank/` (HTTP 403) y paso de cabecera `Authorization` a PHP en entornos FastCGI/Apache.
+* **Resultado de Pruebas:** **93 / 93 Aserciones Aprobadas (100% OK)** en [`tests/test-subfase-3.1.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.1.php). Reporte formal: [`docs/testing/subfase-3.1-core.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.1-core.md).
 
 ---
 
-### 🔹 Subfase 3.2: Módulo de Autenticación Stateless & Middleware de Seguridad (`api/auth/*`)
+### 🔹 Subfase 3.2: Módulo de Autenticación Stateless & Middleware de Seguridad (`api/auth/*`) — ✅ COMPLETADA & VERIFICADA
 
-* **Objetivo:** Implementar el ciclo completo de autenticación desacoplada con tokens Bearer y guardias de seguridad para la API.
-* **Componentes a Implementar:**
-  1. `app/Repositories/UsuarioRepository.php` (fase inicial: consultas `findByUsername` y `findById`).
-  2. `app/Services/AuthService.php`: Método `login()` con `password_verify()`, emisión de Bearer Token con TTL de 24h, y método `me()`.
+* **Objetivo:** Implementar el ciclo completo de autenticación desacoplada con tokens Bearer, autoservicio de cambio de contraseña y guardias de seguridad para la API.
+* **Componentes Implementados:**
+  1. `app/Repositories/UsuarioRepository.php`: consultas `findByUsername`, `findById`, `findByIdSafe`, `existsUsername`, `updatePasswordHash`.
+  2. `app/Services/AuthService.php`: Métodos `authenticate()` con `password_verify()` y dummy hash contra timing attacks, `validateToken()` con invalidación inmediata ante cuentas inactivas (`activo = 0`), y `changePassword()` para cambio de contraseña propio.
   3. `app/Middleware/AuthGuard.php`: Middleware interceptor que valida la cabecera `Authorization: Bearer <token>` e inyecta el usuario autenticado en `Request::setUser()`.
-  4. Controladores delgados en `api/auth/`:
-     - `POST /api/auth/login.php`: Recibe credenciales JSON, valida y devuelve token Bearer + perfil de usuario.
+  4. `app/Middleware/RoleGuard.php`: Verificación de roles (`adminOnly`, `artisanOrAdmin`, `anyAuthenticated`).
+  5. Controladores delgados en `api/auth/`:
+     - `POST /api/auth/login.php`: Autenticación con credenciales JSON y emisión de Bearer Token.
      - `POST /api/auth/logout.php`: Cierre de sesión stateless.
-     - `GET /api/auth/me.php`: Endpoint protegido con `AuthGuard` que devuelve los datos del usuario en sesión.
-* **Protocolo de Pruebas Exhaustivas al Finalizar:**
-  - `POST /api/auth/login.php` con credenciales válidas (`admin`): Verificar HTTP 200, recepción de token Bearer y formato JSON estandarizado.
-  - `POST /api/auth/login.php` con contraseña errónea: Verificar HTTP 401 y mensaje de error genérico seguro.
-  - `GET /api/auth/me.php` sin cabecera de autorización: Verificar HTTP 401 Unauthorized.
-  - `GET /api/auth/me.php` con cabecera `Authorization: Bearer <token_valido>`: Verificar HTTP 200 y datos del usuario.
-  - `GET /api/auth/me.php` con token alterado: Verificar HTTP 401.
-* **Protocolo de Cierre & Documentación:**
-  - Actualizar `docs/auth-flow.md` y `docs/api-design.md` con los contratos de `api/auth/`. Sincronizar `memory-bank/`.
+     - `GET /api/auth/me.php`: Retorno del perfil activo seguro vía Bearer Token.
+     - `POST /api/auth/cambiar-password.php`: Autoservicio de cambio de contraseña para usuarios autenticados.
+* **Resultado de Pruebas:** **69 / 69 Aserciones Aprobadas (100% OK)** en [`tests/test-subfase-3.2.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.2.php). Reporte formal: [`docs/testing/subfase-3.2-auth.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.2-auth.md).
 
 ---
 
-### 🔹 Subfase 3.3: Gestión de Usuarios, Directorio de Creadores & Roles RBAC (`api/usuarios/*`)
+### 🔹 Subfase 3.3: Gestión de Usuarios, Directorio de Creadores & Roles RBAC (`api/usuarios/*`) — ✅ COMPLETADA & VERIFICADA
 
-* **Objetivo:** Proveer la administración de la comunidad de artesanos y colaboradores con gobernanza RBAC y protección de la cuenta raíz.
-* **Componentes a Implementar:**
-  1. Completar `app/Repositories/UsuarioRepository.php`: `findAll()` con conteo de creaciones asociadas, `create()`, `updateRole()`, `countAdmins()`.
-  2. `app/Services/UsuarioService.php`: Validaciones de formato de usuario, hashing con `password_hash()`, RBAC y **salvaguarda de seguridad que impide modificar el rol o eliminar al administrador principal (ID #1)**.
-  3. `app/Middleware/RoleGuard.php`: Validación de permisos por rol (`admin`, `artesano`, `asistente`).
-  4. Controladores delgados en `api/usuarios/`:
-     - `GET /api/usuarios/index.php` (Protegido `AuthGuard` + `RoleGuard: admin`): Directorio completo con métricas de creación.
-     - `POST /api/usuarios/crear.php` (Protegido `AuthGuard` + `RoleGuard: admin`): Alta de nuevo creador o colaborador.
-     - `POST /api/usuarios/cambiar-rol.php` (Protegido `AuthGuard` + `RoleGuard: admin`): Modificación de rol con bloqueo a ID #1.
-* **Protocolo de Pruebas Exhaustivas al Finalizar:**
-  - `GET /api/usuarios/index.php` con token de admin: Verificar listado y conteos (HTTP 200).
-  - `GET /api/usuarios/index.php` con token de artesano (no admin): Verificar rechazo **HTTP 403 Forbidden**.
-  - `POST /api/usuarios/crear.php`: Alta de usuario de prueba y verificación de hash en SQLite.
-  - **Prueba de Fuego de Salvaguarda:** Enviar `POST /api/usuarios/cambiar-rol.php` con `id: 1` y `rol: 'artesano'` $\rightarrow$ Verificar que el backend rechace la solicitud con error explícito de protección de cuenta raíz.
-* **Protocolo de Cierre & Documentación:**
-  - Actualizar `docs/api-design.md` con los endpoints de usuarios y registrar la matriz RBAC en `memory-bank/`.
+* **Objetivo:** Proveer la administración integral de la comunidad de artesanos y colaboradores con gobernanza RBAC, regla universal de borrado lógico, reactivación y protección inviolable de la cuenta raíz.
+* **Componentes Implementados:**
+  1. `app/Repositories/UsuarioRepository.php`: Borrado lógico estricto (`UPDATE usuarios SET activo = 0, eliminado_en = datetime(...)`), reactivación (`reactivate()`), listados con conteo de creaciones activas y filtro flexible por estado (`$onlyActive: true|false|null`).
+  2. `app/Services/UsuarioService.php`: Validaciones alfanuméricas, hashing bcrypt, RBAC con salvaguarda ID #1 en rol y borrado, bloqueo de auto-eliminación en sesión activa, verificación referencial de creaciones activas, reseteo de claves manual/autogenerada, y reactivación de cuentas.
+  3. Controladores delgados en `api/usuarios/` (100% protegidos con `RoleGuard::adminOnly()`):
+     - `GET /api/usuarios/index.php`: Directorio paginado con conteo de creaciones y filtro `?estado=activos|inactivos|todos`.
+     - `POST /api/usuarios/crear.php`: Registro de nuevo artesano o colaborador.
+     - `POST /api/usuarios/cambiar-rol.php`: Modificación de rol con bloqueo a ID #1.
+     - `POST /api/usuarios/actualizar.php`: Actualización de nombre de usuario con unicidad excluyente.
+     - `POST /api/usuarios/restablecer-password.php`: Recuperación administrativa de contraseña manual/autogenerada (`Crochet!<hex>!`).
+     - `POST /api/usuarios/eliminar.php`: Baja lógica con candados de seguridad.
+     - `POST /api/usuarios/reactivar.php`: Reactivación de cuentas inactivas.
+* **Resultado de Pruebas:** **105 / 105 Aserciones Aprobadas (100% OK)** en [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php). Reporte formal: [`docs/testing/subfase-3.3-usuarios.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.3-usuarios.md).
 
 ---
 
-### 🔹 Subfase 3.4: Catálogo, Inventario & Ciclo de Vida de Creaciones (`api/creaciones/*`)
+### 🔹 Subfase 3.4: Catálogo, Inventario & Ciclo de Vida de Creaciones (`api/creaciones/*`) — 🎯 PRÓXIMA SUBFASE
 
-* **Objetivo:** Implementar la capa de datos y negocio para el catálogo textil con paginación canónica de 12 ítems, formato dual de precios, control de stock in-situ, upload seguro y fallback SVG temático.
+* **Objetivo:** Implementar la capa de datos y negocio para el catálogo textil con paginación canónica de 12 ítems, formato dual de precios, control de stock in-situ, upload seguro, fallback SVG temático, endpoint público de artesanos para filtros, prevención IDOR de multi-autoría y preservación de imágenes en baja lógica.
 * **Componentes a Implementar:**
   1. `app/Repositories/CreacionRepository.php`:
-     - `findAll(array $filters = [], int $page = 1, int $limit = 12): array` con doble consulta optimizada (`SELECT COUNT(*)` para total y `LIMIT :limit OFFSET :offset` para página actual).
-     - Filtros multicriterio: categoría, artesano, precio min/max, estado de stock (`in_stock`, `out_of_stock`, `on_demand`) y búsqueda de texto.
-     - `findById()`, `create()`, `update()`, `delete()`, `updateStock()`, `toggleOnDemand()`.
+     - `findAll(array $filters = [], int $page = 1, int $limit = 12, bool $onlyActive = true): array` con doble consulta optimizada (`SELECT COUNT(*)` para total y `LIMIT :limit OFFSET :offset` para página actual).
+     - Filtros multicriterio: categoría, artesano (`artesano_id`), precio min/max, estado de stock (`in_stock`, `out_of_stock`, `on_demand`) y búsqueda de texto.
+     - `findActiveArtisansWithCreations(): array` para alimentar el filtro público `#filterArtisan`.
+     - `findById()`, `create()`, `update()`, `softDelete()`, `restore()`, `updateStock()`, `toggleOnDemand()`, `countOrdersByCreation()`.
   2. `app/Services/CreacionService.php`:
      - Conversión estricta a centavos enteros con `CurrencyHelper::mxnToCents()`.
      - **Enriquecimiento Monetario Dual:** Cada ítem procesado incorpora `precio_formateado`, `costo_materiales_formateado` y métricas de margen.
      - Validaciones de restricciones CHECK de SQLite (dimensiones, longitudes, horas).
-     - Validación MIME real de imágenes, límite de 5 MB y guardado en `uploads/`.
+     - Validación MIME real de imágenes (finfo), límite de 5 MB y guardado en `uploads/`.
      - **Fallback SVG Temático Automático:** Si no se sube foto, asigna automáticamente la ruta del vector SVG en `assets/svg/piezas/` según la categoría elegida.
-     - Gestión de archivos huérfanos: eliminación con `unlink()` al actualizar con nueva foto o al borrar pieza.
+     - **Protección IDOR de Multi-Autoría:** En `update`, `delete`, `restore`, `updateStock` y `toggleOnDemand`, valida que el usuario autenticado sea el artesano autor de la pieza (`artesano_id === currentUserId`) o posea rol `admin`. Emite **HTTP 403 Forbidden** si un artesano intenta alterar la pieza de otro creador.
+     - **Ciclo de Vida de Imágenes con Borrado Lógico (Cero `unlink()` en Soft Delete):** Al dar de baja lógica una creación (`activo = 0`), **NUNCA se borra la fotografía de disco**. La llamada a `unlink()` queda estrictamente reservada para el reemplazo de una foto existente al actualizar una pieza en `actualizar.php`.
+     - Cálculo de métricas KPIs (totales de catálogo, piezas en stock, piezas bajo encargo, valor económico).
   3. Controladores delgados en `api/creaciones/`:
      - `GET /api/creaciones/index.php`: Catálogo público paginado (default 12) con metadatos de paginación y filtros.
+     - `GET /api/creaciones/artesanos.php`: Directorio público y ligero de creadores con piezas activas para `#filterArtisan`.
      - `GET /api/creaciones/detalle.php`: Ficha técnica pública detallada por ID con enriquecimiento dual.
-     - `POST /api/creaciones/crear.php` (Protegido `AuthGuard`): Alta con foto o fallback SVG.
-     - `POST /api/creaciones/actualizar.php` (Protegido `AuthGuard`): Edición de datos y foto.
-     - `POST /api/creaciones/eliminar.php` (Protegido `AuthGuard`): Borrado protegido por `ON DELETE RESTRICT`.
-     - `POST /api/creaciones/ajustar-stock.php` (Protegido `AuthGuard`): Ajuste rápido in-situ (`+1` / `-1`).
-     - `POST /api/creaciones/toggle-encargo.php` (Protegido `AuthGuard`): Alternar modalidad de confección bajo encargo.
+     - `POST /api/creaciones/crear.php` (Protegido `AuthGuard: artesano, admin`): Alta con foto o fallback SVG.
+     - `POST /api/creaciones/actualizar.php` (Protegido `AuthGuard: autor, admin`): Edición de datos con IDOR check & `unlink()` de foto anterior.
+     - `POST /api/creaciones/eliminar.php` (Protegido `AuthGuard: autor, admin`): Baja lógica sin `unlink()` con salvaguarda de pedidos activos.
+     - `POST /api/creaciones/restaurar.php` (Protegido `AuthGuard: autor, admin`): Revertir baja lógica y retornar la pieza al catálogo.
+     - `POST /api/creaciones/ajustar-stock.php` (Protegido `AuthGuard: autor, admin`): Ajuste rápido in-situ (`+1` / `-1`).
+     - `POST /api/creaciones/toggle-encargo.php` (Protegido `AuthGuard: autor, admin`): Alternar modalidad de confección bajo encargo.
 * **Protocolo de Pruebas Exhaustivas al Finalizar:**
-  - Probar `GET /api/creaciones/index.php` con parámetros por defecto: verificar que devuelva máximo 12 elementos y que el objeto `paginacion` contenga `pagina_actual: 1`, `por_pagina: 12`, `total_items`, `total_paginas`, etc.
-  - Probar paginación con `?pagina=2&limite=2`: comprobar que retorne el segundo segmento de datos sin colisiones.
-  - Probar enriquecimiento dual: verificar que cada creación incluya tanto `precio: 45000` como `precio_formateado: "$450.00"`.
-  - Probar creación de pieza sin foto: comprobar que `imagen_url` guarde la ruta del SVG temático correspondiente.
+  - Probar `GET /api/creaciones/index.php` con parámetros por defecto: verificar máximo 12 elementos y bloque `paginacion`.
+  - Probar `GET /api/creaciones/artesanos.php`: verificar retorno público de creadores con creaciones activas.
+  - Probar enriquecimiento dual: verificar tupla numérica centavos + cadena formateada en cada ítem.
+  - Probar creación de pieza sin foto: comprobar asignación automática de SVG temático.
   - Probar creación con foto real: comprobar archivo creado en `uploads/`.
   - Probar edición con nueva foto: comprobar que la foto anterior sea eliminada de disco (`unlink()`).
-  - Probar eliminación de pieza con pedidos asociados: comprobar rechazo referencial de SQLite (`ON DELETE RESTRICT`) sin eliminar la foto.
+  - Probar IDOR: verificar que un artesano no pueda editar, eliminar ni ajustar stock de una creación perteneciente a otro artesano (**HTTP 403 Forbidden**).
+  - Probar baja lógica: verificar que la foto en `uploads/` NO se elimine tras el borrado lógico.
+  - Probar restauración con `restaurar.php`: verificar retorno exitoso a `activo = 1`.
   - Probar ajuste de stock in-situ y verificar que respete la restricción CHECK `cantidad_stock >= 0`.
 * **Protocolo de Cierre & Documentación:**
-  - Actualizar `docs/api-design.md`, `docs/database-schema.md` y sincronizar `memory-bank/`.
+  - Generar `docs/testing/subfase-3.4-creaciones.md`, registrar logs y actualizar `memory-bank/`.
 
 ---
 
 ### 🔹 Subfase 3.5: Gestión de Pedidos, Transacciones Atómicas & Restitución (`api/pedidos/*`)
 
-* **Objetivo:** Implementar la gestión transaccional de pedidos de clientes y encargos de artesanos con integridad de stock garantizada, paginación de 20 pedidos y formato dual de precios.
+* **Objetivo:** Implementar la gestión transaccional de pedidos de clientes y encargos de artesanos con integridad de stock garantizada, paginación de 20 pedidos, formato dual de precios, aislamiento multi-artesano, auditoría temporal `actualizado_en` y cancelación idempotente.
 * **Componentes a Implementar:**
   1. `app/Repositories/PedidoRepository.php`:
-     - `findAll(array $filters = [], int $page = 1, int $limit = 20): array` con doble consulta paginada y ordenación cronológica descendente.
+     - `findAll(array $filters = [], int $page = 1, int $limit = 20, ?int $artisanId = null): array` con doble consulta paginada y ordenación cronológica descendente.
+     - Aislamiento en repositorio: si se pasa `$artisanId`, aplica `WHERE c.artesano_id = :artisanId` uniéndose con `creaciones`.
      - `findById()`, `create()`, `updateStatus()`, `updatePaymentStatus()`, `cancelWithStockRestitution()`.
   2. `app/Services/PedidoService.php`:
      - **Transacción Atómica de Compra / Encargo:** `BEGIN IMMEDIATE TRANSACTION` en SQLite, validación y descuento físico de stock para piezas de entrega inmediata.
      - **Soporte Bajo Encargo:** Bypass de restricción de stock para piezas con `es_sobre_encargo === 1`.
      - **Inmutabilidad Financiera:** Cálculo y congelamiento de `precio_final = precio_unitario * cantidad` en el servidor (inmune a manipulación del cliente).
      - **Enriquecimiento Monetario Dual:** Cada pedido devuelto incorpora `precio_final_formateado`.
-     - **Restitución Atómica de Stock:** Reintegración automática de unidades a `creaciones.cantidad_stock` al cambiar el estado a `'Cancelado'`.
+     - **Aislamiento Multi-Artesano:** En `listOrders`, artesanos solo ven pedidos de piezas que ellos confeccionaron; administradores ven todos.
+     - **Auditoría Temporal `actualizado_en`:** Toda transición de estado de confección o cobro actualiza `actualizado_en = datetime('now', 'localtime')`.
+     - **Cancelación Idempotente con Restitución Atómica:** Reintegración automática de unidades a `creaciones.cantidad_stock` al cancelar. Si el pedido ya está en estado `'Cancelado'`, emite **HTTP 409 Conflict** para impedir dobles restituciones.
   3. Controladores delgados en `api/pedidos/`:
-     - `GET /api/pedidos/index.php` (Protegido `AuthGuard`): Listado administrativo paginado (default 20) filtrable por estado y búsqueda.
-     - `POST /api/pedidos/solicitar.php` (Público): Checkout de cliente transaccional.
+     - `GET /api/pedidos/index.php` (Protegido `AuthGuard`): Listado administrativo paginado (default 20) con aislamiento por artesano.
+     - `POST /api/pedidos/solicitar.php` (Público): Checkout de cliente transaccional con reserva de existencias.
      - `POST /api/pedidos/crear.php` (Protegido `AuthGuard`): Registro de encargo directo por el artesano.
-     - `POST /api/pedidos/cambiar-estado.php` (Protegido `AuthGuard`): Transición de estado de producción o pago.
-     - `POST /api/pedidos/cancelar.php` (Protegido `AuthGuard`): Cancelación con restitución física de inventario.
+     - `POST /api/pedidos/cambiar-estado.php` (Protegido `AuthGuard: autor, admin`): Transición de estado con timestamp `actualizado_en`.
+     - `POST /api/pedidos/cancelar.php` (Protegido `AuthGuard: autor, admin`): Cancelación idempotente con restitución física de inventario.
 * **Protocolo de Pruebas Exhaustivas al Finalizar:**
-  - Probar `GET /api/pedidos/index.php` con token de admin/artesano: verificar paginación por defecto de 20 registros y metadatos de paginación.
-  - Checkout público de pieza en stock: comprobar descuento exacto en `creaciones.cantidad_stock` y generación de `precio_final` y `precio_final_formateado`.
-  - Intento de checkout solicitando más unidades de las disponibles: comprobar rollback de transacción y error HTTP 400 (`STOCK_INSUFFICIENT`).
-  - Checkout de pieza bajo encargo con stock en 0: comprobar creación exitosa del pedido.
-  - Cancelación de un pedido activo: comprobar que el stock de la pieza se incremente exactamente en las unidades canceladas.
+  - Probar `GET /api/pedidos/index.php` con artesano: verificar que solo vea encargos de sus piezas.
+  - Probar `GET /api/pedidos/index.php` con admin: verificar vista omnisciente global.
+  - Checkout público de pieza en stock: comprobar descuento exacto en `creaciones.cantidad_stock` y generación de `precio_final`.
+  - Intento de checkout con stock insuficiente: comprobar rollback de transacción y error HTTP 422.
+  - Cancelación de un pedido activo: comprobar restitución exacta de stock y registro de `actualizado_en`.
+  - Intento de doble cancelación: comprobar rechazo con HTTP 409 Conflict y stock inalterado.
 * **Protocolo de Cierre & Documentación:**
-  - Actualizar `docs/api-design.md`, `docs/database-testing.md` y sincronizar `memory-bank/`.
+  - Generar `docs/testing/subfase-3.5-pedidos.md`, registrar logs y sincronizar `memory-bank/`.
 
 ---
 
 ### 🔹 Subfase 3.6: Auditoría Integral de Seguridad Backend, Cobertura de Pruebas & Handoff a Fase 4
 
-* **Objetivo:** Ejecutar una auditoría integral multi-eje de todo el backend para garantizar robustez, 0 fugas de seguridad, verificación de los 5 estándares técnicos y consistencia antes de conectar el frontend.
+* **Objetivo:** Ejecutar una auditoría integral multi-eje de todo el backend para garantizar robustez, 0 fugas de seguridad, verificación de los estándares técnicos, pruebas IDOR multi-artesano, concurrencia SQLite (`busy_timeout`) y consistencia antes de conectar el frontend.
 * **Acciones a Ejecutar:**
-  1. **Batería de Pruebas de Regresión Completa:** Suite CLI que ejecute de punta a punta el flujo de autenticación Bearer, alta de creaciones, paginación, pedidos, cancelaciones con restitución y manejo de errores.
-  2. **Auditoría de los 5 Estándares Técnicos:**
+  1. **Batería de Pruebas de Regresión Completa:** Suite CLI que ejecute de punta a punta el flujo de autenticación Bearer, gestión de usuarios, creaciones, catálogo, paginación, pedidos, cancelaciones idempotentes y manejo de errores.
+  2. **Auditoría de Seguridad Multi-Artesano (IDOR):** Pruebas cruzadas entre múltiples cuentas de artesanos verificando que ningún artesano pueda modificar, eliminar, cambiar stock o ver pedidos de creaciones ajenas.
+  3. **Auditoría de Concurrencia SQLite:** Verificación de `PRAGMA busy_timeout = 5000;` bajo simulaciones de escrituras simultáneas para garantizar cero errores `SQLITE_BUSY`.
+  4. **Auditoría de Estándares Técnicos:**
      - Preflight CORS: Respuesta 204 en todas las rutas con cabeceras requeridas.
      - Configuración: Claves centralizadas en `config.php` y bloqueo 403 verificado.
      - Manejador de Errores: Cero fugas de HTML ante cualquier anomalía (100% JSON puro).
      - Moneda Dual: 100% de montos devuelven la tupla entero centavos + cadena formateada.
-     - Paginación: Defaults de 12 para catálogo y 20 para pedidos funcionando armónicamente con límites y offsets.
-  3. **Auditoría de Inyección SQL y Parámetros:** Confirmación de que el 100% de consultas utilice sentencias preparadas con parámetros vinculados.
-  4. **Verificación de Seguridad de Archivos:** Confirmación de que `src/` contenga exactamente 0 archivos `.php` y que `.htaccess` bloquee con 403 el acceso a `app/`, `database/` y `memory-bank/`.
+     - Paginación: Defaults de 12 para catálogo y 20 para pedidos funcionando armónicamente.
+     - Borrado Lógico: Verificación de que ninguna tabla ejecute `DELETE FROM`.
   5. **Verificación de Integridad SQLite:** Ejecución de `PRAGMA integrity_check` y `PRAGMA foreign_key_check`.
-  6. **Actualización Documental Maestra:** Sincronizar `docs/README.md`, `docs/api-design.md`, `README.md` y los 5 archivos del `/memory-bank/`.
-  7. **Generación del Reporte de Handoff:** Documento formal que declare el backend listo para recibir las peticiones `fetch()` del frontend en la Fase 4.
+  6. **Actualización Documental Maestra & Handoff:** Sincronizar `docs/README.md`, `README.md` y los 5 archivos del `/memory-bank/`.
 
 ---
 
 ## ✅ 7. Decisiones de Arquitectura Confirmadas y Aprobadas por el Usuario
 
-Los siguientes puntos fueron analizados y confirmados expresamente por el usuario para la Fase 3:
+1. **Autenticación en la API: Tokens Bearer (`Authorization: Bearer <token>`)** (HMAC-SHA256 sin dependencias, 24h TTL).
+2. **Esquema de Endpoints: Nombres de Archivo Directos en Subcarpetas Temáticas en `api/`** (Compatible con Apache y `php -S localhost:8000`).
+3. **Manejo de Fotografías: Fallback SVG Temático Automático** (Asignación automática desde `assets/svg/piezas/`).
+4. **Metodología de Trabajo por Subfases con Pruebas y Documentación Mandatorias.**
+5. **Manejo Centralizado de Preflight CORS (HTTP `OPTIONS` con HTTP 204 No Content).**
+6. **Configuración Centralizada en `app/config.php` y Clase `App\Core\Config`.**
+7. **Manejador Global de Excepciones y Errores (Cero Fugas de HTML, JSON 500 puro).**
+8. **Estructura Monetaria Dual Estandarizada (Centavos en SQLite + Formato Humano en JSON).**
+9. **Paginación Estandarizada con Defaults Canónicos (12 creaciones, 20 pedidos).**
+10. **Estrategia de Testing en 3 Niveles (Reportes, Suites y Logs).**
+11. **Resiliencia ante Concurrencia SQLite (`PRAGMA busy_timeout = 5000;`):** Configurado en `Database.php` para eliminar excepciones `SQLITE_BUSY: database is locked`.
+12. **Autoservicio de Contraseñas y Recuperación Administrativa:** Los usuarios pueden cambiar su clave (`POST /api/auth/cambiar-password.php`), y los administradores pueden restablecer accesos (`POST /api/usuarios/restablecer-password.php`) con claves manuales o temporales autogeneradas (`Crochet!<hex>!`).
+13. **Reactivación de Usuarios & Filtro de Estado:** Se provee `POST /api/usuarios/reactivar.php` y filtro `?estado=activos|inactivos|todos` en `GET /api/usuarios/index.php` para resolver colisiones en `UNIQUE(username)` y permitir auditoría del censo.
+14. **Ciclo de Vida de Imágenes con Borrado Lógico (Cero `unlink()` en Soft Delete):** Las imágenes subidas NUNCA se eliminan de disco al dar de baja una creación; los pedidos históricos requieren seguir mostrando la miniatura del producto. La función `unlink()` se reserva estrictamente para reemplazos en `actualizar.php`.
+15. **Endpoint Público de Creadores para Filtro de Catálogo (`GET /api/creaciones/artesanos.php`):** Provee de forma segura y pública la lista de creadores con creaciones activas para poblar el dropdown `#filterArtisan` en `index.php`.
 
-1. **Autenticación en la API: Tokens Bearer (`Authorization: Bearer <token>`)**
-   - **Decisión:** Se utilizará autenticación desacoplada basada en tokens Bearer transmitidos en la cabecera HTTP estándar `Authorization: Bearer <token>`.
-   - **Mecanismo:** `TokenManager.php` emitirá y validará tokens firmados mediante HMAC-SHA256 con payload de identidad (`sub`, `username`, `rol`, `exp`, `iat`) sin requerir dependencias externas pesadas ni Composer.
-   - **Seguridad:** En caso de token ausente, adulterado o expirado, la API responderá de inmediato con HTTP 401 Unauthorized en formato JSON estándar.
+---
 
-2. **Esquema de Endpoints: Opción A (Nombres de Archivo Directos en Subcarpetas Temáticas)**
-   - **Decisión:** Los endpoints se organizarán como archivos PHP directos dentro de subcarpetas temáticas en `api/` (ej. `POST /api/creaciones/crear.php`, `GET /api/creaciones/index.php`, `POST /api/pedidos/cancelar.php`).
-   - **Ventaja:** Compatibilidad nativa e instantánea con el servidor embebido de desarrollo `php -S localhost:8000` y servidores Apache en producción sin necesidad de configuraciones frágiles de enrutador frontal o reglas complejas de reescritura.
+## ⏸️ 8. Estado del Proyecto & Próximos Pasos
 
-3. **Manejo de Fotografías: Fallback SVG Temático Automático**
-   - **Decisión:** Si el artesano opta por no subir una fotografía real en el formulario, el backend (`CreacionService`) asignará automáticamente la ilustración vectorial SVG canónica correspondiente a la categoría elegida (desde `assets/svg/piezas/`).
-   - **Resultado:** Erradicación total de enlaces rotos o contenedores fotográficos vacíos en el catálogo e inventario, manteniendo el diseño estético "Algodón Nórdico" impecable.
-
-4. **Metodología de Trabajo por Subfases con Pruebas y Documentación Mandatorias:**
-   - **Decisión:** Cada subfase debe concluirse con pruebas exhaustivas del servidor/endpoints y actualización completa de la documentación técnica antes de pasar a la siguiente.
-
-5. **Manejo Centralizado de Preflight CORS (HTTP `OPTIONS`):**
-   - **Decisión:** Confirmado e integrado al 100%. `Response::handleCors()` responderá a todas las peticiones `OPTIONS` con `HTTP 204 No Content`, sin carga útil y con las cabeceras de control de acceso requeridas (`Origin`, `Methods`, `Headers`, `Max-Age: 86400`) para garantizar compatibilidad nativa total con las llamadas `fetch()` del frontend en la Fase 4.
-
-6. **Configuración Centralizada en `app/config.php` y Clase `App\Core\Config`:**
-   - **Decisión:** Confirmado e integrado al 100%. Todos los parámetros sensibles (clave secreta HMAC-SHA256, TTL de tokens de 24h, límites de upload, zona horaria y parámetros de paginación) residirán en `app/config.php`, protegido de accesos web por `.htaccess`, y consumidos a través de la clase en memoria `Config::get()`.
-
-7. **Manejador Global de Excepciones y Errores (Cero Fugas de HTML):**
-   - **Decisión:** Confirmado e integrado al 100%. `App\Core\ErrorHandler` registrará `set_exception_handler`, `set_error_handler` y `register_shutdown_function` en `autoload.php`, limpiando búferes de salida con `ob_end_clean()` para emitir siempre un JSON 500 limpio (`INTERNAL_SERVER_ERROR`), asegurando que jamás se rompa el cliente con HTML inesperado ni se filtren rutas internas.
-
-8. **Estructura Monetaria Dual Estandarizada (Centavos + Formato Humano):**
-   - **Decisión:** Confirmado e integrado al 100%. La base de datos SQLite preservará siempre centavos enteros matemáticamente exactos, mientras que `CurrencyHelper` enriquecerá automáticamente todas las respuestas JSON de creaciones y pedidos devolviendo la tupla numérica entera y la cadena formateada (`precio_formateado: "$450.00"`) para su renderizado directo en la UI.
-
-9. **Paginación Estandarizada y Parámetros por Defecto:**
-   - **Decisión:** Confirmado e integrado al 100%. `PaginationHelper` gobernará los listados de la API devolviendo el bloque canónico de metadatos `paginacion` (`items`, `pagina_actual`, `por_pagina`, `total_items`, `total_paginas`, `tiene_siguiente`, `tiene_anterior`), con defaults de 12 creaciones por página en el catálogo (múltiplo óptimo para diseño responsivo) y 20 pedidos por página en el panel de control.
+> [!IMPORTANT]
+> **ESTADO DE LA FASE 3: SUBFASES 3.1, 3.2 Y 3.3 COMPLETADAS Y VERIFICADAS (267/267 Aserciones Aprobadas).**
+> - **Subfase 3.1 (Core Foundations):** 93/93 aserciones pasadas.
+> - **Subfase 3.2 (Stateless Auth & Middleware):** 69/69 aserciones pasadas.
+> - **Subfase 3.3 (Usuarios, Roles RBAC & Borrado Lógico):** 105/105 aserciones pasadas.
+> - **Compás de Espera Mandatorio:** En apego estricto a las reglas de desarrollo iterativo (`general.md`), el asistente se encuentra **COMPLETAMENTE DETENIDO** y a la espera de tu aprobación explícita antes de escribir una sola línea de código de la **Subfase 3.4 (Catálogo, Inventario & Ciclo de Vida de Creaciones)**., `total_items`, `total_paginas`, `tiene_siguiente`, `tiene_anterior`), con defaults de 12 creaciones por página en el catálogo (múltiplo óptimo para diseño responsivo) y 20 pedidos por página en el panel de control.
 
 10. **Estrategia de Testing en 3 Niveles (Reportes, Suites y Logs):**
    - **Decisión:** Confirmado e integrado al 100%. Al concluir cada subfase se ejecutarán suites CLI nativas en `tests/test-subfase-3.X.php`, volcando la salida técnica a `logs/subfase-3.X-cli.log` (bloqueado por `.htaccess` y fuera de Git), y generando un informe formal en `docs/testing/subfase-3.X-[nombre].md`. El desarrollo se detendrá obligatoriamente al final de cada subfase para presentar el reporte y aguardar la aprobación explícita del usuario.

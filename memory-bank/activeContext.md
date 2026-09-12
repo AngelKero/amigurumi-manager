@@ -1,39 +1,51 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Completado & Verificado: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores, Roles RBAC & Ciclo Completo (Fase 3)
+## Hito Completado & Verificado: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores, Roles RBAC & Regla Universal de Borrado Lógico (Fase 3)
 
-- **User Request:**
+- **User Requests:**
   - _"No faltan operaciones en la api?, como modificar el nombre, restaurar contraseña en caso de perderla y eliminar usuarios?"_
+  - _"Otra cosa como regla a toda la api y la base de datos, no van existir las eliminaciones fisicas, solo logicas"_
 - **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.4)**
 - **Alcance Implementado y Verificado de la Subfase 3.3:**
-  1. [`app/Repositories/UsuarioRepository.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Repositories/UsuarioRepository.php):
-     - `listAllWithCreationsCount()`: conteo exacto de creaciones asociadas mediante `LEFT JOIN` sin N+1 queries.
-     - `countCreationsByUser()`: conteo individual para integridad referencial antes de borrado.
-     - `updateUsername()`: actualización de nombre con verificación de unicidad.
-     - `updatePassword()`: actualización de hash bcrypt.
-     - `updateRole()`: modificación de privilegios con salvaguarda de cuenta raíz ID #1.
-     - `delete()`: baja física en base de datos.
-  2. [`app/Services/UsuarioService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/UsuarioService.php): Capa de lógica de negocio para usuarios y creadores con 6 operaciones:
-     - `listUsers()`: listado paginado con metadatos normalizados vía `PaginationHelper`.
-     - `getUserById()`: resolución de perfiles seguros (HTTP 404 ante inexistencia).
+  1. **Regla Universal de Borrado Lógico en Base de Datos Relacional (`database/seed.sql` & `database/database.sqlite`):**
+     - Añadidas columnas `activo INTEGER NOT NULL DEFAULT 1 CHECK(activo IN (0, 1))` y `eliminado_en TEXT DEFAULT NULL` a las 3 tablas del sistema: `usuarios`, `creaciones` y `pedidos`.
+     - Añadidos índices de rendimiento: `idx_usuarios_activo`, `idx_creaciones_activo`, `idx_pedidos_activo`.
+     - Regenerada la base de datos SQLite con `php setup.php` (código de salida 0), garantizando que los datos semilla arrancan con `activo = 1`.
+  2. [`app/Repositories/UsuarioRepository.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Repositories/UsuarioRepository.php):
+     - Sustituido `DELETE FROM usuarios` por borrado lógico estricto: `UPDATE usuarios SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1`.
+     - Integrado filtrado `$onlyActive = true` por defecto en `findByUsername`, `findById`, `findByIdSafe`, `listAll`, `countAll`, `listAllWithCreationsCount` (con `c.activo = 1` en el `LEFT JOIN`) y `countCreationsByUser`.
+     - Preservada la salvaguarda del administrador raíz (`delete(1)` retorna `false`).
+  3. [`app/Services/UsuarioService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/UsuarioService.php): Capa de lógica de negocio para usuarios y creadores con 6 operaciones:
+     - `listUsers()`: listado paginado de creadores activos con metadatos normalizados vía `PaginationHelper`.
+     - `getUserById()`: resolución de perfiles seguros activos (HTTP 404 ante inexistencia o inactividad).
      - `createUser()`: validación alfanumérica (3-50 chars), unicidad estricta (HTTP 409), clave ($\ge 6$ caracteres) y hashing bcrypt.
      - `updateRole()`: modificación de privilegios con salvaguarda inviolable para el Administrador Raíz (ID #1: HTTP 403 Forbidden).
      - `updateUsername()`: actualización de nombre con validación sintáctica y unicidad excluyente (HTTP 409).
      - `resetPassword()`: reseteo manual o autogeneración inteligente de clave temporal (`Crochet!<hex>!`) entregada en claro al admin para compartir por WhatsApp.
-     - `deleteUser()`: baja física con salvaguarda de ID #1 (HTTP 403), bloqueo de auto-eliminación en sesión activa (HTTP 403) y comprobación referencial de creaciones asociadas en catálogo (HTTP 409).
-  3. [`app/Core/Request.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Request.php): Método de conveniencia `Request::query()` como alias canónico para lectura tipada de parámetros GET.
-  4. Suite Completa de 6 Controladores REST delgados en `api/usuarios/`:
-     - [`api/usuarios/index.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/index.php) (GET: directorio paginado con conteo de creaciones, protegido con `RoleGuard::adminOnly()`).
+     - `deleteUser()`: borrado lógico con detección de usuario ya inactivo (HTTP 409 Conflict), salvaguarda de ID #1 (HTTP 403), bloqueo de auto-eliminación en sesión activa (HTTP 403) y comprobación referencial de creaciones activas en catálogo (HTTP 409).
+  4. [`app/Services/AuthService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/AuthService.php):
+     - `authenticate()`: bloquea acceso inmediato con HTTP 401 Unauthorized a usuarios con `activo = 0`.
+     - `validateToken()`: invalida sesiones activas inmediatamente si la cuenta fue desactivada lógicamente, sin esperar las 24 horas del TTL.
+  5. [`app/Core/Request.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Request.php): Método de conveniencia `Request::query()` como alias canónico para lectura tipada de parámetros GET.
+  6. Suite Completa de 7 Controladores REST delgados en `api/usuarios/` y Autoservicio de Auth:
+     - [`api/usuarios/index.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/index.php) (GET: directorio paginado con soporte `?estado=activos|inactivos|todos` y conteo de creaciones activas, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/crear.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/crear.php) (POST: alta de creador con validaciones 422/409, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/cambiar-rol.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/cambiar-rol.php) (POST: modificación de rol con salvaguarda ID #1 HTTP 403, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/actualizar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/actualizar.php) (POST: actualización de nombre de usuario con unicidad 409, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/restablecer-password.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/restablecer-password.php) (POST: recuperación administrativa de contraseña manual/autogenerada, protegido con `RoleGuard::adminOnly()`).
-     - [`api/usuarios/eliminar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/eliminar.php) (POST: eliminación con salvaguarda ID #1, auto-eliminación y conflicto de creaciones 409, protegido con `RoleGuard::adminOnly()`).
-  5. Suite automatizada de pruebas CLI en [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php): **79/79 aserciones pasaron exitosamente (100% OK) en 652.54 ms**.
-  6. Registro de logs crudos en [`logs/subfase-3.3-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-cli.log) y [`logs/subfase-3.3-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-http.log) (22 trazas HTTP registradas con cabeceras y payloads JSON).
-  7. Documentación bilingüe humana en [`docs/api-design.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) y [`docs/api-design.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md).
-  8. Reporte ejecutivo formal de QA en [`docs/testing/subfase-3.3-usuarios.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.3-usuarios.md).
-  9. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.4.
+     - [`api/usuarios/eliminar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/eliminar.php) (POST: eliminación lógica retornando `{"id": X, "activo": 0}`, con salvaguardas de ID #1, auto-eliminación, detección de cuenta ya inactiva 409 y conflicto de creaciones 409, protegido con `RoleGuard::adminOnly()`).
+     - [`api/usuarios/reactivar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/reactivar.php) (POST: reactivación de cuentas inactivadas con `activo = 1`, `eliminado_en = NULL`, protegido con `RoleGuard::adminOnly()`).
+     - [`api/auth/cambiar-password.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/auth/cambiar-password.php) (POST: autoservicio de cambio de contraseña para usuarios autenticados validando clave actual).
+  7. Suite automatizada de pruebas CLI:
+     - [`tests/test-subfase-3.1.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.1.php): **93/93 aserciones pasaron exitosamente (100% OK)** (incluye `PRAGMA busy_timeout = 5000;`).
+     - [`tests/test-subfase-3.2.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.2.php): **69/69 aserciones pasaron exitosamente (100% OK)** (incluye `cambiar-password.php`).
+     - [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php): **105/105 aserciones pasaron exitosamente (100% OK)** (incluye `reactivar.php`, `?estado=...` y login reactivado).
+     - **Total Acumulado:** **267 / 267 aserciones aprobadas (100% OK en verde)**.
+  8. Registro de logs crudos en `logs/subfase-3.1-cli.log`, `logs/subfase-3.2-cli.log`, `logs/subfase-3.3-cli.log` y trazas HTTP.
+  9. Documentación bilingüe humana en [`docs/api-design.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) y [`docs/api-design.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md) incorporando todos los endpoints, reglas de IDOR, ciclo de vida de imágenes sin borrado físico de fotos en soft-delete, y selección de Punto F (`GET /api/creaciones/artesanos.php`).
+  10. Documentación de esquemas relacionales en [`docs/database-schema.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.es.md), [`docs/database-schema.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database-schema.md), [`docs/data-model.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.es.md) y [`docs/data-model.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/data-model.md) incorporando `pedidos.actualizado_en`.
+  11. Reportes ejecutivos formales de QA en `docs/testing/subfase-3.1-core.md`, `docs/testing/subfase-3.2-auth.md` (69 aserciones) y `docs/testing/subfase-3.3-usuarios.md` (105 aserciones).
+  12. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.4.
 - **Entregables Implementados y Verificados:**
   1. [`app/config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/config.php): Configuración centralizada de entorno, claves secretas, TTL de tokens, límites de subida, paginación y CORS, con guardia de seguridad HTTP 403 directa.
   2. [`app/Core/Config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Config.php): Gestor estático en memoria con soporte para notación por puntos (`Config::get()`, `Config::set()`, `Config::load()`).

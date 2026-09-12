@@ -29,15 +29,16 @@ class UsuarioService {
      * 
      * @param int $page Página actual (>= 1)
      * @param int $limit Cantidad de usuarios por página (1-100)
+     * @param bool|null $onlyActive true para activos, false para inactivos, null para todos (default: true)
      * @return array{usuarios: array, paginacion: array}
      */
-    public function listUsers(int $page = 1, int $limit = 20): array {
+    public function listUsers(int $page = 1, int $limit = 20, ?bool $onlyActive = true): array {
         $page = max(1, $page);
         $limit = max(1, min(100, $limit));
         $offset = ($page - 1) * $limit;
 
-        $totalUsers = $this->usuarioRepo->countAll();
-        $users = $this->usuarioRepo->listAllWithCreationsCount($limit, $offset);
+        $totalUsers = $this->usuarioRepo->countAll($onlyActive);
+        $users = $this->usuarioRepo->listAllWithCreationsCount($limit, $offset, $onlyActive);
 
         $paginationEnvelope = PaginationHelper::build($totalUsers, $page, $limit);
         $pagination = $paginationEnvelope['paginacion'] ?? $paginationEnvelope;
@@ -52,15 +53,16 @@ class UsuarioService {
      * Obtiene el perfil seguro de un usuario por su identificador primario.
      * 
      * @param int $id Identificador del usuario
+     * @param bool $onlyActive Filtrar únicamente cuentas activas (default: true)
      * @return array Datos seguros del usuario
      * @throws RuntimeException Si el usuario no existe (HTTP 404)
      */
-    public function getUserById(int $id): array {
+    public function getUserById(int $id, bool $onlyActive = true): array {
         if ($id <= 0) {
             throw new InvalidArgumentException('El identificador de usuario debe ser un número entero positivo.', 422);
         }
 
-        $user = $this->usuarioRepo->findByIdSafe($id);
+        $user = $this->usuarioRepo->findByIdSafe($id, $onlyActive);
         if ($user === null) {
             throw new RuntimeException("El usuario con ID #{$id} no existe en el sistema.", 404);
         }
@@ -285,12 +287,13 @@ class UsuarioService {
     }
 
     /**
-     * Elimina un usuario del sistema con salvaguardas de cuenta raíz, auto-eliminación y comprobación referencial.
+     * Da de baja lógica (soft delete) a un usuario del sistema con salvaguardas de cuenta raíz,
+     * auto-eliminación y comprobación de creaciones asociadas activas.
      * 
-     * @param int $id Identificador del usuario a eliminar
+     * @param int $id Identificador del usuario a desactivar
      * @param int|null $currentUserId ID del usuario en sesión activa para prevenir auto-eliminación
-     * @return bool True si fue eliminado
-     * @throws RuntimeException Si es el admin raíz (403), auto-eliminación (403), si tiene creaciones (409) o no existe (404)
+     * @return bool True si fue dado de baja exitosamente
+     * @throws RuntimeException Si es el admin raíz (403), auto-eliminación (403), si tiene creaciones (409), ya está inactivo (409) o no existe (404)
      */
     public function deleteUser(int $id, ?int $currentUserId = null): bool {
         if ($id <= 0) {
@@ -307,20 +310,59 @@ class UsuarioService {
             throw new RuntimeException('Operación denegada: No puedes eliminar tu propia cuenta mientras te encuentras en sesión activa.', 403);
         }
 
-        // 3. Verificar existencia
-        $user = $this->usuarioRepo->findByIdSafe($id);
+        // 3. Verificar existencia en la base de datos (incluyendo registros inactivos)
+        $user = $this->usuarioRepo->findByIdSafe($id, false);
         if ($user === null) {
             throw new RuntimeException("El usuario con ID #{$id} no existe.", 404);
         }
 
-        // 4. Comprobar integridad referencial (creaciones asociadas)
-        $creationsCount = $this->usuarioRepo->countCreationsByUser($id);
+        if ((int)$user['activo'] === 0) {
+            throw new RuntimeException("El usuario con ID #{$id} ya se encuentra inactivo/eliminado.", 409);
+        }
+
+        // 4. Comprobar integridad referencial (creaciones asociadas activas)
+        $creationsCount = $this->usuarioRepo->countCreationsByUser($id, true);
         if ($creationsCount > 0) {
             throw new RuntimeException("No se puede eliminar al usuario '{$user['username']}' porque tiene {$creationsCount} creación(es) asociada(s) en el catálogo. Reasigne o elimine sus piezas antes de continuar.", 409);
         }
 
-        // 5. Proceder a la eliminación física
+        // 5. Proceder a la baja lógica en SQLite
         return $this->usuarioRepo->delete($id);
     }
+
+    /**
+     * Reactiva una cuenta de usuario que fue dada de baja de forma lógica.
+     * 
+     * @param int $id Identificador del usuario a reactivar
+     * @return array{id: int, username: string, activo: int}
+     * @throws InvalidArgumentException Si el ID es inválido (HTTP 422)
+     * @throws RuntimeException Si el usuario no existe (HTTP 404) o ya está activo (HTTP 409)
+     */
+    public function reactivateUser(int $id): array {
+        if ($id <= 0) {
+            throw new InvalidArgumentException('El ID de usuario no es válido.', 422);
+        }
+
+        $user = $this->usuarioRepo->findByIdSafe($id, false);
+        if ($user === null) {
+            throw new RuntimeException("El usuario con ID #{$id} no existe en el sistema.", 404);
+        }
+
+        if ((int)$user['activo'] === 1) {
+            throw new RuntimeException("El usuario con ID #{$id} ('{$user['username']}') ya se encuentra activo.", 409);
+        }
+
+        $success = $this->usuarioRepo->reactivate($id);
+        if (!$success) {
+            throw new RuntimeException('No fue posible reactivar la cuenta de usuario en el repositorio.', 500);
+        }
+
+        return [
+            'id'       => $id,
+            'username' => (string)$user['username'],
+            'activo'   => 1,
+        ];
+    }
 }
+
 

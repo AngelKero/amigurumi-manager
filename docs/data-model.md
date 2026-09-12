@@ -22,7 +22,9 @@ erDiagram
         string username UK "TEXT UNIQUE (3-50 chars)"
         string password_hash "TEXT (bcrypt/argon2)"
         string rol "TEXT (admin, artesano, asistente)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 or 1)"
         string creado_en "TEXT (ISO 8601 timestamp)"
+        string eliminado_en "TEXT (ISO 8601 timestamp or NULL)"
     }
 
     CREACIONES {
@@ -39,8 +41,10 @@ erDiagram
         string descripcion "TEXT (Max 2000 chars)"
         string imagen_url "TEXT (Max 500 chars)"
         integer es_sobre_encargo "INTEGER NOT NULL DEFAULT 0 (0 or 1)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 or 1)"
         string creado_en "TEXT (ISO 8601 timestamp)"
         string actualizado_en "TEXT (ISO 8601 timestamp)"
+        string eliminado_en "TEXT (ISO 8601 timestamp or NULL)"
     }
 
     PEDIDOS {
@@ -54,7 +58,10 @@ erDiagram
         string estado_pago "TEXT (Pendiente, Anticipo 50%, Liquidado)"
         integer precio_final "INTEGER NOT NULL (Locked cents)"
         string notas "TEXT (Max 1000 chars)"
+        integer activo "INTEGER NOT NULL DEFAULT 1 (0 or 1)"
         string creado_en "TEXT (ISO 8601 timestamp)"
+        string actualizado_en "TEXT (ISO 8601 timestamp or NULL)"
+        string eliminado_en "TEXT (ISO 8601 timestamp or NULL)"
     }
 
     USUARIOS ||--o{ CREACIONES : "crafts / registers"
@@ -74,7 +81,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
     username TEXT UNIQUE NOT NULL CHECK(length(trim(username)) >= 3 AND length(username) <= 50),
     password_hash TEXT NOT NULL,
     rol TEXT NOT NULL DEFAULT 'admin' CHECK(rol IN ('admin', 'artesano', 'asistente')),
-    creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+    activo INTEGER NOT NULL DEFAULT 1 CHECK(activo IN (0, 1)),
+    creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    eliminado_en TEXT DEFAULT NULL
 );
 
 -- 2. Table: creaciones (Product Catalog & Inventory)
@@ -92,8 +101,10 @@ CREATE TABLE IF NOT EXISTS creaciones (
     descripcion TEXT CHECK(descripcion IS NULL OR length(descripcion) <= 2000),
     imagen_url TEXT CHECK(imagen_url IS NULL OR length(trim(imagen_url)) <= 500),
     es_sobre_encargo INTEGER NOT NULL DEFAULT 0 CHECK(es_sobre_encargo IN (0, 1)),
+    activo INTEGER NOT NULL DEFAULT 1 CHECK(activo IN (0, 1)),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
     FOREIGN KEY (artesano_id) REFERENCES usuarios(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -118,17 +129,23 @@ CREATE TABLE IF NOT EXISTS pedidos (
     )),
     precio_final INTEGER NOT NULL CHECK(precio_final >= 1 AND precio_final <= 9999999),
     notas TEXT CHECK(notas IS NULL OR length(notas) <= 1000),
+    activo INTEGER NOT NULL DEFAULT 1 CHECK(activo IN (0, 1)),
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    actualizado_en TEXT DEFAULT NULL,
+    eliminado_en TEXT DEFAULT NULL,
     FOREIGN KEY (creacion_id) REFERENCES creaciones(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- Query Performance Indexes
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
+CREATE INDEX IF NOT EXISTS idx_usuarios_activo ON usuarios(activo);
 CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
 CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
 CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
+CREATE INDEX IF NOT EXISTS idx_creaciones_activo ON creaciones(activo);
 CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
+CREATE INDEX IF NOT EXISTS idx_pedidos_activo ON pedidos(activo);
 ```
 
 ---
@@ -149,7 +166,7 @@ proyecto-web/
 │   ├── auth/                      # login.php, logout.php, me.php
 │   ├── creaciones/                # index.php, detalle.php, crear.php, actualizar.php, eliminar.php, etc.
 │   ├── pedidos/                   # index.php, solicitar.php, crear.php, cambiar-estado.php, cancelar.php
-│   └── usuarios/                  # index.php, crear.php, cambiar-rol.php
+│   └── usuarios/                  # index.php, crear.php, cambiar-rol.php, actualizar.php, restablecer-password.php, eliminar.php
 ├── views/                          # Modular PHP templates and components (Server-Side Rendering)
 │   ├── layouts/main.php            # Master layout (<head>, nav, modals, footer)
 │   ├── components/                 # Modals, navbar, sidebar, footer, reusable stitched cards
@@ -161,4 +178,3 @@ proyecto-web/
 ├── uploads/                        # Real uploaded item photography and thumbnails
 └── docs/                           # Centralized technical documentation hub
 ```
-

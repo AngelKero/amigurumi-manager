@@ -17,28 +17,36 @@ Bienvenido al manual integral de la **API REST de Crochet Manager (Micro-ERP & C
    - [2.7 Autenticación Stateless Bearer (HMAC-SHA256)](#27-autenticación-stateless-bearer-hmac-sha256)
    - [2.8 Control de Acceso Basado en Roles (RBAC)](#28-control-de-acceso-basado-en-roles-rbac)
    - [2.9 Cero Fugas de HTML (`App\Core\ErrorHandler`)](#29-cero-fugas-de-html-appcoreerrorhandler)
+   - [2.10 Estándar Universal de Borrado Lógico (Cero Eliminaciones Físicas)](#210-estándar-universal-de-borrado-lógico-cero-eliminaciones-físicas)
 3. [Módulo 1: Autenticación & Sesión (`api/auth/`)](#3-módulo-1-autenticación--sesión-apiauth)
    - [`POST /api/auth/login.php` — Iniciar Sesión](#post-apiauthloginphp--iniciar-sesión)
    - [`POST /api/auth/logout.php` — Cerrar Sesión](#post-apiauthlogoutphp--cerrar-sesión)
    - [`GET /api/auth/me.php` — Consultar Perfil Activo](#get-apiauthmephp--consultar-perfil-activo)
+   - [`POST /api/auth/cambiar-password.php` — Cambiar Contraseña Propia](#post-apiauthcambiar-passwordphp--cambiar-contraseña-propia)
 4. [Módulo 2: Directorio de Creadores & Roles RBAC (`api/usuarios/`)](#4-módulo-2-directorio-de-creadores--roles-rbac-apiusuarios)
-   - [`GET /api/usuarios/index.php` — Directorio de Creadores](#get-apiusuariosindexphp--directorio-de-creadores)
+   - [`GET /api/usuarios/index.php` — Directorio de Creadores & Filtro de Estado](#get-apiusuariosindexphp--directorio-de-creadores--filtro-de-estado)
    - [`POST /api/usuarios/crear.php` — Registrar Nuevo Creador](#post-apiusuarioscrearphp--registrar-nuevo-creador)
    - [`POST /api/usuarios/cambiar-rol.php` — Modificar Rol & Salvaguarda ID #1](#post-apiusuarioscambiar-rolphp--modificar-rol--salvaguarda-id-1)
+   - [`POST /api/usuarios/actualizar.php` — Modificar Nombre de Usuario / Perfil](#post-apiusuariosactualizarphp--modificar-nombre-de-usuario--perfil)
+   - [`POST /api/usuarios/restablecer-password.php` — Restaurar Contraseña (Recuperación Administrativa)](#post-apiusuariosrestablecer-passwordphp--restaurar-contraseña-recuperación-administrativa)
+   - [`POST /api/usuarios/eliminar.php` — Eliminar Usuario (Baja Lógica)](#post-apiusuarioseliminarphp--eliminar-usuario-baja-lógica)
+   - [`POST /api/usuarios/reactivar.php` — Reactivar Cuenta de Usuario](#post-apiusuariosreactivarphp--reactivar-cuenta-de-usuario)
 5. [Módulo 3: Catálogo, Creaciones & Control de Inventario (`api/creaciones/`)](#5-módulo-3-catálogo-creaciones--control-de-inventario-apicreaciones)
-   - [`GET /api/creaciones/index.php` — Listar Catálogo Público con Filtros](#get-apicreacionesindexphp--listar-catálogo-público-con-filtros)
+   - [`GET /api/creaciones/index.php` — Listar Catálogo Público con Filtros & KPIs](#get-apicreacionesindexphp--listar-catálogo-público-con-filtros--kpis)
+   - [`GET /api/creaciones/artesanos.php` — Directorio Público de Creadores para Filtro](#get-apicreacionesartesanosphp--directorio-público-de-creadores-para-filtro)
    - [`GET /api/creaciones/detalle.php` — Ficha Técnica Completa](#get-apicreacionesdetallephp--ficha-técnica-completa)
    - [`POST /api/creaciones/crear.php` — Registrar Creación (Upload & Fallback SVG)](#post-apicreacionescrearphp--registrar-creación-upload--fallback-svg)
    - [`POST /api/creaciones/actualizar.php` — Editar Creación & Ciclo `unlink()`](#post-apicreacionesactualizarphp--editar-creación--ciclo-unlink)
-   - [`POST /api/creaciones/eliminar.php` — Eliminar con Salvaguarda Referencial](#post-apicreacioneseliminarphp--eliminar-con-salvaguarda-referencial)
+   - [`POST /api/creaciones/eliminar.php` — Baja Lógica & Salvaguarda Referencial](#post-apicreacioneseliminarphp--baja-lógica--salvaguarda-referencial)
+   - [`POST /api/creaciones/restaurar.php` — Restaurar Creación Archivada](#post-apicreacionesrestaurarphp--restaurar-creación-archivada)
    - [`POST /api/creaciones/ajustar-stock.php` — Ajuste Rápido In-Situ](#post-apicreacionesajustar-stockphp--ajuste-rápido-in-situ)
    - [`POST /api/creaciones/toggle-encargo.php` — Alternar Modalidad de Encargo](#post-apicreacionestoggle-encargophp--alternar-modalidad-de-encargo)
 6. [Módulo 4: Pedidos, Encargos & Transacciones de Stock (`api/pedidos/`)](#6-módulo-4-pedidos-encargos--transacciones-de-stock-apipedidos)
    - [`POST /api/pedidos/solicitar.php` — Checkout Público de Clientes con Reserva Atómica](#post-apipedidossolicitarphp--checkout-público-de-clientes-con-reserva-atómica)
-   - [`GET /api/pedidos/index.php` — Panel de Pedidos del Taller](#get-apipedidosindexphp--panel-de-pedidos-del-taller)
+   - [`GET /api/pedidos/index.php` — Panel de Pedidos & Aislamiento por Creador](#get-apipedidosindexphp--panel-de-pedidos--aislamiento-por-creador)
    - [`POST /api/pedidos/crear.php` — Agendar Encargo Manual (WhatsApp / Feria)](#post-apipedidoscrearphp--agendar-encargo-manual-whatsapp--feria)
    - [`POST /api/pedidos/cambiar-estado.php` — Actualizar Confección y Cobro Tri-Estado](#post-apipedidoscambiar-estadophp--actualizar-confección-y-cobro-tri-estado)
-   - [`POST /api/pedidos/cancelar.php` — Cancelación con Restitución Física de Stock](#post-apipedidoscancelarphp--cancelación-con-restitución-física-de-stock)
+   - [`POST /api/pedidos/cancelar.php` — Cancelación Idempotente con Restitución Física](#post-apipedidoscancelarphp--cancelación-idempotente-con-restitución-física)
 7. [Guía Rápida para Desarrolladores Frontend (JavaScript Moderno)](#7-guía-rápida-para-desarrolladores-frontend-javascript-moderno)
 
 ---
@@ -213,6 +221,20 @@ En sistemas PHP tradicionales, un error inesperado puede arrojar una traza HTML 
 
 ---
 
+### 2.10 Estándar Universal de Borrado Lógico (Cero Eliminaciones Físicas)
+Como directriz arquitectural absoluta en toda la base de datos y la API:
+- **Prohibición de Eliminación Física:** Ninguna entidad (`usuarios`, `creaciones`, `pedidos`) ejecuta sentencias destructivas `DELETE FROM`.
+- **Baja Lógica Transparente:** Todas las eliminaciones se efectúan mediante:
+  ```sql
+  UPDATE <table> SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1;
+  ```
+- **Integridad y Trazabilidad Histórica:** Los pedidos pasados, las creaciones previas y la autoría de los artesanos se preservan de forma inmutable, protegiendo las relaciones foráneas (`ON DELETE RESTRICT`) y la trazabilidad contable.
+- **Filtro Activo por Defecto:** Las consultas de catálogo, listados de panel, autenticación y resolución de tokens filtran de manera obligatoria y por defecto `activo = 1`.
+- **Invalidación Inmediata de Tokens:** Si una cuenta de usuario es desactivada lógicamente, cualquier Bearer Token previamente emitido es revocado de facto en la siguiente petición protegida, respondiendo con **HTTP 401 Unauthorized** sin requerir esperar a la expiración de las 24 horas del TTL.
+- **Detección de Re-eliminación / Recursos Inactivos:** Intentar dar de baja un registro previamente desactivado emite un error **HTTP 409 Conflict** descriptivo.
+
+---
+
 ## 3. Módulo 1: Autenticación & Sesión (`api/auth/`)
 
 Este módulo gestiona el ciclo de vida del acceso seguro a la plataforma.
@@ -370,6 +392,77 @@ curl -X GET http://localhost:8000/api/auth/me.php \
 
 ---
 
+### `POST /api/auth/cambiar-password.php` — Cambiar Contraseña Propia
+
+- **Propósito:** Permite a cualquier usuario autenticado (`admin`, `artesano`, `asistente`) actualizar su propia contraseña de acceso de forma autónoma. Valida la contraseña actual contra el hash bcrypt en SQLite y exige que la nueva clave cumpla con un mínimo de 6 caracteres.
+- **Acceso:** **Protegido** (`AuthGuard: cualquier usuario autenticado activo`).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+
+#### Parámetros del Cuerpo (JSON)
+
+| Campo | Tipo | Obligatorio | Reglas & Restricciones | Descripción |
+| :--- | :---: | :---: | :--- | :--- |
+| `password_actual` | `string` | **Sí** | Texto plano. Alias: `current_password`. | Contraseña vigente del usuario para verificar su identidad. |
+| `nueva_password` | `string` | **Sí** | Mínimo 6 caracteres. Alias: `new_password`. | Nueva clave de acceso que reemplazará la anterior. |
+
+#### Ejemplo de Petición (cURL)
+```bash
+curl -X POST http://localhost:8000/api/auth/cambiar-password.php \
+  -H "Authorization: Bearer <tu_token_aqui>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "password_actual": "mi_clave_vieja_123",
+    "nueva_password": "MiNuevaClaveSegura2026!"
+  }'
+```
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Contraseña actualizada exitosamente.",
+  "datos": {
+    "id": 2,
+    "username": "artesana_ana"
+  }
+}
+```
+
+#### Respuestas de Error Comunes
+- **HTTP 401 Unauthorized (Contraseña actual incorrecta):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 401,
+      "mensaje": "La contraseña actual es incorrecta."
+    }
+  }
+  ```
+- **HTTP 422 Unprocessable Entity (Nueva contraseña menor a 6 caracteres):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 422,
+      "mensaje": "La nueva contraseña debe tener al menos 6 caracteres."
+    }
+  }
+  ```
+- **HTTP 422 Unprocessable Entity (Campos faltantes o vacíos):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 422,
+      "mensaje": "La contraseña actual y la nueva contraseña son obligatorias."
+    }
+  }
+  ```
+
+---
+
 ## 4. Módulo 2: Directorio de Creadores & Roles RBAC (`api/usuarios/`)
 
 Este módulo permite al Administrador gobernar la comunidad de artesanos y colaboradores de la plataforma.
@@ -385,7 +478,9 @@ Este módulo permite al Administrador gobernar la comunidad de artesanos y colab
 - **Acceso:** **Protegido** (`RoleGuard: admin`).
 - **Método HTTP:** `GET`
 - **Cabecera Requerida:** `Authorization: Bearer <token>`
-- **Query Params:** `?pagina=1&limite=20` (opcionales).
+- **Query Params:** 
+  - `?pagina=1&limite=20` (opcionales).
+  - `?estado=activos|inactivos|todos` (opcional, default: `'activos'`). Permite filtrar solo usuarios activos, solo usuarios dados de baja lógica (`inactivos`) o el censo histórico completo (`todos`).
 
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
@@ -397,21 +492,27 @@ Este módulo permite al Administrador gobernar la comunidad de artesanos y colab
       "id": 1,
       "username": "admin",
       "rol": "admin",
+      "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
+      "eliminado_en": null,
       "creaciones_asociadas": 3
     },
     {
       "id": 2,
       "username": "artesana_ana",
       "rol": "artesano",
+      "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
+      "eliminado_en": null,
       "creaciones_asociadas": 2
     },
     {
       "id": 3,
       "username": "asistente_leo",
       "rol": "asistente",
+      "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
+      "eliminado_en": null,
       "creaciones_asociadas": 0
     }
   ],
@@ -595,20 +696,33 @@ Si la petición envía `id: 1` con cualquier rol distinto de `admin`, el sistema
 #### 🛡️ Candados de Seguridad y Salvaguardas
 1. **Salvaguarda de Cuenta Raíz (ID #1):** Si se intenta eliminar al usuario ID #1 (`@admin`), la solicitud se rechaza con **HTTP 403 Forbidden**.
 2. **Prevención de Auto-Eliminación:** El administrador no puede eliminar su propia cuenta mientras se encuentra en sesión activa (**HTTP 403 Forbidden**).
-3. **Integridad Referencial en Catálogo:** Si el usuario tiene creaciones asociadas en la tabla `creaciones`, SQLite y el servicio abortan la operación con **HTTP 409 Conflict** indicando cuántas piezas tiene registradas.
+3. **Integridad Referencial en Catálogo:** Si el usuario tiene creaciones activas asociadas en la tabla `creaciones`, el servicio aborta la operación con **HTTP 409 Conflict** indicando cuántas piezas activas tiene registradas.
+4. **Borrado Lógico Estricto:** La eliminación nunca destruye físicamente el registro. Modifica `activo = 0` y actualiza `eliminado_en = datetime('now', 'localtime')`.
+5. **Detección de Cuenta Inactiva:** Si se intenta dar de baja a un usuario que ya fue eliminado previamente (`activo = 0`), el servicio responde con **HTTP 409 Conflict**.
 
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
 {
   "exito": true,
-  "mensaje": "Usuario eliminado exitosamente de la plataforma.",
+  "mensaje": "Usuario eliminado lógicamente de la plataforma.",
   "datos": {
-    "id": 4
+    "id": 4,
+    "activo": 0
   }
 }
 ```
 
 #### Respuestas de Error
+- **HTTP 409 Conflict (Usuario ya inactivo o eliminado previamente):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 409,
+      "mensaje": "El usuario ya se encuentra inactivo o fue eliminado previamente."
+    }
+  }
+  ```
 - **HTTP 409 Conflict (Tiene creaciones asociadas):**
   ```json
   {
@@ -626,6 +740,74 @@ Si la petición envía `id: 1` con cualquier rol distinto de `admin`, el sistema
     "error": {
       "codigo": 403,
       "mensaje": "Operación denegada: La cuenta del administrador titular (ID #1) no puede ser eliminada."
+    }
+  }
+  ```
+
+---
+
+### `POST /api/usuarios/reactivar.php` — Reactivar Cuenta de Usuario
+
+- **Propósito:** Permite al administrador restituir el estado activo (`activo = 1`) de una cuenta que fue previamente dada de baja lógica. Esto limpia `eliminado_en = NULL`, permitiendo que el usuario vuelva a iniciar sesión con sus credenciales y restableciendo la disponibilidad operativa sin violar la restricción `UNIQUE(username)` en SQLite.
+- **Acceso:** **Protegido** (`RoleGuard: admin`).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+
+#### Parámetros del Cuerpo (JSON)
+
+| Campo | Tipo | Obligatorio | Reglas & Restricciones | Descripción |
+| :--- | :---: | :---: | :--- | :--- |
+| `id` | `int` | **Sí** | Entero mayor a 0. | ID del usuario inactivo a reactivar. |
+
+#### Ejemplo de Petición (cURL)
+```bash
+curl -X POST http://localhost:8000/api/usuarios/reactivar.php \
+  -H "Authorization: Bearer <token_admin>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": 4}'
+```
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Cuenta de usuario reactivada exitosamente.",
+  "datos": {
+    "id": 4,
+    "username": "artesano_carlos",
+    "activo": 1
+  }
+}
+```
+
+#### Respuestas de Error Comunes
+- **HTTP 404 Not Found (Usuario no encontrado):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 404,
+      "mensaje": "Usuario no encontrado."
+    }
+  }
+  ```
+- **HTTP 409 Conflict (Usuario ya se encuentra activo):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 409,
+      "mensaje": "El usuario ya se encuentra activo."
+    }
+  }
+  ```
+- **HTTP 403 Forbidden (Invocado por no-admin):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 403,
+      "mensaje": "Acceso restringido: Se requieren privilegios de administrador."
     }
   }
   ```
@@ -701,6 +883,39 @@ curl -X GET "http://localhost:8000/api/creaciones/index.php?categoria=Amigurumis
     "tiene_siguiente": false,
     "tiene_anterior": false
   }
+}
+```
+
+---
+
+### `GET /api/creaciones/artesanos.php` — Directorio Público de Creadores para Filtro
+
+- **Propósito:** Provee la lista pública y ligera de artesanas y creadores activos que cuentan con al menos una creación publicada y activa en el catálogo. Este endpoint está específicamente diseñado para poblar dinámicamente el selector desplegable `#filterArtisan` en la barra de filtros del catálogo público (`index.php`), sin exponer rutas administrativas ni datos privados.
+- **Acceso:** **Público** (no requiere token de sesión).
+- **Método HTTP:** `GET`
+
+#### Ejemplo de Petición (cURL)
+```bash
+curl -X GET http://localhost:8000/api/creaciones/artesanos.php
+```
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Listado de creadores con piezas activas obtenido exitosamente.",
+  "datos": [
+    {
+      "id": 1,
+      "username": "admin",
+      "total_creaciones": 3
+    },
+    {
+      "id": 2,
+      "username": "artesana_ana",
+      "total_creaciones": 2
+    }
+  ]
 }
 ```
 
@@ -799,6 +1014,10 @@ Si el creador no sube un archivo fotográfico en el campo `imagen`, `CreacionSer
 - **Tipo de Contenido:** `multipart/form-data` o `application/json` (si no se actualiza imagen).
 - **Parámetro Clave:** `id` (entero obligatorio).
 
+#### 🛡️ Candados de Seguridad, Multi-Autoría (IDOR) & Ciclo de Imágenes
+1. **Prevención de Ataques IDOR (Control de Autoría):** Una artesana solo tiene potestad para editar sus propias creaciones (`creaciones.artesano_id === currentUserId`). Si intenta modificar una creación perteneciente a otro artesano, el servicio responde de inmediato con **HTTP 403 Forbidden**. El rol `admin` tiene permiso global para editar cualquier pieza.
+2. **Ciclo de Vida de Archivos Físicos (`unlink()`):** La eliminación del archivo previo en disco (`uploads/`) se ejecuta **exclusivamente** si se sube con éxito una nueva imagen válida que reemplace a la existente. Si no se sube imagen nueva, la imagen previa se conserva intacta.
+
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
 {
@@ -813,21 +1032,24 @@ Si el creador no sube un archivo fotográfico en el campo `imagen`, `CreacionSer
 
 ---
 
-### `POST /api/creaciones/eliminar.php` — Eliminar con Salvaguarda Referencial
+### `POST /api/creaciones/eliminar.php` — Baja Lógica & Salvaguardas Referenciales
 
-- **Propósito:** Da de baja una creación del inventario.
-- **Acceso:** **Protegido** (`RoleGuard: admin` o el creador autor).
+- **Propósito:** Da de baja lógica una creación del inventario del taller.
+- **Acceso:** **Protegido** (`RoleGuard: admin` o el creador autor de la pieza).
 - **Método HTTP:** `POST`
 - **Cuerpo (JSON):** `{"id": 6}`
 
-#### 🛡️ Salvaguarda Referencial SQLite (`ON DELETE RESTRICT`)
-Si la pieza tiene al menos un pedido registrado en la tabla `pedidos`, la base de datos bloquea la eliminación y el backend emite **HTTP 409 Conflict**:
+#### 🛡️ Candados de Seguridad, Multi-Autoría & Preservación de Miniaturas
+1. **Control de Autoría (IDOR):** Solo el creador que tejió la pieza o un administrador pueden darla de baja. Intentos cruzados responden con **HTTP 403 Forbidden**.
+2. **Borrado Lógico Estricto:** La pieza nunca se destruye con `DELETE FROM`. Se marca `activo = 0` y `eliminado_en = datetime('now', 'localtime')`. Esto preserva el censo histórico y la integridad contable.
+3. **Cero `unlink()` en Baja Lógica (Preservación de Fotos para Pedidos):** Al desactivar una creación, **NUNCA se borra el archivo fotográfico de `uploads/`**. Los pedidos históricos registrados en `pedidos` conservan la miniatura de la pieza en sus tarjetas de control.
+4. **Salvaguarda de Pedidos Activos:** Si la creación está asociada a pedidos en estado `Pendiente` o `En Proceso`, el backend puede prevenir la baja retornando **HTTP 409 Conflict**:
 ```json
 {
   "exito": false,
   "error": {
     "codigo": 409,
-    "mensaje": "No se puede eliminar la creación porque tiene pedidos registrados. Cancele o archive los pedidos asociados antes de proceder."
+    "mensaje": "No se puede dar de baja la creación porque tiene pedidos activos en confección. Concluya o cancele los pedidos asociados primero."
   }
 }
 ```
@@ -836,12 +1058,41 @@ Si la pieza tiene al menos un pedido registrado en la tabla `pedidos`, la base d
 ```json
 {
   "exito": true,
-  "mensaje": "Creación eliminada exitosamente del inventario.",
+  "mensaje": "Creación dada de baja lógicamente del inventario.",
   "datos": {
-    "id": 6
+    "id": 6,
+    "activo": 0
   }
 }
 ```
+
+---
+
+### `POST /api/creaciones/restaurar.php` — Restaurar Creación Archivada
+
+- **Propósito:** Permite restituir una pieza previamente dada de baja lógica (`activo = 1`, `eliminado_en = NULL`), haciéndola visible nuevamente en el catálogo público e inventario activo.
+- **Acceso:** **Protegido** (`RoleGuard: admin` o el creador autor de la pieza).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+- **Cuerpo (JSON):** `{"id": 6}`
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Creación restaurada exitosamente en el catálogo.",
+  "datos": {
+    "id": 6,
+    "nombre": "Cardigan Granny Square Bohemio",
+    "activo": 1
+  }
+}
+```
+
+#### Respuestas de Error Comunes
+- **HTTP 404 Not Found:** La creación no existe.
+- **HTTP 409 Conflict:** La creación ya se encuentra activa en el catálogo.
+- **HTTP 403 Forbidden:** Intento de restaurar una pieza de otra artesana sin rol admin.
 
 ---
 
@@ -958,7 +1209,7 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
 
 ### `GET /api/pedidos/index.php` — Panel de Pedidos del Taller
 
-- **Propósito:** Devuelve la lista paginada de encargos recibidos, facilitando el seguimiento del estado de confección y pagos.
+- **Propósito:** Devuelve la lista paginada de encargos recibidos, facilitando el seguimiento del estado de confección y cobro.
 - **Acceso:** **Protegido** (`RoleGuard: admin, artesano`).
 - **Método HTTP:** `GET`
 - **Query Params:**
@@ -966,6 +1217,10 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
   - `limite` (int, default: 20)
   - `estado` (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`)
   - `estado_pago` (`Pendiente`, `Anticipo 50%`, `Liquidado`)
+
+#### 🛡️ Aislamiento de Pedidos Multi-Artesano
+- **Rol `artesano`:** La consulta a SQLite aplica automáticamente un filtro forzado `WHERE c.artesano_id = :current_user_id`, garantizando que cada creador visualice y administre **única y exclusivamente los encargos de sus propias piezas tejidas**.
+- **Rol `admin`:** Tiene visibilidad global de todos los encargos y transacciones de la plataforma.
 
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
@@ -986,7 +1241,8 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
       "precio_final": 45000,
       "precio_final_formateado": "$450.00 MXN",
       "notas": "Detalles dorados en las alas",
-      "creado_en": "2026-09-11 13:30:52"
+      "creado_en": "2026-09-11 13:30:52",
+      "actualizado_en": "2026-09-12 10:15:00"
     }
   ],
   "paginacion": {
@@ -1026,8 +1282,8 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
 
 ### `POST /api/pedidos/cambiar-estado.php` — Actualizar Confección y Cobro Tri-Estado
 
-- **Propósito:** Transiciona el estado de confección (`Pendiente` $\to$ `En Proceso` $\to$ `Entregado`) y/o el estado financiero del encargo (`Pendiente` $\to$ `Anticipo 50%` $\to$ `Liquidado`).
-- **Acceso:** **Protegido** (`RoleGuard: admin, artesano`).
+- **Propósito:** Transiciona el estado de confección (`Pendiente` $\to$ `En Proceso` $\to$ `Entregado`) y/o el estado financiero del encargo (`Pendiente` $\to$ `Anticipo 50%` $\to$ `Liquidado`), registrando la marca de tiempo de auditoría en `actualizado_en`.
+- **Acceso:** **Protegido** (`RoleGuard: admin` o el creador de la pieza solicitada).
 - **Método HTTP:** `POST`
 - **Cuerpo (JSON):**
   ```json
@@ -1037,6 +1293,10 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
     "estado_pago": "Liquidado"
   }
   ```
+
+#### 🛡️ Control de Autoría & Auditoría Temporal
+1. **Control de Autoría (IDOR):** Un artesano solo puede modificar pedidos vinculados a piezas de su autoría. Intentos no autorizados retornan **HTTP 403 Forbidden**.
+2. **Auditoría de Transición:** Cada modificación exitosa actualiza automáticamente `actualizado_en = datetime('now', 'localtime')` en SQLite.
 
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
@@ -1048,21 +1308,23 @@ curl -X POST http://localhost:8000/api/pedidos/solicitar.php \
 
 ---
 
-### `POST /api/pedidos/cancelar.php` — Cancelación con Restitución Física de Stock
+### `POST /api/pedidos/cancelar.php` — Cancelación Idempotente con Restitución Física de Stock
 
 - **Propósito:** Cancela un pedido activo y **reintegra de forma atómica y automática las unidades apartadas al inventario físico de la creación**.
-- **Acceso:** **Protegido** (`RoleGuard: admin, artesano`).
+- **Acceso:** **Protegido** (`RoleGuard: admin` o el artesano creador de la pieza).
 - **Método HTTP:** `POST`
 - **Cuerpo (JSON):** `{"id": 1}`
 
-#### 🛡️ Restitución Automática de Inventario
+#### 🛡️ Restitución Atómica, Idempotencia & Control IDOR
 Dentro de una transacción `BEGIN IMMEDIATE TRANSACTION`:
-1. El pedido cambia a `estado_pedido = 'Cancelado'`.
-2. Se reincorporan las piezas a la creación:
+1. **Control de Autoría:** Se verifica que el usuario autenticado sea el autor de la creación vinculada o administrador (**HTTP 403 Forbidden** si no coincide).
+2. **Salvaguarda de Idempotencia (Prevención de Doble Restitución):** Si el pedido ya se encuentra en `estado_pedido = 'Cancelado'`, el backend aborta la transacción y emite **HTTP 409 Conflict** (`"El pedido ya fue cancelado previamente"`), imposibilitando que clics múltiples o llamadas duplicadas inflen fraudulentamente el inventario de la creación.
+3. El pedido cambia a `estado_pedido = 'Cancelado'` y registra `actualizado_en = datetime('now', 'localtime')`.
+4. Se reincorporan las piezas al inventario físico de la creación:
    ```sql
    UPDATE creaciones SET cantidad_stock = cantidad_stock + :cantidad WHERE id = :creacion_id;
    ```
-3. El frontend muestra la notificación de certeza: `"+X unidad(es) reintegradas al inventario de [Nombre de Pieza]"`.
+5. El frontend muestra la notificación de certeza: `"+X unidad(es) reintegradas al inventario de [Nombre de Pieza]"`.
 
 #### Respuesta Exitosa (HTTP 200 OK)
 ```json
@@ -1077,6 +1339,18 @@ Dentro de una transacción `BEGIN IMMEDIATE TRANSACTION`:
   }
 }
 ```
+
+#### Respuestas de Error
+- **HTTP 409 Conflict (Ya Cancelado):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 409,
+      "mensaje": "El pedido ya se encuentra cancelado. No se realizaron modificaciones en el inventario."
+    }
+  }
+  ```
 
 ---
 

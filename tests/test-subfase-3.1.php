@@ -81,6 +81,11 @@ $stmtFk = $pdo1->query('PRAGMA foreign_keys;');
 $fkStatus = (int)$stmtFk->fetchColumn();
 TestHelper::assertSame(1, $fkStatus, 'PRAGMA foreign_keys está activo con valor 1 (ON)');
 
+// Comprobar PRAGMA busy_timeout (mitigación de bloqueos concurrentes)
+$stmtTimeout = $pdo1->query('PRAGMA busy_timeout;');
+$timeoutVal = (int)$stmtTimeout->fetchColumn();
+TestHelper::assertTrue($timeoutVal >= 5000, 'PRAGMA busy_timeout está configurado con al menos 5000 ms para mitigar bloqueos');
+
 // Comprobar PRAGMA integrity_check
 $stmtCheck = $pdo1->query('PRAGMA integrity_check;');
 $integrityResult = (string)$stmtCheck->fetchColumn();
