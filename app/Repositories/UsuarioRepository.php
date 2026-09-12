@@ -153,6 +153,22 @@ class UsuarioRepository {
     }
 
     /**
+     * Actualiza el nombre de usuario único de un usuario.
+     */
+    public function updateUsername(int $id, string $username): bool {
+        $stmt = $this->pdo->prepare('
+            UPDATE usuarios 
+            SET username = :username 
+            WHERE id = :id
+        ');
+
+        return $stmt->execute([
+            ':username' => trim($username),
+            ':id'       => $id,
+        ]);
+    }
+
+    /**
      * Actualiza el rol de un usuario con salvaguarda absoluta para el administrador raíz (ID #1).
      * 
      * @param int $id Identificador del usuario

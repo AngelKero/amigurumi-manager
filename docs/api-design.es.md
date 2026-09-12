@@ -512,7 +512,128 @@ Si la petición envía `id: 1` con cualquier rol distinto de `admin`, el sistema
 
 ---
 
+### `POST /api/usuarios/actualizar.php` — Modificar Nombre de Usuario / Perfil
+
+- **Propósito:** Permite al administrador actualizar el nombre de usuario de una artesana o colaborador (por ejemplo, corrección tipográfica, cambio de nombre artístico o actualización de identidad).
+- **Acceso:** **Protegido** (`RoleGuard: admin`).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+
+#### Parámetros del Cuerpo (JSON)
+
+| Campo | Tipo | Obligatorio | Reglas & Restricciones | Descripción |
+| :--- | :---: | :---: | :--- | :--- |
+| `id` | `int` | **Sí** | Entero mayor a 0. | ID del usuario a modificar. |
+| `username` | `string` | **Sí** | 3 a 50 caracteres, alfanumérico con guiones y puntos. | Nuevo nombre de usuario único. |
+
+#### Reglas de Negocio & Seguridad
+1. **Comprobación de Unicidad Excluyente:** El backend verifica que el nuevo nombre de usuario no pertenezca ya a otro usuario (`existsUsername($username, $id)`). Si está ocupado, responde con **HTTP 409 Conflict**.
+2. **Validación Sintáctica:** Debe cumplir `^[a-zA-Z0-9_\-\.]+$` con longitud entre 3 y 50 caracteres.
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Nombre de usuario actualizado exitosamente.",
+  "datos": {
+    "id": 2,
+    "username": "artesana_ana_talleres",
+    "rol": "artesano"
+  }
+}
+```
+
+---
+
+### `POST /api/usuarios/restablecer-password.php` — Restaurar Contraseña (Recuperación Administrativa)
+
+- **Propósito:** Permite al administrador restaurar la contraseña de un usuario en caso de que este la haya olvidado o perdido. Si el administrador no especifica una contraseña manual, el sistema genera automáticamente una clave temporal segura lista para ser entregada al artesano por un canal privado (como WhatsApp).
+- **Acceso:** **Protegido** (`RoleGuard: admin`).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+
+#### Parámetros del Cuerpo (JSON)
+
+| Campo | Tipo | Obligatorio | Reglas & Restricciones | Descripción |
+| :--- | :---: | :---: | :--- | :--- |
+| `id` | `int` | **Sí** | Entero mayor a 0. | ID del usuario cuya clave se restaurará. |
+| `nueva_password` | `string` | No | Opcional. Mínimo 6 caracteres. Alias: `password`. | Nueva clave manual deseada. Si se omite o está vacía, el servidor autogenera una clave temporal segura. |
+
+#### Comportamiento Inteligente de Generación
+- Si se envía `"nueva_password": "MiNuevaClaveSegura2026"`, se valida su longitud y se aplica directamente.
+- Si se omite `nueva_password`, el backend genera una contraseña segura tipo `Crochet!a8b9c0!` y la retorna en texto plano en la respuesta de éxito para que el administrador pueda copiarla y compartirla con el usuario.
+
+#### Respuesta Exitosa (HTTP 200 OK — Clave Autogenerada)
+```json
+{
+  "exito": true,
+  "mensaje": "Contraseña restablecida exitosamente para el usuario 'artesana_ana'. Entregue la clave temporal al artesano: Crochet!a8b9c0!",
+  "datos": {
+    "id": 2,
+    "username": "artesana_ana",
+    "password_temporal": "Crochet!a8b9c0!",
+    "es_autogenerada": true
+  }
+}
+```
+
+---
+
+### `POST /api/usuarios/eliminar.php` — Eliminar Usuario & Salvaguardas
+
+- **Propósito:** Da de baja a un creador o usuario del sistema, validando múltiples candados de seguridad e integridad referencial.
+- **Acceso:** **Protegido** (`RoleGuard: admin`).
+- **Método HTTP:** `POST`
+- **Cabecera Requerida:** `Content-Type: application/json` y `Authorization: Bearer <token>`
+
+#### Parámetros del Cuerpo (JSON)
+
+| Campo | Tipo | Obligatorio | Reglas & Restricciones | Descripción |
+| :--- | :---: | :---: | :--- | :--- |
+| `id` | `int` | **Sí** | Entero mayor a 0. | ID del usuario a eliminar. |
+
+#### 🛡️ Candados de Seguridad y Salvaguardas
+1. **Salvaguarda de Cuenta Raíz (ID #1):** Si se intenta eliminar al usuario ID #1 (`@admin`), la solicitud se rechaza con **HTTP 403 Forbidden**.
+2. **Prevención de Auto-Eliminación:** El administrador no puede eliminar su propia cuenta mientras se encuentra en sesión activa (**HTTP 403 Forbidden**).
+3. **Integridad Referencial en Catálogo:** Si el usuario tiene creaciones asociadas en la tabla `creaciones`, SQLite y el servicio abortan la operación con **HTTP 409 Conflict** indicando cuántas piezas tiene registradas.
+
+#### Respuesta Exitosa (HTTP 200 OK)
+```json
+{
+  "exito": true,
+  "mensaje": "Usuario eliminado exitosamente de la plataforma.",
+  "datos": {
+    "id": 4
+  }
+}
+```
+
+#### Respuestas de Error
+- **HTTP 409 Conflict (Tiene creaciones asociadas):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 409,
+      "mensaje": "No se puede eliminar al usuario 'artesana_ana' porque tiene 2 creación(es) asociada(s) en el catálogo. Reasigne o elimine sus piezas antes de continuar."
+    }
+  }
+  ```
+- **HTTP 403 Forbidden (Intento de borrar al administrador titular):**
+  ```json
+  {
+    "exito": false,
+    "error": {
+      "codigo": 403,
+      "mensaje": "Operación denegada: La cuenta del administrador titular (ID #1) no puede ser eliminada."
+    }
+  }
+  ```
+
+---
+
 ## 5. Módulo 3: Catálogo, Creaciones & Control de Inventario (`api/creaciones/`)
+
 
 Este módulo permite consultar el catálogo público, obtener fichas técnicas detalladas y realizar la gestión de piezas para artesanos autenticados.
 

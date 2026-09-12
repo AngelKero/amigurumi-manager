@@ -1,27 +1,39 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Completado & Verificado: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores & Roles RBAC (Fase 3)
+## Hito Completado & Verificado: Subfase 3.3: Gestión de Usuarios, Autoría de Creadores, Roles RBAC & Ciclo Completo (Fase 3)
 
 - **User Request:**
-  - _"Sigue con la 3.3"_
+  - _"No faltan operaciones en la api?, como modificar el nombre, restaurar contraseña en caso de perderla y eliminar usuarios?"_
 - **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.4)**
 - **Alcance Implementado y Verificado de la Subfase 3.3:**
-  1. [`app/Repositories/UsuarioRepository.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Repositories/UsuarioRepository.php): Extendida con métodos `listAllWithCreationsCount()` (conteo exacto de creaciones asociadas mediante `LEFT JOIN`) y `countCreationsByUser()`, sin problemas de N+1 queries.
-  2. [`app/Services/UsuarioService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/UsuarioService.php): Capa de lógica de negocio para usuarios y creadores:
+  1. [`app/Repositories/UsuarioRepository.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Repositories/UsuarioRepository.php):
+     - `listAllWithCreationsCount()`: conteo exacto de creaciones asociadas mediante `LEFT JOIN` sin N+1 queries.
+     - `countCreationsByUser()`: conteo individual para integridad referencial antes de borrado.
+     - `updateUsername()`: actualización de nombre con verificación de unicidad.
+     - `updatePassword()`: actualización de hash bcrypt.
+     - `updateRole()`: modificación de privilegios con salvaguarda de cuenta raíz ID #1.
+     - `delete()`: baja física en base de datos.
+  2. [`app/Services/UsuarioService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/UsuarioService.php): Capa de lógica de negocio para usuarios y creadores con 6 operaciones:
      - `listUsers()`: listado paginado con metadatos normalizados vía `PaginationHelper`.
      - `getUserById()`: resolución de perfiles seguros (HTTP 404 ante inexistencia).
-     - `createUser()`: validación de sintaxis alfanumérica, longitud (3-50 chars), unicidad estricta (HTTP 409 ante duplicados), validación de contraseña ($\ge 6$ caracteres) y hashing seguro bcrypt.
+     - `createUser()`: validación alfanumérica (3-50 chars), unicidad estricta (HTTP 409), clave ($\ge 6$ caracteres) y hashing bcrypt.
      - `updateRole()`: modificación de privilegios con salvaguarda inviolable para el Administrador Raíz (ID #1: HTTP 403 Forbidden).
-     - `deleteUser()`: baja física con comprobación referencial de creaciones asociadas (HTTP 409) y protección de ID #1 (HTTP 403).
-  3. [`app/Core/Request.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Request.php): Añadido método de conveniencia `Request::query()` como alias canónico para lectura tipada de parámetros GET.
-  4. Controladores REST delgados en `api/usuarios/`:
+     - `updateUsername()`: actualización de nombre con validación sintáctica y unicidad excluyente (HTTP 409).
+     - `resetPassword()`: reseteo manual o autogeneración inteligente de clave temporal (`Crochet!<hex>!`) entregada en claro al admin para compartir por WhatsApp.
+     - `deleteUser()`: baja física con salvaguarda de ID #1 (HTTP 403), bloqueo de auto-eliminación en sesión activa (HTTP 403) y comprobación referencial de creaciones asociadas en catálogo (HTTP 409).
+  3. [`app/Core/Request.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Request.php): Método de conveniencia `Request::query()` como alias canónico para lectura tipada de parámetros GET.
+  4. Suite Completa de 6 Controladores REST delgados en `api/usuarios/`:
      - [`api/usuarios/index.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/index.php) (GET: directorio paginado con conteo de creaciones, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/crear.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/crear.php) (POST: alta de creador con validaciones 422/409, protegido con `RoleGuard::adminOnly()`).
      - [`api/usuarios/cambiar-rol.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/cambiar-rol.php) (POST: modificación de rol con salvaguarda ID #1 HTTP 403, protegido con `RoleGuard::adminOnly()`).
-  5. Suite automatizada de pruebas CLI en [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php): **54/54 aserciones pasaron exitosamente (100% OK) en 265.52 ms**.
-  6. Registro de logs crudos en [`logs/subfase-3.3-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-cli.log) y [`logs/subfase-3.3-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-http.log).
-  7. Reporte ejecutivo formal de QA en [`docs/testing/subfase-3.3-usuarios.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.3-usuarios.md).
-  8. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.4.
+     - [`api/usuarios/actualizar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/actualizar.php) (POST: actualización de nombre de usuario con unicidad 409, protegido con `RoleGuard::adminOnly()`).
+     - [`api/usuarios/restablecer-password.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/restablecer-password.php) (POST: recuperación administrativa de contraseña manual/autogenerada, protegido con `RoleGuard::adminOnly()`).
+     - [`api/usuarios/eliminar.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/usuarios/eliminar.php) (POST: eliminación con salvaguarda ID #1, auto-eliminación y conflicto de creaciones 409, protegido con `RoleGuard::adminOnly()`).
+  5. Suite automatizada de pruebas CLI en [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php): **79/79 aserciones pasaron exitosamente (100% OK) en 652.54 ms**.
+  6. Registro de logs crudos en [`logs/subfase-3.3-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-cli.log) y [`logs/subfase-3.3-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-http.log) (22 trazas HTTP registradas con cabeceras y payloads JSON).
+  7. Documentación bilingüe humana en [`docs/api-design.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) y [`docs/api-design.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md).
+  8. Reporte ejecutivo formal de QA en [`docs/testing/subfase-3.3-usuarios.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.3-usuarios.md).
+  9. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.4.
 - **Entregables Implementados y Verificados:**
   1. [`app/config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/config.php): Configuración centralizada de entorno, claves secretas, TTL de tokens, límites de subida, paginación y CORS, con guardia de seguridad HTTP 403 directa.
   2. [`app/Core/Config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Config.php): Gestor estático en memoria con soporte para notación por puntos (`Config::get()`, `Config::set()`, `Config::load()`).
