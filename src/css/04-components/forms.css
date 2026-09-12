@@ -18,16 +18,72 @@
   background-color: var(--craft-primary-subtle);
 }
 
-/* Sticky Margin Calculator Card */
+/* Sticky Margin Calculator Card Container */
 .sticky-margin-card {
+  position: -webkit-sticky;
   position: sticky;
-  top: 5rem;
+  top: 85px;
+  z-index: 5;
   background: var(--craft-surface);
   border: 1px solid var(--craft-border);
   border-radius: var(--craft-radius);
   box-shadow: var(--craft-shadow-md);
-  transition: all 0.25s ease;
-  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+}
+
+/* Entire card content wrapper - transitions blur and opacity */
+.simulador-card-inner {
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+
+.simulador-card-inner.is-locked {
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  opacity: 0.45;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Minimalist translucent shield centered over blurred content */
+.simulador-blur-shield {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 249, 251, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: var(--craft-radius);
+  z-index: 5;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.simulador-blur-shield.is-unlocked {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.simulador-lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  border: 1.5px dashed rgba(142, 91, 116, 0.4);
+  box-shadow: 0 4px 16px rgba(30, 37, 45, 0.1);
+  border-radius: var(--craft-radius-pill);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--craft-text-main);
+  text-align: center;
+}
+
+.simulador-lock-badge i {
+  color: var(--craft-primary);
+  font-size: 0.95rem;
 }
 
 .margin-feedback-pill {

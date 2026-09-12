@@ -104,6 +104,21 @@ $calcHoras = $valHoras ?? 0.0;
 $calcGanancia = $calcPrecio - $calcCosto;
 $calcMargen = $calcPrecio > 0 ? ($calcGanancia / $calcPrecio) * 100 : 0.0;
 $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
+
+// Validación de completitud para desbloquear el simulador financiero
+// Excluye explícitamente: es_sobre_encargo, descripcion y fotografia (opcionales)
+$isSpecsComplete = !empty(trim($currentItem['nombre'] ?? ''))
+  && !empty(trim($currentItem['categoria'] ?? ''))
+  && !empty(trim($currentItem['material'] ?? ''))
+  && !empty(trim($valDimensiones ?? ''))
+  && ($valStock !== null && $valStock >= 0);
+
+$isParamsComplete = ($valPrecio !== null && $valPrecio > 0)
+  && ($valCosto !== null && $valCosto >= 0);
+
+$isLaborComplete = ($valHoras !== null && $valHoras > 0);
+
+$isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
 ?>
 <!-- NAVEGACIÓN SUPERIOR: RETORNO AL INVENTARIO -->
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
@@ -297,109 +312,123 @@ $calcRetorno = $calcHoras > 0 ? $calcGanancia / $calcHoras : 0.0;
   </div>
 
   <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-lg-5 col-xl-4) -->
+  <!-- SIMULADOR FINANCIERO STICKY CON FEEDBACK DUAL (col-12 col-lg-5 col-xl-4) -->
   <div class="col-12 col-lg-5 col-xl-4" id="simuladorMargen">
     <div class="card sticky-margin-card p-3 p-sm-4 card-stitched">
       
-      <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
-        <div class="d-flex align-items-center justify-content-center rounded-3 bg-warning-subtle text-warning-emphasis" style="width: 42px; height: 42px; flex-shrink: 0;">
-          <i class="bi bi-calculator-fill fs-5"></i>
-        </div>
-        <div class="min-w-0">
-          <h5 class="fw-bold mb-0 font-theme-display text-dark" style="font-size: 1.15rem; line-height: 1.2;">Simulador de Márgenes</h5>
-          <span class="text-muted small" style="font-size: 0.75rem;">Cálculo de viabilidad en vivo</span>
-        </div>
-      </div>
-
-      <p class="text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">
-        Monitorea en tiempo real la salud financiera de tu pieza de crochet conforme modificas precio, costo de estambre y horas dedicadas:
-      </p>
-
-      <!-- Desglose Financiero Directo -->
-      <div class="p-3 rounded mb-3 border card-stitched" style="background-color: var(--craft-surface-muted);">
-        <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
-          <span class="text-muted">Precio Venta</span>
-          <span class="fw-bold text-dark font-monospace text-nowrap" id="calcDisplayPrecio">$<?= number_format($calcPrecio, 2) ?> MXN</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
-          <span class="text-muted">Costo Materiales</span>
-          <span class="text-danger font-monospace text-nowrap" id="calcDisplayCosto">- $<?= number_format($calcCosto, 2) ?> MXN</span>
-        </div>
-        <div class="d-flex justify-content-between align-items-center pt-2 mt-1">
-          <span class="fw-bold small text-dark text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.03em;">Ganancia Bruta</span>
-          <span class="fw-bold font-monospace text-nowrap fs-5 <?= $calcGanancia >= 0 ? 'text-success' : 'text-danger' ?>" id="calcDisplayGanancia">$<?= number_format($calcGanancia, 2) ?> MXN</span>
-        </div>
-      </div>
-
-      <!-- FEEDBACK DUAL: MÉTRICAS CLAVE -->
-      <!-- Métrica 1: Margen Porcentual -->
-      <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <span class="small text-muted fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.03em;">
-            <i class="bi bi-percent me-1 text-primary"></i> Margen de Utilidad
-          </span>
-          <strong class="fs-4 text-dark font-monospace text-nowrap" id="calcDisplayMargen">
-            <?= number_format($calcMargen, 1) ?>%
-          </strong>
-        </div>
-        <?php if ($hasFinancialData): ?>
-          <?php if ($calcMargen >= 60): ?>
-            <div id="badgeMargenStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
-              <i class="bi bi-shield-check"></i> Margen Saludable (>60%)
-            </div>
-          <?php elseif ($calcMargen >= 35): ?>
-            <div id="badgeMargenStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-              <i class="bi bi-exclamation-circle"></i> Margen Moderado (35-60%)
-            </div>
-          <?php else: ?>
-            <div id="badgeMargenStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
-              <i class="bi bi-slash-circle"></i> Margen Crítico (<35%)
-            </div>
-          <?php endif; ?>
-        <?php else: ?>
-          <div id="badgeMargenStatus" class="margin-feedback-pill bg-light text-muted border">
-            <i class="bi bi-dash-circle"></i> Esperando precio y costo
+      <!-- CONTENIDO COMPLETO DEL SIMULADOR (INCLUIDO ENCABEZADO, DESENFOCADO SI ESTÁ BLOQUEADO) -->
+      <div class="simulador-card-inner <?= $isFormComplete ? '' : 'is-locked' ?>" id="simuladorCardInner">
+        
+        <!-- ENCABEZADO -->
+        <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
+          <div class="d-flex align-items-center justify-content-center rounded-3 bg-warning-subtle text-warning-emphasis" style="width: 42px; height: 42px; flex-shrink: 0;">
+            <i class="bi bi-calculator-fill fs-5"></i>
           </div>
-        <?php endif; ?>
-      </div>
+          <div class="min-w-0">
+            <h5 class="fw-bold mb-0 font-theme-display text-dark" style="font-size: 1.15rem; line-height: 1.2;">Simulador de Márgenes</h5>
+            <span class="text-muted small" style="font-size: 0.75rem;">Cálculo de viabilidad en vivo</span>
+          </div>
+        </div>
 
-      <!-- Métrica 2: Retorno por Hora de Trabajo -->
-      <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div>
-            <span class="small text-muted fw-bold text-uppercase d-block" style="font-size: 0.72rem; letter-spacing: 0.03em;">
-              <i class="bi bi-clock-history me-1 text-primary"></i> Retorno por Hora
+        <p class="text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">
+          Monitorea en tiempo real la salud financiera de tu pieza de crochet conforme modificas precio, costo de estambre y horas dedicadas:
+        </p>
+
+        <!-- Desglose Financiero Directo -->
+        <div class="p-3 rounded mb-3 border card-stitched" style="background-color: var(--craft-surface-muted);">
+          <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
+            <span class="text-muted">Precio Venta</span>
+            <span class="fw-bold text-dark font-monospace text-nowrap" id="calcDisplayPrecio">$<?= number_format($calcPrecio, 2) ?> MXN</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size: 0.85rem;">
+            <span class="text-muted">Costo Materiales</span>
+            <span class="text-danger font-monospace text-nowrap" id="calcDisplayCosto">- $<?= number_format($calcCosto, 2) ?> MXN</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center pt-2 mt-1">
+            <span class="fw-bold small text-dark text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.03em;">Ganancia Bruta</span>
+            <span class="fw-bold font-monospace text-nowrap fs-5 <?= $calcGanancia >= 0 ? 'text-success' : 'text-danger' ?>" id="calcDisplayGanancia">$<?= number_format($calcGanancia, 2) ?> MXN</span>
+          </div>
+        </div>
+
+        <!-- FEEDBACK DUAL: MÉTRICAS CLAVE -->
+        <!-- Métrica 1: Margen Porcentual -->
+        <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small text-muted fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.03em;">
+              <i class="bi bi-percent me-1 text-primary"></i> Margen de Utilidad
             </span>
-            <span class="text-muted" style="font-size: 0.68rem;">Tiempo confeccionado</span>
+            <strong class="fs-4 text-dark font-monospace text-nowrap" id="calcDisplayMargen">
+              <?= number_format($calcMargen, 1) ?>%
+            </strong>
           </div>
-          <strong class="fs-4 text-primary font-monospace text-nowrap" id="calcDisplayRetorno">
-            $<?= number_format($calcRetorno, 2) ?>/hr
-          </strong>
-        </div>
-        <?php if ($hasFinancialData && $calcHoras > 0): ?>
-          <?php if ($calcRetorno >= 50): ?>
-            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
-              <i class="bi bi-star"></i> Remuneración Digna (> $50/hr)
-            </div>
-          <?php elseif ($calcRetorno >= 30): ?>
-            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-              <i class="bi bi-dash-circle"></i> Retorno Bajo ($30 - $50/hr)
-            </div>
+          <?php if ($hasFinancialData): ?>
+            <?php if ($calcMargen >= 60): ?>
+              <div id="badgeMargenStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
+                <i class="bi bi-shield-check"></i> Margen Saludable (>60%)
+              </div>
+            <?php elseif ($calcMargen >= 35): ?>
+              <div id="badgeMargenStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                <i class="bi bi-exclamation-circle"></i> Margen Moderado (35-60%)
+              </div>
+            <?php else: ?>
+              <div id="badgeMargenStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
+                <i class="bi bi-slash-circle"></i> Margen Crítico (<35%)
+              </div>
+            <?php endif; ?>
           <?php else: ?>
-            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
-              <i class="bi bi-arrow-down-circle"></i> Retorno Crítico (< $30/hr)
+            <div id="badgeMargenStatus" class="margin-feedback-pill bg-light text-muted border">
+              <i class="bi bi-dash-circle"></i> Esperando precio y costo
             </div>
           <?php endif; ?>
-        <?php else: ?>
-          <div id="badgeRetornoStatus" class="margin-feedback-pill bg-light text-muted border">
-            <i class="bi bi-clock"></i> Ingrese horas confeccionadas
+        </div>
+
+        <!-- Métrica 2: Retorno por Hora de Trabajo -->
+        <div class="p-3 mb-3 rounded border card-stitched bg-white" style="border-radius: var(--craft-radius-sm);">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <span class="small text-muted fw-bold text-uppercase d-block" style="font-size: 0.72rem; letter-spacing: 0.03em;">
+                <i class="bi bi-clock-history me-1 text-primary"></i> Retorno por Hora
+              </span>
+              <span class="text-muted" style="font-size: 0.68rem;">Tiempo confeccionado</span>
+            </div>
+            <strong class="fs-4 text-primary font-monospace text-nowrap" id="calcDisplayRetorno">
+              $<?= number_format($calcRetorno, 2) ?>/hr
+            </strong>
           </div>
-        <?php endif; ?>
+          <?php if ($hasFinancialData && $calcHoras > 0): ?>
+            <?php if ($calcRetorno >= 50): ?>
+              <div id="badgeRetornoStatus" class="margin-feedback-pill bg-success-subtle text-success border border-success-subtle">
+                <i class="bi bi-star"></i> Remuneración Digna (> $50/hr)
+              </div>
+            <?php elseif ($calcRetorno >= 30): ?>
+              <div id="badgeRetornoStatus" class="margin-feedback-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                <i class="bi bi-dash-circle"></i> Retorno Bajo ($30 - $50/hr)
+              </div>
+            <?php else: ?>
+              <div id="badgeRetornoStatus" class="margin-feedback-pill bg-danger-subtle text-danger border border-danger-subtle">
+                <i class="bi bi-arrow-down-circle"></i> Retorno Crítico (< $30/hr)
+              </div>
+            <?php endif; ?>
+          <?php else: ?>
+            <div id="badgeRetornoStatus" class="margin-feedback-pill bg-light text-muted border">
+              <i class="bi bi-clock"></i> Ingrese horas confeccionadas
+            </div>
+          <?php endif; ?>
+        </div>
+
+        <!-- Nota Metodológica -->
+        <div class="p-3 bg-light rounded text-muted" style="font-size: 0.75rem; border: 1px dashed var(--craft-border);">
+          <i class="bi bi-info-circle me-1 text-primary"></i>
+          Fórmula: <code>(Precio - Materiales) / Horas</code>. Proporciona estimación objetiva de rentabilidad artesanal antes de publicar en catálogo.
+        </div>
       </div>
 
-      <!-- Nota Metodológica -->
-      <div class="p-3 bg-light rounded text-muted" style="font-size: 0.75rem; border: 1px dashed var(--craft-border);">
-        <i class="bi bi-info-circle me-1 text-primary"></i>
-        Fórmula: <code>(Precio - Materiales) / Horas</code>. Proporciona estimación objetiva de rentabilidad artesanal antes de publicar en catálogo.
+      <!-- ESCUDO SUTIL MINIMALISTA (EN EL CENTRO DE LA TARJETA COMPLETA) -->
+      <div class="simulador-blur-shield <?= $isFormComplete ? 'is-unlocked' : '' ?>" id="simuladorBlurShield" aria-hidden="<?= $isFormComplete ? 'true' : 'false' ?>">
+        <div class="simulador-lock-badge">
+          <i class="bi bi-lock-fill"></i>
+          <span>Completa los datos para ver viabilidad</span>
+        </div>
       </div>
 
     </div>
