@@ -8,6 +8,8 @@
 import { formatPesos } from './currency.js';
 
 export function initOrders() {
+  if (!document.getElementById('ordersGrid') && !document.getElementById('formNuevoPedido') && !document.getElementById('modalNuevoPedido')) return;
+
   let currentCancelOrderId = null;
   let nextOrderId = 3;
 

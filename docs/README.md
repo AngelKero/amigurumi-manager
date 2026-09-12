@@ -62,6 +62,8 @@ docs/
   Documento maestro de la arquitectura modular: vistas PHP desacopladas en `views/`, estilos ITCSS en `src/css/`, módulos nativos ES6 en `src/js/` y diseño de capas del backend en `src/`.
 - **[ui-ux-database-gap-analysis.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/ui-ux-database-gap-analysis.md):**  
   Informe de correspondencia entre la base de datos y la interfaz, registrando el 100% de cumplimiento de las brechas detectadas.
+- **[qa-audit-report.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/qa-audit-report.md):**  
+  Reporte exhaustivo de Aseguramiento de Calidad (QA), verificación de las 6 dimensiones del sistema, ratios de contraste WCAG 2.1 AA y checklist de producción.
 
 ### 5. UI/UX & Sistema de Diseño
 - **[identidad-visual.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/identidad-visual.md):**  

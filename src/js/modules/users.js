@@ -14,6 +14,8 @@ export function initUsers() {
   const formEditarRol = document.getElementById('formEditarRolUsuario');
   const tablaBody = document.querySelector('#tablaUsuarios tbody');
 
+  if (!formCrearUsuario && !formEditarRol && !tablaBody) return;
+
   // Tarjetas KPI
   const kpiTotal = document.getElementById('kpiTotalUsers');
   const kpiAdmin = document.getElementById('kpiAdminUsers');
