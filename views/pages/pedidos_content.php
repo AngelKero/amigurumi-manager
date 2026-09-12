@@ -70,17 +70,17 @@ foreach ($mockOrders as $ord) {
     <div>
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
-        <span>Taller de Confección &amp; Encargos</span>
+        <span>Gestión de Pedidos &amp; Encargos</span>
       </div>
       <h2 class="fw-bold font-theme-display text-dark mb-1">Control de Pedidos y Encargos</h2>
       <p class="text-muted small mb-0" style="max-width: 650px;">
-        Gestión integral de ciclo de vida de pedidos, fechas de entrega programadas, anticipos y restitución de inventario.
+        Seguimiento de encargos coordinados con clientes, control de entregas, anticipos y comunicación directa vía WhatsApp.
       </p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
       <button type="button" class="btn btn-craft-primary btn-craft-stitched d-inline-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoPedido" id="btnAbrirModalNuevoPedido">
         <i class="bi bi-journal-plus"></i>
-        <span>Nuevo Encargo Manual</span>
+        <span>Registrar Pedido</span>
       </button>
       <a href="creaciones.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
         <i class="bi bi-box2-heart"></i>

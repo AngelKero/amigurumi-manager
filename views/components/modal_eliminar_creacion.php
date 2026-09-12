@@ -27,7 +27,7 @@
             <div>
               <strong class="d-block text-danger small">Protección Referencial (`ON DELETE RESTRICT`):</strong>
               <span class="text-muted small">
-                Si esta pieza cuenta con encargos históricos registrados en la tabla <code>pedidos</code>, la base de datos SQLite bloqueará la eliminación para proteger el historial financiero y contable del taller.
+                Si esta pieza cuenta con encargos históricos registrados en la tabla <code>pedidos</code>, la base de datos SQLite bloqueará la eliminación para proteger el historial financiero y los pedidos de los creadores en la plataforma.
               </span>
             </div>
           </div>

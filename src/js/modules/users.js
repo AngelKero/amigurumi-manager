@@ -185,7 +185,7 @@ export function initUsers() {
               <div class="user-avatar-circle">${initial}</div>
               <div>
                 <strong class="d-block text-dark username-text">@${username}</strong>
-                <small class="text-muted">Taller Textil Principal</small>
+                <small class="text-muted">Creador Independiente</small>
               </div>
             </div>
           </td>

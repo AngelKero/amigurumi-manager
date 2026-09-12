@@ -11,7 +11,7 @@
         <div class="d-flex align-items-center gap-2">
           <?= svg('branding/isologo-sello-taller', ['width' => 32, 'height' => 32]) ?>
           <h5 class="modal-title fw-bold m-0" id="loginModalTitle" style="font-size: 1.05rem;">
-            Acceso al Taller de Confección
+            Acceso a la Plataforma de Creadores
           </h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -23,9 +23,9 @@
             <div class="d-inline-block p-2 rounded-circle bg-light border shadow-xs mb-2">
               <?= svg('branding/isotipo-ovillo-corazon', ['width' => 52, 'height' => 52]) ?>
             </div>
-            <h6 class="fw-bold text-dark font-theme-display mb-1">Portal del Artesano</h6>
+            <h6 class="fw-bold text-dark font-theme-display mb-1">Portal de Creadores y Artesanos</h6>
             <p class="text-muted small mb-0">
-              Ingresa tus credenciales para gestionar el catálogo y los pedidos:
+              Ingresa tus credenciales para administrar tus creaciones y pedidos en la plataforma:
             </p>
           </div>
           <div id="loginAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>

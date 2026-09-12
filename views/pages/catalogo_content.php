@@ -10,7 +10,7 @@ $catalogItems = [
     'id' => 1,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Dragón Ignis',
     'categoria' => 'Amigurumis & Figuras',
     'material' => '100% Algodón Mercerizado',
@@ -27,7 +27,7 @@ $catalogItems = [
     'id' => 2,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Mini Suculenta en Maceta',
     'categoria' => 'Hogar & Decoración',
     'material' => 'Algodón Rústico y Lana Acrílica',
@@ -61,7 +61,7 @@ $catalogItems = [
     'id' => 4,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Cardigan Granny Squares',
     'categoria' => 'Prendas & Ropa',
     'material' => 'Lana Merino y Algodón Soft',
@@ -112,7 +112,7 @@ $catalogItems = [
       </h1>
       
       <p class="lead mb-4" style="color: var(--craft-text-muted); font-size: 1.1rem;">
-        Prendas, amigurumis, bolsos y piezas de decoración tejidas a mano punto a punto con hilazas suaves y fibras naturales. Monitorea inventarios reales o encarga confecciones a tu medida.
+        Plataforma abierta y catálogo colectivo de creadores textiles en crochet. Explora prendas, amigurumis, accesorios y piezas únicas, consulta disponibilidad en tiempo real y contacta directamente con cada artesano para encargos a tu medida.
       </p>
       
       <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
@@ -122,23 +122,23 @@ $catalogItems = [
         </a>
         <button class="btn btn-craft-outline btn-craft-outline-stitched btn-lg d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#checkoutModal">
           <i class="bi bi-magic"></i>
-          <span>Encargar Personalizado</span>
+          <span>Encargar al Artesano</span>
         </button>
       </div>
 
-      <!-- Micro-indicadores de Confianza en Chips Textiles Hilvanados -->
+      <!-- Micro-indicadores de Calidad de la Plataforma en Chips Hilvanados -->
       <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-2 mt-4 pt-3 border-top" style="border-color: rgba(228, 232, 237, 0.7) !important;">
         <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
           <?= svg('branding/isologo-medallon-garantia', ['width' => 20, 'height' => 20]) ?>
-          <span>100% Hecho a Mano</span>
+          <span>Creadores Textiles Independientes</span>
         </div>
         <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
           <?= svg('branding/isotipo-ovillo-corazon', ['width' => 16, 'height' => 16]) ?>
-          <span>Envío Seguro Acolchado</span>
+          <span>Trato Directo con el Artesano</span>
         </div>
         <div class="trust-chip-stitched d-inline-flex align-items-center gap-1">
           <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
-          <span>Garantía Taller Oficial</span>
+          <span>Plataforma Confiable &amp; Verificada</span>
         </div>
       </div>
     </div>
@@ -160,7 +160,7 @@ $catalogItems = [
           <!-- Micro-Badge de Autoría Flotante -->
           <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-pill shadow-sm border small fw-bold font-monospace d-inline-flex align-items-center gap-1" style="color: var(--craft-primary); font-size: 0.78rem; z-index: 4; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.94) !important;">
             <?= svg('branding/isotipo-ovillo-corazon', ['width' => 18, 'height' => 18]) ?>
-            <span>Taller de Creaciones • Colección Artesanal</span>
+            <span>Comunidad de Creadores • Catálogo Abierto</span>
           </div>
         </div>
       </div>
@@ -177,7 +177,7 @@ $catalogItems = [
         <h5 class="fw-bold mb-0 text-dark font-theme-display fs-4">
           <i class="bi bi-sliders me-2 text-primary"></i>Explorador de Creaciones
         </h5>
-        <span class="text-muted small d-none d-md-inline">Filtra por temática, material, presupuesto o artesano</span>
+        <span class="text-muted small d-none d-md-inline">Filtra por categoría, material, presupuesto o creador independiente</span>
       </div>
       <span class="badge bg-light text-muted font-monospace border px-3 py-2" id="filterResultsCount" style="border-radius: var(--craft-radius-pill);">
         <i class="bi bi-grid-fill text-primary me-1"></i><?= count($catalogItems) ?> piezas visibles
@@ -260,22 +260,21 @@ $catalogItems = [
       </div>
     </div>
 
-    <!-- Fila 2 de Controles: Filtros Avanzados (Presupuesto Min/Max & Artesano Autor) [2.2.D] -->
-    <div class="row g-2 align-items-center pt-2 border-top" style="border-color: rgba(228, 232, 237, 0.7) !important;">
-      <!-- Rango de Presupuesto -->
+    <!-- Controles de Filtros Avanzados (2da Fila) -->
+    <div class="row g-3 align-items-center mt-2 pt-2 border-top">
+      <!-- Filtro Rango de Precio -->
       <div class="col-12 col-md-6">
         <div class="d-flex align-items-center gap-2">
-          <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-cash-coin text-primary me-1"></i>Presupuesto:</span>
-          <div class="input-group input-group-sm" style="max-width: 120px;">
-            <span class="input-group-text bg-white text-muted">$</span>
-            <input type="number" id="filterPriceMin" class="form-control" placeholder="Mín" min="0" max="10000" step="50">
+          <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-currency-dollar text-primary me-1"></i>Precio:</span>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light text-muted border-end-0">Min $</span>
+            <input type="number" id="filterPriceMin" class="form-control border-start-0" placeholder="0" min="0" step="10">
           </div>
-          <span class="text-muted small">—</span>
-          <div class="input-group input-group-sm" style="max-width: 120px;">
-            <span class="input-group-text bg-white text-muted">$</span>
-            <input type="number" id="filterPriceMax" class="form-control" placeholder="Máx" min="0" max="10000" step="50">
+          <span class="text-muted small">&ndash;</span>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light text-muted border-end-0">Max $</span>
+            <input type="number" id="filterPriceMax" class="form-control border-start-0" placeholder="Max" min="0" step="10">
           </div>
-          <small class="text-muted font-monospace d-none d-sm-inline" style="font-size: 0.72rem;">MXN</small>
         </div>
       </div>
 
@@ -285,7 +284,7 @@ $catalogItems = [
           <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-person-badge text-primary me-1"></i>Artesano:</span>
           <select id="filterArtisan" class="form-select form-select-sm select-craft-pill" style="max-width: 260px;">
             <option value="all" selected>Todos los Artesanos</option>
-            <option value="admin">@admin (Taller Principal)</option>
+            <option value="admin">@admin (Artesano Registrado)</option>
             <option value="artesana_ana">@artesana_ana (Diseñadora)</option>
           </select>
         </div>

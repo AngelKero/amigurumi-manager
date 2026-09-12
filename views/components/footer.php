@@ -8,79 +8,79 @@
   <div class="container-xl">
     <div class="row g-4 mb-4">
       
-      <!-- Columna 1: Identidad del Taller & Micro-ERP -->
+      <!-- Columna 1: Identidad de la Plataforma & Micro-ERP -->
       <div class="col-12 col-lg-4">
         <div class="mb-3">
           <?= svg('branding/imagotipo-horizontal', ['height' => 44, 'style' => 'max-width: 100%; width: auto;']) ?>
         </div>
         <p class="text-muted small mb-3" style="line-height: 1.6;">
-          Micro-ERP y catálogo textil diseñado para artesanas y creadores en crochet. Controla el rendimiento de tus horas de labor, tus inversiones en hilazas y lanas, tus pedidos a la medida y tus existencias en tiempo real.
+          Plataforma colaborativa y Micro-ERP textil para artesanas y creadores independientes en crochet. Conecta con clientes, exhibe tus creaciones, gestiona encargos personalizados y transparenta tus horas de labor con total autonomía.
         </p>
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <span class="badge badge-textile-tag d-inline-flex align-items-center gap-1">
             <?= svg('branding/isologo-sello-taller', ['width' => 16, 'height' => 16]) ?>
-            <span>Taller Artesanal Oficial</span>
+            <span>Plataforma Textil Colaborativa</span>
           </span>
           <span class="badge bg-white text-muted font-monospace border px-2 py-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;">
-            Hecho a Mano con Amor
+            Creadores Independientes
           </span>
         </div>
       </div>
 
-      <!-- Columna 2: Navegación del Taller y Herramientas -->
+      <!-- Columna 2: Navegación del Catálogo y Exploración -->
       <div class="col-6 col-lg-2">
         <h6 class="footer-heading">
           <i class="bi bi-compass"></i> Explorar
         </h6>
         <ul class="footer-links-list">
-          <li><a href="index.php" class="footer-link"><i class="bi bi-chevron-right"></i> Catálogo Textil</a></li>
-          <li><a href="index.php#productCardGrid" class="footer-link"><i class="bi bi-chevron-right"></i> Stock en Vivo</a></li>
+          <li><a href="index.php" class="footer-link"><i class="bi bi-chevron-right"></i> Catálogo Colectivo</a></li>
+          <li><a href="index.php#productCardGrid" class="footer-link"><i class="bi bi-chevron-right"></i> Piezas en Stock</a></li>
           <li><a href="detalle.php?id=1" class="footer-link"><i class="bi bi-chevron-right"></i> Pieza Destacada</a></li>
           <li><a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#checkoutModal"><i class="bi bi-chevron-right"></i> Encargo a Medida</a></li>
         </ul>
       </div>
 
-      <!-- Columna 3: Gestión y Panel del Artesano -->
+      <!-- Columna 3: Gestión y Panel del Creador -->
       <div class="col-6 col-lg-2">
         <h6 class="footer-heading">
-          <i class="bi bi-tools"></i> Taller ERP
+          <i class="bi bi-tools"></i> Gestión &amp; ERP
         </h6>
         <ul class="footer-links-list">
-          <li><a href="creaciones.php" class="footer-link"><i class="bi bi-chevron-right"></i> Inventario Creaciones</a></li>
-          <li><a href="formulario.php" class="footer-link"><i class="bi bi-chevron-right"></i> Nueva Creación</a></li>
-          <li><a href="pedidos.php" class="footer-link"><i class="bi bi-chevron-right"></i> Gestión Pedidos</a></li>
-          <li><a href="usuarios.php" class="footer-link"><i class="bi bi-chevron-right"></i> Equipo Taller</a></li>
+          <li><a href="creaciones.php" class="footer-link"><i class="bi bi-chevron-right"></i> Inventario de Piezas</a></li>
+          <li><a href="formulario.php" class="footer-link"><i class="bi bi-chevron-right"></i> Publicar Creación</a></li>
+          <li><a href="pedidos.php" class="footer-link"><i class="bi bi-chevron-right"></i> Control de Pedidos</a></li>
+          <li><a href="usuarios.php" class="footer-link"><i class="bi bi-chevron-right"></i> Comunidad Creadores</a></li>
         </ul>
       </div>
 
-      <!-- Columna 4: Compromiso Textil y Garantía Artesanal -->
+      <!-- Columna 4: Compromiso y Calidad de la Plataforma -->
       <div class="col-12 col-lg-4">
         <div class="footer-guarantee-box guarantee-stitched">
           <div class="d-flex align-items-center gap-2 mb-2">
             <?= svg('branding/isologo-medallon-garantia', ['width' => 38, 'height' => 38, 'class' => 'flex-shrink-0']) ?>
             <div>
-              <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme); font-size: 0.98rem;">Compromiso de Calidad Artesanal</h6>
-              <small class="text-muted" style="font-size: 0.74rem;">100% Confección Artesanal Certificada</small>
+              <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--craft-font-theme); font-size: 0.98rem;">Compromiso de la Plataforma</h6>
+              <small class="text-muted" style="font-size: 0.74rem;">Transparencia y Respaldo para Creadores y Clientes</small>
             </div>
           </div>
           <div class="footer-guarantee-item">
             <i class="bi bi-check-circle-fill"></i>
-            <span><strong>Fibras Hipoalergénicas:</strong> 100% hilaza mercerizada y chenille velvet lavables a mano.</span>
+            <span><strong>Fichas Transparentes:</strong> Cada artesano especifica con claridad dimensiones reales, fibras empleadas y cuidados de su pieza.</span>
           </div>
           <div class="footer-guarantee-item">
             <i class="bi bi-check-circle-fill"></i>
-            <span><strong>Seguridad Infantil:</strong> Ojos de seguridad certificados con traba interna antiasfixia.</span>
+            <span><strong>Contacto Directo:</strong> Acuerdos personalizados y comunicación ágil directamente con cada creador independiente para coordinar pedidos y tiempos.</span>
           </div>
           <div class="footer-guarantee-item mb-3">
             <i class="bi bi-check-circle-fill"></i>
-            <span><strong>Confección Justa:</strong> Cada precio garantiza una retribución horaria ética a las artesanas.</span>
+            <span><strong>Comercio Ético:</strong> Herramientas de cálculo para que los artesanos coticen de manera justa valorando sus horas de labor manual.</span>
           </div>
-          <a href="https://wa.me/5215500000000?text=Hola,%20quisiera%20consultar%20sobre%20un%20encargo%20especial%20de%20crochet" 
+          <a href="https://wa.me/5215500000000?text=Hola,%20quisiera%20consultar%20sobre%20la%20plataforma%20de%20crochet" 
              target="_blank" 
              rel="noopener noreferrer" 
              class="btn btn-craft-outline btn-craft-outline-stitched btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
             <i class="bi bi-whatsapp text-success fs-6"></i>
-            <span>Contacto de Encargos por WhatsApp</span>
+            <span>Contacto y Soporte de la Plataforma</span>
           </a>
         </div>
       </div>

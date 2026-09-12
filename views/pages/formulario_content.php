@@ -145,7 +145,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
         <div>
           <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
             <?= svg('branding/isotipo-ovillo-corazon', ['width' => 18, 'height' => 18]) ?>
-            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Taller de Confección en Crochet' ?></span>
+            <span><?= $isEditing ? 'Modificación de Pieza #' . $editId : 'Publicación en Plataforma de Crochet' ?></span>
           </div>
           <h3 class="fw-bold font-theme-display text-dark mb-1" id="formTitle">
             <?= $isEditing ? 'Modificar Creación de Crochet' : 'Registrar Nueva Creación de Crochet' ?>
@@ -219,7 +219,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
             </label>
           </div>
           <div class="form-text text-muted small mt-1 ps-4">
-            Al activar esta opción, la pieza se exhibirá con distintivo morado artesanal <em>"Bajo Encargo (5-7 d)"</em> en lugar de marcarse como <em>"Agotada"</em> cuando el inventario sea 0.
+            Al activar esta opción, la pieza se exhibirá con distintivo morado artesanal <em>"Bajo Encargo"</em> en lugar de marcarse como <em>"Agotada"</em> cuando el inventario sea 0.
           </div>
         </div>
 

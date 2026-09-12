@@ -1,34 +1,41 @@
-# Product Context: Crochet Creations Micro-ERP & Catalog
+# Product Context: Multi-Artisan Crochet Platform & Collaborative Micro-ERP
 
 ## Why This Project Exists
-Independent crochet artisans and textile craft businesses need more than a static portfolio; they require a lightweight **Micro-ERP** to handle catalog presentation, material investments, labor tracking, physical stock management, client commissions/orders, and administrative authentication across all crochet disciplines: **Amigurumis & Figuras**, **Prendas & Ropa**, **Bolsos & Accesorios**, **Hogar & Decoración**, and **Bebé & Infantil**.
+Independent crochet artisans and textile creators need more than a static personal portfolio; they require a lightweight, collaborative **Micro-ERP and Collective Platform** where multiple independent artisans can register, showcase their pieces, track physical stock, manage costs and labor hours, and coordinate custom commissions directly with customers.
+
+Because creators operate autonomously with total independence, the platform **does not and cannot control what, how, or when artisans craft**. Instead of centralized manufacturing promises or fixed factory lead times, the platform centers its quality assurances on **platform transparency, verified creator profiles, accurate technical specification sheets, fair-trade pricing tools, and direct customer-to-artisan communication (WhatsApp)**.
 
 ## Target User Personas
-- **Crochet Artisan / Business Owner (`rol: admin`):**
-  - Manages catalog creations (garments, plushies, bags, blankets) and updates material costs, labor hours, and retail prices.
-  - Logs and monitors physical inventory counts (`cantidad_stock`) and on-demand commission status (`es_sobre_encargo`).
-  - Records custom client orders (`pedidos`), tracks fulfillment deadlines, and reviews profit margins.
-  - Controls administrative system access and team members.
+- **Registered Artisan / Independent Creator (`rol: artesano` / `rol: admin`):**
+  - Registers and showcases creations across diverse crochet disciplines (Amigurumis, Garments, Bags & Accessories, Home Decor, Baby & Kids).
+  - Calculates production costs, labor investment, and ethical pricing with real-time margin simulators.
+  - Controls their own stock availability (`cantidad_stock`) or toggles on-demand commission status (`es_sobre_encargo`).
+  - Receives and manages client commission requests (`pedidos`), agreeing on personalized details and delivery times directly with the client.
+- **Platform Administrator (`rol: admin`):**
+  - Manages platform governance, creator directory, and role privileges without interfering with creator artistic autonomy.
 - **Client / Public Visitor (Unauthenticated):**
-  - Explores the crochet catalog, examines detailed craftsmanship specifications (sizes, dimensions, fiber composition), checks current stock availability, and requests custom commissions.
+  - Explores the open collective catalog, filters creations by category, price, and artisan author.
+  - Inspects transparent craftsmanship specifications (dimensions, fiber composition, care instructions).
+  - Coordinates directly with the creator for immediate purchases or custom commissions via platform tools and WhatsApp.
 
 ## Key User Journeys
-1. **Catalog Exploration (`index.php`):**
-   - Visitor browses creations by crochet category, checks whether items are available or sold out via dynamic badges (`cantidad_stock`), and inspects full craft details.
+1. **Collective Catalog Exploration (`index.php`):**
+   - Visitor browses creations by category or creator author, checking real-time stock availability or on-demand status.
 2. **Creations & Stock Administration (`creaciones.php` - Authenticated):**
-   - Artisan manages creations with live KPIs, quick stock increments/decrements, on-demand toggle, inspection modal, and deletion with referential integrity safeguards.
+   - Artisan manages their pieces with live KPIs, quick stock adjustments, on-demand toggles, technical inspection modals, and deletion with referential integrity protection.
 3. **Creation Management (`formulario.php` - Authenticated):**
-   - Artisan registers a new design or modifies an existing piece with flexible dimensions / sizing.
-   - Real-time client-side calculation visualizes the profit margin ($) and effective hourly rate ($/hr) based on `precio`, `costo_materiales`, and `horas_tejido`.
-4. **Product Inspection & Public Checkout (`detalle.php`):**
-   - High-fidelity visual showcase of the crochet piece with technical specifications, materials, sizing, and artisan business metrics.
-   - Public Client Checkout: Customers can directly purchase or commission an item using an interactive modal, with real-time stock deduction.
+   - Artisan registers or updates a piece with flexible dimensions and real-time margin simulation (protected by privacy shield until required fields are completed).
+4. **Product Inspection & Order Coordination (`detalle.php`):**
+   - High-fidelity visual showcase with verified creator profile seal, transparent specifications, and public order modal that coordinates directly with the artisan.
 5. **Order & Commission Tracking (`pedidos.php` - Authenticated):**
-   - Artisan logs custom commissions, monitors public orders in responsive cards, updates fulfillment stages (`Pendiente`, `En Proceso`, `Entregado`, `Cancelado`), contacts customers via WhatsApp, and triggers automatic inventory restocking upon cancellation.
-6. **Authentication & Session (Dynamic Navbar Modal):**
-   - Artisan logs in seamlessly via a modal in the navbar without page disruption, unlocking role-based management tools.
+   - Artisan manages incoming orders, delivery states, payment badges, customer contact via WhatsApp, and automatic inventory restitution upon cancellation.
+6. **Community & Creator Management (`usuarios.php` - Authenticated Admin):**
+   - Directory of registered platform creators and role management governed by RBAC rules with root admin lockout protection.
 
-## Design Principles
-- **Warm, Crafted Aesthetic:** "Algodón Nórdico" palette, Fraunces serif display headlines, running-stitch borders, quilted photo frames, and subtle micro-animations.
-- **Simplicity & Responsiveness:** Clean Bootstrap 5 mobile-first layout with accessible navigation.
-- **Data Integrity & Immutability:** Financial figures preserved in cents, historical order prices locked, and foreign keys protected against accidental cascade deletions (`ON DELETE RESTRICT`).
+## Design & Guarantee Principles
+- **Warm, Crafted Aesthetic:** "Algodón Nórdico" palette, Fraunces display typography, running-stitch seams, and quilted frames.
+- **Platform-Centered Guarantees:**
+  - *Transparent Technical Sheets:* Rigorous documentation of dimensions, fibers, and care.
+  - *Direct Communication:* Direct customer-creator agreements for customizations and delivery timeframes.
+  - *Ethical Commerce:* Tools that ensure fair pricing respecting manual labor.
+- **Data Integrity & Relational Safety:** Financial amounts stored in integer cents, order prices frozen at creation, and relational constraints (`ON DELETE RESTRICT`).

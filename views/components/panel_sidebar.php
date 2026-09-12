@@ -12,7 +12,7 @@ $activePage = $activePage ?? 'creaciones';
     <?= svg('branding/logotipo-taller-artesanal', ['height' => 38, 'class' => 'mx-auto', 'style' => 'max-width: 100%; width: auto; display: block;']) ?>
   </div>
 
-  <!-- Perfil Mini del Artesano Titular -->
+  <!-- Perfil Mini del Artesano -->
   <div class="panel-profile-box text-center">
     <div class="panel-profile-avatar mx-auto mb-2 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
       <?= svg('branding/isotipo-ovillo-corazon', ['width' => 42, 'height' => 42]) ?>
@@ -20,17 +20,17 @@ $activePage = $activePage ?? 'creaciones';
     <div class="panel-profile-username text-center">@admin</div>
     <div class="text-center mb-1">
       <span class="panel-profile-role d-inline-flex align-items-center gap-1">
-        <i class="bi bi-patch-check-fill text-warning"></i> Artesano Titular
+        <i class="bi bi-patch-check-fill text-warning"></i> Artesano Verificado
       </span>
     </div>
     <div class="mt-1 text-muted text-center" style="font-size: 0.72rem;">
-      <span class="d-inline-block rounded-circle bg-success me-1" style="width: 7px; height: 7px;"></span> En línea en el Taller
+      <span class="d-inline-block rounded-circle bg-success me-1" style="width: 7px; height: 7px;"></span> En línea en la Plataforma
     </div>
   </div>
 
   <!-- Título de Navegación del Panel -->
   <div class="panel-nav-title">
-    <i class="bi bi-grid-fill me-1 text-primary"></i> Gestión del Taller
+    <i class="bi bi-grid-fill me-1 text-primary"></i> Panel de Control
   </div>
 
   <!-- Lista de Enlaces de Administración -->
@@ -39,7 +39,7 @@ $activePage = $activePage ?? 'creaciones';
       <a href="usuarios.php" class="panel-nav-link <?= $activePage === 'usuarios' ? 'active' : '' ?>">
         <span class="d-flex align-items-center gap-2">
           <i class="bi bi-people-fill text-primary"></i>
-          <span>Equipo y Usuarios</span>
+          <span>Comunidad de Artesanos</span>
         </span>
         <span class="panel-nav-badge" id="sidebarBadgeUsuarios">3</span>
       </a>

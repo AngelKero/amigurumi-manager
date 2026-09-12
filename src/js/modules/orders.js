@@ -338,7 +338,7 @@ export function initOrders() {
                 </h5>
                 <div class="d-flex flex-wrap align-items-center gap-2">
                   <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.18rem 0.5rem;">
-                    Encargo Taller
+                    Encargo Artesanal
                   </span>
                   <span class="order-qty-tag">
                     <i class="bi bi-box-seam me-1"></i>${qty} ${qty > 1 ? 'unidades' : 'unidad'}

@@ -10,7 +10,7 @@ $creacionesList = [
     'id' => 1,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Dragón Ignis',
     'categoria' => 'Amigurumis & Figuras',
     'material' => '100% Algodón Mercerizado',
@@ -31,7 +31,7 @@ $creacionesList = [
     'id' => 2,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Mini Suculenta en Maceta',
     'categoria' => 'Hogar & Decoración',
     'material' => 'Algodón Rústico y Lana Acrílica',
@@ -73,7 +73,7 @@ $creacionesList = [
     'id' => 4,
     'artesano_id' => 1,
     'artesano_username' => 'admin',
-    'artesano_nombre' => 'Admin (Taller Principal)',
+    'artesano_nombre' => 'Admin (Creador)',
     'nombre' => 'Cardigan Granny Squares',
     'categoria' => 'Prendas & Ropa',
     'material' => 'Lana Merino y Algodón Soft',
@@ -137,11 +137,11 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
     <div>
       <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
-        <span>Almacén &amp; Catálogo del Taller</span>
+        <span>Inventario &amp; Catálogo del Creador</span>
       </div>
       <h2 class="fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones en Crochet</h2>
       <p class="text-muted small mb-0" style="max-width: 650px;">
-        Control administrativo de piezas, costos de insumos, márgenes de labor, existencias físicas y modalidades de confección.
+        Administración de piezas, costos de insumos, horas de tejido, existencias físicas y modalidades de encargo en la plataforma.
       </p>
     </div>
     <div class="d-flex gap-2">
@@ -263,7 +263,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
         <label for="filterArtisanSelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Artesano Autor</label>
         <select id="filterArtisanSelect" class="form-select select-craft-pill">
           <option value="all" selected>Todos los artesanos</option>
-          <option value="admin">@admin (Taller)</option>
+          <option value="admin">@admin (Artesano Registrado)</option>
           <option value="artesana_ana">@artesana_ana</option>
         </select>
       </div>
@@ -319,7 +319,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
           <!-- Modalidad Toggle Button -->
           <?php if ($item['es_sobre_encargo'] == 1): ?>
             <button type="button" class="btn-toggle-encargo badge badge-textile-tag text-primary border-primary border-0 bg-transparent p-1" style="font-size: 0.73rem;" title="Click para cambiar a Entrega Inmediata">
-              <i class="bi bi-magic me-1"></i>Bajo Encargo (5-7 d)
+              <i class="bi bi-magic me-1"></i>Bajo Encargo
             </button>
           <?php else: ?>
             <button type="button" class="btn-toggle-encargo badge bg-light text-dark border font-monospace border-0 p-1" style="border-radius: var(--craft-radius-pill); font-size: 0.72rem;" title="Click para cambiar a Bajo Encargo">
@@ -354,7 +354,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
           </small>
         </div>
 
-        <!-- Caja de Economía del Taller -->
+        <!-- Desglose Económico del Creador -->
         <div class="admin-card-economics p-2 rounded mb-3">
           <div class="d-flex justify-content-between align-items-baseline mb-1">
             <span class="fw-bold font-monospace text-dark fs-6">$<?= number_format($item['precio'], 2) ?></span>

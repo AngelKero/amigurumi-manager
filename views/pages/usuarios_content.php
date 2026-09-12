@@ -1,6 +1,6 @@
 <?php
 /**
- * Page Content: Gestión de Artesanos y Equipo del Taller
+ * Page Content: Comunidad de Creadores y Artesanos de la Plataforma
  * Algodón Nórdico Design System (Admin Only)
  */
 
@@ -41,14 +41,14 @@ $usuariosList = [
         <?= svg('branding/isologo-sello-taller', ['width' => 44, 'height' => 44]) ?>
       </div>
       <div>
-        <h4 class="mb-0 fw-bold">Gestión de Artesanos &amp; Equipo del Taller</h4>
-        <small class="text-white-50">Control de cuentas de acceso, roles asignados y autoría de piezas textiles</small>
+        <h4 class="mb-0 fw-bold">Comunidad de Artesanos &amp; Usuarios</h4>
+        <small class="text-white-50">Directorio de creadores registrados, roles operativos y autoría en la plataforma</small>
       </div>
     </div>
     <!-- ACCIONES RÁPIDAS -->
     <div class="d-flex gap-2 flex-wrap">
       <button type="button" class="btn btn-sm btn-panel-action active" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario" id="btnAbrirModalUsuario">
-        <i class="bi bi-person-plus-fill me-1"></i>Nuevo Artesano
+        <i class="bi bi-person-plus-fill me-1"></i>Registrar Creador
       </button>
       <a href="pedidos.php" class="btn btn-sm btn-outline-light">
         <i class="bi bi-box-seam me-1"></i>Ver Pedidos
@@ -142,7 +142,7 @@ $usuariosList = [
                   </div>
                   <div>
                     <strong class="d-block text-dark username-text">@<?= htmlspecialchars($u['username']) ?></strong>
-                    <small class="text-muted">Taller Textil Principal</small>
+                    <small class="text-muted">Creador Independiente</small>
                   </div>
                 </div>
               </td>
@@ -153,7 +153,7 @@ $usuariosList = [
                   </span>
                 <?php elseif ($u['rol'] === 'artesano'): ?>
                   <span class="badge badge-role-artesano px-3 py-2 rounded-pill font-monospace">
-                    <i class="bi bi-brush-fill me-1"></i>Artesano Titular
+                    <i class="bi bi-brush-fill me-1"></i>Artesano / Creador
                   </span>
                 <?php else: ?>
                   <span class="badge badge-role-asistente px-3 py-2 rounded-pill font-monospace">

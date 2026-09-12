@@ -2,7 +2,7 @@
 /**
  * Component: Modal Crear Usuario / Artesano
  * Algodón Nórdico Design System
- * Formulario de alta para artesanos y asistentes de taller (Exclusivo Admin)
+ * Formulario de alta para creadores, artesanos y colaboradores (Exclusivo Admin)
  */
 ?>
 <div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalCrearUsuarioTitle" aria-hidden="true">
@@ -12,7 +12,7 @@
         <div class="d-flex align-items-center gap-2">
           <?= svg('branding/isotipo-ovillo-corazon', ['width' => 28, 'height' => 28]) ?>
           <h5 class="modal-title fw-bold m-0" id="modalCrearUsuarioTitle" style="font-size: 1.05rem;">
-            Registrar Miembro del Taller
+            Registrar Creador / Artesano
           </h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -21,7 +21,7 @@
       <form id="formCrearUsuario">
         <div class="modal-body p-4">
           <p class="text-muted small mb-3">
-            Crea una nueva cuenta de acceso para autoría de creaciones y control operativo del Micro-ERP:
+            Crea una nueva cuenta para que un creador publique sus piezas y gestione sus encargos en la plataforma:
           </p>
 
           <div id="usuarioAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
@@ -38,7 +38,7 @@
 
           <!-- Rol del Usuario -->
           <div class="mb-3">
-            <label for="nuevoRol" class="form-label fw-bold small">Rol de Acceso en el Taller (*)</label>
+            <label for="nuevoRol" class="form-label fw-bold small">Rol en la Plataforma (*)</label>
             <select class="form-select select-craft-pill" id="nuevoRol" required>
               <option value="artesano" selected>Artesano (Crea y edita sus propias piezas y pedidos)</option>
               <option value="asistente">Asistente (Monitorea pedidos e inventario físico)</option>

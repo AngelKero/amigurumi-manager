@@ -18,7 +18,7 @@
       <form id="formEditarRolUsuario">
         <div class="modal-body p-4">
           <p class="text-muted small mb-3">
-            Actualiza los privilegios operativos del miembro del taller según las reglas de acceso RBAC de SQLite:
+            Actualiza los privilegios operativos del usuario o creador según las reglas de acceso RBAC de SQLite:
           </p>
 
           <div id="editarRolAlert" class="alert alert-warning d-none py-2 small" role="alert"></div>
@@ -42,7 +42,7 @@
             <label for="selectEditarRol" class="form-label fw-bold small">Nuevo Rol Asignado (*)</label>
             <select class="form-select select-craft-pill" id="selectEditarRol" required>
               <option value="artesano">Artesano Titular (Crea y gestiona piezas y pedidos propios)</option>
-              <option value="asistente">Asistente de Taller (Monitorea pedidos e inventario físico)</option>
+              <option value="asistente">Asistente de Plataforma (Monitorea pedidos e inventario de creadores)</option>
               <option value="admin">Administrador Titular (Control integral de catálogo y cuentas)</option>
             </select>
             <div class="form-text text-muted small">

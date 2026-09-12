@@ -11,7 +11,7 @@
         <div class="d-flex align-items-center gap-2">
           <span class="badge badge-textile-tag d-inline-flex align-items-center gap-1">
             <?= svg('branding/isologo-sello-taller', ['width' => 16, 'height' => 16]) ?>
-            <span>Ficha Técnica del Taller</span>
+            <span>Ficha Técnica de la Creación</span>
           </span>
           <span class="font-monospace text-muted small" id="inspectCreacionId">#1</span>
         </div>
@@ -38,7 +38,7 @@
             </div>
             
             <small class="text-muted d-block font-monospace mb-2" id="inspectArtisanAuthor">
-              Autoría: @admin (Artesano Titular)
+              Autoría: @admin (Artesano / Creador)
             </small>
 
             <div id="inspectPedidosInfo" class="mt-1">
@@ -51,17 +51,19 @@
           <!-- Columna Especificaciones y Finanzas -->
           <div class="col-12 col-md-7">
             <h4 class="fw-bold font-theme-display text-dark mb-1" id="inspectCreacionTitle">Dragón Ignis</h4>
-            <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
               <span class="badge-textile-tag" id="inspectCategoryBadge">Amigurumis & Figuras</span>
               <span class="text-muted small">&bull;</span>
-              <span class="text-muted small font-monospace" id="inspectTamano">18.5 cm (Alto)</span>
+              <span class="card-product-dimension" id="inspectTamanoContainer">
+                <i class="bi bi-rulers me-1"></i><span id="inspectTamano">18.5 cm (Alto)</span>
+              </span>
             </div>
 
-            <!-- Resumen Financiero del Taller -->
+            <!-- Resumen Financiero del Creador -->
             <div class="p-3 rounded border mb-3" style="background-color: var(--craft-surface-muted);">
               <div class="d-flex align-items-center gap-2 mb-2">
                 <i class="bi bi-cash-stack text-primary"></i>
-                <span class="fw-bold small text-uppercase" style="letter-spacing: 0.04em;">Desglose Económico de Producción</span>
+                <span class="fw-bold small text-uppercase" style="letter-spacing: 0.04em;">Desglose Económico de Labor y Materiales</span>
               </div>
               
               <div class="row g-2 text-center">

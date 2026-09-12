@@ -25,7 +25,7 @@ $activePage = $activePage ?? 'catalogo';
 
       <div class="d-none align-items-center gap-2" id="navUserBadge">
         <a href="creaciones.php" class="badge badge-artisan-seal text-decoration-none d-inline-flex align-items-center" id="navArtisanBadge" title="Ir al Panel de Administración">
-          <i class="bi bi-patch-check-fill text-warning me-1"></i>@admin (Artesano Titular)
+          <i class="bi bi-patch-check-fill text-warning me-1"></i>@admin (Artesano / Creador)
         </a>
         <button class="btn btn-craft-logout btn-sm btn-nav-logout" title="Cerrar Sesión">
           <i class="bi bi-box-arrow-right"></i>

@@ -11,7 +11,7 @@
         <div class="d-flex align-items-center gap-2">
           <?= svg('branding/isologo-medallon-garantia', ['width' => 32, 'height' => 32]) ?>
           <h5 class="modal-title fw-bold m-0" id="checkoutModalTitle" style="font-size: 1.05rem;">
-            Solicitud de Pedido &amp; Encargo Especial
+            Solicitud de Pedido &amp; Encargo al Artesano
           </h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -33,14 +33,14 @@
             </span>
           </div>
 
-          <!-- Lead Time Notice [QW-2] -->
+          <!-- Coordinación con el Artesano -->
           <div class="lead-time-notice mb-3">
             <div class="d-flex align-items-center gap-2">
               <div class="flex-shrink-0">
                 <?= svg('branding/isotipo-ovillo-corazon', ['width' => 28, 'height' => 28]) ?>
               </div>
               <div class="small">
-                <strong>Tiempo de Confección Artesanal:</strong> Las piezas bajo encargo o sin stock inmediato requieren de 5 a 7 días hábiles de tejido punto a punto.
+                <strong>Coordinación con el Artesano:</strong> Los tiempos de confección, detalles de personalización y entrega son acordados directamente con el artesano creador mediante la plataforma.
               </div>
             </div>
           </div>

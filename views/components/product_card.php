@@ -39,7 +39,7 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
       <div class="card-product-badge-float">
         <?php if ($isOnDemand): ?>
           <span class="badge badge-textile-tag shadow-sm" style="background-color: var(--craft-primary-subtle); color: var(--craft-primary); border: 1.5px dashed var(--craft-primary);">
-            <i class="bi bi-magic me-1"></i>Bajo Encargo (5-7 d)
+            <i class="bi bi-magic me-1"></i>Bajo Encargo
           </span>
         <?php elseif ($isOutOfStock): ?>
           <span class="badge badge-stock-out shadow-sm">

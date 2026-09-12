@@ -149,3 +149,30 @@
   - `php -l` ejecutado en `product_card.php`, `creaciones_content.php` y `pedidos_content.php` (0 errores).
   - Comprobado mediante script HTTP en `localhost:8000/index.php` que la tarjeta 5 (Tote Bag Boho Trapillo) renderiza `.card-product-meta` con la píldora `.card-product-dimension`.
 
+## Hito Completado: Alineación de Textos y Contenidos: Plataforma Colaborativa Multi-Artesano & Calidad Centrada en la Plataforma
+- **User Request:**
+  - *"Debes hacer cambios en los textos y contenidos, la plataforma pueden inscribirse muchos artesanos y no se puede controlar que como y cuando hacen los artesanos, modifica textos y si hablas de calidad habla mas bien sobre la plataforma"*
+- **Estado:** **100% Completado y Verificado**
+- **Fundamento Conceptual y Decisiones de Diseño:**
+  1. **Autonomía Operativa de los Creadores:** La aplicación no es un taller centralizado con obreros o maquila; es una **plataforma colaborativa y Micro-ERP** abierta donde múltiples artesanas y creadores independientes pueden registrarse y gestionar su catálogo. La plataforma no controla ni impone qué, cómo ni cuándo tejen.
+  2. **Erradicación de Promesas de Taller Central:** Se eliminaron todas las afirmaciones tipo "nuestro taller garantiza tiempos de entrega fijos de 5 a 7 días" o "nuestro taller garantiza ojos antiasfixia". Los plazos, personalizaciones y confecciones se acuerdan directamente entre cliente y creador.
+  3. **Reorientación de la Calidad hacia la Plataforma:** Las garantías y el compromiso de calidad se trasladaron íntegramente a lo que la plataforma sí provee y audita:
+     - **Fichas Técnicas Transparentes:** Especificación rigurosa de medidas, fibras textiles y cuidados.
+     - **Contacto Directo:** Canal de comunicación ágil vía WhatsApp directo con el autor de cada pieza.
+     - **Comercio Ético:** Herramientas de costeo y simuladores para asegurar precios justos que valoran las horas de labor.
+     - **Perfiles y Autoría Verificada:** Directorio transparente de creadores con autoría reconocida y salvaguardas referenciales en SQLite.
+- **Componentes, Vistas y Módulos Actualizados:**
+  - `views/pages/catalogo_content.php`: Hero banner enfocado en plataforma abierta y catálogo colectivo; chips de confianza: *"Creadores Textiles Independientes"*, *"Trato Directo con el Artesano"*, *"Plataforma Confiable & Verificada"*; distintivos de autoría `@admin (Creador)`.
+  - `views/components/footer.php`: Columna de identidad describe la plataforma textil colaborativa y Micro-ERP; columna 4 reenfocada a *"Compromiso de la Plataforma"* (Fichas Transparentes, Contacto Directo, Comercio Ético, Soporte de la Plataforma).
+  - `views/components/product_card.php` & `formulario_content.php`: Insignia de modalidad actualizada a *"Bajo Encargo"* erradicando la promesa rígida de "5-7 d".
+  - `views/pages/detalle_content.php`: Sello de autoría *"@admin (Creador Textil)"*, *"Artesano Verificado"*, *"Perfil de Creador Independiente"*; coordinación directa con el artesano para encargos agotados.
+  - `views/components/modal_checkout.php`: Título *"Solicitud de Pedido & Encargo al Artesano"*; microcopy de coordinación directa cliente-creador.
+  - `views/components/panel_sidebar.php` & `navbar.php`: Indicador *"En línea en la Plataforma"*, *"@admin (Artesano / Creador)"*, navegación a *"Comunidad de Artesanos"*.
+  - `views/pages/creaciones_content.php` & `src/js/modules/creaciones.js`: Títulos de inventario del creador, desglose económico de labor, eliminación de "5-7 d" y autoría del creador.
+  - `views/pages/pedidos_content.php` & `src/js/modules/orders.js`: Seguimiento de encargos coordinados con clientes, botón *"Registrar Encargo Directo"* y etiqueta *"Encargo Artesanal"*.
+  - `views/pages/usuarios_content.php`, `modal_crear_usuario.php`, `modal_editar_rol_usuario.php` & `src/js/modules/users.js`: Directorio de creadores y colaboradores de la plataforma, roles RBAC y descripción de asistentes de plataforma.
+  - `views/components/modal_eliminar_creacion.php`: Salvaguarda referencial explicada en el marco de los pedidos de creadores en la plataforma.
+- **Verificación:**
+  - 100% de los archivos PHP verificados con `php -l` (0 errores de sintaxis).
+  - Verificación en vivo vía HTTP curl en `http://localhost:8000/` comprobando que las menciones a plataforma colaborativa, creadores independientes y compromiso de plataforma se despliegan limpiamente.
+

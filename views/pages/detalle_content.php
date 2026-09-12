@@ -79,14 +79,14 @@
           </div>
           <div class="flex-grow-1">
             <div class="d-flex align-items-center flex-wrap gap-1 mb-1">
-              <strong class="text-dark">@admin (Artesano Titular)</strong>
+              <strong class="text-dark">@admin (Creador Textil)</strong>
               <span class="seal-badge-tag d-inline-flex align-items-center gap-1">
                 <?= svg('branding/isologo-medallon-garantia', ['width' => 14, 'height' => 14]) ?>
-                <span>Taller Verificado</span>
+                <span>Artesano Verificado</span>
               </span>
             </div>
-            <span class="text-muted small d-block">Confección y autoría responsable registrada en el Micro-ERP</span>
-            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Código de Taller Textil: #TT-001-ARTISAN &bull; EST. 2026</small>
+            <span class="text-muted small d-block">Autoría y catálogo verificados en la plataforma Crochet Manager</span>
+            <small class="text-muted font-monospace" style="font-size: 0.72rem;">Perfil de Creador Independiente &bull; Registro en Plataforma: 2026</small>
           </div>
         </div>
 
@@ -159,7 +159,7 @@
             <div class="d-flex align-items-center justify-content-between mb-2 border-bottom pb-2">
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-calculator-fill text-primary"></i>
-                <strong class="text-dark small text-uppercase">Métricas de Rentabilidad del Taller</strong>
+                <strong class="text-dark small text-uppercase">Métricas de Rentabilidad del Creador</strong>
               </div>
               <span class="badge bg-white text-muted font-monospace border" style="font-size: 0.7rem;">Privado Artesano</span>
             </div>
@@ -204,7 +204,7 @@
               <span>Agotado para Entrega Inmediata</span>
             </div>
             <p class="small text-muted mb-2">
-              No hay piezas terminadas en inventario físico actualmente. Sin embargo, nuestro taller artesanal puede confeccionarla especialmente para ti bajo encargo programado (5 a 10 días hábiles de tejido artesanal).
+              No hay piezas terminadas en inventario inmediato. Sin embargo, puedes solicitar un encargo especial directamente al artesano creador mediante la plataforma para acordar personalizaciones y tiempo estimado.
             </p>
             <button class="btn btn-craft-outline btn-sm" data-bs-toggle="modal" data-bs-target="#checkoutModal">
               <i class="bi bi-magic me-1"></i> Solicitar Encargo Especial

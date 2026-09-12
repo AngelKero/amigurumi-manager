@@ -203,7 +203,7 @@ export function initCreaciones() {
 
       if (newOnDemand) {
         toggleEncargoBtn.className = 'btn-toggle-encargo badge badge-textile-tag text-primary border-primary border-0 bg-transparent p-1';
-        toggleEncargoBtn.innerHTML = '<i class="bi bi-magic me-1"></i>Bajo Encargo (5-7 d)';
+        toggleEncargoBtn.innerHTML = '<i class="bi bi-magic me-1"></i>Bajo Encargo';
         toggleEncargoBtn.title = 'Click para cambiar a Entrega Inmediata (Con stock)';
       } else {
         toggleEncargoBtn.className = 'btn-toggle-encargo badge bg-light text-dark border font-monospace border-0 p-1';
@@ -292,7 +292,7 @@ export function initCreaciones() {
       if (hourlyEl) hourlyEl.innerHTML = `<i class="bi bi-clock-history"></i> Retorno: $${retornoHora.toFixed(2)}/hr`;
       if (matEl) matEl.textContent = material;
       if (descEl) descEl.textContent = descripcion;
-      if (authorEl) authorEl.textContent = `Autoría: @${artisan} (Taller Principal)`;
+      if (authorEl) authorEl.textContent = `Autoría: @${artisan} (Creador Registrado)`;
 
       if (pedidosInfoEl) {
         if (pedidos > 0) {
@@ -315,7 +315,7 @@ export function initCreaciones() {
       if (onDemandBadgeEl) {
         if (isOnDemand) {
           onDemandBadgeEl.className = 'badge badge-textile-tag';
-          onDemandBadgeEl.textContent = 'Bajo Encargo (5-7 d)';
+          onDemandBadgeEl.textContent = 'Bajo Encargo';
         } else {
           onDemandBadgeEl.className = 'badge bg-light text-dark font-monospace border';
           onDemandBadgeEl.textContent = 'Entrega Inmediata';
