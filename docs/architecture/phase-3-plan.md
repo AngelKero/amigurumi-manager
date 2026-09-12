@@ -1,6 +1,6 @@
 # Plan Maestro de la Fase 3: Backend & Clean Architecture
 
-[← Volver al Índice de Arquitectura](./README.md)
+[← Volver al Índice de Arquitectura](./README.md) • [Ver Ciclo de Vida de Todas las Fases (1 a 5)](./proceso-desarrollo-fases.md)
 
 La **Fase 3** implementa la capa de backend completa para el sistema **Crochet Manager**, estructurada en 6 subfases secuenciales bajo el protocolo de compuertas obligatorias de testing de 3 niveles.
 

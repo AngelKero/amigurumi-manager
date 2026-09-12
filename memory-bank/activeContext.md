@@ -1,5 +1,30 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
+## Hito Completado: Documentación Integral del Proceso de Todas las Fases (Fases 1 a 5 y Fase 0)
+
+- **User Request:**
+  - _"Quiero que pongas en la documentacion el proceso de todas las fases, no solo las de la fase 3 y sus subfases"_
+- **Estado:** **100% COMPLETADO Y VINCULADO (Zero Monoliths)**
+- **Alcance Implementado:**
+  1. **Documento Maestro de Ciclo de Vida (`docs/architecture/proceso-desarrollo-fases.md`):**
+     - Detalle exhaustivo de la metodología Database-First y Clean Architecture a lo largo de todo el proyecto.
+     - **Fase 0 (Descubrimiento & Modelo Conceptual):** Definición de la plataforma colaborativa multi-artesano, autonomía operativa del artesano, erradicación de promesas de fábrica centralizada y modelo relacional tripartito.
+     - **Fase 1 (Base de Datos & Seguridad CLI):** DDL SQLite con restricciones CHECK y FKs estrictas (`database/seed.sql`), inicializador seguro CLI-only (`setup.php`), aislamiento de base física (`database/database.sqlite`), blindaje `.htaccess` y pruebas en `docs/database/`.
+     - **Fase 2 (Layout, UI, Componentes PHP & "Algodón Nórdico"):** Desglose por sub-hitos (2.1 a 2.4 diseño e identidad, 2.5 componentización desacoplada ITCSS/ES Modules, 2.6 completitud UI/UX y alineación BD, 2.7 cierre de brechas y filtros avanzados, rediseño de pedidos con cards 3x/2x y WhatsApp directo, generalización a crochet integral, escudo protector en simulador de margen, y auditoría integral QA 98.5/100).
+     - **Fase 3 (Backend & Clean Architecture en `app/`):** Aislamiento físico estricto de capas (`app/` backend vs `src/` frontend), desglose de las 6 subfases secuenciales (3.1 a 3.4 completadas con 393/393 aserciones green, 3.5 pedidos atómicos y 3.6 seguridad), y protocolo inviolable de compuertas de testing en 3 niveles.
+     - **Fase 4 (Cableado Fullstack Asíncrono):** Arquitectura de integración AJAX/fetch entre `src/js/modules/` y `api/`, manejo de tokens Bearer en cliente, feedback visual optimista, toasts "Algodón Nórdico", prevención de doble click y compuertas E2E.
+     - **Fase 5 (Documentación Diátaxis, Rendimiento & Entrega):** Estándar Diátaxis, catálogo de 15 ADRs, servidor embebido `php -S localhost:8000`, auditoría WCAG 2.1 AA y traspaso formal.
+  2. **Integración en Hubs de Documentación:**
+     - `docs/architecture/README.md`: Indexado como primer documento del módulo de Arquitectura.
+     - `docs/architecture/phase-3-plan.md`: Vinculado en la barra de navegación superior.
+     - `docs/README.md`: Integrado en el mapa de navegación, árbol estructural y guía rápida de desarrollo.
+     - `README.md`: Actualizada la descripción del árbol de arquitectura.
+  3. **Gobernanza y Reglas Inviolables:**
+     - Enlaces relativos bidireccionales (`./` y `../`) para visualización fluida en IDE Markdown Preview.
+     - Conservado el compás de espera de la Subfase 3.4: Subfase 3.5 aguarda autorización explícita para comenzar a codificar.
+
+---
+
 ## Hito Completado & Verificado: Subfase 3.4: Catálogo, Creaciones & Ciclo de Vida de Imágenes (Fase 3)
 
 - **User Request:**

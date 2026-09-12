@@ -78,7 +78,7 @@ proyecto-web/
 └── docs/                           # 📚 Documentación técnica modular por dominios (Zero Monoliths)
     ├── README.md                   # Hub maestro de navegación
     ├── api/                        # Especificación OpenAPI-friendly de endpoints REST
-    ├── architecture/               # Contratos, seguridad y registro de ADRs (ADR-001 a ADR-015)
+    ├── architecture/               # Ciclo de vida (Fases 1 a 5), contratos, seguridad y 15 ADRs
     ├── database/                   # Modelo físico relacional, DDL SQLite y guías CLI
     ├── design-system/              # Tokens "Algodón Nórdico", identidad visual y auditorías
     └── testing/                    # Protocolo de 3 niveles y reportes de QA
