@@ -13,9 +13,13 @@
 | **3.3** | Usuarios, Roles RBAC & Bajas Lógicas | `tests/test-subfase-3.3.php` | 105 / 105 (100%) | ✅ Aprobado | [Ver Reporte 3.3](./subfase-3.3-usuarios.md) |
 | **3.4** | Catálogo, Creaciones & Ciclo de Imágenes | `tests/test-subfase-3.4.php` | 126 / 126 (100%) | ✅ Aprobado | [Ver Reporte 3.4](./subfase-3.4-creaciones.md) |
 | **3.5** | Pedidos & Transacciones Atómicas | `tests/test-subfase-3.5.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 3.5](./subfase-3.5-pedidos.md) |
-| **3.6** | Auditoría Integral de Seguridad | `tests/test-subfase-3.6.php` | Pendiente | ⏳ Siguiente | *En espera de aprobación* |
+| **3.6.1** | Acceso, Autorización, IDOR & RBAC | `tests/test-subfase-3.6.1.php` | 165 / 165 (100%) | ✅ Aprobado | [Ver Reporte 3.6.1](./subfase-3.6.1-idor-access-control.md) |
+| **3.6.2** | Criptografía, Auth & Datos Sensibles | `tests/test-subfase-3.6.2.php` | Pendiente | ⏳ Siguiente | *En espera de aprobación* |
+| **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | Pendiente | ⏳ Planificado | *Opción B* |
+| **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | Pendiente | ⏳ Planificado | *Opción B* |
+| **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | Pendiente | ⏳ Planificado | *Opción B* |
 
-**Total Acumulado Actual:** **532 / 532 Aserciones Aprobadas (100% OK)**
+**Total Acumulado Actual:** **697 / 697 Aserciones Aprobadas (100% OK en verde)**
 
 
 ## 🏛️ Arquitectura de Testing en 3 Niveles

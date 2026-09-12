@@ -1,4 +1,30 @@
-# Active Context: Crochet Creations Micro-ERP & Catalog
+## Hito Completado & Verificado: Subfase 3.6.1: Acceso, Autorización, IDOR & Blindaje RBAC (Opción B)
+
+- **User Request:**
+  - _"La opcion b"_ (Selección de la descomposición en 5 sub-subfases temáticas de alto impacto).
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.6.2)**
+- **Estructura Aprobada de las 5 Sub-subfases de la Subfase 3.6 (Opción B):**
+  - **Subfase 3.6.1:** Acceso, Autorización, IDOR & Blindaje RBAC (OWASP A01:2021) — **COMPLETADA (165/165 Aserciones OK)**.
+  - **Subfase 3.6.2:** Criptografía, Autenticación & Protección de Datos Sensibles (OWASP A02 + A07) — **Siguiente hito**.
+  - **Subfase 3.6.3:** Inyección, Sanitización & Seguridad de Medios/Archivos (OWASP A03 + A08).
+  - **Subfase 3.6.4:** Lógica de Negocio, Precios, Stock Atómico & Casos Límite Multibyte (OWASP A04).
+  - **Subfase 3.6.5:** Rendimiento SQLite, Arquitectura Limpia & Regresión Global Acumulada.
+- **Alcance Implementado y Verificado (Subfase 3.6.1):**
+  1. Prevención IDOR Horizontal en Creaciones: Validación de que artesanos ajenos no pueden mutar piezas de otros creadores (HTTP 403 Forbidden).
+  2. Prevención IDOR Horizontal en Pedidos: Validación de que artesanos ajenos no pueden consultar, cambiar estado ni cancelar pedidos vinculados a piezas de otros creadores (HTTP 403 Forbidden).
+  3. Control de Acceso Vertical RBAC: Bloqueo de mutaciones administrativas para rol `asistente` (HTTP 403 Forbidden) y acceso público no autenticado a rutas privadas (HTTP 401 Unauthorized).
+  4. Salvaguarda Inmutable de Administrador Raíz (ID #1): Imposibilidad de alterar rol o eliminar al usuario ID #1 (HTTP 403 Forbidden).
+  5. Bloqueo de Auto-eliminación: Un administrador no puede auto-eliminarse en su propia sesión activa (HTTP 403 Forbidden).
+  6. Restricción de Métodos HTTP (405 Method Not Allowed): Respuestas apropiadas ante métodos erróneos en los 25 controladores de la API.
+  7. Aislamiento de Creaciones Inactivas y Usuarios Desactivados: Las creaciones con `activo = 0` no se filtran al catálogo público ni se exponen por ID (HTTP 404 Not Found), y los usuarios dados de baja son rechazados de inmediato.
+- **Entregables:**
+  - `tests/test-subfase-3.6.1.php` (165/165 aserciones en verde en 412.66 ms).
+  - `logs/subfase-3.6.1-cli.log` y `logs/subfase-3.6.1-http.log`.
+  - [`docs/testing/subfase-3.6.1-idor-access-control.md`](../docs/testing/subfase-3.6.1-idor-access-control.md).
+- **Total Acumulado Global:** **697 / 697 aserciones aprobadas (100% OK en verde)**.
+- **Compás de Espera Inviolable:** Detención total para solicitar autorización explícita antes de la Subfase 3.6.2.
+
+---
 
 ## Hito Completado & Verificado: Subfase 3.5: Pedidos, Transacciones Atómicas & Notificaciones WhatsApp (Fase 3)
 
