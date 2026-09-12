@@ -341,13 +341,13 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
           <h5 class="fw-bold font-theme-display text-dark mb-1 text-truncate" title="<?= htmlspecialchars($item['nombre']) ?>">
             <?= htmlspecialchars($item['nombre']) ?>
           </h5>
-          <div class="d-flex flex-wrap align-items-center gap-2">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
             <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.15rem 0.5rem;">
               <?= htmlspecialchars($item['categoria']) ?>
             </span>
-            <small class="text-muted font-monospace" style="font-size: 0.74rem;">
-              <i class="bi bi-rulers me-1"></i><?= htmlspecialchars($item['dimensiones']) ?>
-            </small>
+            <span class="card-product-dimension" style="font-size: 0.7rem; padding: 0.15rem 0.45rem;" title="Dimensiones: <?= htmlspecialchars($item['dimensiones']) ?>">
+              <i class="bi bi-rulers me-1"></i><span><?= htmlspecialchars($item['dimensiones']) ?></span>
+            </span>
           </div>
           <small class="text-muted d-block text-truncate mt-1" style="font-size: 0.74rem;" title="<?= htmlspecialchars($item['material']) ?>">
             <i class="bi bi-palette2 me-1"></i><?= htmlspecialchars($item['material']) ?>

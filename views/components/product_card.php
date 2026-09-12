@@ -63,7 +63,7 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
     </a>
 
     <div class="card-body d-flex flex-column p-4" style="position: relative; z-index: 2;">
-      <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="card-product-meta">
         <span class="badge-textile-tag">
           <i class="bi bi-tag-fill me-1"></i><?= htmlspecialchars($item['categoria']) ?>
         </span>
@@ -72,7 +72,9 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
             ? htmlspecialchars($item['dimensiones']) 
             : (!empty($item['tamano_cm']) ? number_format($item['tamano_cm'], 1) . ' cm' : 'Estándar');
         ?>
-        <small class="text-muted"><i class="bi bi-rulers me-1"></i><?= $dimensionDisplay ?></small>
+        <span class="card-product-dimension" title="Dimensiones: <?= $dimensionDisplay ?>">
+          <i class="bi bi-rulers me-1"></i><span><?= $dimensionDisplay ?></span>
+        </span>
       </div>
       
       <!-- Clickable Title -->

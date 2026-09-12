@@ -220,9 +220,9 @@ foreach ($mockOrders as $ord) {
               <span class="order-qty-tag">
                 <i class="bi bi-box-seam me-1"></i><?= $pedido['cantidad'] ?> <?= $pedido['cantidad'] > 1 ? 'unidades' : 'unidad' ?>
               </span>
-              <small class="text-muted font-monospace" style="font-size: 0.74rem;">
-                <i class="bi bi-rulers me-1"></i><?= htmlspecialchars($pedido['producto_dimensiones'] ?? $pedido['producto_tamano']) ?>
-              </small>
+              <span class="card-product-dimension" style="font-size: 0.7rem; padding: 0.15rem 0.45rem;" title="Dimensiones: <?= htmlspecialchars($pedido['producto_dimensiones'] ?? $pedido['producto_tamano']) ?>">
+                <i class="bi bi-rulers me-1"></i><span><?= htmlspecialchars($pedido['producto_dimensiones'] ?? $pedido['producto_tamano']) ?></span>
+              </span>
             </div>
           </div>
 
