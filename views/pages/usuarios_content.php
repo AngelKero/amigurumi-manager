@@ -33,28 +33,36 @@ $usuariosList = [
 ];
 ?>
 
-<!-- CABECERA DEL PANEL DE USUARIOS -->
-<section class="artisan-panel-banner p-3 p-md-4 mb-4">
+<!-- CABECERA PRINCIPAL DEL MÓDULO DE USUARIOS & CREADORES (ALGODÓN NÓRDICO) -->
+<section class="artisan-module-header card-stitched mb-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <div class="d-flex align-items-center gap-3">
-      <div class="bg-white p-1 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-        <?= svg('branding/isologo-sello-taller', ['width' => 44, 'height' => 44]) ?>
+    <div>
+      <div class="d-inline-flex align-items-center gap-2 badge badge-textile-tag mb-2">
+        <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
+        <span>Comunidad &amp; Roles de la Plataforma</span>
       </div>
-      <div>
-        <h4 class="mb-0 fw-bold">Comunidad de Artesanos &amp; Usuarios</h4>
-        <small class="text-white-50">Directorio de creadores registrados, roles operativos y autoría en la plataforma</small>
-      </div>
+      <h2 class="fw-bold font-theme-display text-dark mb-1">Comunidad de Artesanos &amp; Usuarios</h2>
+      <p class="text-muted small mb-0" style="max-width: 650px;">
+        Directorio de creadores registrados, roles operativos y autoría en la plataforma.
+      </p>
     </div>
     <!-- ACCIONES RÁPIDAS -->
     <div class="d-flex gap-2 flex-wrap">
-      <button type="button" class="btn btn-sm btn-panel-action active" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario" id="btnAbrirModalUsuario">
-        <i class="bi bi-person-plus-fill me-1"></i>Registrar Creador
+      <button type="button" class="btn btn-craft-primary btn-craft-stitched d-inline-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario" id="btnAbrirModalUsuario">
+        <i class="bi bi-person-plus-fill"></i>
+        <span>Registrar Creador</span>
       </button>
-      <a href="pedidos.php" class="btn btn-sm btn-outline-light">
-        <i class="bi bi-box-seam me-1"></i>Ver Pedidos
+      <a href="creaciones.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+        <i class="bi bi-box2-heart"></i>
+        <span>Inventario</span>
       </a>
-      <a href="index.php" class="btn btn-sm btn-outline-light">
-        <i class="bi bi-arrow-left me-1"></i>Catálogo
+      <a href="pedidos.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+        <i class="bi bi-journal-text"></i>
+        <span>Ver Pedidos</span>
+      </a>
+      <a href="index.php" class="btn btn-craft-outline btn-craft-outline-stitched d-inline-flex align-items-center gap-2">
+        <i class="bi bi-shop"></i>
+        <span>Catálogo</span>
       </a>
     </div>
   </div>

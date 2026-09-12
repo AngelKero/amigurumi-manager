@@ -176,3 +176,26 @@
   - 100% de los archivos PHP verificados con `php -l` (0 errores de sintaxis).
   - Verificación en vivo vía HTTP curl en `http://localhost:8000/` comprobando que las menciones a plataforma colaborativa, creadores independientes y compromiso de plataforma se despliegan limpiamente.
 
+## Hito Completado: Unificación Visual del Encabezado en `usuarios.php` (Algodón Nórdico & Alto Contraste)
+- **User Request:**
+  - *"Este texto no se ve por el color, los otros paneles tienen otro diseño, corrigelo"* (acompañado de captura mostrando la cabecera oscura obsoleta `.artisan-panel-banner` en `usuarios.php`, donde el título y subtítulo colisionaban cromáticamente).
+- **Estado:** **100% Completado y Verificado**
+- **Diagnóstico del Problema:**
+  1. Mientras `creaciones.php` y `pedidos.php` utilizaban la cabecera luminosa pespunteada `.artisan-module-header.card-stitched`, la vista `usuarios_content.php` aún conservaba el contenedor oscuro `.artisan-panel-banner` (`#1E252D` a `#2A3440`).
+  2. Debido a la falta de herencia cromática explícita y al fondo oscuro, el título `<h4>` y subtítulo `<small class="text-white-50">` sufrían de bajo contraste ilegible, rompiendo la coherencia visual con el resto de módulos del panel.
+  3. Los botones de acción utilizaban estilos antiguos `.btn-panel-action` y `.btn-outline-light` en lugar de los botones oficiales pespunteados del Design System.
+- **Acciones Ejecutadas:**
+  1. **Reemplazo Estructural en `views/pages/usuarios_content.php`:**
+     - Sustituida la cabecera por `<section class="artisan-module-header card-stitched mb-4">`.
+     - Añadida la etiqueta textil superior `.badge-textile-tag mb-2` con el sello vectorial `isologo-sello-taller.svg` y el descriptor *"Comunidad & Roles de la Plataforma"*.
+     - Título principal actualizado a `<h2 class="fw-bold font-theme-display text-dark mb-1">` (Google Font Fraunces con contraste nórdico óptimo `#1E252D`).
+     - Subtítulo actualizado a `<p class="text-muted small mb-0">` con ratio superior a 5.5:1.
+     - Botones de acción unificados con los tokens oficiales:
+       - Primario: `.btn.btn-craft-primary.btn-craft-stitched` (*Registrar Creador*).
+       - Secundarios: `.btn.btn-craft-outline.btn-craft-outline-stitched` (*Inventario*, *Ver Pedidos*, *Catálogo*).
+  2. **Garantía Universal en CSS (`src/css/04-components/cards.css`):**
+     - Añadida la clase `.artisan-module-header` al módulo general de tarjetas, garantizando gradiente de porcelana nórdica (`linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 100%)`), borde frost y sombra suave en cualquier vista del sistema.
+- **Verificación:**
+  - `php -l views/pages/usuarios_content.php` con 0 errores de sintaxis.
+  - Verificado mediante `curl http://localhost:8000/usuarios.php` que la nueva cabecera se renderiza con las clases y colores de alto contraste idénticos a `creaciones.php` y `pedidos.php`.
+

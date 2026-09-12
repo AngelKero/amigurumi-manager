@@ -279,3 +279,17 @@
     font-size: 1.85rem;
   }
 }
+
+/* ==========================================================================
+   MODULE HEADER BANNERS (ALGODÓN NÓRDICO)
+   ========================================================================== */
+
+.artisan-module-header {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 100%);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--craft-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
