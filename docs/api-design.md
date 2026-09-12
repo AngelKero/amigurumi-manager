@@ -1,197 +1,347 @@
-# API Design & Endpoint Specifications
+# 🧶 Human-Level REST API Reference & Manual — Crochet Manager
 
-This document defines the REST-style PHP endpoint architecture, HTTP status conventions, homogeneous JSON response envelopes, HTML-leak-free error handling, CORS Preflight support, dual currency representation, and standardized pagination for the collaborative **Crochet Manager** platform.
+Welcome to the comprehensive **Crochet Manager REST API (Micro-ERP & Textile Catalog)** reference guide. This document is written at a **human level**, designed for frontend engineers, software artisans, auditors, and technical contributors to clearly understand the operational purpose, business contracts, parameters, security rules, and code examples for all endpoints across the platform.
 
 ---
 
-## 1. Global API Technical Standards
+## 📑 Table of Contents
 
-### 1.1 Homogeneous Response Envelope
+1. [API Architecture & Design Philosophy](#1-api-architecture--design-philosophy)
+2. [Global Technical Standards](#2-global-technical-standards)
+   - [2.1 Base URL & Development Environment](#21-base-url--development-environment)
+   - [2.2 Homogeneous Response Envelopes (`App\Core\Response`)](#22-homogeneous-response-envelopes-appcoreresponse)
+   - [2.3 HTTP Status Codes Catalog](#23-http-status-codes-catalog)
+   - [2.4 CORS Negotiation & Preflight Requests (`OPTIONS`)](#24-cors-negotiation--preflight-requests-options)
+   - [2.5 Dual Currency Standard (Integer Cents in SQLite $\leftrightarrow$ Formatted Pesos)](#25-dual-currency-standard-integer-cents-in-sqlite-leftrightarrow-formatted-pesos)
+   - [2.6 Standardized Pagination (`App\Utils\PaginationHelper`)](#26-standardized-pagination-apputilspaginationhelper)
+   - [2.7 Stateless Bearer Authentication (HMAC-SHA256)](#27-stateless-bearer-authentication-hmac-sha256)
+   - [2.8 Role-Based Access Control (RBAC)](#28-role-based-access-control-rbac)
+   - [2.9 Zero HTML Error Leaks (`App\Core\ErrorHandler`)](#29-zero-html-error-leaks-appcoreerrorhandler)
+3. [Module 1: Authentication & Session (`api/auth/`)](#3-module-1-authentication--session-apiauth)
+   - [`POST /api/auth/login.php` — Log In](#post-apiauthloginphp--log-in)
+   - [`POST /api/auth/logout.php` — Log Out](#post-apiauthlogoutphp--log-out)
+   - [`GET /api/auth/me.php` — Retrieve Active Profile](#get-apiauthmephp--retrieve-active-profile)
+4. [Module 2: Creator Directory & RBAC Roles (`api/usuarios/`)](#4-module-2-creator-directory--rbac-roles-apiusuarios)
+   - [`GET /api/usuarios/index.php` — Creator Directory](#get-apiusuariosindexphp--creator-directory)
+   - [`POST /api/usuarios/crear.php` — Register Creator](#post-apiusuarioscrearphp--register-creator)
+   - [`POST /api/usuarios/cambiar-rol.php` — Modify Role & Root Safeguard](#post-apiusuarioscambiar-rolphp--modify-role--root-safeguard)
+5. [Module 3: Catalog, Creations & Inventory (`api/creaciones/`)](#5-module-3-catalog-creations--inventory-apicreaciones)
+   - [`GET /api/creaciones/index.php` — Public Catalog with Multi-Axis Filters](#get-apicreacionesindexphp--public-catalog-with-multi-axis-filters)
+   - [`GET /api/creaciones/detalle.php` — Complete Technical Sheet](#get-apicreacionesdetallephp--complete-technical-sheet)
+   - [`POST /api/creaciones/crear.php` — Register Creation (Upload & SVG Fallback)](#post-apicreacionescrearphp--register-creation-upload--svg-fallback)
+   - [`POST /api/creaciones/actualizar.php` — Edit Creation & `unlink()` Lifecycle](#post-apicreacionesactualizarphp--edit-creation--unlink-lifecycle)
+   - [`POST /api/creaciones/eliminar.php` — Delete with Referential Safeguard](#post-apicreacioneseliminarphp--delete-with-referential-safeguard)
+   - [`POST /api/creaciones/ajustar-stock.php` — In-Situ Quick Stock Adjustment](#post-apicreacionesajustar-stockphp--in-situ-quick-stock-adjustment)
+   - [`POST /api/creaciones/toggle-encargo.php` — Toggle Commission Mode](#post-apicreacionestoggle-encargophp--toggle-commission-mode)
+6. [Module 4: Orders, Commissions & Stock Transactions (`api/pedidos/`)](#6-module-4-orders-commissions--stock-transactions-apipedidos)
+   - [`POST /api/pedidos/solicitar.php` — Public Client Checkout with Atomic Reservation](#post-apipedidossolicitarphp--public-client-checkout-with-atomic-reservation)
+   - [`GET /api/pedidos/index.php` — Artisan Orders Dashboard](#get-apipedidosindexphp--artisan-orders-dashboard)
+   - [`POST /api/pedidos/crear.php` — Manual Commission Entry (WhatsApp / Market)](#post-apipedidoscrearphp--manual-commission-entry-whatsapp--market)
+   - [`POST /api/pedidos/cambiar-estado.php` — Update Crafting & Tri-State Payment](#post-apipedidoscambiar-estadophp--update-crafting--tri-state-payment)
+   - [`POST /api/pedidos/cancelar.php` — Cancellation with Physical Stock Restitution](#post-apipedidoscancelarphp--cancellation-with-physical-stock-restitution)
+7. [Frontend Developer Quickstart Guide (Modern JavaScript)](#7-frontend-developer-quickstart-guide-modern-javascript)
 
-All API responses are issued via the `App\Core\Response` abstraction:
+---
 
-#### Standard Success Response (HTTP 200 OK / HTTP 201 Created)
+## 1. API Architecture & Design Philosophy
+
+The **Crochet Manager** API is built on **Clean Architecture**:
+
+```
+[ Web / Mobile Client ]
+         │  (HTTP JSON / FormData + Bearer Token)
+         ▼
+[ api/ (Thin Controllers) ]  <-- Validates HTTP verb, CORS, and delegates immediately
+         │
+  [ Middleware ]             <-- AuthGuard (Bearer 401) / RoleGuard (RBAC 403)
+         │
+   [ Services/ ]             <-- Business rules, atomic transactions, validations
+         │
+ [ Repositories/ ]           <-- 100% SQL isolated using PDO Prepared Statements
+         │
+[ SQLite database.sqlite ]   <-- PRAGMA foreign_keys = ON, CHECK constraints, indexes
+```
+
+- **Strict Physical Separation:** Directory `src/` is strictly frontend (`src/css/`, `src/js/`) and contains **0 PHP files**. All backend code lives under `app/` and `api/`.
+- **Thin Controllers:** Scripts in `api/` never execute raw SQL or complex business math; they validate methods, call middleware, invoke services, and output structured JSON via `App\Core\Response`.
+- **Human-Friendly Design:** Every error clearly names the field, explains what was expected, and sends the precise HTTP status code.
+
+---
+
+## 2. Global Technical Standards
+
+### 2.1 Base URL & Development Environment
+Local development server default:
+```text
+http://localhost:8000
+```
+Example: `http://localhost:8000/api/auth/login.php`.
+
+---
+
+### 2.2 Homogeneous Response Envelopes (`App\Core\Response`)
+All API endpoints follow a standardized response envelope:
+
+#### Standard Success Envelope (HTTP 200 OK / 201 Created)
 ```json
 {
-  "success": true,
-  "message": "Operación completada con éxito",
-  "data": {},
+  "exito": true,
+  "mensaje": "Human-readable explanation of completed operation.",
+  "datos": { ... },
   "paginacion": {
-    "pagina": 1,
-    "limite": 12,
-    "total_registros": 48,
+    "total_items": 48,
+    "pagina_actual": 1,
     "total_paginas": 4,
+    "limite": 12,
     "tiene_siguiente": true,
     "tiene_anterior": false
   }
 }
 ```
-*(The `paginacion` object is automatically attached to collection queries).*
+*(The `paginacion` key is only present when returning paginated collections).*
 
-#### Standardized Error Response (HTTP 400, 401, 403, 404, 409, 422, 500)
+#### Standard Error Envelope (HTTP 400, 401, 403, 404, 405, 409, 422, 500)
 ```json
 {
-  "success": false,
-  "error": "Descriptive and user-friendly error message",
-  "details": []
+  "exito": false,
+  "error": {
+    "codigo": 422,
+    "mensaje": "The creation name must be between 2 and 100 characters.",
+    "detalles": {
+      "campo": "nombre",
+      "longitud_recibida": 1
+    }
+  }
 }
 ```
-
-### 1.2 Global Error Handling (Zero HTML Leaks)
-The global error handler `App\Core\ErrorHandler` intercepts any PHP warning, notice, uncaught exception, or fatal error. Utilizing `ob_end_clean()`, it purges any preceding output buffer to ensure the client receives **100% pure JSON with HTTP 500 status**:
-```json
-{
-  "success": false,
-  "error": "Error interno del servidor. Por favor intente más tarde.",
-  "details": []
-}
-```
-
-### 1.3 CORS Negotiation & Preflight Requests (`OPTIONS`)
-The `Response::handleCors()` method intercepts preflight `OPTIONS` requests, immediately returning **HTTP 204 No Content** alongside the required cross-origin headers:
-- `Access-Control-Allow-Origin: *`
-- `Access-Control-Allow-Methods: GET, POST, OPTIONS`
-- `Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With`
-
-### 1.4 Dual Currency Format
-To eliminate floating-point precision artifacts in accounting operations:
-1. SQLite database strictly stores **integers in cents** (`precio`, `costo_materiales`, `precio_final`).
-2. JSON responses provide a dual format: the integer cents for mathematical operations and the formatted string for immediate UI rendering:
-   - `"precio": 45000`
-   - `"precio_formateado": "$450.00 MXN"`
-   - `"costo_materiales": 12000`
-   - `"costo_formateado": "$120.00 MXN"`
-
-### 1.5 Standardized Pagination
-Governed by `App\Utils\PaginationHelper`:
-- Creations Catalog: default limit of **12 items** (optimal multiple for responsive grids of 1, 2, 3, and 4 columns).
-- Orders Dashboard: default limit of **20 items**.
-- Accepted query parameters: `?pagina=1&limite=12`.
 
 ---
 
-## 2. Authentication Endpoints (`api/auth/`)
+### 2.3 HTTP Status Codes Catalog
 
-### `POST /api/auth/login.php`
-- **Access:** Public (Triggered via the dynamic navbar modal)
-- **Request Body (JSON):**
-  ```json
-  {
-    "username": "admin",
-    "password": "password123"
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Sesión iniciada correctamente",
-    "data": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-      "token_type": "Bearer",
-      "expires_in": 86400,
-      "user": {
-        "id": 1,
-        "username": "admin",
-        "rol": "admin"
-      }
-    }
-  }
-  ```
-- **Error Response (401 Unauthorized):**
-  ```json
-  {
-    "success": false,
-    "error": "Credenciales inválidas. Verifique su usuario y contraseña."
-  }
-  ```
+| Code | Status | Usage in Crochet Manager |
+| :---: | :--- | :--- |
+| **200** | `OK` | Successful `GET` queries, updates, and logout acknowledgment. |
+| **201** | `Created` | Successful creation of a new database record (piece, order, user). |
+| **204** | `No Content` | Preflight CORS `OPTIONS` immediate response. |
+| **400** | `Bad Request` | Malformed JSON or unreadable request body. |
+| **401** | `Unauthorized` | Missing/invalid Bearer token, expired token, or incorrect credentials. |
+| **403** | `Forbidden` | Authenticated user lacks sufficient role privileges, or attempt to modify root admin ID #1. |
+| **404** | `Not Found` | Requested resource does not exist in SQLite database. |
+| **405** | `Method Not Allowed` | Endpoint invoked with an unsupported HTTP method (e.g. `GET` on a `POST` route). |
+| **409** | `Conflict` | Referential integrity conflict (e.g. deleting a creation with existing orders, blocked by `ON DELETE RESTRICT`). |
+| **422** | `Unprocessable Entity` | Semantic validation failures (out of stock, negative price, empty required fields). |
+| **500** | `Internal Server Error` | Uncaught server exception; captured by `ErrorHandler` with zero HTML leaks. |
 
-### `POST /api/auth/logout.php`
-- **Access:** Protected (Requires `Authorization: Bearer <token>` header)
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Sesión cerrada correctamente"
-  }
-  ```
+---
 
-### `GET /api/auth/me.php`
-- **Access:** Protected (Requires `Authorization: Bearer <token>` header)
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Usuario autenticado",
-    "data": {
+### 2.4 CORS Negotiation & Preflight Requests (`OPTIONS`)
+`Response::handleCors()` intercepts `OPTIONS` requests and immediately responds with **HTTP 204 No Content** alongside standard CORS headers:
+```http
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With
+Access-Control-Max-Age: 86400
+```
+
+---
+
+### 2.5 Dual Currency Standard (Integer Cents in SQLite $\leftrightarrow$ Formatted Pesos)
+1. **In SQLite Database:** Monetary columns (`precio`, `costo_materiales`, `precio_final`) are strictly stored as **integer cents**. `$450.00 MXN` is stored as `45000`.
+2. **In API JSON Responses:** Enriched automatically by `App\Utils\CurrencyHelper`:
+```json
+{
+  "precio": 45000,
+  "precio_formateado": "$450.00 MXN",
+  "costo_materiales": 12000,
+  "costo_formateado": "$120.00 MXN",
+  "margen_bruto_porcentaje": 73.33,
+  "retorno_por_hora_formateado": "$50.77 MXN/h"
+}
+```
+
+---
+
+### 2.6 Standardized Pagination (`App\Utils\PaginationHelper`)
+- **Creations Catalog (`api/creaciones/`):** Default limit of **12 pieces** per page (optimal for responsive 1, 2, 3, and 4-column grids).
+- **Orders Dashboard (`api/pedidos/`):** Default limit of **20 orders** per page.
+- **Creator Directory (`api/usuarios/`):** Default limit of **20 users** per page.
+
+Parameters: `?pagina=1&limite=12`.
+
+---
+
+### 2.7 Stateless Bearer Authentication (HMAC-SHA256)
+- Signed tokens issued with HMAC-SHA256 using server secret (`Config::get('auth.secret_key')`).
+- **Structure:** `payloadBase64Url.signatureHex` (contains `sub`, `username`, `rol`, `iat`, `exp`).
+- **TTL:** 86,400 seconds (**24 hours**).
+- **Timing-Attack Resistance:** Constant-time verification using `hash_equals()`.
+- **Required Header:**
+  ```http
+  Authorization: Bearer <token>
+  ```
+- **FastCGI Apache Rule:** Forwarded safely via `.htaccess` (`SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1`).
+
+---
+
+### 2.8 Role-Based Access Control (RBAC)
+```
+[ admin ]      --> Full access (User management, role edits, catalog, orders)
+    │
+[ artesano ]   --> Catalog, inventory, stock adjustments, assigned orders
+    │
+[ asistente ]  --> Read catalog/inventory, register commissions (no delete)
+```
+- **Root Administrator Safeguard (ID #1):** User ID #1 (`@admin`) cannot be demoted or deleted.
+
+---
+
+### 2.9 Zero HTML Error Leaks (`App\Core\ErrorHandler`)
+Captures all PHP errors, clears buffers via `ob_end_clean()`, and returns standard **HTTP 500 JSON**.
+
+---
+
+## 3. Module 1: Authentication & Session (`api/auth/`)
+
+### `POST /api/auth/login.php` — Log In
+- **Access:** Public
+- **Method:** `POST`
+- **Header:** `Content-Type: application/json`
+- **Body:** `{"username": "admin", "password": "admin123"}`
+- **Security:** Timing-attack mitigation via constant-time dummy hash.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Autenticación exitosa. Token emitido.",
+  "datos": {
+    "token": "eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc4OTIzNTMwOCwiZXhwIjoxNzg5MzIxNzA4LCJqdGkiOiJiMWE3MDMxNTlmOWRkZTY2ZTA1ODI2MDZmNmVjNjQyZCJ9.5bb046f117afb512766d72e5ba3ec04c38c3df381b04749e80bae83d1ca67371",
+    "tipo_token": "Bearer",
+    "expira_en": 86400,
+    "usuario": {
       "id": 1,
       "username": "admin",
-      "rol": "admin"
+      "rol": "admin",
+      "creado_en": "2026-09-11 13:30:52"
     }
   }
-  ```
+}
+```
 
 ---
 
-## 3. Catalog & Creations Endpoints (`api/creaciones/`)
+### `POST /api/auth/logout.php` — Log Out
+- **Access:** Public / Authenticated
+- **Method:** `POST`
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Sesión cerrada exitosamente. Descarte el token del cliente.",
+  "datos": null
+}
+```
 
-### `GET /api/creaciones/index.php`
-- **Access:** Public
-- **Query Parameters:**
-  - `pagina` (integer, default: 1)
-  - `limite` (integer, default: 12)
-  - `categoria` (string, optional): Amigurumis & Figuras, Prendas & Ropa, Bolsos & Accesorios, Hogar & Decoración, Bebé & Infantil.
-  - `artesano_id` (integer, optional): Filters creations by a specific author.
-  - `stock` (string, optional): `in` (stock > 0), `on-demand` (encargo = 1), `out` (stock = 0).
-  - `precio_min` / `precio_max` (integers in cents or decimals in pesos, optional).
-  - `buscar` (string, optional): Keyword search in title or material.
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Creaciones obtenidas correctamente",
-    "data": [
-      {
-        "id": 1,
-        "artesano_id": 1,
-        "artesano_nombre": "admin",
-        "nombre": "Dragón Ignis",
-        "categoria": "Amigurumis & Figuras",
-        "material": "100% Algodón Mercerizado",
-        "dimensiones": "18.5 cm (Alto)",
-        "precio": 45000,
-        "precio_formateado": "$450.00 MXN",
-        "costo_materiales": 12000,
-        "costo_formateado": "$120.00 MXN",
-        "cantidad_stock": 4,
-        "horas_tejido": 6.5,
-        "descripcion": "Dragón mítico tejido con escamas en relieve.",
-        "imagen_url": "uploads/crochet_dragon.jpg",
-        "es_sobre_encargo": 0,
-        "creado_en": "2026-09-10 14:00:00",
-        "actualizado_en": null
-      }
-    ],
-    "paginacion": {
-      "pagina": 1,
-      "limite": 12,
-      "total_registros": 1,
-      "total_paginas": 1,
-      "tiene_siguiente": false,
-      "tiene_anterior": false
-    }
+---
+
+### `GET /api/auth/me.php` — Retrieve Active Profile
+- **Access:** Authenticated (`AuthGuard`)
+- **Header:** `Authorization: Bearer <token>`
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Perfil de usuario recuperado exitosamente.",
+  "datos": {
+    "id": 1,
+    "username": "admin",
+    "rol": "admin",
+    "creado_en": "2026-09-11 13:30:52"
   }
-  ```
+}
+```
 
-### `GET /api/creaciones/detalle.php`
+---
+
+## 4. Module 2: Creator Directory & RBAC Roles (`api/usuarios/`)
+
+All endpoints under `api/usuarios/` require `RoleGuard: admin`.
+
+### `GET /api/usuarios/index.php` — Creator Directory
+- **Access:** `admin`
+- **Method:** `GET`
+- **Header:** `Authorization: Bearer <token>`
+- **Query:** `?pagina=1&limite=20`
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Directorio de creadores obtenido exitosamente.",
+  "datos": [
+    {
+      "id": 1,
+      "username": "admin",
+      "rol": "admin",
+      "creado_en": "2026-09-11 13:30:52",
+      "creaciones_asociadas": 3
+    }
+  ]
+}
+```
+
+---
+
+### `POST /api/usuarios/crear.php` — Register Creator
+- **Access:** `admin`
+- **Method:** `POST`
+- **Body:** `{"username": "artesano_carlos", "password": "SecurePassword2026", "rol": "artesano"}`
+- **Success Response (HTTP 201 Created):**
+```json
+{
+  "exito": true,
+  "mensaje": "Creador registrado exitosamente en la plataforma.",
+  "datos": {
+    "id": 4,
+    "username": "artesano_carlos",
+    "rol": "artesano"
+  }
+}
+```
+
+---
+
+### `POST /api/usuarios/cambiar-rol.php` — Modify Role & Root Safeguard
+- **Access:** `admin`
+- **Method:** `POST`
+- **Body:** `{"id": 2, "rol": "admin"}`
+- **Root Admin Safeguard:** Targeting ID #1 returns HTTP 403 Forbidden.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Rol de usuario actualizado exitosamente.",
+  "datos": {
+    "id": 2,
+    "rol": "admin"
+  }
+}
+```
+
+---
+
+## 5. Module 3: Catalog, Creations & Inventory (`api/creaciones/`)
+
+### `GET /api/creaciones/index.php` — Public Catalog with Multi-Axis Filters
 - **Access:** Public
-- **Query Parameters:** `id` (integer, required)
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Ficha técnica obtenida con éxito",
-    "data": {
+- **Query:** `pagina`, `limite`, `categoria`, `artesano_id`, `stock`, `precio_min`, `precio_max`, `buscar`, `orden`.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Catálogo de creaciones recuperado exitosamente.",
+  "datos": [
+    {
       "id": 1,
       "artesano_id": 1,
       "artesano_nombre": "admin",
@@ -205,350 +355,187 @@ Governed by `App\Utils\PaginationHelper`:
       "costo_formateado": "$120.00 MXN",
       "cantidad_stock": 4,
       "horas_tejido": 6.5,
-      "descripcion": "Dragón mítico con escamas en relieve y relleno antialérgico.",
-      "imagen_url": "uploads/crochet_dragon.jpg",
+      "descripcion": "Dragón mítico tejido con escamas en relieve.",
+      "imagen_url": "assets/svg/piezas/dragon-ignis.svg",
       "es_sobre_encargo": 0,
-      "creado_en": "2026-09-10 14:00:00"
+      "margen_bruto_porcentaje": 73.33,
+      "retorno_por_hora_formateado": "$50.77 MXN/h",
+      "creado_en": "2026-09-11 13:30:52"
     }
+  ],
+  "paginacion": {
+    "total_items": 5,
+    "pagina_actual": 1,
+    "total_paginas": 1,
+    "limite": 12,
+    "tiene_siguiente": false,
+    "tiene_anterior": false
   }
-  ```
-
-### `POST /api/creaciones/crear.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Security:** `artesano_id` is strictly extracted from verified Bearer Token.
-- **Content-Type:** `multipart/form-data`
-- **Form Fields:**
-  - `nombre` (string, 2-100 chars, required)
-  - `categoria` (string, 2-50 chars, required)
-  - `material` (string, 3-80 chars, required)
-  - `dimensiones` (string, 2-100 chars, required)
-  - `precio` (integer cents or decimal pesos, required)
-  - `costo_materiales` (integer cents or decimal pesos, default: 0)
-  - `cantidad_stock` (integer >= 0, default: 0)
-  - `horas_tejido` (float >= 0, default: 0.0)
-  - `descripcion` (string, max 2000 chars, optional)
-  - `es_sobre_encargo` (integer: 0 or 1, default: 0)
-  - `imagen` (binary file JPG/PNG/WebP, max 5MB, optional)
-- **Automatic SVG Fallback:** If no photo is uploaded, `CreacionService` automatically assigns a thematic vector from `assets/svg/piezas/`.
-- **Success Response (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Creación registrada exitosamente en el catálogo",
-    "data": {
-      "id": 6,
-      "nombre": "Manta Nórdica Texturizada",
-      "imagen_url": "uploads/crochet_manta_66e01b.jpg"
-    }
-  }
-  ```
-
-### `POST /api/creaciones/actualizar.php`
-- **Access:** Protected (`AuthGuard: admin` or creation author)
-- **Content-Type:** `multipart/form-data`
-- **Image Lifecycle:** If a new image is provided in `imagen`, it is stored in `/uploads/` and the old image file is purged via `unlink()` (provided it resides in `uploads/` and is not a system SVG).
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Creación actualizada correctamente"
-  }
-  ```
-
-### `POST /api/creaciones/eliminar.php`
-- **Access:** Protected (`AuthGuard: admin` or creation author)
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 6
-  }
-  ```
-- **Relational Integrity Guard:** If the item is linked to records in `pedidos`, SQLite `ON DELETE RESTRICT` aborts the operation and the backend yields **HTTP 409 Conflict**.
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Creación eliminada exitosamente del inventario"
-  }
-  ```
-- **Conflict Response (409 Conflict):**
-  ```json
-  {
-    "success": false,
-    "error": "No se puede eliminar la creación porque tiene pedidos asociados. Cancele o archive los pedidos primero."
-  }
-  ```
-
-### `POST /api/creaciones/ajustar-stock.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Purpose:** In-situ increment or decrement (`+1` / `-1`) from the inventory management table.
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 1,
-    "delta": 1
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Stock actualizado",
-    "data": {
-      "id": 1,
-      "cantidad_stock": 5
-    }
-  }
-  ```
-
-### `POST /api/creaciones/toggle-encargo.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Purpose:** Toggles on-demand commission modality (`es_sobre_encargo`).
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 1
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Modalidad de encargo actualizada",
-    "data": {
-      "id": 1,
-      "es_sobre_encargo": 1
-    }
-  }
-  ```
+}
+```
 
 ---
 
-## 4. Orders & Commissions Endpoints (`api/pedidos/`)
-
-### `POST /api/pedidos/solicitar.php` (Public Client Checkout)
-- **Access:** **Public** (Triggered from `modal_checkout.php`)
-- **Financial Security:** Client NEVER supplies `precio_final`. Server queries `creaciones.precio` and computes `precio_final = precio * cantidad`.
-- **Atomic SQLite Transaction (`BEGIN IMMEDIATE TRANSACTION`):**
-  1. If `es_sobre_encargo == 0`, verifies `cantidad_stock >= cantidad`. If insufficient, rolls back with **HTTP 422**.
-  2. Deducts inventory: `UPDATE creaciones SET cantidad_stock = cantidad_stock - :cantidad WHERE id = :id`.
-  3. Inserts order with default `estado_pedido = 'Pendiente'` and `estado_pago = 'Pendiente'`.
-  4. Commits transaction with `COMMIT`.
-- **Request Body (JSON):**
-  ```json
-  {
-    "cliente_nombre": "Mariana Gómez",
-    "cliente_contacto": "+52 55 4892 1039",
-    "creacion_id": 1,
-    "cantidad": 1,
-    "fecha_entrega": "2026-09-25",
-    "notas": "Envoltura para obsequio artesanal"
-  }
-  ```
-- **Success Response (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Su pedido ha sido recibido y el stock ha sido reservado",
-    "data": {
-      "pedido_id": 7,
-      "precio_final": 45000,
-      "precio_final_formateado": "$450.00 MXN"
-    }
-  }
-  ```
-
-### `GET /api/pedidos/index.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Query Parameters:**
-  - `pagina` (integer, default: 1)
-  - `limite` (integer, default: 20)
-  - `estado` (string, optional: `Pendiente`, `En Proceso`, `Entregado`, `Cancelado`)
-  - `estado_pago` (string, optional: `Pendiente`, `Anticipo 50%`, `Liquidado`)
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Pedidos obtenidos con éxito",
-    "data": [
-      {
-        "id": 1,
-        "cliente_nombre": "Mariana Gómez",
-        "cliente_contacto": "+52 55 4892 1039",
-        "creacion_id": 1,
-        "creacion_nombre": "Dragón Ignis",
-        "cantidad": 1,
-        "fecha_entrega": "2026-09-24",
-        "estado_pedido": "En Proceso",
-        "estado_pago": "Anticipo 50%",
-        "precio_final": 45000,
-        "precio_final_formateado": "$450.00 MXN",
-        "notas": "Detalles dorados en las alas",
-        "creado_en": "2026-09-10 15:30:00"
-      }
-    ],
-    "paginacion": {
-      "pagina": 1,
-      "limite": 20,
-      "total_registros": 1,
-      "total_paginas": 1,
-      "tiene_siguiente": false,
-      "tiene_anterior": false
-    }
-  }
-  ```
-
-### `POST /api/pedidos/crear.php` (Artisan Direct Commission)
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Purpose:** Records manual commission orders arranged via WhatsApp, craft fairs, or in-person workshop sales.
-- **Request Body (JSON):**
-  ```json
-  {
-    "cliente_nombre": "Sofía Morales",
-    "cliente_contacto": "+52 55 1234 5678",
-    "creacion_id": 2,
-    "cantidad": 2,
-    "fecha_entrega": "2026-10-05",
-    "estado_pago": "Anticipo 50%",
-    "notas": "Bordar iniciales 'SM' en la solapa"
-  }
-  ```
-- **Success Response (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Encargo manual agendado correctamente",
-    "data": {
-      "pedido_id": 8,
-      "precio_final": 36000,
-      "precio_final_formateado": "$360.00 MXN",
-      "estado_pago": "Anticipo 50%"
-    }
-  }
-  ```
-
-### `POST /api/pedidos/cambiar-estado.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 1,
-    "estado_pedido": "Entregado",
-    "estado_pago": "Liquidado"
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Estado del pedido actualizado correctamente"
-  }
-  ```
-
-### `POST /api/pedidos/cancelar.php`
-- **Access:** Protected (`AuthGuard: admin, artesano`)
-- **Atomic Stock Restitution:** Executes an atomic transaction setting `estado_pedido = 'Cancelado'` and restocking units:
-  `UPDATE creaciones SET cantidad_stock = cantidad_stock + :cantidad WHERE id = :creacion_id`.
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 1
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Pedido cancelado y stock restituido al inventario físico",
-    "data": {
-      "pedido_id": 1,
-      "unidades_reintegradas": 1,
-      "creacion_nombre": "Dragón Ignis"
-    }
-  }
-  ```
+### `GET /api/creaciones/detalle.php` — Technical Sheet
+- **Access:** Public
+- **Query:** `?id=1` (Required)
+- **Success Response (HTTP 200 OK):** Complete creation attributes, material specifications, and author attribution.
 
 ---
 
-## 5. Creator & Role Management Endpoints (`api/usuarios/`)
-
-> [!IMPORTANT]
-> All endpoints under `api/usuarios/` strictly require administrative privileges (`RoleGuard: admin`). Users with `artesano` or `asistente` role immediately receive **HTTP 403 Forbidden**.
-
-### `GET /api/usuarios/index.php`
-- **Access:** Protected (`AuthGuard` + `RoleGuard: admin`)
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Directorio de creadores obtenido exitosamente",
-    "data": [
-      {
-        "id": 1,
-        "username": "admin",
-        "rol": "admin",
-        "creado_en": "2026-09-10 14:00:00",
-        "creaciones_asociadas": 3
-      },
-      {
-        "id": 2,
-        "username": "artesana_ana",
-        "rol": "artesano",
-        "creado_en": "2026-09-10 15:00:00",
-        "creaciones_asociadas": 2
-      }
-    ]
+### `POST /api/creaciones/crear.php` — Register Creation (Upload & SVG Fallback)
+- **Access:** Authenticated (`admin, artesano`)
+- **Type:** `multipart/form-data`
+- **Fields:** `nombre`, `categoria`, `material`, `dimensiones`, `precio`, `costo_materiales`, `cantidad_stock`, `horas_tejido`, `descripcion`, `es_sobre_encargo`, `imagen`.
+- **SVG Fallback:** Automatically assigns a curated SVG from `assets/svg/piezas/` if no image is uploaded.
+- **Success Response (HTTP 201 Created):**
+```json
+{
+  "exito": true,
+  "mensaje": "Creación artesanal registrada exitosamente en el catálogo.",
+  "datos": {
+    "id": 6,
+    "nombre": "Cardigan Granny Square",
+    "imagen_url": "uploads/crochet_cardigan_66e01a8f.webp"
   }
-  ```
+}
+```
 
-### `POST /api/usuarios/crear.php`
-- **Access:** Protected (`AuthGuard` + `RoleGuard: admin`)
-- **Request Body (JSON):**
-  ```json
-  {
-    "username": "artesano_carlos",
-    "password": "SecurePassword2026",
-    "rol": "artesano"
+---
+
+### `POST /api/creaciones/actualizar.php` — Edit Creation & `unlink()`
+- **Access:** Authenticated (`admin` or piece author).
+- **Image Lifecycle:** Unlinks previous custom image from `/uploads/` via `unlink()`.
+
+---
+
+### `POST /api/creaciones/eliminar.php` — Delete with Referential Safeguard
+- **Access:** Authenticated (`admin` or author).
+- **Referential Integrity:** If orders exist in `pedidos`, SQLite `ON DELETE RESTRICT` raises **HTTP 409 Conflict**.
+
+---
+
+### `POST /api/creaciones/ajustar-stock.php` — In-Situ Quick Stock Adjustment
+- **Access:** Authenticated (`admin, artesano`)
+- **Body:** `{"id": 1, "delta": 1}`
+- **Success Response (HTTP 200 OK):** Returns updated `cantidad_stock`.
+
+---
+
+### `POST /api/creaciones/toggle-encargo.php` — Toggle Commission Mode
+- **Access:** Authenticated (`admin, artesano`)
+- **Body:** `{"id": 1}`
+- **Success Response (HTTP 200 OK):** Toggles `es_sobre_encargo` between `0` and `1`.
+
+---
+
+## 6. Module 4: Orders, Commissions & Stock Transactions (`api/pedidos/`)
+
+### `POST /api/pedidos/solicitar.php` — Public Client Checkout
+- **Access:** Public
+- **Body:** `{"cliente_nombre": "Mariana Gómez", "cliente_contacto": "+52 55 4892 1039", "creacion_id": 1, "cantidad": 1, "notas": "Obsequio"}`
+- **Atomic Stock Reservation (`BEGIN IMMEDIATE TRANSACTION`):**
+  1. Verifies `cantidad_stock >= cantidad`.
+  2. Calculates `precio_final = precio * cantidad` server-side.
+  3. Updates stock and commits order.
+- **Success Response (HTTP 201 Created):**
+```json
+{
+  "exito": true,
+  "mensaje": "Su pedido ha sido registrado exitosamente y el stock ha sido reservado.",
+  "datos": {
+    "pedido_id": 7,
+    "precio_final": 45000,
+    "precio_final_formateado": "$450.00 MXN",
+    "estado_pedido": "Pendiente",
+    "estado_pago": "Pendiente"
   }
-  ```
-- **Success Response (201 Created):**
-  ```json
-  {
-    "success": true,
-    "message": "Creador registrado exitosamente",
-    "data": {
-      "id": 4,
-      "username": "artesano_carlos",
-      "rol": "artesano"
+}
+```
+
+---
+
+### `GET /api/pedidos/index.php` — Orders Dashboard
+- **Access:** Authenticated (`admin, artesano`)
+- **Query:** `pagina`, `limite`, `estado`, `estado_pago`.
+- **Success Response (HTTP 200 OK):** Paginated orders list with customer contact, crafting notes, and payment status.
+
+---
+
+### `POST /api/pedidos/crear.php` — Manual Commission Entry (WhatsApp / Market)
+- **Access:** Authenticated (`admin, artesano`)
+- **Body:** Same fields as `solicitar.php`, plus optional initial `estado_pago` (`Anticipo 50%`).
+
+---
+
+### `POST /api/pedidos/cambiar-estado.php` — Update Crafting & Payment
+- **Access:** Authenticated (`admin, artesano`)
+- **Body:** `{"id": 1, "estado_pedido": "Entregado", "estado_pago": "Liquidado"}`
+
+---
+
+### `POST /api/pedidos/cancelar.php` — Cancellation with Physical Stock Restitution
+- **Access:** Authenticated (`admin, artesano`)
+- **Body:** `{"id": 1}`
+- **Atomic Restitution:** Cancels order and re-integrates units into `creaciones.cantidad_stock`.
+- **Success Response (HTTP 200 OK):**
+```json
+{
+  "exito": true,
+  "mensaje": "Pedido cancelado exitosamente y stock restituido al inventario.",
+  "datos": {
+    "pedido_id": 1,
+    "unidades_reintegradas": 1,
+    "creacion_nombre": "Dragón Ignis"
+  }
+}
+```
+
+---
+
+## 7. Frontend Developer Quickstart Guide (Modern JavaScript)
+
+```javascript
+/**
+ * Simple HTTP client for Crochet Manager
+ */
+export class ApiClient {
+  static BASE_URL = 'http://localhost:8000';
+
+  static getToken() {
+    return localStorage.getItem('crochet_token');
+  }
+
+  static async request(endpoint, options = {}) {
+    const url = `${this.BASE_URL}${endpoint}`;
+    const headers = options.headers || {};
+    const token = this.getToken();
+
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    let body = options.body;
+    if (body && !(body instanceof FormData) && typeof body === 'object') {
+      headers['Content-Type'] = 'application/json';
+      body = JSON.stringify(body);
     }
-  }
-  ```
 
-### `POST /api/usuarios/cambiar-rol.php`
-- **Access:** Protected (`AuthGuard` + `RoleGuard: admin`)
-- **Root Admin Safeguard (ID #1):**
-  If the payload targets `id = 1`, backend aborts execution before database queries, issuing **HTTP 403 Forbidden**:
-  ```json
-  {
-    "success": false,
-    "error": "Operación denegada: La cuenta del administrador titular (ID #1) no puede ser modificada ni degradada."
-  }
-  ```
-- **Request Body (JSON):**
-  ```json
-  {
-    "id": 2,
-    "rol": "admin"
-  }
-  ```
-- **Success Response (200 OK):**
-  ```json
-  {
-    "success": true,
-    "message": "Rol de usuario actualizado correctamente",
-    "data": {
-      "id": 2,
-      "rol": "admin"
+    const res = await fetch(url, { ...options, headers, body });
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok || (data && data.exito === false)) {
+      throw new Error(data?.error?.mensaje || 'Server communication error');
     }
+
+    return data;
   }
-  ```
+
+  static get(endpoint, params = {}) {
+    const q = new URLSearchParams(params).toString();
+    return this.request(q ? `${endpoint}?${q}` : endpoint, { method: 'GET' });
+  }
+
+  static post(endpoint, body = {}) {
+    return this.request(endpoint, { method: 'POST', body });
+  }
+}
+```

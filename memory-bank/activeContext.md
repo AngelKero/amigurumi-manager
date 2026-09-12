@@ -1,10 +1,24 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Completado & Verificado: Subfase 3.1: Base del Backend & Infraestructura Nuclear (Fase 3)
+## Hito Completado & Verificado: Subfase 3.2: Autenticación Stateless, Repositorio de Usuarios & Bearer Middleware (Fase 3)
 
 - **User Request:**
-  - _"Empieza ahora si con la subfase 3.1"_
-- **Estado:** **100% Completada, Verificada y Documentada (A la espera de autorización explícita para Subfase 3.2)**
+  - _"Si empieza la subfase 3.2"_
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.3)**
+- **Alcance Implementado y Verificado de la Subfase 3.2:**
+  1. [`app/Repositories/UsuarioRepository.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Repositories/UsuarioRepository.php): Consultas 100% preparadas en SQLite (`findByUsername`, `findById`, `findByIdSafe`, `existsUsername`, `create`, `updatePassword`, `updateRole`, `delete`, `listAll`, `countAll`) con salvaguarda inviolable para el administrador raíz (ID #1: inmune a degradación de rol y eliminación).
+  2. [`app/Services/AuthService.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Services/AuthService.php): Caso de uso de autenticación con `password_verify()`, mitigación activa contra timing attacks mediante dummy hash constante para usuarios inexistentes, emisión de tokens Bearer HMAC-SHA256 con 24h TTL, y validación criptográfica de tokens y perfiles seguros.
+  3. [`app/Middleware/AuthGuard.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Middleware/AuthGuard.php): Middleware de intercepción Bearer compatible con FastCGI, inyección de identidad en `Request::setUser()`, caché de petición y emisión estandarizada de JSON 401 Unauthorized.
+  4. [`app/Middleware/RoleGuard.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Middleware/RoleGuard.php): Control de acceso basado en roles RBAC (`adminOnly`, `artisanOrAdmin`), con emisión estandarizada de JSON 403 Forbidden ante privilegios insuficientes.
+  5. Controladores REST delgados en `api/auth/`:
+     - [`api/auth/login.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/auth/login.php) (POST: autenticación, CORS preflight, validación 422, credenciales 401, emisión exitosa 200).
+     - [`api/auth/logout.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/auth/logout.php) (POST: acuse de recibo para descarte de token en cliente, 200).
+     - [`api/auth/me.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/api/auth/me.php) (GET: perfil autenticado verificado por `AuthGuard`, 401 sin token, 200 con Bearer token legítimo).
+  6. Suite automatizada de pruebas CLI en [`tests/test-subfase-3.2.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.2.php): **63/63 aserciones pasaron exitosamente (100% OK) en 417.52 ms**.
+  7. Registro de logs crudos en [`logs/subfase-3.2-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-cli.log) y [`logs/subfase-3.2-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-http.log).
+  8. Reporte ejecutivo formal de QA en [`docs/testing/subfase-3.2-auth.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.2-auth.md).
+  9. **Documentación Humana Integral de la API:** Redactada y actualizada exhaustivamente en [`docs/api-design.es.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.es.md) y [`docs/api-design.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api-design.md) con explicaciones conceptuales, tablas de parámetros y tipos, reglas de negocio, salvaguardas (ID #1, transacciones de stock, `unlink()`), respuestas reales con la envoltura en español (`exito`, `mensaje`, `datos`, `error.codigo`), llamadas `curl` y cliente JavaScript `ApiClient` listo para producción.
+  10. **Compás de espera:** Detención total al finalizar en apego estricto a las reglas de general.md, aguardando la instrucción explícita del usuario para iniciar la Subfase 3.3.
 - **Entregables Implementados y Verificados:**
   1. [`app/config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/config.php): Configuración centralizada de entorno, claves secretas, TTL de tokens, límites de subida, paginación y CORS, con guardia de seguridad HTTP 403 directa.
   2. [`app/Core/Config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Config.php): Gestor estático en memoria con soporte para notación por puntos (`Config::get()`, `Config::set()`, `Config::load()`).
