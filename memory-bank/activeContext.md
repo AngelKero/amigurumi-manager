@@ -1,10 +1,26 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Activo: Integración de la Arquitectura de Testing en 3 Niveles & Protocolo Multi-Agente (Listo para Fase 3)
+## Hito Completado & Verificado: Subfase 3.1: Base del Backend & Infraestructura Nuclear (Fase 3)
 
 - **User Request:**
-  - _"Si, incorporalo al plan maestro. Ademas asegurate que aunque abra otro chat con otra IA sea capaz de seguir este flujo de trabajo"_
-- **Estado:** **100% Blindado, Planificado, Documentado y Listo para Iniciar Subfase 3.1 (A la espera de autorización explícita)**
+  - _"Empieza ahora si con la subfase 3.1"_
+- **Estado:** **100% Completada, Verificada y Documentada (A la espera de autorización explícita para Subfase 3.2)**
+- **Entregables Implementados y Verificados:**
+  1. [`app/config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/config.php): Configuración centralizada de entorno, claves secretas, TTL de tokens, límites de subida, paginación y CORS, con guardia de seguridad HTTP 403 directa.
+  2. [`app/Core/Config.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Config.php): Gestor estático en memoria con soporte para notación por puntos (`Config::get()`, `Config::set()`, `Config::load()`).
+  3. [`app/Core/ErrorHandler.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/ErrorHandler.php): Captura global de errores, excepciones y fatal errors con purga de buffers `ob_end_clean()` para garantizar CERO fugas HTML y salida estandarizada JSON 500.
+  4. [`app/autoload.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/autoload.php): Autocargador PSR-4 nativo sin Composer (`App\` mapeado a `app/`), inicialización de zona horaria y registro automático de `ErrorHandler::register()`.
+  5. [`app/Core/Database.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Database.php): Conexión Singleton PDO SQLite a `database/database.sqlite` con `PRAGMA foreign_keys = ON;`, `PDO::ERRMODE_EXCEPTION` y soporte para inyección de instancias de prueba.
+  6. [`app/Core/Request.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Request.php): Abstracción segura de entrada (`get()`, `post()`, `json()`, `input()`, `file()`, `header()`, `bearerToken()`, `setUser()`, `user()`) compatible con Apache FastCGI.
+  7. [`app/Core/Response.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Response.php): Emisor estandarizado de respuestas JSON (`success()`, `error()`, `json()`) y resolución centralizada de preflight CORS `OPTIONS` (HTTP 204).
+  8. [`app/Core/TokenManager.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/TokenManager.php): Emisión y validación sin estado de Bearer Tokens HMAC-SHA256 con 24h TTL, claims de usuario, comprobación de expiración y comparación en tiempo constante con `hash_equals()`.
+  9. [`app/Utils/PaginationHelper.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Utils/PaginationHelper.php): Extractor de parámetros y constructor del sobre estructurado de paginación (`paginacion: { total_items, pagina_actual, total_paginas, limite, tiene_siguiente, tiene_anterior }`).
+  10. [`app/Utils/CurrencyHelper.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Utils/CurrencyHelper.php): Conversión y enriquecimiento monetario dual (centavos enteros en SQLite $\leftrightarrow$ pesos formateados `$0.00 MXN`, cálculo de margen bruto y retorno por hora).
+  11. [`app/Utils/SvgHelper.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Utils/SvgHelper.php): Renderizado vectorial SVG con caché en memoria, inyección de atributos y funciones globales `svg()` y `svg_url()`.
+  12. Erradicación total de archivos PHP en `src/`: el directorio `src/` queda 100% reservado a frontend (`src/css/` y `src/js/`) con **0 archivos PHP**, y todas las utilidades de servidor residen exclusivamente en [`app/Utils/`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Utils/).
+  13. Suite automatizada de pruebas nativas CLI en [`tests/TestHelper.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/TestHelper.php) y [`tests/test-subfase-3.1.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.1.php) con 92/92 aserciones aprobadas (100% OK en 11.74 ms).
+  14. Registro de logs crudos en [`logs/subfase-3.1-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-cli.log) y [`logs/subfase-3.1-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-http.log).
+  15. Reporte ejecutivo formal de QA en [`docs/testing/subfase-3.1-core.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/subfase-3.1-core.md).
 - **Arquitectura de Testing, Reportes y Logs en 3 Niveles (Confirmada e Integrada):**
   1. **Nivel 1 — Reportes Ejecutivos de QA (`docs/testing/`):**
      - Markdown legible para humanos, versionado en Git.

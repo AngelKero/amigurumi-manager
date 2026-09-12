@@ -1,6 +1,6 @@
 <?php
 /**
- * SVG Helper Utility (Amigurumi Micro-ERP)
+ * SVG Helper Utility (Clean Architecture)
  * Algodón Nórdico Design System
  * 
  * Metodología limpia y centralizada para la carga, renderizado inline y resolución
@@ -43,9 +43,8 @@ namespace App\Utils {
          */
         public static function getBaseDir(): string {
             if (self::$baseDir === null) {
-                self::$baseDir = realpath(__DIR__ . '/../../assets/svg');
+                self::$baseDir = realpath(dirname(__DIR__, 2) . '/assets/svg');
                 if (self::$baseDir === false) {
-                    // Fallback directo si realpath fallara antes de crearse la ruta
                     self::$baseDir = dirname(__DIR__, 2) . '/assets/svg';
                 }
             }
@@ -62,12 +61,12 @@ namespace App\Utils {
         /**
          * Resuelve la ruta física absoluta de un SVG a partir de su nombre o slug.
          * Soporta nombres con o sin extensión .svg, y rutas relativas con o sin subcarpeta.
-         * Ejemplos válidos: 'dragon-ignis', 'dragon-ignis.svg', 'amigurumis/dragon-ignis'
+         * Ejemplos válidos: 'dragon-ignis', 'dragon-ignis.svg', 'piezas/dragon-ignis'
          */
         public static function getPath(string $name): ?string {
             $base = self::getBaseDir();
             $cleanName = ltrim(trim($name), '/\\');
-            
+
             // Asegurar extensión .svg
             if (!str_ends_with(strtolower($cleanName), '.svg')) {
                 $cleanName .= '.svg';
@@ -103,7 +102,7 @@ namespace App\Utils {
 
         /**
          * Resuelve la URL web relativa para usar en etiquetas <img src="..."> o background-image CSS.
-         * Ejemplo: 'dragon-ignis' -> 'assets/svg/amigurumis/dragon-ignis.svg'
+         * Ejemplo: 'dragon-ignis' -> 'assets/svg/piezas/dragon-ignis.svg'
          */
         public static function url(string $name): string {
             $absolutePath = self::getPath($name);
@@ -226,7 +225,7 @@ namespace App\Utils {
                 return $result;
             }
 
-            $categories = ['branding', 'creaciones', 'piezas', 'tools', 'badges', 'decorations'];
+            $categories = ['branding', 'creaciones', 'piezas', 'crochet', 'tools', 'badges', 'decorations'];
             foreach ($categories as $cat) {
                 $catDir = $base . DIRECTORY_SEPARATOR . $cat;
                 $result[$cat] = [];
@@ -271,19 +270,6 @@ namespace {
     if (!function_exists('svg')) {
         /**
          * Renderiza un archivo SVG inline de la biblioteca assets/svg/ con atributos opcionales.
-         * 
-         * Uso básico:
-         *   <?= svg('dragon-ignis') ?>
-         * 
-         * Con clases o dimensiones:
-         *   <?= svg('dragon-ignis', ['class' => 'card-product-img', 'width' => 240]) ?>
-         * 
-         * Con ruta explícita:
-         *   <?= svg('tools/ovillo-lana', ['class' => 'icon-spin']) ?>
-         * 
-         * @param string $name Nombre o slug del SVG (con o sin subcarpeta, con o sin extensión .svg)
-         * @param array<string, mixed> $attributes Atributos HTML a inyectar en <svg>
-         * @return string Código SVG renderizado
          */
         function svg(string $name, array $attributes = []): string {
             return \App\Utils\SvgHelper::render($name, $attributes);
@@ -293,12 +279,6 @@ namespace {
     if (!function_exists('svg_url')) {
         /**
          * Obtiene la ruta URL web relativa de un SVG para etiquetas <img src="..."> o CSS.
-         * 
-         * Uso:
-         *   <img src="<?= svg_url('dragon-ignis') ?>" alt="Dragón Ignis">
-         * 
-         * @param string $name Nombre o slug del SVG
-         * @return string Ruta relativa (ej. 'assets/svg/amigurumis/dragon-ignis.svg')
          */
         function svg_url(string $name): string {
             return \App\Utils\SvgHelper::url($name);

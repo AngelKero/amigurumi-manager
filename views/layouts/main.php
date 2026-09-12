@@ -9,8 +9,7 @@
  *  - $contentView (string) - path to page content template
  *  - $modals (array) - list of modal components to include
  */
-require_once __DIR__ . '/../../src/Utils/SvgHelper.php';
-require_once __DIR__ . '/../../src/Utils/CurrencyHelper.php';
+require_once __DIR__ . '/../../app/autoload.php';
 
 $pageTitle = $pageTitle ?? 'Crochet Manager | Micro-ERP & Catálogo Textil';
 $pageDescription = $pageDescription ?? 'Sistema de gestión de catálogo, inventario físico, costos y pedidos para creaciones en crochet.';
