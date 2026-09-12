@@ -140,3 +140,98 @@
 .card-stitched:hover::before {
   border-color: rgba(142, 91, 116, 0.48);
 }
+
+/* ==========================================================================
+   TARJETAS DE MÉTRICAS KPI (Tipografía Nórdica Outfit & Escala Proporcional)
+   ========================================================================== */
+.card-kpi {
+  background-color: var(--craft-surface);
+  border-radius: var(--craft-radius);
+  border: 0;
+  box-shadow: var(--craft-shadow-sm);
+  padding: 1.25rem 1.25rem 1.15rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--craft-shadow-md) !important;
+}
+
+.card-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.card-kpi-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--craft-text-muted);
+  line-height: 1.25;
+}
+
+.card-kpi-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.card-kpi:hover .card-kpi-icon {
+  transform: scale(1.12);
+  opacity: 1;
+}
+
+.card-kpi-value {
+  font-family: var(--craft-font-sans-display);
+  font-size: 2.15rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--craft-text-main);
+  margin: 0.25rem 0 0.3rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-kpi-desc {
+  font-size: 0.825rem;
+  color: var(--craft-text-muted);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Variantes cromáticas WCAG para cifras de métricas */
+.card-kpi-value.kpi-val-dark {
+  color: var(--craft-text-main) !important;
+}
+
+.card-kpi-value.kpi-val-primary {
+  color: var(--craft-primary) !important;
+}
+
+.card-kpi-value.kpi-val-secondary {
+  color: var(--craft-secondary) !important;
+}
+
+.card-kpi-value.kpi-val-gold {
+  color: #A66E1E !important; /* Nordic Honey con ratio > 4.8:1 sobre blanco */
+}
+
+@media (max-width: 576px) {
+  .card-kpi-value {
+    font-size: 1.85rem;
+  }
+}

@@ -157,49 +157,49 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
   </div>
 </section>
 
-<!-- TARJETAS DE MÉTRICAS KPI DEL INVENTARIO -->
+<!-- TARJETAS DE MÉTRICAS KPI DEL INVENTARIO (TIPOGRAFÍA NÓRDICA MEJORADA) -->
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center">
-        <span>Modelos Registrados</span>
-        <i class="bi bi-collection text-primary"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Modelos Registrados</span>
+        <i class="bi bi-collection card-kpi-icon" style="color: var(--craft-primary);"></i>
       </div>
-      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiCreacionesModelos"><?= $kpiTotalModelos ?></div>
-      <div class="text-muted small">Diseños en catálogo activo</div>
+      <div class="card-kpi-value kpi-val-dark" id="kpiCreacionesModelos"><?= $kpiTotalModelos ?></div>
+      <div class="card-kpi-desc">Diseños en catálogo activo</div>
     </div>
   </div>
 
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center">
-        <span>Unidades en Almacén</span>
-        <i class="bi bi-box-seam text-success"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Unidades en Almacén</span>
+        <i class="bi bi-box-seam card-kpi-icon" style="color: var(--craft-secondary);"></i>
       </div>
-      <div class="fs-2 fw-extrabold text-success font-monospace" id="kpiCreacionesStock"><?= $kpiUnidadesStock ?></div>
-      <div class="text-muted small">Piezas físicas disponibles</div>
+      <div class="card-kpi-value kpi-val-secondary" id="kpiCreacionesStock"><?= $kpiUnidadesStock ?></div>
+      <div class="card-kpi-desc">Piezas físicas disponibles</div>
     </div>
   </div>
 
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center">
-        <span>Valor del Inventario</span>
-        <i class="bi bi-cash-coin text-primary"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Valor del Inventario</span>
+        <i class="bi bi-cash-coin card-kpi-icon" style="color: var(--craft-primary);"></i>
       </div>
-      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiCreacionesValor">$<?= number_format($kpiValorInventario, 2) ?></div>
-      <div class="text-muted small">Precio venta total acumulado</div>
+      <div class="card-kpi-value kpi-val-dark" id="kpiCreacionesValor">$<?= number_format($kpiValorInventario, 2) ?></div>
+      <div class="card-kpi-desc">Precio venta total acumulado</div>
     </div>
   </div>
 
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center">
-        <span>Inversión en Insumos</span>
-        <i class="bi bi-piggy-bank text-warning"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Inversión en Insumos</span>
+        <i class="bi bi-piggy-bank card-kpi-icon" style="color: var(--craft-accent-gold);"></i>
       </div>
-      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiCreacionesCostos">$<?= number_format($kpiCostoInsumos, 2) ?></div>
-      <div class="text-muted small">Capital inmovilizado en lanas</div>
+      <div class="card-kpi-value kpi-val-gold" id="kpiCreacionesCostos">$<?= number_format($kpiCostoInsumos, 2) ?></div>
+      <div class="card-kpi-desc">Capital inmovilizado en lanas</div>
     </div>
   </div>
 </section>

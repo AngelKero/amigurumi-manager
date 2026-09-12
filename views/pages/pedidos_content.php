@@ -94,46 +94,49 @@ foreach ($mockOrders as $ord) {
   </div>
 </section>
 
-<!-- TARJETAS DE MÉTRICAS KPI (TIPOGRAFÍA REFINADA Y PROPORCIONADA) -->
+<!-- TARJETAS DE MÉTRICAS KPI (TIPOGRAFÍA NÓRDICA MEJORADA) -->
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
-        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Total Pedidos</span>
-        <i class="bi bi-journal-text text-primary fs-5"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Total Pedidos</span>
+        <i class="bi bi-journal-text card-kpi-icon" style="color: var(--craft-primary);"></i>
       </div>
-      <div class="fs-2 fw-bold font-theme-display text-dark my-1" id="kpiOrdersTotal"><?= $kpiTotal ?></div>
-      <div class="text-muted small" style="font-size: 0.76rem;">Registros en el sistema</div>
+      <div class="card-kpi-value kpi-val-dark" id="kpiOrdersTotal"><?= $kpiTotal ?></div>
+      <div class="card-kpi-desc">Registros en el sistema</div>
     </div>
   </div>
+
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
-        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Pendientes</span>
-        <i class="bi bi-hourglass-split text-warning fs-5"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Pendientes</span>
+        <i class="bi bi-hourglass-split card-kpi-icon" style="color: var(--craft-accent-gold);"></i>
       </div>
-      <div class="fs-2 fw-bold font-theme-display text-warning-emphasis my-1" id="kpiOrdersPendientes"><?= $kpiPendientes ?></div>
-      <div class="text-muted small" style="font-size: 0.76rem;">Esperando confección</div>
+      <div class="card-kpi-value kpi-val-gold" id="kpiOrdersPendientes"><?= $kpiPendientes ?></div>
+      <div class="card-kpi-desc">Esperando confección</div>
     </div>
   </div>
+
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
-        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">En Confección</span>
-        <i class="bi bi-gear-wide-connected text-primary fs-5"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">En Confección</span>
+        <i class="bi bi-gear-wide-connected card-kpi-icon" style="color: var(--craft-primary);"></i>
       </div>
-      <div class="fs-2 fw-bold font-theme-display text-primary my-1" id="kpiOrdersProceso"><?= $kpiProceso ?></div>
-      <div class="text-muted small" style="font-size: 0.76rem;">En el telar / crochet</div>
+      <div class="card-kpi-value kpi-val-primary" id="kpiOrdersProceso"><?= $kpiProceso ?></div>
+      <div class="card-kpi-desc">En el telar / crochet</div>
     </div>
   </div>
+
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center mb-1">
-        <span style="font-size: 0.72rem; letter-spacing: 0.04em;">Ingresos Activos</span>
-        <i class="bi bi-cash-coin text-success fs-5"></i>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Ingresos Activos</span>
+        <i class="bi bi-cash-coin card-kpi-icon" style="color: var(--craft-secondary);"></i>
       </div>
-      <div class="fs-2 fw-bold font-theme-display text-success my-1 text-nowrap" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?></div>
-      <div class="text-muted small" style="font-size: 0.76rem;">Monto en pedidos vigentes</div>
+      <div class="card-kpi-value kpi-val-secondary text-nowrap" id="kpiOrdersIngresos">$<?= number_format($kpiIngresos, 2) ?></div>
+      <div class="card-kpi-desc">Monto en pedidos vigentes</div>
     </div>
   </div>
 </section>

@@ -107,20 +107,25 @@
 - **Verificación Final:**
   - `find . -iname "*amigurumi*"` devuelve **0 resultados**.
   - `php -l` en todos los archivos PHP reporta **0 errores de sintaxis**.
-## Hito Completado: Desenfoque Total de la Tarjeta del Simulador (Incluido Encabezado e Icono)
+## Hito Completado: Refinamiento Tipográfico y Escalado de Fuentes en Tarjetas KPI (Creaciones y Pedidos)
 - **User Request:**
-  - *"Esto tambien blureado"* (solicitando que el encabezado con el icono y título también quede desenfocado en estado bloqueado).
+  - *"Mejora el tamaño de fuentes de aqui asi como en control de pedidos"* (acompañado de captura de las 4 tarjetas KPI de Creaciones).
 - **Estado:** **100% Completado y Verificado**
-- **Acciones Ejecutadas:**
-  1. **Envolvente Total de la Tarjeta (`formulario_content.php`):**
-     - Se integró el encabezado completo (icono de calculadora, título *Simulador de Márgenes*, subtítulo y divisor) dentro de `.simulador-card-inner`.
-     - Toda la tarjeta se desenfoca de manera uniforme (`filter: blur(8px); opacity: 0.45;`) cuando el formulario no tiene completos los 8 campos obligatorios.
-  2. **Escudo Flotante Central:**
-     - Centrado sobre toda la tarjeta desenfocada, muestra únicamente la píldora minimalista `🔒 Completa los datos para ver viabilidad`.
-  3. **Comportamiento Sticky Preservado:**
-     - `.sticky-margin-card` mantiene `position: -webkit-sticky; position: sticky; top: 85px; z-index: 5;` sin interferencias.
-  4. **Reactividad ES Modules (`margin-calculator.js`):**
-     - Control dinámico de `.is-locked` sobre `simuladorCardInner` al completar los 8 campos obligatorios (especificaciones, precio, costo y horas), excluyendo siempre los 3 opcionales (encargo, descripción y foto).
+- **Diagnóstico y Acciones Ejecutadas:**
+  1. **Componente CSS Modular `.card-kpi` (`src/css/04-components/cards.css`):**
+     - Creado el sistema de estilos para tarjetas de métricas: `.card-kpi`, `.card-kpi-header`, `.card-kpi-label`, `.card-kpi-icon`, `.card-kpi-value`, `.card-kpi-desc`.
+     - **Etiqueta Superior (`.card-kpi-label`):** Escalada de `0.72rem` (~11.5px) a `0.8125rem` (~13px) con `font-weight: 700`, espaciado `letter-spacing: 0.05em`, mayúsculas limpias y contraste nórdico optimizado con `var(--craft-text-muted)`.
+     - **Cifras/Valores Numéricos (`.card-kpi-value`):** Erradicado el uso tosco de `font-monospace` y serif Fraunces en favor de la tipografía geométrica canónica: **Google Font `Outfit`** (`var(--craft-font-sans-display)`), con peso `800`, tamaño balanceado `2.15rem` (con fallback responsivo `1.85rem` en móviles $\le 576$px), `letter-spacing: -0.025em` y `line-height: 1.15`.
+     - **Subtítulo Inferior (`.card-kpi-desc`):** Aumentado de `0.76rem` (~12px) a `0.825rem` (~13.2px) con `line-height: 1.35` y color `var(--craft-text-muted)`.
+     - **Paleta Cromática Algodón Nórdico:** Saneados los iconos y cifras con tokens oficiales (`--craft-primary`, `--craft-secondary`, y dorado nórdico `#A66E1E` con ratio WCAG AA $>4.8:1$ sobre fondo blanco).
+  2. **Vistas Actualizadas:**
+     - `views/pages/creaciones_content.php`: 4 tarjetas de inventario actualizadas.
+     - `views/pages/pedidos_content.php`: 4 tarjetas de control de pedidos actualizadas.
+     - `views/pages/usuarios_content.php`: 4 tarjetas del directorio de equipo sincronizadas.
+  3. **Verificación:**
+     - Sintaxis PHP validada con `php -l` (0 errores).
+     - Renderizado HTML verificado mediante HTTP curl en `localhost:8000` para `creaciones.php`, `pedidos.php` y `usuarios.php`.
+
 
 
 

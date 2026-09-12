@@ -60,34 +60,46 @@ $usuariosList = [
   </div>
 </section>
 
-<!-- TARJETAS DE MÉTRICAS KPI DE USUARIOS -->
+<!-- TARJETAS DE MÉTRICAS KPI DE USUARIOS (TIPOGRAFÍA NÓRDICA MEJORADA) -->
 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Total Usuarios</div>
-      <div class="fs-2 fw-extrabold text-dark font-monospace" id="kpiTotalUsers"><?= count($usuariosList) ?></div>
-      <div class="text-muted small">Cuentas activas en SQLite</div>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Total Usuarios</span>
+        <i class="bi bi-people card-kpi-icon" style="color: var(--craft-primary);"></i>
+      </div>
+      <div class="card-kpi-value kpi-val-dark" id="kpiTotalUsers"><?= count($usuariosList) ?></div>
+      <div class="card-kpi-desc">Cuentas activas en SQLite</div>
     </div>
   </div>
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Administradores</div>
-      <div class="fs-2 fw-extrabold text-primary font-monospace" id="kpiAdminUsers">1</div>
-      <div class="text-muted small">Acceso integral al sistema</div>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Administradores</span>
+        <i class="bi bi-shield-check card-kpi-icon" style="color: var(--craft-primary);"></i>
+      </div>
+      <div class="card-kpi-value kpi-val-primary" id="kpiAdminUsers">1</div>
+      <div class="card-kpi-desc">Acceso integral al sistema</div>
     </div>
   </div>
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Artesanos</div>
-      <div class="fs-2 fw-extrabold text-secondary font-monospace" id="kpiArtesanoUsers" style="color: var(--craft-secondary) !important;">1</div>
-      <div class="text-muted small">Autores de creaciones</div>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Artesanos</span>
+        <i class="bi bi-palette card-kpi-icon" style="color: var(--craft-secondary);"></i>
+      </div>
+      <div class="card-kpi-value kpi-val-secondary" id="kpiArtesanoUsers">1</div>
+      <div class="card-kpi-desc">Autores de creaciones</div>
     </div>
   </div>
   <div class="col">
-    <div class="card border-0 shadow-sm p-3 bg-white h-100 card-stitched" style="border-radius: var(--craft-radius);">
-      <div class="text-muted small fw-bold text-uppercase">Asistentes</div>
-      <div class="fs-2 fw-extrabold text-warning-emphasis font-monospace" id="kpiAsistenteUsers">1</div>
-      <div class="text-muted small">Control de envíos e inventario</div>
+    <div class="card-kpi card-stitched h-100">
+      <div class="card-kpi-header">
+        <span class="card-kpi-label">Asistentes</span>
+        <i class="bi bi-person-badge card-kpi-icon" style="color: var(--craft-accent-gold);"></i>
+      </div>
+      <div class="card-kpi-value kpi-val-gold" id="kpiAsistenteUsers">1</div>
+      <div class="card-kpi-desc">Control de envíos e inventario</div>
     </div>
   </div>
 </section>
