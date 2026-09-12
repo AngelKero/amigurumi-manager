@@ -1,5 +1,9 @@
 # ADR-003: Cero Fugas de Error HTML y Captura Global con Salida JSON 500
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -23,3 +27,7 @@ Implementar `App\Core\ErrorHandler` registrado globalmente en `app/autoload.php`
 ## Consecuencias
 - 100% de garantía de respuestas JSON válidas ante cualquier fallo del sistema.
 - Cero fugas de información interna en respuestas web.
+
+---
+
+[← Anterior (ADR-002)](./ADR-002-stateless-hmac-bearer-tokens.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-004) →](./ADR-004-universal-soft-delete.md)

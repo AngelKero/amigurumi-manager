@@ -1,5 +1,9 @@
 # ADR-008: Preservación de Fotografías en Disco ante Baja Lógica de Creaciones
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -19,3 +23,7 @@ Originalmente se contemplaba ejecutar `unlink()` sobre el archivo de imagen en d
 ## Consecuencias
 - Cero imágenes rotas en el historial de pedidos y auditoría.
 - Limpieza efectiva de archivos obsoletos cuando el artesano actualiza fotos.
+
+---
+
+[← Anterior (ADR-007)](./ADR-007-multi-artisan-idor-authorization.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-009) →](./ADR-009-idempotent-order-cancellation.md)

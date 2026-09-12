@@ -1,5 +1,9 @@
 # ADR-004: Regla Universal de Borrado Lógico (Cero Eliminaciones Físicas)
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -26,3 +30,7 @@ El usuario estableció como regla inviolable de negocio que no deben existir eli
 - Historial contable y de auditoría 100% garantizado.
 - Las cuentas de usuario desactivadas son bloqueadas inmediatamente en el login y en validación de tokens activos.
 - Los pedidos históricos conservan su relación de clave foránea intacta hacia la pieza comprada.
+
+---
+
+[← Anterior (ADR-003)](./ADR-003-zero-html-error-leaks.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-005) →](./ADR-005-exact-integer-cents-currency.md)

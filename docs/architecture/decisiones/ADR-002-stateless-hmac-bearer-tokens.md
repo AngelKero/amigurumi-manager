@@ -1,5 +1,9 @@
 # ADR-002: Autenticación Stateless con Bearer Tokens HMAC-SHA256 (24h TTL)
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -24,3 +28,7 @@ Implementar un sistema de tokens Bearer firmado mediante HMAC-SHA256 en `App\Cor
 - Autenticación ligera, portable y comprobable mediante CLI y curl.
 - No se almacena estado de sesión en disco ni memoria del servidor.
 - La invalidación inmediata se refuerza validando que la cuenta esté activa (`activo = 1`) en cada consulta protegida.
+
+---
+
+[← Anterior (ADR-001)](./ADR-001-clean-architecture-php-sqlite.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-003) →](./ADR-003-zero-html-error-leaks.md)

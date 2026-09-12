@@ -1,5 +1,9 @@
 # ADR-010: Salvaguarda Inviolable de la Cuenta del Administrador Titular (ID #1)
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -21,3 +25,7 @@ Se implementa una salvaguarda de doble capa (persistencia y servicio) para el us
 
 ## Consecuencias
 - La gobernanza de la plataforma queda permanentemente asegurada contra bloqueos accidentales.
+
+---
+
+[← Anterior (ADR-009)](./ADR-009-idempotent-order-cancellation.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-011) →](./ADR-011-three-tier-testing-architecture.md)

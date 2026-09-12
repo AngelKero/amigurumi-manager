@@ -1,3 +1,5 @@
+[← Volver al Hub de Pruebas](./README.md) • [Hub Principal](../README.md)
+
 # 🧶 Reporte Integral de Aseguramiento de Calidad (QA) & Auditoría Heurística
 **Proyecto:** Crochet Manager — Plataforma Colaborativa & Micro-ERP Textil  
 **Fecha de Auditoría:** 12 de Septiembre de 2026  
@@ -141,10 +143,10 @@ erDiagram
 
 ### [CR-1] Guardia de Inventario Agotado (`stock === 0`)
 - **Comportamiento en Catálogo:** Cuando un producto tiene `cantidad_stock === 0` y no es sobre encargo, el botón directo de compra se deshabilita (`disabled`, `aria-disabled="true"`) y se reemplaza por el badge de advertencia `.badge-stock-out` (*"Agotado (0 disp.)"*).
-- **Comportamiento en Detalle:** En [detalle.php](file:///Users/angelzaragoza/Desktop/proyecto-web/detalle.php), se oculta el contenedor de compra inmediata y se despliega la alerta interactiva con opción de encargo personalizado.
+- **Comportamiento en Detalle:** En [detalle.php](../../detalle.php), se oculta el contenedor de compra inmediata y se despliega la alerta interactiva con opción de encargo personalizado.
 
 ### [CR-2] Stepper Acotado en Modal de Checkout
-- El campo numérico de cantidad en [modal_checkout.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/modal_checkout.php) es de solo lectura (`readonly`).
+- El campo numérico de cantidad en [modal_checkout.php](../../views/components/modal_checkout.php) es de solo lectura (`readonly`).
 - Está estrictamente acotado entre el valor mínimo (`1`) y el stock máximo disponible (`cantidad_stock`).
 - Los botones `[-]` y `[+]` se deshabilitan reactivamente al alcanzar los límites extremos.
 
@@ -153,13 +155,13 @@ erDiagram
 - Renderiza la cuadrícula responsiva de tarjetas artesanales `.card-admin-pedido` con datos del cliente y botón directo de contacto WhatsApp.
 
 ### [QW-2] Restitución Transparente de Stock al Cancelar
-- El modal de cancelación en [modal_cancel_order.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/modal_cancel_order.php) notifica explícitamente al creador la cantidad y pieza exacta que se reintegrará al inventario físico (`+X unidad(es) reintegradas`).
+- El modal de cancelación en [modal_cancel_order.php](../../views/components/modal_cancel_order.php) notifica explícitamente al creador la cantidad y pieza exacta que se reintegrará al inventario físico (`+X unidad(es) reintegradas`).
 
 ### Salvaguarda del Administrador Raíz (ID #1)
-- En el módulo de gestión de usuarios ([usuarios_content.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/pages/usuarios_content.php)), la cuenta principal de administración (`id: 1`, `@admin`) tiene bloqueada la modificación de rol con indicador visual de candado y mensaje explicativo en modal.
+- En el módulo de gestión de usuarios ([usuarios_content.php](../../views/pages/usuarios_content.php)), la cuenta principal de administración (`id: 1`, `@admin`) tiene bloqueada la modificación de rol con indicador visual de candado y mensaje explicativo en modal.
 
 ### Escudo Protector y Desenfoque del Simulador de Márgenes
-- En [formulario.php](file:///Users/angelzaragoza/Desktop/proyecto-web/formulario.php), la tarjeta completa del simulador financiero permanece en desenfoque uniforme (`filter: blur(8px); opacity: 0.45;`) con píldora informativa centrada hasta que se completen los 8 campos obligatorios (Nombre, Categoría, Material, Dimensiones, Stock, Precio, Costo, Horas).
+- En [formulario.php](../../formulario.php), la tarjeta completa del simulador financiero permanece en desenfoque uniforme (`filter: blur(8px); opacity: 0.45;`) con píldora informativa centrada hasta que se completen los 8 campos obligatorios (Nombre, Categoría, Material, Dimensiones, Stock, Precio, Costo, Horas).
 - Los campos opcionales (*Bajo Encargo*, *Descripción* y *Fotografía*) están estrictamente excluidos de la condición de bloqueo.
 
 ---
@@ -172,7 +174,7 @@ erDiagram
 - Se erradicaron las referencias a *"Taller Principal"* en favor de **`Creador Independiente`** o **`Artesano Registrado`**.
 
 ### 6.2. Compromiso de Calidad Centrado en la Plataforma
-En el Master Footer ([footer.php](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/footer.php)) y catálogo, las garantías se centran en lo que la plataforma audita y proporciona:
+En el Master Footer ([footer.php](../../views/components/footer.php)) y catálogo, las garantías se centran en lo que la plataforma audita y proporciona:
 1. **Fichas Transparentes:** Medidas verificadas, fibras y cuidados especificados por el creador.
 2. **Contacto Directo:** Acuerdos personalizados y comunicación directa cliente-artesano vía WhatsApp.
 3. **Comercio Ético:** Herramientas de cálculo para cotizar con base en horas de labor e insumos reales.

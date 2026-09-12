@@ -1,5 +1,9 @@
 # ADR-013: Reactivación Lógica de Creadores y Filtrado por Estado
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -22,3 +26,7 @@ Debido a la restricción `uq_usuarios_username UNIQUE(username)` en SQLite, cuan
 ## Consecuencias
 - Ciclo de vida completo para cuentas de usuario (alta $\rightarrow$ baja lógica $\rightarrow$ reactivación).
 - Preservación limpia del username original y su historial.
+
+---
+
+[← Anterior (ADR-012)](./ADR-012-self-service-and-admin-password-recovery.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-014) →](./ADR-014-public-active-artisans-endpoint.md)

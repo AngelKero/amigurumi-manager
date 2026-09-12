@@ -1,5 +1,9 @@
 # Plan Maestro de Arquitectura y Refactorización: Fullstack Limpio y Modular (Frontend & Backend)
 
+[← Volver al Hub Principal de Documentación](../README.md)
+
+---
+
 **Proyecto:** Amigurumi Micro-ERP & Catalog  
 **Guía Metodológica:** `clean-code-architect` (Principios SOLID, Clean Architecture de Robert C. Martin, Component-Based UI, Modular CSS y ES Modules)  
 **Fecha:** Septiembre 2026  

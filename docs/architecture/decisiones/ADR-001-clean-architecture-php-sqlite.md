@@ -1,5 +1,9 @@
 # ADR-001: Clean Architecture en `app/` (PHP Nativo + SQLite sin Composer)
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -28,3 +32,7 @@ Se aísla el 100% del backend PHP en un directorio dedicado `app/`, estructurado
 - Código modular con separación estricta de responsabilidades (SRP).
 - Facilita pruebas automatizadas CLI sin necesidad de servidor HTTP completo.
 - Dependencias apuntan únicamente hacia adentro (Dependency Inversion).
+
+---
+
+[Índice de ADRs](./README.md) • [Siguiente (ADR-002) →](./ADR-002-stateless-hmac-bearer-tokens.md)

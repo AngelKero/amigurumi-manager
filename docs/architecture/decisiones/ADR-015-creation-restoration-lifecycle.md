@@ -1,5 +1,9 @@
 # ADR-015: Restauración Lógica de Creaciones Inactivadas
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -22,3 +26,7 @@ Implementar `POST /api/creaciones/restaurar.php` y `CreacionService::restoreCrea
 ## Consecuencias
 - Ciclo de vida reversible y completo para las creaciones del taller (alta $\leftrightarrow$ baja temporal $\leftrightarrow$ restauración).
 - Conserva el historial de pedidos y enlaces directos existentes.
+
+---
+
+[← Anterior (ADR-014)](./ADR-014-public-active-artisans-endpoint.md) • [Índice de ADRs](./README.md)

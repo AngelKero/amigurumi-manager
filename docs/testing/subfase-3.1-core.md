@@ -1,12 +1,16 @@
 # Reporte de Pruebas: Subfase 3.1 — Base del Backend & Infraestructura Nuclear
 
+[← Volver al Hub de Pruebas](./README.md) • [Hub Principal](../README.md)
+
+---
+
 - **Fecha de Ejecución:** 2026-09-11 22:28:15 CST
 - **Responsable:** Antigravity Agent (Pair Programming con Ingeniero Titular)
 - **Entorno:** PHP 8.3.29 CLI + Servidor Built-in (`localhost:8000`) + SQLite 3 (macOS Darwin)
 - **Archivos de Log Crudos:**
-  - CLI: [`logs/subfase-3.1-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-cli.log)
-  - HTTP: [`logs/subfase-3.1-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-http.log)
-- **Script de Pruebas:** [`tests/test-subfase-3.1.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.1.php)
+  - CLI: [`logs/subfase-3.1-cli.log`](../../logs/subfase-3.1-cli.log)
+  - HTTP: [`logs/subfase-3.1-http.log`](../../logs/subfase-3.1-http.log)
+- **Script de Pruebas:** [`tests/test-subfase-3.1.php`](../../tests/test-subfase-3.1.php)
 - **Resultado General:** **92 / 92 Aserciones Aprobadas (100% OK) en 11.74 ms** — ✅ **APTO PARA AVANZAR**
 
 ---
@@ -107,26 +111,29 @@ Content-Type: application/json; charset=utf-8
 
 ## 3. Verificación de Integridad en SQLite
 
-Ejecución directa en SQLite 3 sobre [`database/database.sqlite`](file:///Users/angelzaragoza/Desktop/proyecto-web/database/database.sqlite):
+Ejecución directa en SQLite 3 sobre [`database/database.sqlite`](../../database/database.sqlite):
 - **Estado de Claves Foráneas:**
   ```sql
   PRAGMA foreign_keys;
   -- Resultado: 1 (Habilitado estrictamente en cada conexión PDO)
   ```
-- **Integridad Física de la Base de Datos:**
+- **Prueba de Integridad de Fichero:**
   ```sql
   PRAGMA integrity_check;
-  -- Resultado: ok (Cero páginas corruptas o anomalías de árbol B)
+  -- Resultado: ok (Sin corrupción física ni bloques huérfanos)
   ```
-- **Prueba de Restricción Referencial:**
-  - Intento de inserción de creación con artesano huérfano (`artesano_id = 99999`) rechazado de inmediato con `FOREIGN KEY constraint failed`.
+- **Concurrencia y Busy Timeout:**
+  ```sql
+  PRAGMA busy_timeout;
+  -- Resultado: 5000 (Espera activa configurada en PDO para mitigar locks)
+  ```
 
 ---
 
-## 4. Veredicto y Siguientes Pasos
+## 4. Criterios de Aceptación y Checklist de la Subfase 3.1
 
-- [x] Autocargador PSR-4 nativo (`app/autoload.php`) funcional sin Composer.
-- [x] Configuración centralizada con notación de puntos (`App\Core\Config`).
+- [x] Autocargador PSR-4 nativo funcional en `app/autoload.php` sin dependencias externas.
+- [x] Clase estática `App\Core\Config` con acceso por notación de puntos y caché en memoria.
 - [x] Conexión Singleton PDO SQLite con `PRAGMA foreign_keys = ON;` (`App\Core\Database`).
 - [x] Manejador global `ErrorHandler` garantizando cero fugas HTML y salida JSON 500.
 - [x] Abstracción de peticiones `Request` con extracción de Bearer Token.
@@ -135,10 +142,10 @@ Ejecución directa en SQLite 3 sobre [`database/database.sqlite`](file:///Users/
 - [x] Asistente de paginación (`PaginationHelper`) con envolvente estándar para la API REST.
 - [x] Utilidad monetaria (`CurrencyHelper`) con almacenamiento en centavos enteros y enriquecimiento dual.
 - [x] Asistente vectorial (`SvgHelper`) con funciones globales `svg()` y `svg_url()`.
-- [x] Erradicación total de backend en `src/`: la carpeta `src/` contiene **0 archivos PHP** (reservada 100% a frontend: `src/css/` y `src/js/`), y todas las utilidades de servidor residen limpiamente en [`app/Utils/`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Utils/).
+- [x] Erradicación total de backend en `src/`: la carpeta `src/` contiene **0 archivos PHP** (reservada 100% a frontend: `src/css/` y `src/js/`), y todas las utilidades de servidor residen limpiamente en [`app/Utils/`](../../app/Utils/).
 - [x] Retrocompatibilidad absoluta: Vistas SSR existentes (`index.php`, `creaciones.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php`) cargan desde `app/autoload.php` y responden HTTP 200 sin regresiones.
 - [x] 92 de 92 aserciones aprobadas en el script automatizado CLI.
-- [x] Logs respaldados en [`logs/subfase-3.1-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-cli.log) y [`logs/subfase-3.1-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.1-http.log).
+- [x] Logs respaldados en [`logs/subfase-3.1-cli.log`](../../logs/subfase-3.1-cli.log) y [`logs/subfase-3.1-http.log`](../../logs/subfase-3.1-http.log).
 
 **ESTADO ACTUAL:** **COMPLETA Y VERIFICADA AL 100%.**
 **ACCIONES SIGUIENTES:** En cumplimiento estricto del protocolo de subfases y la compuerta de testing, se detiene completamente la ejecución y se solicita la autorización explícita del usuario para iniciar la **Subfase 3.2: Autenticación Stateless & Middleware de Seguridad (AuthGuard & RoleGuard)**.

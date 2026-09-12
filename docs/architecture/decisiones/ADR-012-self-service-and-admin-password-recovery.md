@@ -1,5 +1,9 @@
 # ADR-012: Recuperación de Contraseñas: Autoservicio y Reseteo Administrativo
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -20,3 +24,7 @@ El sistema necesitaba resolver dos escenarios distintos de actualización de con
 
 ## Consecuencias
 - Cobertura completa tanto para el autoservicio como para la pérdida de credenciales, alineada con el canal de WhatsApp utilizado por la comunidad de artesanos.
+
+---
+
+[← Anterior (ADR-011)](./ADR-011-three-tier-testing-architecture.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-013) →](./ADR-013-user-reactivation-and-filtering.md)

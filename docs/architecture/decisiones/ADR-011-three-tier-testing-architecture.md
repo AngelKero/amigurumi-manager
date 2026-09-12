@@ -1,5 +1,9 @@
 # ADR-011: Arquitectura de Pruebas de 3 Niveles y Compuertas Secuenciales
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -23,3 +27,7 @@ Se establece una arquitectura de pruebas de 3 niveles con compuertas secuenciale
 ## Consecuencias
 - 100% de trazabilidad entre requisitos, código y pruebas en vivo.
 - Control total del usuario sobre el avance del proyecto sin saltos inesperados.
+
+---
+
+[← Anterior (ADR-010)](./ADR-010-root-admin-id1-lockout.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-012) →](./ADR-012-self-service-and-admin-password-recovery.md)

@@ -1,5 +1,9 @@
 # ADR-014: Endpoint Público Ligero de Artesanos para Filtrado en Catálogo
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -30,3 +34,7 @@ Implementar un endpoint público dedicado: `GET /api/creaciones/artesanos.php`:
 ## Consecuencias
 - El frontend público puede poblar `#filterArtisan` de forma autónoma e inmediata.
 - La gestión de usuarios en `/api/usuarios/` se mantiene 100% restringida a administradores.
+
+---
+
+[← Anterior (ADR-013)](./ADR-013-user-reactivation-and-filtering.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-015) →](./ADR-015-creation-restoration-lifecycle.md)

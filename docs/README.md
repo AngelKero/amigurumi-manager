@@ -6,64 +6,60 @@ Toda la documentación sigue el estándar modular de **Clean Documentation & Di�
 
 ---
 
-## Mapa de Navegación por Dominios
+## 🧭 Mapa de Navegación por Dominios
+
+| Dominio | Descripción | Acceso Directo |
+| :--- | :--- | :--- |
+| 🏛️ **Arquitectura & Decisiones** | Diseño en capas Clean Architecture, contratos y registro de 15 ADRs. | [Explorar Arquitectura](./architecture/README.md) • [Ver ADRs](./architecture/decisiones/README.md) |
+| 🌐 **Especificación API REST** | Estándares HTTP, envelope JSON y contratos de endpoints por recurso. | [Explorar API](./api/README.md) • [Auth](./api/auth.md) • [Creaciones](./api/creaciones.md) • [Pedidos](./api/pedidos.md) • [Usuarios](./api/usuarios.md) |
+| 🗄️ **Base de Datos & DDL** | Diagrama ERD físico en Mermaid, sentencias DDL completas y tests CLI. | [Explorar Base de Datos](./database/README.md) • [Esquema DDL](./database/schema.md) • [Pruebas](./database/testing.md) |
+| 🎨 **Sistema de Diseño** | Tokens Algodón Nórdico, tipografías, manual de marca y auditorías WCAG. | [Explorar Diseño](./design-system/README.md) • [Marca](./design-system/brand-identity.md) • [SVGs](./design-system/svg-assets.md) • [Vistas](./design-system/wireframes.md) |
+| 🧪 **Reportes de Testing** | Protocolo en 3 niveles y reportes ejecutivos de subfases (3.1, 3.2, 3.3). | [Explorar Testing](./testing/README.md) • [Core 3.1](./testing/subfase-3.1-core.md) • [Auth 3.2](./testing/subfase-3.2-auth.md) • [Usuarios 3.3](./testing/subfase-3.3-usuarios.md) |
+| 📦 **Archivo Histórico** | Mockups HTML preliminares y planes anteriores de refactorización. | [Ver Histórico](./archive/architecture-refactor-plan.md) |
+
+---
+
+## 🌳 Árbol Estructural de Documentación
 
 ```
 docs/
 ├── README.md                      # [Este archivo] Directorio e Índice Maestro
 │
-├── architecture/                  # 🏛️ 1. ARQUITECTURA DEL SISTEMA & DECISIONES (ADRs)
-│   ├── README.md                  # Visión general de Clean Architecture y capas
-│   ├── phase-3-plan.md            # Plan maestro de la Fase 3 (6 subfases y compuertas)
-│   ├── contracts.md               # Contratos de clases (Repositories, Services, Middleware)
-│   ├── security.md                # Autenticación stateless HMAC-SHA256, RBAC e IDOR
-│   └── decisiones/                # Registro histórico de 15 ADRs individuales y numerados
-│       ├── README.md              # Índice maestro de ADRs
-│       └── ADR-001 a ADR-015     # Decisiones técnicas fundamentales
+├── architecture/                  # 🏛️ 1. Arquitectura Clean & Decisiones (ADRs)
+│   ├── README.md, phase-3-plan.md, contracts.md, security.md
+│   └── decisiones/ (ADR-001 a ADR-015 + README.md)
 │
-├── api/                           # 🌐 2. ESPECIFICACIÓN DE LA API REST
-│   ├── README.md                  # Estándares globales, JSON Envelope, códigos HTTP y CORS
-│   ├── auth.md                    # Endpoints /api/auth/ (login, logout, me, cambiar-password)
-│   ├── creaciones.md              # Endpoints /api/creaciones/ (catálogo, artesanos, CRUD, fotos)
-│   ├── pedidos.md                 # Endpoints /api/pedidos/ (solicitar, crear, cancelar, WhatsApp)
-│   └── usuarios.md                # Endpoints /api/usuarios/ (directorio, roles, baja y reactivación)
+├── api/                           # 🌐 2. Especificación REST por Recursos
+│   └── README.md, auth.md, creaciones.md, pedidos.md, usuarios.md
 │
-├── database/                      # 🗄️ 3. MODELO DE DATOS & PERSISTENCIA RELACIONAL
-│   ├── README.md                  # Visión general y Diagrama Entidad-Relación Físico (ERD)
-│   ├── schema.md                  # Sentencias DDL completas, restricciones CHECK y diccionarios
-│   └── testing.md                 # Guía de verificación CLI con sqlite3 y setup.php
+├── database/                      # 🗄️ 3. Modelo Físico Relacional & DDL
+│   └── README.md (ERD Mermaid), schema.md, testing.md
 │
-├── design-system/                 # 🎨 4. SISTEMA DE DISEÑO "ALGODÓN NÓRDICO" & UI/UX
-│   ├── README.md                  # Tokens cromáticos, jerarquía tipográfica y craft detailing
-│   ├── brand-identity.md          # Manual de marca v2.0.0 (isotipos, logotipos, imagotipos, isologos)
-│   ├── svg-assets.md              # Biblioteca de recursos vectoriales y SvgHelper en PHP
-│   ├── wireframes.md              # Especificación de vistas responsivas y componentes PHP
-│   └── audits.md                  # Auditorías heurísticas y verificación de contrastes WCAG 2.1 AA
+├── design-system/                 # 🎨 4. Sistema de Diseño "Algodón Nórdico"
+│   └── README.md, brand-identity.md, svg-assets.md, wireframes.md, audits.md
 │
-├── testing/                       # 🧪 5. REPORTES DE PRUEBAS & ASEGURAMIENTO DE CALIDAD
-│   ├── README.md                  # Arquitectura de testing en 3 niveles y protocolo de compuertas
-│   ├── subfase-3.1-core.md        # Reporte formal Subfase 3.1: Core & Infraestructura (93/93 OK)
-│   ├── subfase-3.2-auth.md        # Reporte formal Subfase 3.2: Autenticación & Tokens (69/69 OK)
-│   ├── subfase-3.3-usuarios.md    # Reporte formal Subfase 3.3: Usuarios & RBAC (105/105 OK)
-│   └── qa-audit-report.md         # Auditoría integral multi-eje de 6 dimensiones (98.5/100)
+├── testing/                       # 🧪 5. Reportes de Pruebas & Calidad
+│   └── README.md, subfase-3.1-core.md, subfase-3.2-auth.md, subfase-3.3-usuarios.md, qa-audit-report.md
 │
-└── archive/                       # 📦 6. ARCHIVO HISTÓRICO
-    ├── wireframes.html            # Prototipo HTML original
-    ├── index.html, detalle.html   # Mockups de vistas iniciales
-    └── architecture-refactor-plan.md # Plan de refactorización de Fase 2.5
+└── archive/                       # 📦 6. Archivo Histórico
+    └── wireframes.html, index.html, architecture-refactor-plan.md
 ```
 
 ---
 
-## Guía Rápida para Desarrolladores y Agentes
+## ⚡ Guía Rápida para Desarrolladores y Agentes
 
 1. **¿Deseas entender la arquitectura de código y capas?**  
-   Consulta [docs/architecture/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/architecture/README.md) y los [ADRs](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/architecture/decisiones/README.md).
+   Consulta el módulo de [Arquitectura](./architecture/README.md) y el catálogo de [Decisiones ADR](./architecture/decisiones/README.md).
 2. **¿Deseas consumir o implementar un endpoint de la API?**  
-   Consulta [docs/api/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/README.md) y el módulo correspondiente ([auth](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/auth.md), [creaciones](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/creaciones.md), [pedidos](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/pedidos.md), [usuarios](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/api/usuarios.md)).
+   Consulta los [Estándares de API](./api/README.md) y las especificaciones de cada recurso:  
+   • [Autenticación](./api/auth.md)  
+   • [Creaciones & Catálogo](./api/creaciones.md)  
+   • [Pedidos & Encargos](./api/pedidos.md)  
+   • [Usuarios & Roles](./api/usuarios.md)
 3. **¿Deseas consultar o modificar la base de datos?**  
-   Consulta [docs/database/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database/README.md) y [docs/database/schema.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/database/schema.md).
+   Consulta el [Modelo Relacional](./database/README.md), el [Esquema DDL](./database/schema.md) y las [Pruebas SQLite](./database/testing.md).
 4. **¿Deseas maquetar vistas o respetar el diseño artesanal?**  
-   Consulta [docs/design-system/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/design-system/README.md).
+   Consulta el [Sistema de Diseño](./design-system/README.md) y el [Manual de Identidad Visual](./design-system/brand-identity.md).
 5. **¿Deseas ejecutar y reportar pruebas automatizadas?**  
-   Consulta [docs/testing/README.md](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/README.md).
+   Consulta el [Protocolo de Testing](./testing/README.md) y los reportes de las subfases [3.1](./testing/subfase-3.1-core.md), [3.2](./testing/subfase-3.2-auth.md) y [3.3](./testing/subfase-3.3-usuarios.md).

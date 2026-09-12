@@ -1,6 +1,6 @@
 # Registro de Decisiones de Arquitectura (ADRs)
 
-[← Volver al Índice de Arquitectura](../README.md)
+[← Volver al Índice de Arquitectura](../README.md) • [Hub Principal](../../README.md)
 
 Este directorio contiene los **Architecture Decision Records (ADRs)** de Crochet Manager, registrando el contexto, las alternativas evaluadas y las consecuencias de cada decisión técnica fundamental del sistema.
 

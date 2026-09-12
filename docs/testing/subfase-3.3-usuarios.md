@@ -1,12 +1,16 @@
-# Reporte de Pruebas: Subfase 3.3 — Gestión de Usuarios, Autoría de Creadores & Roles RBAC
+# Reporte de Pruebas: Subfase 3.3 — Gestión de Usuarios, Roles RBAC & Bajas Lógicas
+
+[← Volver al Hub de Pruebas](./README.md) • [Hub Principal](../README.md)
+
+---
 
 - **Fecha de Ejecución:** 2026-09-12 13:46:00 CST
 - **Responsable:** Antigravity Agent (Pair Programming con Ingeniero Titular)
 - **Entorno:** PHP 8.3.29 CLI + Servidor Built-in (`localhost:8000`) + SQLite 3 (macOS Darwin)
 - **Archivos de Log Crudos:**
-  - CLI: [`logs/subfase-3.3-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-cli.log)
-  - HTTP: [`logs/subfase-3.3-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-http.log)
-- **Script de Pruebas:** [`tests/test-subfase-3.3.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.3.php)
+  - CLI: [`logs/subfase-3.3-cli.log`](../../logs/subfase-3.3-cli.log)
+  - HTTP: [`logs/subfase-3.3-http.log`](../../logs/subfase-3.3-http.log)
+- **Script de Pruebas:** [`tests/test-subfase-3.3.php`](../../tests/test-subfase-3.3.php)
 - **Resultado General:** **105 / 105 Aserciones Aprobadas (100% OK) en 847.15 ms** — ✅ **APTO PARA AVANZAR**
 
 ---
@@ -202,7 +206,7 @@ Content-Type: application/json; charset=utf-8
 
 ## 3. Verificación de Integridad en SQLite
 
-Ejecución directa en [`database/database.sqlite`](file:///Users/angelzaragoza/Desktop/proyecto-web/database/database.sqlite):
+Ejecución directa en [`database/database.sqlite`](../../database/database.sqlite):
 - **Integridad Física:**
   ```sql
   PRAGMA integrity_check;
@@ -247,9 +251,9 @@ Ejecución directa en [`database/database.sqlite`](file:///Users/angelzaragoza/D
   - `api/usuarios/reactivar.php` (POST)
 - [x] Soporte para paginación estandarizada (`PaginationHelper`) en el directorio de creadores.
 - [x] Cero fugas HTML en errores; respuestas uniformes en español (`exito`, `mensaje`, `datos`, `error.codigo`).
-- [x] Documentación humana exhaustiva en `docs/api-design.es.md` y `docs/api-design.md`.
+- [x] Documentación de la API modular en [`docs/api/usuarios.md`](../api/usuarios.md).
 - [x] 105 de 105 aserciones aprobadas en el script CLI automatizado en 847.15 ms.
-- [x] Trazas crudas y volcados de terminal respaldados en [`logs/subfase-3.3-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-cli.log) y [`logs/subfase-3.3-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.3-http.log).
+- [x] Trazas crudas y volcados de terminal respaldados en [`logs/subfase-3.3-cli.log`](../../logs/subfase-3.3-cli.log) y [`logs/subfase-3.3-http.log`](../../logs/subfase-3.3-http.log).
 
 **ESTADO ACTUAL:** **COMPLETA Y VERIFICADA AL 100%.**
 **ACCIONES SIGUIENTES:** En cumplimiento estricto del protocolo de compuerta secuencial de testing, se detiene completamente la ejecución y se solicita la autorización explícita del usuario para dar inicio a la **Subfase 3.4: Catálogo, Creaciones & Ciclo de Vida de Imágenes (`CreacionRepository`, `CreacionService` y `api/creaciones/*`)**.

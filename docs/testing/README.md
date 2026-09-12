@@ -1,6 +1,8 @@
 # 🧪 Centro de Pruebas & Reportes de Subfases (Testing Hub)
 
-Bienvenido al repositorio centralizado de **Reportes de Pruebas, Auditorías y Aseguramiento de Calidad** de la Fase 3 (Backend Clean Architecture) para **Crochet Manager**.
+[← Volver al Hub Principal de Documentación](../README.md)
+
+---
 
 ---
 

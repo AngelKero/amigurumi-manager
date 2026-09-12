@@ -1,5 +1,9 @@
 # ADR-009: Cancelación Idempotente de Pedidos con Restitución de Stock
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -26,3 +30,7 @@ Cuando un pedido es cancelado por el artesano, las unidades reservadas deben rei
 ## Consecuencias
 - Cero desajustes de stock ante reintentos de cancelación.
 - Trazabilidad del momento exacto de la cancelación mediante `actualizado_en`.
+
+---
+
+[← Anterior (ADR-008)](./ADR-008-image-lifecycle-preservation.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-010) →](./ADR-010-root-admin-id1-lockout.md)

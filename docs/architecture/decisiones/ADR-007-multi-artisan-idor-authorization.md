@@ -1,5 +1,9 @@
 # ADR-007: Autorización Multi-Artesano y Prevención Estricta de IDOR
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -24,3 +28,7 @@ En una plataforma colaborativa con múltiples artesanos independientes, existe e
 ## Consecuencias
 - Privacidad y aislamiento total entre los inventarios de los distintos creadores.
 - Los administradores retienen visibilidad y control global sin vulnerar la seguridad.
+
+---
+
+[← Anterior (ADR-006)](./ADR-006-sqlite-busy-timeout-concurrency.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-008) →](./ADR-008-image-lifecycle-preservation.md)

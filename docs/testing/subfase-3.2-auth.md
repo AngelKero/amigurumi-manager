@@ -1,12 +1,16 @@
-# Reporte de Pruebas: Subfase 3.2 — Autenticación Stateless, Repositorio de Usuarios & Bearer Middleware
+# Reporte de Pruebas: Subfase 3.2 — Autenticación Stateless, Tokens HMAC & Middleware de Seguridad
+
+[← Volver al Hub de Pruebas](./README.md) • [Hub Principal](../README.md)
+
+---
 
 - **Fecha de Ejecución:** 2026-09-12 13:45:00 CST
 - **Responsable:** Antigravity Agent (Pair Programming con Ingeniero Titular)
 - **Entorno:** PHP 8.3.29 CLI + Servidor Built-in (`localhost:8000`) + SQLite 3 (macOS Darwin)
 - **Archivos de Log Crudos:**
-  - CLI: [`logs/subfase-3.2-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-cli.log)
-  - HTTP: [`logs/subfase-3.2-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-http.log)
-- **Script de Pruebas:** [`tests/test-subfase-3.2.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/tests/test-subfase-3.2.php)
+  - CLI: [`logs/subfase-3.2-cli.log`](../../logs/subfase-3.2-cli.log)
+  - HTTP: [`logs/subfase-3.2-http.log`](../../logs/subfase-3.2-http.log)
+- **Script de Pruebas:** [`tests/test-subfase-3.2.php`](../../tests/test-subfase-3.2.php)
 - **Resultado General:** **69 / 69 Aserciones Aprobadas (100% OK) en 468.21 ms** — ✅ **APTO PARA AVANZAR**
 
 ---
@@ -177,7 +181,7 @@ Access-Control-Max-Age: 86400
 
 ## 3. Verificación de Integridad en SQLite
 
-Ejecutado sobre [`database/database.sqlite`](file:///Users/angelzaragoza/Desktop/proyecto-web/database/database.sqlite):
+Ejecutado sobre [`database/database.sqlite`](../../database/database.sqlite):
 - **Integridad Física:**
   ```sql
   PRAGMA integrity_check;
@@ -205,7 +209,7 @@ Ejecutado sobre [`database/database.sqlite`](file:///Users/angelzaragoza/Desktop
 - [x] Autoservicio de cambio de contraseña propio implementado en `AuthService::changePassword()` validando contraseña actual y mínimo de 6 caracteres.
 - [x] Cero fugas de información sensible: los hashes `password_hash` nunca se exponen en `findByIdSafe()`, `listAll()` ni en respuestas de la API.
 - [x] 69 de 69 aserciones aprobadas en el script CLI automatizado en 468.21 ms.
-- [x] Trazas crudas y volcados de consola respaldados en [`logs/subfase-3.2-cli.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-cli.log) y [`logs/subfase-3.2-http.log`](file:///Users/angelzaragoza/Desktop/proyecto-web/logs/subfase-3.2-http.log).
+- [x] Trazas crudas y volcados de consola respaldados en [`logs/subfase-3.2-cli.log`](../../logs/subfase-3.2-cli.log) y [`logs/subfase-3.2-http.log`](../../logs/subfase-3.2-http.log).
 
 **ESTADO ACTUAL:** **COMPLETA Y VERIFICADA AL 100%.**
 **ACCIONES SIGUIENTES:** En cumplimiento estricto del protocolo de compuerta secuencial de testing, se detiene completamente la ejecución y se solicita la autorización explícita del usuario para dar inicio a la **Subfase 3.3: Gestión de Usuarios, Autoría de Creadores & Roles RBAC (`UsuarioService` y `api/usuarios/*`)**.

@@ -1,5 +1,9 @@
 # ADR-005: Manejo de Moneda en Centavos Enteros y Enriquecimiento Dual
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -23,3 +27,7 @@ El uso de números en punto flotante (`REAL` o `float`) para cantidades financie
 ## Consecuencias
 - Cero artefactos de precisión en cálculos contables y simuladores de márgenes.
 - Homogeneidad absoluta entre backend y frontend.
+
+---
+
+[← Anterior (ADR-004)](./ADR-004-universal-soft-delete.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-006) →](./ADR-006-sqlite-busy-timeout-concurrency.md)

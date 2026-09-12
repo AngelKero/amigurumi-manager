@@ -1,5 +1,9 @@
 # ADR-006: Mitigación de Concurrencia SQLite mediante `busy_timeout = 5000`
 
+[← Volver al Índice de ADRs](./README.md) • [Arquitectura](../README.md) • [Hub Principal](../../README.md)
+
+---
+
 ## Estado
 Aceptada
 
@@ -18,3 +22,7 @@ Se configura obligatoriamente `PRAGMA busy_timeout = 5000;` en `App\Core\Databas
 ## Consecuencias
 - SQLite espera activamente hasta 5 segundos a que se libere el bloqueo de archivo antes de arrojar una excepción.
 - Erradica los fallos intermitentes de bloqueo bajo peticiones simultáneas de checkout o pruebas en vivo.
+
+---
+
+[← Anterior (ADR-005)](./ADR-005-exact-integer-cents-currency.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-007) →](./ADR-007-multi-artisan-idor-authorization.md)
