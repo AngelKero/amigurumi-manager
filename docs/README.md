@@ -14,7 +14,7 @@ Toda la documentación sigue el estándar modular de **Clean Documentation & Di�
 | 🌐 **Especificación API REST** | Estándares HTTP, envelope JSON y contratos de endpoints por recurso. | [Explorar API](./api/README.md) • [Auth](./api/auth.md) • [Creaciones](./api/creaciones.md) • [Pedidos](./api/pedidos.md) • [Usuarios](./api/usuarios.md) |
 | 🗄️ **Base de Datos & DDL** | Diagrama ERD físico en Mermaid, sentencias DDL completas y tests CLI. | [Explorar Base de Datos](./database/README.md) • [Esquema DDL](./database/schema.md) • [Pruebas](./database/testing.md) |
 | 🎨 **Sistema de Diseño** | Tokens Algodón Nórdico, tipografías, manual de marca y auditorías WCAG. | [Explorar Diseño](./design-system/README.md) • [Marca](./design-system/brand-identity.md) • [SVGs](./design-system/svg-assets.md) • [Vistas](./design-system/wireframes.md) |
-| 🧪 **Reportes de Testing** | Protocolo en 3 niveles y reportes ejecutivos de subfases (3.1, 3.2, 3.3). | [Explorar Testing](./testing/README.md) • [Core 3.1](./testing/subfase-3.1-core.md) • [Auth 3.2](./testing/subfase-3.2-auth.md) • [Usuarios 3.3](./testing/subfase-3.3-usuarios.md) |
+| 🧪 **Reportes de Testing** | Protocolo en 3 niveles y reportes ejecutivos de subfases (3.1, 3.2, 3.3, 3.4). | [Explorar Testing](./testing/README.md) • [Core 3.1](./testing/subfase-3.1-core.md) • [Auth 3.2](./testing/subfase-3.2-auth.md) • [Usuarios 3.3](./testing/subfase-3.3-usuarios.md) • [Creaciones 3.4](./testing/subfase-3.4-creaciones.md) |
 | 📦 **Archivo Histórico** | Mockups HTML preliminares y planes anteriores de refactorización. | [Ver Histórico](./archive/architecture-refactor-plan.md) |
 
 ---
@@ -62,4 +62,4 @@ docs/
 4. **¿Deseas maquetar vistas o respetar el diseño artesanal?**  
    Consulta el [Sistema de Diseño](./design-system/README.md) y el [Manual de Identidad Visual](./design-system/brand-identity.md).
 5. **¿Deseas ejecutar y reportar pruebas automatizadas?**  
-   Consulta el [Protocolo de Testing](./testing/README.md) y los reportes de las subfases [3.1](./testing/subfase-3.1-core.md), [3.2](./testing/subfase-3.2-auth.md) y [3.3](./testing/subfase-3.3-usuarios.md).
+   Consulta el [Protocolo de Testing](./testing/README.md) y los reportes de las subfases [3.1](./testing/subfase-3.1-core.md), [3.2](./testing/subfase-3.2-auth.md), [3.3](./testing/subfase-3.3-usuarios.md) y [3.4](./testing/subfase-3.4-creaciones.md).

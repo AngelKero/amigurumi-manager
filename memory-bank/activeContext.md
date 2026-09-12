@@ -1,27 +1,46 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
-## Hito Completado & Verificado: Modularización Integral de la Documentación & Erradicación de Monolitos (Zero Monoliths)
+## Hito Completado & Verificado: Subfase 3.4: Catálogo, Creaciones & Ciclo de Vida de Imágenes (Fase 3)
 
 - **User Request:**
-  - _"Al chile te lo tengo que decir, haz estado creando monilitos, pero no de codigo, si no de documentacion, debes de analizar como acomodar mejor la carpeta docs, crear carpetas, por cada archivo grande revisar si se puede separar en mas documentos y navegar por indices, etc. Usa alguna herramienta o skill para eso, sigue estadarades, si no busca alguna skill en internet. Y despues de todo eso actualiza tu memory bank y tus rules y workflows"_
-- **Estado:** **100% COMPLETADO, VERIFICADO Y GUARDAGIRADO**
-- **Alcance Implementado y Verificado:**
-  1. **Estructura Modular por Dominios (`docs/`):**
-     - `docs/README.md`: Hub maestro de navegación con tarjetas visuales, enlaces relativos y mapa de navegación.
-     - `docs/architecture/`: Documentación de arquitectura limpia (`README.md`, `phase-3-plan.md`, `contracts.md`, `security.md`).
-     - `docs/architecture/decisiones/`: Registro formal de Decisiones de Arquitectura (ADRs) numerados del `ADR-001` al `ADR-015` con índice en `decisiones/README.md`.
-     - `docs/api/`: Contratos de endpoints REST por recurso (`README.md`, `auth.md`, `creaciones.md`, `pedidos.md`, `usuarios.md`).
-     - `docs/database/`: Modelo relacional y pruebas (`README.md` con ERD Mermaid físico, `schema.md`, `testing.md`).
-     - `docs/design-system/`: Tokens y activos visuales (`README.md`, `brand-identity.md`, `svg-assets.md`, `wireframes.md`, `audits.md`).
-     - `docs/testing/`: Protocolo de pruebas en 3 niveles y reportes ejecutivos (`README.md`, `subfase-3.1-core.md`, `subfase-3.2-auth.md`, `subfase-3.3-usuarios.md`, `qa-audit-report.md`).
-     - `docs/archive/`: Wireframes históricos y planes consolidados previos.
-  2. **Erradicación Total de Monolitos:**
-     - Eliminados los 19 archivos planos antiguos (`docs/api-design.*`, `docs/phase-3-*`, `docs/database-schema.*`, `docs/data-model.*`, `docs/database-testing.*`, `docs/auth-flow.*`, `docs/identidad-visual.md`, `docs/svg-assets-and-helper.md`, `docs/wireframes.*`, `docs/ui-ux-*`).
-  3. **Guardarraíl en Reglas y Workflows:**
-     - Añadido **Documentation Architecture Guardrail (Zero Monoliths)** en `.agents/rules/general.md` y `.agents/workflows/general.md`.
-  4. **Estado Actual del Proyecto:**
-     - Subfases 3.1, 3.2 y 3.3 completadas y verificadas al 100% con 267/267 aserciones aprobadas.
-     - Subfase 3.4 (Catálogo y Ciclo de Vida de Creaciones) completamente planificada y especificada, en compás de espera de aprobación explícita del usuario para iniciar codificación.
+  - _"Si empieza"_ (Aprobación explícita para ejecutar la Subfase 3.4).
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.5)**
+- **Alcance Implementado y Verificado de la Subfase 3.4:**
+  1. **`App\Repositories\CreacionRepository` (`app/Repositories/CreacionRepository.php`):**
+     - Capa de persistencia PDO con 100% prepared statements parametrizados sobre SQLite.
+     - Métodos de búsqueda hidratada por ID con objeto anidado de artesano creador (`artesano: { id, username }`).
+     - Consultas de catálogo paginado con filtros combinables (`categoria`, `artesano_id`, `precio_min`, `precio_max`, `busqueda`, `es_sobre_encargo`, `solo_en_stock`, `activo`), ordenación dinámica (`recientes`, `precio_asc`, `precio_desc`, `nombre_asc`, `stock_desc`) y paginación tipada con `PaginationHelper`.
+     - Endpoint / método de agregación `findActiveArtisansWithCreations()` conforme a **ADR-014**.
+     - Mutaciones atómicas DDL: `create()`, `update()`, `softDelete()`, `restore()`, `adjustStock()`, `toggleCommission()`.
+  2. **`App\Services\CreacionService` (`app/Services/CreacionService.php`):**
+     - Validaciones exhaustivas de dominio para los 10 campos de la ficha técnica.
+     - Enriquecimiento monetario dual vía `CurrencyHelper` (`precio_formateado`, `costo_formateado`, `margen_bruto_porcentaje`, `retorno_por_hora_formateado`).
+     - Subida de imágenes protegida con validación de tipo MIME real (`finfo`/`mime_content_type`), tamaño $\le 5\text{MB}$ y nombres criptográficos en `uploads/`.
+     - Fallback automático a vector SVG temático representativo de `assets/svg/piezas/` cuando no se adjunta archivo.
+     - **Regla de Oro ADR-008:** Eliminación física con `unlink()` del archivo anterior únicamente al reemplazar foto en edición (`updateCreation`), y **CERO `unlink()` en baja lógica (`deleteCreation`)**, preservando fotos para pedidos históricos.
+     - **Prevención IDOR ADR-007:** Salvaguarda `ensureArtisanOwnership()` que restringe modificaciones al artesano creador de la pieza (`artesano_id === user.id`) o al administrador global (`admin`), respondiendo con HTTP 403 Forbidden a terceros.
+     - **Restauración ADR-015:** Reactivación formal de creaciones dadas de baja (`activo = 1`, `eliminado_en = NULL`), con detección de colisión HTTP 409 si ya está activa.
+  3. **Suite Completa de 9 Controladores REST Delgados en `api/creaciones/`:**
+     - `api/creaciones/index.php` (GET público con filtros, orden y paginación).
+     - `api/creaciones/artesanos.php` (GET público de artesanos activos conforme a ADR-014).
+     - `api/creaciones/detalle.php` (GET público por `?id=X` con 404 si no existe o está inactiva).
+     - `api/creaciones/crear.php` (POST, `RoleGuard::artisanOrAdmin()`, multipart/form-data y JSON).
+     - `api/creaciones/actualizar.php` (POST, auth + salvaguarda IDOR).
+     - `api/creaciones/eliminar.php` (POST, auth + salvaguarda IDOR, baja lógica retornando `{"id": X, "activo": 0}`).
+     - `api/creaciones/restaurar.php` (POST, auth + salvaguarda IDOR, reactivación retornando `{"id": X, "activo": 1}`).
+     - `api/creaciones/ajustar-stock.php` (POST, auth + salvaguarda IDOR, retornando `{"id": X, "cantidad_stock": Y}`).
+     - `api/creaciones/toggle-encargo.php` (POST, auth + salvaguarda IDOR, retornando `{"id": X, "es_sobre_encargo": Z}`).
+  4. **Suite Automatizada de Pruebas CLI & HTTP (`tests/test-subfase-3.4.php`):**
+     - **126 / 126 aserciones aprobadas exitosamente (100% OK en 157.72 ms)**.
+     - Registro de logs crudos en `logs/subfase-3.4-cli.log` y trazas HTTP curl completas en `logs/subfase-3.4-http.log`.
+     - **Total Acumulado Global:** **393 / 393 aserciones aprobadas (100% OK)** (Subfases 3.1: 93, 3.2: 69, 3.3: 105, 3.4: 126).
+  5. **Reporte Ejecutivo Formal de QA:**
+     - Documentado en [`docs/testing/subfase-3.4-creaciones.md`](../docs/testing/subfase-3.4-creaciones.md) con evidencias JSON, verificación SQLite y ADRs.
+  6. **Compás de Espera Inviolable:** Detención total para solicitar autorización explícita antes de la Subfase 3.5.
+
+---
+
+## Hito Previo: Modularización Integral de la Documentación & Erradicación de Monolitos (Zero Monoliths)
 
 ---
 
