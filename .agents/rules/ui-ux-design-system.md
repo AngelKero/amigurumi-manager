@@ -127,7 +127,7 @@ To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views
 18. **Advanced Catalog Filter Bar (`#filterPriceMin`, `#filterPriceMax`, `#filterArtisan`):**
     - Price range inputs (Min/Max) and artisan author dropdowns must operate in complete two-way harmony with the textile category chips and keyword search, backed by an instant "Limpiar Filtros" reset trigger.
 19. **Universal Currency Formatting Standard:**
-    - All monetary values must be stored in database integers (cents) and formatted symmetrically using `src/Utils/CurrencyHelper.php` (PHP) and `src/js/modules/currency.js` (ES Modules). Floating point arithmetic artifacts (e.g. `$12.300000004`) are strictly forbidden.
+    - All monetary values must be stored in database integers (cents) and formatted symmetrically using `app/Utils/CurrencyHelper.php` (PHP) and `src/js/modules/currency.js` (ES Modules). Floating point arithmetic artifacts (e.g. `$12.300000004`) are strictly forbidden.
 20. **Direct WhatsApp Commission Action & Tri-State Payment Badges:**
     - Orders featuring customer phone contacts must render a direct WhatsApp button (`https://wa.me/...`). Payment statuses must strictly follow the Tri-State model: `Pendiente` (Nordic Honey amber), `Anticipo 50%` (Nordic Spruce), and `Liquidado` (Forest Craft Green).
 21. **On-Demand Exclusivity Badge (`es_sobre_encargo === 1`):**

@@ -1,5 +1,40 @@
 # Active Context: Crochet Creations Micro-ERP & Catalog
 
+## Hito Activo: Integración de la Arquitectura de Testing en 3 Niveles & Protocolo Multi-Agente (Listo para Fase 3)
+
+- **User Request:**
+  - _"Si, incorporalo al plan maestro. Ademas asegurate que aunque abra otro chat con otra IA sea capaz de seguir este flujo de trabajo"_
+- **Estado:** **100% Blindado, Planificado, Documentado y Listo para Iniciar Subfase 3.1 (A la espera de autorización explícita)**
+- **Arquitectura de Testing, Reportes y Logs en 3 Niveles (Confirmada e Integrada):**
+  1. **Nivel 1 — Reportes Ejecutivos de QA (`docs/testing/`):**
+     - Markdown legible para humanos, versionado en Git.
+     - Índice maestro y plantilla homogénea en `docs/testing/README.md`.
+     - Reporte formal por subfase (`subfase-3.1-core.md` a `subfase-3.6-seguridad.md`) con matriz de aserciones, evidencias JSON y verificación de SQLite.
+  2. **Nivel 2 — Suites Automatizadas CLI (`tests/`):**
+     - PHP nativo sin dependencias de Composer (`tests/TestHelper.php`, `tests/test-subfase-3.X.php`).
+     - Aserciones unitarias y peticiones HTTP curl en vivo contra `http://localhost:8000`.
+     - Doble blindaje: guardia de entorno `php_sapi_name() === 'cli'` y bloqueo web 403 en `.htaccess`.
+  3. **Nivel 3 — Logs Crudos y Trazas (`logs/`):**
+     - Volcados completos de salida de consola y trazas HTTP (`logs/subfase-3.X-cli.log`, `logs/subfase-3.X-http.log`).
+     - Blindaje web total en `logs/.htaccess` (`Require all denied`).
+     - Ignorado en `.gitignore` (`/logs/*` preservando `.gitkeep` y `.htaccess`) para no contaminar Git.
+- **Protocolo de Trabajo Obligatorio para Cualquier Asistente de IA (Persistencia Multi-Sesión):**
+  - **REGLA 1 (Sin Bundling ni Saltos):** Se implementa estrictamente una subfase a la vez (de 3.1 a 3.6). Queda prohibido mezclar o adelantar subfases.
+  - **REGLA 2 (Ejecución y Volcado de Logs):** Al concluir los archivos PHP de la subfase, correr `php tests/test-subfase-3.X.php > logs/subfase-3.X-cli.log 2>&1` y pruebas curl hacia `logs/subfase-3.X-http.log`.
+  - **REGLA 3 (Generación de Reporte):** Redactar `docs/testing/subfase-3.X-[nombre].md` con los resultados medidos.
+  - **REGLA 4 (Sincronización de Memoria):** Actualizar `memory-bank/activeContext.md` y `memory-bank/progress.md`.
+  - **REGLA 5 (Compás de Espera Inviolable):** Detener totalmente la ejecución de herramientas, presentar el reporte al usuario y **solicitar su autorización explícita antes de escribir una sola línea de código de la siguiente subfase**.
+- **Archivos de Configuración y Reglas Actualizados:**
+  - `docs/phase-3-backend-architecture-plan.md` (Sección 2, 5.2 y Decisión #10).
+  - `docs/testing/README.md` (Creado con plantilla estándar).
+  - `docs/README.md` (Añadido dominio 5 de testing).
+  - `.htaccess` (Bloqueo 403 a `logs/` y `tests/`, y reenvío de `Authorization`).
+  - `.gitignore` (Preserva `logs/.gitkeep` y `.htaccess`, ignora logs crudos).
+  - `.agents/rules/general.md` y `.agents/workflows/general.md` (Reglas explícitas de subfases y testing gate).
+  - `memory-bank/` (Los 5 archivos alineados como única fuente de verdad).
+
+---
+
 ## Completed Milestone: Renombrado Global de Dominio (Amigurumis -> Creaciones) en Base de Datos, Código y Vistas
 
 - **User Request:**

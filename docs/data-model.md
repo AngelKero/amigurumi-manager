@@ -137,17 +137,28 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 ```
 proyecto-web/
-├── views/                          # Modular PHP templates and components
+├── app/                            # 🟢 Exclusive PHP Backend Layer (Protected by .htaccess)
+│   ├── autoload.php               # Native PSR-4 autoloader & ErrorHandler registration
+│   ├── config.php                 # Centralized configuration (App\Core\Config)
+│   ├── Core/                      # Database (PDO Singleton), ErrorHandler, Request, Response, TokenManager
+│   ├── Repositories/              # CreacionRepository, PedidoRepository, UsuarioRepository (Isolated SQL)
+│   ├── Services/                  # AuthService, CreacionService, PedidoService, UsuarioService
+│   ├── Middleware/                # AuthGuard (Bearer tokens) and RoleGuard (RBAC)
+│   └── Utils/                     # CurrencyHelper.php, PaginationHelper.php, SvgHelper.php
+├── api/                            # 🌐 Thin REST controllers by thematic subfolders
+│   ├── auth/                      # login.php, logout.php, me.php
+│   ├── creaciones/                # index.php, detalle.php, crear.php, actualizar.php, eliminar.php, etc.
+│   ├── pedidos/                   # index.php, solicitar.php, crear.php, cambiar-estado.php, cancelar.php
+│   └── usuarios/                  # index.php, crear.php, cambiar-rol.php
+├── views/                          # Modular PHP templates and components (Server-Side Rendering)
 │   ├── layouts/main.php            # Master layout (<head>, nav, modals, footer)
-│   ├── components/                 # Modals, navbar, cards, footer
+│   ├── components/                 # Modals, navbar, sidebar, footer, reusable stitched cards
 │   └── pages/                      # Page views (catalog, detail, form, orders, users, creaciones)
-├── src/                            # Modular source code
+├── src/                            # 🔵 Frontend Only (No PHP files)
 │   ├── css/                        # ITCSS modular styling (01-settings to 04-components)
-│   ├── js/                         # Native ES Modules (main.js and modules/)
-│   └── Utils/                      # Shared utilities (CurrencyHelper.php, SvgHelper.php)
-├── api/                            # Lightweight JSON controllers (Phase 3/4)
-├── database/                       # SQLite physical database and seed.sql
-├── uploads/                        # Real uploaded item photography
-└── docs/                           # Centralized documentation repository
+│   └── js/                         # Native ES Modules (main.js and modules/)
+├── database/                       # Physical SQLite database (database.sqlite) and DDL (seed.sql)
+├── uploads/                        # Real uploaded item photography and thumbnails
+└── docs/                           # Centralized technical documentation hub
 ```
 

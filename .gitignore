@@ -37,10 +37,13 @@ database/database.sqlite
 /uploads/*
 !/uploads/.gitkeep
 
-# Registros y Logs de Errores
+# Registros, Logs de Pruebas y Trazas
 *.log
 error_log
 php_errors.log
+/logs/*
+!/logs/.gitkeep
+!/logs/.htaccess
 
 # Archivos de Entorno y Temporales
 .env

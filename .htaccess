@@ -1,28 +1,37 @@
 # ==============================================================================
-# Apache Web Server Security Configuration - Amigurumi Micro-ERP
+# Apache Web Server Security Configuration - Crochet Manager Micro-ERP
 # ==============================================================================
 
 # 1. Disable Directory Indexing / Directory Browsing
 Options -Indexes
 
 # ------------------------------------------------------------------------------
-# 2. Strictly Block Direct Web Access to Sensitive Directories
-#    (database/ and memory-bank/)
+# 2. Forward HTTP Authorization Header (FastCGI / Apache Bearer Token Pass)
 # ------------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # Return 403 Forbidden for any request attempting to access database/ or memory-bank/
-    RewriteRule ^(database|memory-bank)(/.*)?$ - [F,L,NC]
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 3. Strictly Block Direct Web Access to Sensitive Directories
+#    (app/, database/, memory-bank/, logs/, tests/)
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Return 403 Forbidden for any request attempting to access protected folders
+    RewriteRule ^(app|database|memory-bank|logs|tests)(/.*)?$ - [F,L,NC]
 </IfModule>
 
 <IfModule mod_authz_core.c>
-    <DirectoryMatch "^.*/(database|memory-bank)(/.*)?$">
+    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests)(/.*)?$">
         Require all denied
     </DirectoryMatch>
 </IfModule>
 
 <IfModule !mod_authz_core.c>
-    <DirectoryMatch "^.*/(database|memory-bank)(/.*)?$">
+    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests)(/.*)?$">
         Order allow,deny
         Deny from all
     </DirectoryMatch>

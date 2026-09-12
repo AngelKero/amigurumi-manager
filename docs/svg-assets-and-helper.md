@@ -4,7 +4,7 @@
 
 Para dotar a **Crochet Manager** de una identidad visual artesanal, táctil y coherente con el sistema de diseño **"Algodón Nórdico"**, se ha implementado una biblioteca completa de gráficos vectoriales SVG hechos a mano, organizados archivo por archivo en una estructura limpia bajo `assets/svg/`.
 
-Adicionalmente, bajo los principios de **Clean Code & Clean Architecture**, se ha desarrollado la utilidad `App\Utils\SvgHelper` en `src/Utils/SvgHelper.php` junto con funciones globales de acceso (`svg()` y `svg_url()`) que permiten renderizar o enlazar cualquier vector de manera inmediata, con inyección segura de atributos HTML, fusión de clases CSS y caché en memoria para alto rendimiento.
+Adicionalmente, bajo los principios de **Clean Code & Clean Architecture**, se ha desarrollado la utilidad `App\Utils\SvgHelper` en `app/Utils/SvgHelper.php` (reubicada desde `src/Utils/` para dejar `src/` 100% exclusivo para frontend) junto con funciones globales de acceso (`svg()` y `svg_url()`) que permiten renderizar o enlazar cualquier vector de manera inmediata, con inyección segura de atributos HTML, fusión de clases CSS y caché en memoria para alto rendimiento.
 
 ---
 
@@ -57,7 +57,7 @@ assets/
 
 ## 3. Catálogo de Recursos Vectoriales (31 Archivos)
 
-### 3.1. Amigurumis de Catálogo (`assets/svg/amigurumis/`)
+### 3.1. Piezas de Catálogo (`assets/svg/piezas/`)
 
 | Slug / Nombre | ViewBox | Temática / Descripción |
 | :--- | :---: | :--- |
@@ -69,6 +69,8 @@ assets/
 | `medusa-magica` | `0 0 400 300` | Medusa marina con tentáculos ondulados en tonos lavanda y menta. |
 | `pinguino-bufanda` | `0 0 400 300` | Pingüino invernal con gorrito de pompón y bufanda a rayas. |
 | `hongo-bosque` | `0 0 400 300` | Hongo del bosque con sombrero rojo terracota y motas bordadas. |
+| `cardigan-granny` | `0 0 500 500` | Cardigan artesanal confeccionado con cuadros tradicionales granny squares florales. |
+| `tote-bag` | `0 0 500 500` | Bolso tote boho tejido en trapillo suave con textura calada y asas resistentes. |
 
 ### 3.2. Herramientas Artesanales (`assets/svg/tools/`)
 

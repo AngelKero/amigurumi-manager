@@ -43,7 +43,7 @@
 ### 2.3. Orquestación JavaScript Frontend
 - **Cero dependencias externas:** Implementado con Vanilla JavaScript estándar mediante módulos ES (`type="module"`).
 - **Guardias de Inicialización Condicional:** Cada módulo (`auth.js`, `catalog.js`, `creaciones.js`, `detail.js`, `orders.js`, `users.js`, `margin-calculator.js`) evalúa la existencia de sus contenedores raíz antes de operar en el DOM, previniendo errores de `null pointer` en la consola.
-- **Soporte Monetario Canónico:** Sincronización exacta entre `src/Utils/CurrencyHelper.php` y `src/js/modules/currency.js` operando con enteros en centavos.
+- **Soporte Monetario Canónico:** Sincronización exacta entre `app/Utils/CurrencyHelper.php` (reubicado desde `src/Utils/` en Fase 3) y `src/js/modules/currency.js` operando con enteros en centavos.
 
 ---
 

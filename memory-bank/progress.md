@@ -25,7 +25,7 @@
 | **Dimensions Layout Resilience** | Envolvente Flexible y Píldora Anti-Desbordamiento para Dimensiones | **Completed & Verified** | Resuelto el colapso visual de dimensiones largas en tarjetas de catálogo e inventario. Creación de `.card-product-meta` con `flex-wrap: wrap` y `gap`, blindaje `white-space: nowrap` en `.badge-textile-tag` y nueva píldora `.card-product-dimension` con truncado elíptico protector y salto de línea adaptativo. |
 | **Multi-Artisan Platform Copywriting** | Plataforma Colaborativa Multi-Artesano & Calidad de Plataforma | **Completed & Verified** | Modificación integral de textos y contenidos: erradicadas promesas centralizadas de taller y plazos rígidos ("5-7 d"). Posicionamiento como plataforma abierta y Micro-ERP colaborativo para creadores independientes autónomos. Reorientación del compromiso de calidad hacia la plataforma (fichas transparentes, contacto directo WhatsApp, herramientas de costeo ético y perfiles verificados). |
 | **Usuarios Header Unification** | Unificación Visual del Encabezado en `usuarios.php` | **Completed & Verified** | Sustituida la cabecera oscura `.artisan-panel-banner` por `.artisan-module-header.card-stitched` con fondo porcelana suave, tipografía Fraunces de alto contraste (`#1E252D`), etiqueta textil pespunteada y botones nórdicos oficiales (`btn-craft-primary`, `btn-craft-outline`). 100% idéntico y homogéneo con `creaciones.php` y `pedidos.php`. |
-| **Phase 3** | Backend & Connection (Clean Architecture) | **Awaiting Explicit Approval** | Implement `src/` modular backend (Autoloader, Singleton Database, Repositories/DAO, Services, Middleware) and `api/` controllers. |
+| **Phase 3** | Backend & Connection in `app/` (Clean Architecture) | **Plan 100% Complete & Detailed (Awaiting Execution Approval)** | Implement modular backend in dedicated `app/` directory (6 sequential subphases: 3.1 Base/Core, 3.2 Auth/Bearer, 3.3 Users/RBAC, 3.4 Creaciones/Catalog, 3.5 Pedidos/Transactions, 3.6 Comprehensive Audit) and thin controllers in `api/`. Incorporates 5 technical standards and mandatory 3-tier testing gate (CLI tests in `tests/`, raw output in `logs/`, executive reports in `docs/testing/`). |
 | **Phase 4** | CRUD Operations & Fullstack Wiring | **Pending** | Wire modular frontend with clean backend endpoints via AJAX fetch. |
 | **Phase 5** | Documentation & Final Delivery | **In Progress (README & Docs Hub created)** | Created `README.md` and master documentation hub `docs/README.md`. |
 
@@ -50,8 +50,8 @@
 - 100% de archivos PHP (34 archivos) y JS validados con `php -l` y `node --check` con 0 errores.
 
 ## What's Left to Build
-- Phase 3: Modular Backend (`src/Core/`, `src/Database/`, `src/Middleware/`, `src/Services/`, `src/Repositories/`).
-- Phase 4: Modular API endpoints (`api/`) and full AJAX integration.
+- Phase 3: Modular Backend in `app/` (`app/autoload.php`, `app/config.php`, `app/Core/`, `app/Repositories/`, `app/Services/`, `app/Middleware/`, `app/Utils/`) and REST controllers in `api/` (`api/auth/`, `api/creaciones/`, `api/pedidos/`, `api/usuarios/`).
+- Phase 4: Fullstack AJAX wiring between `src/js/modules/` and `api/`.
 
 ## Known Issues / Blockers
-- None. Database, views, components, styles, scripts, and documentation are 100% aligned, tested, and verified under the generic crochet / creaciones domain. Ready for Phase 3 when user instructs.
+- None. Database, views, components, styles, scripts, and documentation are 100% aligned, tested, and verified under the generic crochet / creaciones domain. Master Architecture Plan in `docs/phase-3-backend-architecture-plan.md` is 100% ready for Phase 3 when user instructs.

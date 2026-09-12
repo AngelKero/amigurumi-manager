@@ -137,17 +137,28 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 
 ```
 proyecto-web/
-├── views/                          # Plantillas y componentes modulares PHP
+├── app/                            # 🟢 Capa exclusiva de Backend PHP (Protegida por .htaccess)
+│   ├── autoload.php               # Autocargador PSR-4 nativo & registro de ErrorHandler
+│   ├── config.php                 # Configuración centralizada (App\Core\Config)
+│   ├── Core/                      # Database (PDO Singleton), ErrorHandler, Request, Response, TokenManager
+│   ├── Repositories/              # CreacionRepository, PedidoRepository, UsuarioRepository (SQL aislado)
+│   ├── Services/                  # AuthService, CreacionService, PedidoService, UsuarioService
+│   ├── Middleware/                # AuthGuard (Bearer tokens) y RoleGuard (RBAC)
+│   └── Utils/                     # CurrencyHelper.php, PaginationHelper.php, SvgHelper.php
+├── api/                            # 🌐 Controladores REST delgados por subcarpetas temáticas
+│   ├── auth/                      # login.php, logout.php, me.php
+│   ├── creaciones/                # index.php, detalle.php, crear.php, actualizar.php, eliminar.php, etc.
+│   ├── pedidos/                   # index.php, solicitar.php, crear.php, cambiar-estado.php, cancelar.php
+│   └── usuarios/                  # index.php, crear.php, cambiar-rol.php
+├── views/                          # Plantillas y componentes modulares PHP (Server-Side Rendering)
 │   ├── layouts/main.php            # Layout maestro (<head>, nav, modals, footer)
-│   ├── components/                 # Modales, navbar, tarjetas y footer
+│   ├── components/                 # Modales, navbar, sidebar, footer y tarjetas reutilizables
 │   └── pages/                      # Vistas de contenido (catálogo, detalle, formulario, pedidos, usuarios, creaciones)
-├── src/                            # Código fuente modular protegido
+├── src/                            # 🔵 Exclusivo Frontend (Sin archivos PHP)
 │   ├── css/                        # Estilos modulares ITCSS (01-settings a 04-components)
-│   ├── js/                         # JavaScript nativo en ES Modules (main.js y modules/)
-│   └── Utils/                      # Utilidades compartidas (CurrencyHelper.php, SvgHelper.php)
-├── api/                            # Controladores JSON livianos (Fase 3/4)
-├── database/                       # Base de datos SQLite y seed.sql
-├── uploads/                        # Archivos de imágenes reales
+│   └── js/                         # JavaScript nativo en ES Modules (main.js y modules/)
+├── database/                       # Base de datos SQLite (database.sqlite) y DDL (seed.sql)
+├── uploads/                        # Archivos de imágenes reales y miniaturas
 └── docs/                           # Documentación técnica centralizada
 ```
 

@@ -1,57 +1,60 @@
 # Arquitectura de Autenticación y Seguridad de Sesiones
 
-Este documento describe el ciclo de vida de autenticación de usuarios, la estrategia de cifrado de contraseñas, el control de acceso basado en sesiones de PHP y la vinculación de autoría para el sistema Micro-ERP.
+Este documento describe el ciclo de vida de autenticación de usuarios, la emisión de tokens Bearer criptográficos HMAC-SHA256, el control de acceso desacoplado mediante `App\Middleware\AuthGuard`, y la vinculación de autoría para la plataforma colaborativa Crochet Manager.
 
 ---
 
-## 1. Diagrama del Ciclo de Vida de Autenticación
+## 1. Diagrama del Ciclo de Vida de Autenticación Stateless (Bearer Token)
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Usuario as Artesano / Admin
+    actor Usuario as Creador / Admin
     participant UI as Modal Navbar (Modal de Login)
-    participant Auth as Backend (api/login.php)
+    participant Auth as Backend (api/auth/login.php)
+    participant TM as TokenManager (HMAC-SHA256)
     participant DB as SQLite (usuarios)
-    participant Guard as Guardia de Sesión (auth_guard.php)
-    participant API as Endpoints (api/crear.php, api/usuarios.php)
+    participant Guard as Middleware (App\Middleware\AuthGuard)
+    participant API as Endpoints (api/creaciones/crear.php, api/usuarios/index.php)
 
-    Usuario->>UI: Clic en "Iniciar Sesión" en barra superior (abre modal)
-    Usuario->>UI: Ingresa usuario y contraseña, envía formulario modal
-    UI->>Auth: Envía credenciales vía POST (JSON por fetch)
+    Usuario->>UI: Clic en "@admin" o "Iniciar Sesión" en navbar
+    Usuario->>UI: Ingresa username y password, envía formulario modal
+    UI->>Auth: POST /api/auth/login.php { username, password }
     Auth->>DB: SELECT * FROM usuarios WHERE username = ?
-    DB-->>Auth: Retorna registro con password_hash
-    Auth->>Auth: password_verify(contrasenaPlana, password_hash)
+    DB-->>Auth: Retorna registro con password_hash y rol
+    Auth->>Auth: password_verify(password, password_hash)
     alt Credenciales Inválidas
-        Auth-->>UI: HTTP 401 Unauthorized ("Credenciales inválidas")
+        Auth-->>UI: HTTP 401 Unauthorized (JSON: "Credenciales inválidas")
         UI->>UI: Muestra alerta en el modal sin recargar página
     else Credenciales Válidas
-        Auth->>Auth: session_start() y session_regenerate_id(true)
-        Auth->>Auth: Almacena user_id, username, rol en $_SESSION
-        Auth-->>UI: HTTP 200 OK (Cookie de sesión establecida)
-        UI->>UI: Cierra modal y transforma el Navbar mostrando controles de Admin/Artesano
+        Auth->>TM: TokenManager::generate([ sub: id, username, rol ])
+        TM-->>Auth: Retorna token Bearer firmado (Header.Payload.Signature)
+        Auth-->>UI: HTTP 200 OK (JSON: token, token_type: "Bearer", expires_in: 86400, user)
+        UI->>UI: Almacena token en localStorage / memoria y actualiza navbar
     end
 
-    Note over UI,API: Operaciones Protegidas (Crear Amigurumi / Gestión de Usuarios)
-    UI->>API: POST /api/crear.php (payload sin ID de usuario)
-    API->>Guard: check_authenticated()
-    alt Sesión No Iniciada / Expirada
-        Guard-->>UI: HTTP 401 Unauthorized (Despliega modal de login)
-    else Autenticado Exitosamente
-        Guard-->>API: Permite ejecución
-        API->>API: Extrae artesano_id desde $_SESSION['user_id']
-        API->>DB: INSERT INTO amigurumis (artesano_id, ...) VALUES (?, ...)
-        DB-->>API: ID del registro creado
-        API-->>UI: Respuesta HTTP 201 Created Exitosa
+    Note over UI,API: Operaciones Protegidas (Crear Pieza, Ajustar Stock, Usuarios)
+    UI->>API: POST /api/creaciones/crear.php (Header: "Authorization: Bearer <token>")
+    API->>Guard: AuthGuard::handle()
+    alt Token Ausente o Inválido / Expirado
+        Guard-->>UI: HTTP 401 Unauthorized (JSON: "Token inválido o expirado")
+        UI->>UI: Redirige o despliega modal de login
+    else Token Verificado Exitosamente
+        Guard->>Guard: Request::setUser(payload)
+        Guard-->>API: Permite ejecución del controlador
+        API->>API: Extrae artesano_id desde Request::user()['sub']
+        API->>DB: INSERT INTO creaciones (artesano_id, ...) VALUES (?, ...)
+        DB-->>API: ID de la creación insertada
+        API-->>UI: Respuesta HTTP 201 Created (JSON estandarizado)
     end
 ```
 
 ---
 
-## 2. Estrategia de Cifrado de Contraseñas
+## 2. Estrategia de Cifrado y Seguridad de Contraseñas
 - **Algoritmo:** Función nativa de PHP `password_hash($password, PASSWORD_DEFAULT)`, que implementa hashing seguro bcrypt/Argon2 con salting criptográfico automatizado.
 - **Verificación:** Comparación resistente a ataques de temporización mediante `password_verify($password, $stored_hash)`.
-- **Semilla Inicial (Seeder):** En `setup.php`, se insertará el usuario administrador por defecto con un hash generado dinámicamente:
+- **Semilla Inicial (Seeder):** En `setup.php`, se inserta el usuario administrador por defecto con un hash generado dinámicamente:
   ```php
   <?php
   $adminHash = password_hash('admin123', PASSWORD_DEFAULT);
@@ -61,46 +64,67 @@ sequenceDiagram
 
 ---
 
-## 3. Configuración de Seguridad de Sesiones y Vinculación de Autoría
-Todo script que valide sesiones debe inicializarlas aplicando directivas de seguridad para cookies:
-```php
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_set_cookie_params([
-        'lifetime' => 86400, // 24 horas de vigencia
-        'path' => '/',
-        'domain' => '',
-        'secure' => false,   // Cambiar a true al desplegar en HTTPS
-        'httponly' => true,  // Previene robo de sesión mediante ataques XSS
-        'samesite' => 'Lax'  // Protección contra solicitudes falsificadas (CSRF)
-    ]);
-    session_start();
-}
-```
+## 3. Emisión y Verificación de Tokens Bearer (`App\Core\TokenManager`)
+
+La autenticación de la API opera de forma desacoplada y sin estado (stateless):
+
+1. **Estructura Ligera del Token (`Header.Payload.Signature`):**
+   - **Header:** `{"alg":"HS256","typ":"JWT"}` codificado en Base64URL.
+   - **Payload:** Datos del usuario autenticado con vigencia de 24 horas (`iat` y `exp`).
+     ```json
+     {
+       "sub": 1,
+       "username": "admin",
+       "rol": "admin",
+       "iat": 1789178000,
+       "exp": 1789264400
+     }
+     ```
+   - **Firma:** `hash_hmac('sha256', "$header.$payload", Config::get('auth.jwt_secret'))`.
+2. **Validación Inmune a Ataques de Temporización:**
+   - La verificación compara la firma calculada contra la firma enviada utilizando `hash_equals()`.
+   - Se comprueba estrictamente que `payload.exp > time()`.
+3. **Paso de Cabecera en Apache / FastCGI:**
+   - Configurado en `.htaccess` para evitar que servidores HTTP descarten la cabecera:
+     ```apache
+     RewriteCond %{HTTP:Authorization} .
+     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+     ```
 
 ### Regla de Atribución de Identidad:
-- Al registrar una pieza mediante `POST /api/crear.php`, el backend toma `$_SESSION['user_id']` y lo asigna de forma obligatoria a `artesano_id`.
-- El cliente no puede proporcionar `artesano_id` en el cuerpo de la solicitud JSON; cualquier valor enviado por el cliente es ignorado para evitar la suplantación de autoría.
+- Al registrar una creación mediante `POST /api/creaciones/crear.php`, el backend extrae obligatoriamente el `artesano_id` desde el token validado (`Request::user()['sub']`).
+- El cliente **no puede manipular** el `artesano_id` en el cuerpo de la solicitud JSON; cualquier valor enviado es ignorado para salvaguardar la autoría del creador.
 
 ---
 
 ## 4. Matriz de Endpoints Públicos vs. Protegidos
 
-| Recurso / Endpoint | Nivel de Acceso | Requisito de Autenticación | Propósito |
-| :--- | :--- | :--- | :--- |
-| `index.php` (Vista de Catálogo) | **Público** | Ninguno | Permite a clientes y visitantes explorar creaciones y filtrar piezas. |
-| `detalle.php` (Detalle de Pieza) | **Público** | Ninguno | Muestra especificaciones, autoría, stock y modal de compra directa. |
-| `api/solicitar_pedido.php` | **Público** | Ninguno | Checkout de clientes; descuenta stock y fija precio atómicamente. |
-| `api/leer.php` | **Público** | Ninguno | Retorna el catálogo o una pieza en formato JSON con nombre de artesano. |
-| `api/login.php` | **Público** | Solo invitados (Modal en Navbar) | Valida credenciales e inicia la sesión del usuario. |
-| `api/logout.php` | **Protegido** | Autenticado | Destruye la sesión activa y limpia las cookies. |
-| `formulario.php` (Crear / Editar) | **Protegido** | Sesión requerida | Creación y edición con subida de imágenes a `/uploads/`. |
-| `api/crear.php` | **Protegido** | Sesión requerida (`admin` o `artesano`) | Registra amigurumi, guarda imagen en `/uploads`, asigna `artesano_id`. |
-| `api/actualizar.php` | **Protegido** | Sesión requerida (`admin` o autor) | Modifica catálogo, costos, inventario y actualiza archivo de imagen. |
-| `api/eliminar.php` | **Protegido** | Sesión requerida (`admin`) | Elimina una pieza (sujeto a la regla `ON DELETE RESTRICT`). |
-| `usuarios.php` & `api/usuarios.php` | **Protegido** | Exclusivo rol `admin` | Directorio de artesanos, alta de cuentas y modificación de roles. |
-| `pedidos.php` & `api/pedidos.php` | **Protegido** | Sesión requerida (`admin`, `artesano`) | Dashboard de pedidos, registro manual, filtros y trazabilidad. |
-| `api/actualizar_pedido.php` | **Protegido** | Sesión requerida (`admin`, `artesano`) | Actualiza estado; reintegra stock si se marca como `'Cancelado'`. |
+| Recurso / Endpoint | Método | Nivel de Acceso | Requisito de Autenticación | Propósito |
+| :--- | :---: | :--- | :--- | :--- |
+| `index.php` (Catálogo) | `GET` | **Público** | Ninguno | Explorar creaciones de creadores independientes y filtrar. |
+| `detalle.php` (Ficha Técnica) | `GET` | **Público** | Ninguno | Muestra especificaciones, autoría, stock y modal de pedido. |
+| `api/creaciones/index.php` | `GET` | **Público** | Ninguno | Retorna catálogo paginado (12 ítems por defecto) y filtros. |
+| `api/creaciones/detalle.php` | `GET` | **Público** | Ninguno | Ficha técnica pública detallada por ID con formato dual. |
+| `api/pedidos/solicitar.php` | `POST` | **Público** | Ninguno | Checkout transaccional de clientes con reserva atómica de stock. |
+| `api/auth/login.php` | `POST` | **Público** | Invitados | Valida credenciales y emite el Bearer Token con 24h TTL. |
+| `api/auth/logout.php` | `POST` | **Protegido** | Bearer Token | Invalida el estado de autenticación en cliente/servidor. |
+| `api/auth/me.php` | `GET` | **Protegido** | Bearer Token | Retorna el perfil y rol del usuario autenticado en sesión. |
+| `creaciones.php` (Inventario) | `GET` | **Protegido** | Bearer / Sesión | Panel de gestión de piezas, stock y toggle de encargos. |
+| `formulario.php` (Crear / Editar) | `GET` | **Protegido** | Bearer / Sesión | Formulario con upload de imágenes y simulador de margen. |
+| `api/creaciones/crear.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Registra pieza, procesa foto o fallback SVG temático. |
+| `api/creaciones/actualizar.php` | `POST` | **Protegido** | `AuthGuard` (`admin` o autor) | Modifica catálogo, costos y elimina foto anterior con `unlink()`. |
+| `api/creaciones/eliminar.php` | `POST` | **Protegido** | `AuthGuard` (`admin` o autor) | Borrado de pieza (protegido por `ON DELETE RESTRICT`). |
+| `api/creaciones/ajustar-stock.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Incremento/decremento rápido in-situ (`+1` / `-1`). |
+| `api/creaciones/toggle-encargo.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Alternar modalidad de confección bajo encargo. |
+| `pedidos.php` (Control Pedidos) | `GET` | **Protegido** | Bearer / Sesión | Dashboard de pedidos con cards 3x/2x y WhatsApp. |
+| `api/pedidos/index.php` | `GET` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Listado paginado (20 ítems por defecto) con filtros. |
+| `api/pedidos/crear.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Registro de encargo manual acordado con el cliente. |
+| `api/pedidos/cambiar-estado.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Actualización de estado de producción o pago. |
+| `api/pedidos/cancelar.php` | `POST` | **Protegido** | `AuthGuard` (`admin`, `artesano`) | Cancelación con restitución física de inventario. |
+| `usuarios.php` (Comunidad) | `GET` | **Protegido** | Exclusivo rol `admin` | Directorio de creadores, colaboradores y roles RBAC. |
+| `api/usuarios/index.php` | `GET` | **Protegido** | `AuthGuard` + `RoleGuard: admin` | Directorio con métricas y conteo de creaciones. |
+| `api/usuarios/crear.php` | `POST` | **Protegido** | `AuthGuard` + `RoleGuard: admin` | Alta de nuevo creador o asistente. |
+| `api/usuarios/cambiar-rol.php` | `POST` | **Protegido** | `AuthGuard` + `RoleGuard: admin` | Modificación de rol con salvaguarda de cuenta raíz ID #1. |
 
 ---
 
@@ -108,5 +132,5 @@ if (session_status() === PHP_SESSION_NONE) {
 
 Para evitar condiciones de pérdida de gobierno del sistema (*admin lockout*):
 - **Regla Inviolable:** La cuenta principal con `id = 1` (`@admin`) bajo ninguna circunstancia puede ser degradada a rol `artesano` o `asistente`, ni eliminada del sistema.
-- **Validación en Cliente y Servidor:** Tanto el modal interactivo de edición de roles (`modal_editar_rol_usuario.php` y `users.js`) como el backend interceptan cualquier intento de modificar el rol del ID #1, rechazando la operación con una alerta informativa de salvaguarda de seguridad.
+- **Validación en Cliente y Servidor:** Tanto el modal interactivo de edición de roles (`modal_editar_rol_usuario.php` y `users.js`) como el servicio `UsuarioService.php` interceptan cualquier intento de modificar el rol del ID #1, rechazando la operación con error HTTP 403 y una alerta de salvaguarda de seguridad.
 

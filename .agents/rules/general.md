@@ -12,15 +12,24 @@ Development will strictly follow these sequential phases. You must halt complete
 - **Phase 2 - Layout & UI: PHP Component System & Design System (Completed & Verified):**
   Built modular PHP views (`views/layouts/main.php`, `views/components/`, `views/pages/`), entrypoints (`index.php`, `detalle.php`, `formulario.php`, `pedidos.php`, `usuarios.php`), ITCSS layered styles in `src/css/`, and ES modules in `src/js/`. Fully compliant with the "Algodón Nórdico" Design System rules (`.agents/rules/ui-ux-design-system.md`).
 
-- **Phase 3 - Backend & Connection: Clean Architecture (Awaiting Approval to Begin):**
-  Implement a modular backend in `src/` following Clean Architecture and SOLID principles:
-  - `src/Core/`: Base Controller, Request/Response abstractions, Session manager.
-  - `src/Database/`: Database singleton (`conexion.php` wrapping PDO with `PRAGMA foreign_keys = ON;` and `ERRMODE_EXCEPTION`).
-  - `src/Repositories/`: Data Access Objects (`AmigurumiRepository`, `PedidoRepository`, `UsuarioRepository`) using parameterized prepared statements.
-  - `src/Services/`: Business logic, atomic stock transactions, pricing rules, image lifecycle.
-  - `src/Middleware/`: `AuthGuard` protecting administrative and mutating routes with RBAC role verification (`admin`, `artesano`).
-  - `src/Utils/`: Shared helpers (`CurrencyHelper.php`).
-  - `api/`: Thin controllers/endpoints exposing RESTful JSON responses.
+- **Phase 3 - Backend & Connection: Clean Architecture in `app/` (Awaiting Approval to Begin):**
+  Implement a modular backend exclusively in `app/` (`src/` remains 100% frontend only) following Clean Architecture, SOLID principles, and 6 sequential subphases with mandatory CLI/HTTP testing and documentation gates:
+  - `app/autoload.php`: PSR-4 autoloader without Composer and global `ErrorHandler::register()`.
+  - `app/config.php` & `app/Core/Config.php`: Centralized configuration protected by `.htaccess`.
+  - `app/Core/`: `Database.php` (PDO SQLite Singleton with `PRAGMA foreign_keys = ON;`), `ErrorHandler.php` (zero HTML error leaks, JSON 500), `Request.php`, `Response.php` (JSON formatting & CORS `OPTIONS` 204), `TokenManager.php` (HMAC-SHA256 Bearer tokens, 24h TTL), `SessionManager.php`.
+  - `app/Repositories/`: `CreacionRepository.php`, `PedidoRepository.php`, `UsuarioRepository.php` using 100% parameterized prepared statements and pagination.
+  - `app/Services/`: `AuthService.php`, `CreacionService.php` (dual currency formatting, SVG fallback, `unlink()` lifecycle), `PedidoService.php` (atomic stock transactions, restitution on cancel), `UsuarioService.php` (RBAC, root admin ID #1 lockout).
+  - `app/Middleware/`: `AuthGuard.php` (Bearer token validation) and `RoleGuard.php` (`admin`, `artesano`, `asistente`).
+  - `app/Utils/`: `CurrencyHelper.php`, `PaginationHelper.php` (default 12 for creaciones, 20 for pedidos), `SvgHelper.php`.
+  - `api/`: Thin controllers organized by thematic subfolders (`api/auth/`, `api/creaciones/`, `api/pedidos/`, `api/usuarios/`).
+  - **Sequential Subphases:** 3.1 Base/Core Foundations, 3.2 Stateless Auth & Bearer Middleware, 3.3 User Management & RBAC, 3.4 Catalog & Creations Lifecycle, 3.5 Orders & Atomic Transactions, 3.6 Comprehensive Security & Regression Audit.
+  - **Mandatory 3-Tier Testing & Sign-off Gate for Any AI Assistant:**
+    At the conclusion of EACH subphase, the agent MUST:
+    1. Run native CLI test suite: `php tests/test-subfase-3.X.php > logs/subfase-3.X-cli.log 2>&1`.
+    2. Perform HTTP curl checks logging responses to `logs/subfase-3.X-http.log`.
+    3. Generate executive Markdown report in `docs/testing/subfase-3.X-[nombre].md` using the template in `docs/testing/README.md`.
+    4. Update `memory-bank/activeContext.md` and `memory-bank/progress.md`.
+    5. **HALT COMPLETELY:** Stop calling tools and await the user's explicit written approval before writing any code for the next subphase. Never bundle multiple subphases together.
 
 - **Phase 4 - CRUD Operations & Fullstack Wiring (Pending):**
   Wire the frontend ES modules (`src/js/modules/`) to the backend `api/` endpoints with asynchronous `fetch()`, handling server validation errors, optimistic feedback, and reactive state updates.
