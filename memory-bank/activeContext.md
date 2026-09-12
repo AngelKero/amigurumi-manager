@@ -2,9 +2,12 @@
 
 ## Hito Completado: Documentación Integral del Proceso de Todas las Fases (Fases 1 a 5 y Fase 0)
 
-- **User Request:**
-  - _"Quiero que pongas en la documentacion el proceso de todas las fases, no solo las de la fase 3 y sus subfases"_
-- **Estado:** **100% COMPLETADO Y VINCULADO (Zero Monoliths)**
+- **User Requests Recientes:**
+  - _"Quiero que pongas en la documentacion el proceso de todas las fases, no solo las de la fase 3 y sus subfases"_ (Completado).
+  - _"Hazme dos commits, uno con todo lo de la fase 3.4 y otro con lo ultimo que te acabo de pedir"_ (Completado: `54cae1a` y `cfca4d0`).
+  - _"actualiza el readme.md principal"_ (Completado y comprometido: `cc861a0`).
+  - _"Si empieza con la subfase 3.5"_ (**Autorización Concedida para Subfase 3.5**).
+- **Estado Actual:** **README.md principal actualizado al 100%. Listo para iniciar la codificación de la Subfase 3.5 (Pedidos, Transacciones Atómicas & WhatsApp).**
 - **Alcance Implementado:**
   1. **Documento Maestro de Ciclo de Vida (`docs/architecture/proceso-desarrollo-fases.md`):**
      - Detalle exhaustivo de la metodología Database-First y Clean Architecture a lo largo de todo el proyecto.
