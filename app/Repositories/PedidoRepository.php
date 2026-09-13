@@ -452,7 +452,7 @@ class PedidoRepository {
             $stockActual = (int)$pedido['cantidad_stock'];
             $esSobreEncargo = (int)$pedido['es_sobre_encargo'] === 1;
 
-            // 3. Restituir inventario físico (solo si la pieza no es puramente sobre encargo)
+            // 3. Restituir inventario físico (ADR-009)
             // Nota: Para piezas en catálogo físico, las unidades reservadas regresan a inventario
             $unidadesRestituidas = $cantidad;
             $stmtStock = $this->pdo->prepare('

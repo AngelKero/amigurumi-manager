@@ -12,6 +12,7 @@ Este directorio documenta la arquitectura técnica del backend de **Crochet Mana
 | :--- | :--- |
 | **[Proceso de Todas las Fases (1 a 5)](./proceso-desarrollo-fases.md)** | **Ciclo de vida integral del proyecto**: objetivos, metodologías, entregables y compuertas de las Fases 0 a 5. |
 | **[Plan Maestro de la Fase 3](./phase-3-plan.md)** | Hoja de ruta secuencial de las 6 subfases del backend (3.1 a 3.6), estado y compuertas de testing. |
+| **[Especificación Subfase 3.6 (Seguridad OWASP)](./subfase-3.6-auditoria-seguridad.md)** | **Auditoría Integral de Seguridad**: Desglose y especificación de las 5 sub-subfases (OWASP Top 10, SQLite y regresión). |
 | **[Contratos de Clases & Capas](./contracts.md)** | Responsabilidades y firmas de métodos para Repositorios, Servicios, Middleware y Helpers. |
 | **[Seguridad, Auth & RBAC](./security.md)** | Ciclo de vida de tokens Bearer HMAC-SHA256, matriz RBAC, protección IDOR y blindaje Apache. |
 | **[Registro de Decisiones (ADRs)](./decisiones/README.md)** | Índice con los 15 Architecture Decision Records individuales y numerados del proyecto. |

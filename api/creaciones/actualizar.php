@@ -56,6 +56,5 @@ try {
 } catch (InvalidArgumentException $e) {
     Response::error($e->getMessage(), 422);
 } catch (RuntimeException $e) {
-    $code = (int)$e->getCode() ?: 500;
-    Response::error($e->getMessage(), $code);
+    Response::error($e->getMessage(), (int)$e->getCode() ?: 500);
 }

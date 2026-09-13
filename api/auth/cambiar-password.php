@@ -31,7 +31,7 @@ $currentUser = AuthGuard::handle();
 // 4. Extracción de parámetros
 $body = Request::json();
 $passwordActual = (string)($body['password_actual'] ?? $body['current_password'] ?? '');
-$nuevaPassword = (string)($body['nueva_password'] ?? $body['new_password'] ?? '');
+$nuevaPassword = (string)($body['nueva_password'] ?? $body['password_nueva'] ?? $body['new_password'] ?? '');
 
 // 5. Delegación a la capa de servicio
 try {

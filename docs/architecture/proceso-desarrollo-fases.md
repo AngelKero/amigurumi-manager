@@ -182,14 +182,16 @@ Implementar una capa de backend modular, desacoplada, segura y tipada en `app/` 
    - `CreacionRepository`: Consultas de catálogo paginado, filtros combinables (categoría, precio min/max, búsqueda, encargo, stock), orden dinámico, y agregación de artesanos activos para `#filterArtisan` (**ADR-014**).
    - `CreacionService`: Validaciones de dominio de 10 campos de la ficha técnica, enriquecimiento monetario dual, fallback automático a vector SVG temático de `assets/svg/piezas/`, ciclo de vida de imágenes (reemplazo elimina foto anterior con `unlink()`; **baja lógica preserva la foto físicamente sin `unlink()`** para no corromper pedidos históricos - **ADR-008**), protección IDOR multi-artesano (**ADR-007**) y reactivación (**ADR-015**).
    - 9 controladores REST delgados en `api/creaciones/`.
-5. **Subfase 3.5: Pedidos, Transacciones Atómicas & Notificaciones WhatsApp** (⏳ *Siguiente Subfase*)
+5. **Subfase 3.5: Pedidos, Transacciones Atómicas & Notificaciones WhatsApp** (✅ **Completado: 139/139 Aserciones OK**)
    - `PedidoRepository`: Transacciones atómicas de stock con `BEGIN IMMEDIATE TRANSACTION`, consulta de pedidos aislada por artesano creador, actualización de estados de pedido y pago, y cancelación con restitución de inventario.
    - `PedidoService`: Validación de existencias en tiempo real, cálculo de precio final congelado en servidor (`precio * cantidad`), generación de enlaces dinámicos a WhatsApp con mensajes pre-redactados, y cancelación idempotente (HTTP 409 si ya estaba cancelado).
    - Controladores REST en `api/pedidos/` (`index.php`, `solicitar.php`, `crear.php`, `cambiar-estado.php`, `cancelar.php`).
-6. **Subfase 3.6: Auditoría Integral de Seguridad & Regresión Global** (⏳ *Pendiente*)
-   - Verificación OWASP Top Ten: inyección SQL (100% prepared statements), mitigación XSS (`htmlspecialchars` en frontend / sanitización de entrada), protección contra ataques de fuerza bruta y CSRF/CORS.
-   - Pruebas de estrés y concurrencia SQLite bajo múltiples peticiones simultáneas con `busy_timeout`.
-   - Ejecución consecutiva y encadenada de las suites de prueba 3.1 a 3.5 asegurando cero regresiones.
+6. **Subfase 3.6: Auditoría Integral de Seguridad OWASP, Rendimiento SQLite & Regresión Global** (Desglosada en 5 Sub-subfases - [Ver Especificación](./subfase-3.6-auditoria-seguridad.md)):
+   - **3.6.1 (OWASP A01 - Broken Access Control):** Control de acceso vertical RBAC (`admin`, `artesano`, `asistente`), prevención IDOR horizontal en creaciones y pedidos, salvaguarda ID #1 `@admin`, prevención de auto-eliminación activa, aislamiento de recursos inactivos y método 405 en los 25 controladores (✅ **Completado: 165/165 Aserciones OK**).
+   - **3.6.2 (OWASP A02 + A07 - Criptografía & Auth):** Integridad criptográfica HMAC-SHA256 con `hash_equals()`, ciclo de vida y TTL 24h, higiene bcrypt cost factor 10, mitigación timing attack con dummy hash, mensajes no enumerables, cero exposición de `password_hash`, políticas de contraseña ($\ge 6$ chars y temporales `Crochet!<hex>!`), revocación inmediata en bajas lógicas y logout stateless (🔄 **En Ejecución**).
+   - **3.6.3 (OWASP A03 + A08 - Inyección & Medios):** Blindaje SQLi 100% prepared statements, mitigación XSS, validación MIME binaria real (`finfo`), protección contra path traversal (`../../`) y desinfección SVG (⏳ *Pendiente*).
+   - **3.6.4 (OWASP A04 - Lógica & Precios):** Congelamiento de precios en servidor, aislamiento transaccional de existencias atómicas, cancelación idempotente y resiliencia UTF-8 4-byte (emojis 🧶🧸) (⏳ *Pendiente*).
+   - **3.6.5 (Rendimiento & Regresión):** Auditoría `EXPLAIN QUERY PLAN` sobre índices (`idx_*`), erradicación N+1, tolerancia `busy_timeout = 5000` y suite de regresión acumulada total (⏳ *Pendiente*).
 
 #### Protocolo de Testing en 3 Niveles (Inviolable):
 Al concluir cada subfase, se ejecutan obligatoriamente los 3 niveles antes de detenerse:

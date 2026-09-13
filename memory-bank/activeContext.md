@@ -1,28 +1,130 @@
-## Hito Completado & Verificado: Subfase 3.6.1: Acceso, Autorización, IDOR & Blindaje RBAC (Opción B)
+## Hito Activo: Compás de Espera Inviolable — Fase 3: Backend & Clean Architecture Completada al 100% (Subfase 3.6.5 Aprobada)
 
-- **User Request:**
-  - _"La opcion b"_ (Selección de la descomposición en 5 sub-subfases temáticas de alto impacto).
-- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (Aguardando Aprobación para Subfase 3.6.2)**
-- **Estructura Aprobada de las 5 Sub-subfases de la Subfase 3.6 (Opción B):**
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (141/141 Aserciones OK en 4642.67 ms)**.
+- **Total Acumulado Fase 3:** **1,307 / 1,307 Aserciones Aprobadas (100% OK en verde)**.
+- **Estructura Completada de las 5 Sub-subfases de la Subfase 3.6 (Opción B):**
   - **Subfase 3.6.1:** Acceso, Autorización, IDOR & Blindaje RBAC (OWASP A01:2021) — **COMPLETADA (165/165 Aserciones OK)**.
-  - **Subfase 3.6.2:** Criptografía, Autenticación & Protección de Datos Sensibles (OWASP A02 + A07) — **Siguiente hito**.
-  - **Subfase 3.6.3:** Inyección, Sanitización & Seguridad de Medios/Archivos (OWASP A03 + A08).
-  - **Subfase 3.6.4:** Lógica de Negocio, Precios, Stock Atómico & Casos Límite Multibyte (OWASP A04).
-  - **Subfase 3.6.5:** Rendimiento SQLite, Arquitectura Limpia & Regresión Global Acumulada.
-- **Alcance Implementado y Verificado (Subfase 3.6.1):**
-  1. Prevención IDOR Horizontal en Creaciones: Validación de que artesanos ajenos no pueden mutar piezas de otros creadores (HTTP 403 Forbidden).
-  2. Prevención IDOR Horizontal en Pedidos: Validación de que artesanos ajenos no pueden consultar, cambiar estado ni cancelar pedidos vinculados a piezas de otros creadores (HTTP 403 Forbidden).
-  3. Control de Acceso Vertical RBAC: Bloqueo de mutaciones administrativas para rol `asistente` (HTTP 403 Forbidden) y acceso público no autenticado a rutas privadas (HTTP 401 Unauthorized).
-  4. Salvaguarda Inmutable de Administrador Raíz (ID #1): Imposibilidad de alterar rol o eliminar al usuario ID #1 (HTTP 403 Forbidden).
-  5. Bloqueo de Auto-eliminación: Un administrador no puede auto-eliminarse en su propia sesión activa (HTTP 403 Forbidden).
-  6. Restricción de Métodos HTTP (405 Method Not Allowed): Respuestas apropiadas ante métodos erróneos en los 25 controladores de la API.
-  7. Aislamiento de Creaciones Inactivas y Usuarios Desactivados: Las creaciones con `activo = 0` no se filtran al catálogo público ni se exponen por ID (HTTP 404 Not Found), y los usuarios dados de baja son rechazados de inmediato.
+  - **Subfase 3.6.2:** Criptografía, Autenticación & Protección de Datos Sensibles (OWASP A02 + A07) — **COMPLETADA (161/161 Aserciones OK)**.
+  - **Subfase 3.6.3:** Inyección, Sanitización & Seguridad de Medios/Archivos (OWASP A03 + A08) — **COMPLETADA (157/157 Aserciones OK)**.
+  - **Subfase 3.6.4:** Lógica de Negocio, Precios, Stock Atómico & Casos Límite Multibyte (OWASP A04) — **COMPLETADA (151/151 Aserciones OK)**.
+  - **Subfase 3.6.5:** Rendimiento SQLite, Arquitectura Limpia & Regresión Global Acumulada — **COMPLETADA (141/141 Aserciones OK)**.
+- **Alcance Implementado y Verificado (Subfase 3.6.5):**
+  1. **Auditoría de Consultas con `EXPLAIN QUERY PLAN` (Cero `SCAN TABLE`):**
+     - Verificación física y estructural de los 9 índices relacionales en SQLite (`idx_usuarios_username`, `idx_usuarios_activo`, `idx_creaciones_artesano`, `idx_creaciones_categoria`, `idx_creaciones_stock`, `idx_creaciones_activo`, `idx_pedidos_creacion`, `idx_pedidos_estado`, `idx_pedidos_activo`).
+     - Demostración mediante `EXPLAIN QUERY PLAN` de que el 100% de las consultas de catálogo, pedidos y usuarios utilizan índices (`SEARCH ... USING INDEX`) o claves primarias enteras (`INTEGER PRIMARY KEY rowid`), erradicando por completo escaneos de tabla completa (`SCAN TABLE`).
+  2. **Erradicación Total de Patrones N+1 & Benchmarks de Tiempo:**
+     - `CreacionRepository::listCatalog` hidrata el nombre de usuario del creador en 1 sola consulta con `INNER JOIN usuarios`.
+     - `PedidoRepository::listAll` hidrata la creación y el artesano creador en 1 sola consulta con doble `INNER JOIN`.
+     - `UsuarioRepository::listAllWithCreationsCount` calcula creaciones activas asociadas en 1 sola consulta con `LEFT JOIN creaciones ... GROUP BY u.id`.
+     - `CreacionRepository::findActiveArtisansWithCreations` recupera artesanos activos en 1 sola consulta agrupada (ADR-014).
+     - Todas las consultas del catálogo, pedidos y usuarios se resuelven en menos de 0.25 ms en SQLite.
+  3. **Concurrencia SQLite, `PRAGMA busy_timeout = 5000` & Reversión Atómica:**
+     - Configuración obligatoria y permanente en PDO: `PRAGMA busy_timeout = 5000;` (5 segundos de tolerancia a contención) y `PRAGMA foreign_keys = ON;`.
+     - `PRAGMA integrity_check` $\rightarrow$ `ok` y `PRAGMA foreign_key_check` $\rightarrow$ 0 violaciones huérfanas.
+     - Simulación de concurrencia y lectura con liberación de cursores (`closeCursor()`) confirmando tolerancia sin excepciones `SQLITE_BUSY`.
+     - Reversión atómica transaccional (`rollBack()`) preservando existencias ante violaciones de restricciones CHECK.
+  4. **Auditoría de Arquitectura Limpia, SOLID & Controladores Delgados:**
+     - 0 archivos PHP en `src/`: el directorio `src/` está reservado al 100% para frontend (`src/css/`, `src/js/`).
+     - 0 llamadas directas a PDO o sentencias SQL en controladores (`api/`), servicios (`app/Services/`), middleware o utils. El 100% de la persistencia reside en `app/Repositories/`.
+     - 25 controladores REST delgados en `api/`, todos con $\le 60$ líneas (promedio de 45.7 líneas por archivo).
+     - 0 dependencias de Composer (`vendor/` inexistente), autocargador PSR-4 nativo en `app/autoload.php`.
+     - Blindaje `.htaccess` con desactivación de índices, bloqueo de extensiones sensibles (`.sqlite`, `.sqlite3`, `.sql`, `.md`) y reenvío de `Authorization`.
+  5. **Suite de Regresión Global Acumulada:**
+     - Ejecución consecutiva automatizada de todas las 9 suites previas (3.1 a 3.6.4) con código de salida 0 y cero fallos (1,146 aserciones de regresión verificadas sin efectos colaterales).
+  6. **Pruebas de Integración HTTP en Vivo contra `http://localhost:8000`:**
+     - 7 transacciones curl en vivo ejecutadas con registro completo de cabeceras, latencias y cuerpos JSON en `logs/subfase-3.6.5-http.log`.
+     - Latencias ultrarrápidas de catálogo, pedidos y usuarios: **entre 0.5 ms y 0.9 ms**; login bcrypt en **61 ms**.
 - **Entregables:**
-  - `tests/test-subfase-3.6.1.php` (165/165 aserciones en verde en 412.66 ms).
-  - `logs/subfase-3.6.1-cli.log` y `logs/subfase-3.6.1-http.log`.
-  - [`docs/testing/subfase-3.6.1-idor-access-control.md`](../docs/testing/subfase-3.6.1-idor-access-control.md).
-- **Total Acumulado Global:** **697 / 697 aserciones aprobadas (100% OK en verde)**.
-- **Compás de Espera Inviolable:** Detención total para solicitar autorización explícita antes de la Subfase 3.6.2.
+  - `tests/test-subfase-3.6.5.php` (141 aserciones aprobadas en 4642.67 ms).
+  - `logs/subfase-3.6.5-cli.log` y `logs/subfase-3.6.5-http.log`.
+  - `docs/testing/subfase-3.6.5-rendimiento-regresion.md`.
+  - Actualizados `docs/testing/README.md`, `docs/architecture/subfase-3.6-auditoria-seguridad.md` y `docs/architecture/phase-3-plan.md`.
+- **Estado de la Fase 3:** **FASE 3 100% COMPLETADA (1,307/1,307 ASERCIONES EN VERDE)**.
+- **Compás de Espera Inviolable:** Detención total para aguardar autorización explícita antes de iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
+
+
+---
+
+## Hito Previo: Subfase 3.6.3: Inyección, Sanitización & Seguridad de Medios/Archivos (OWASP A03 + A08)
+
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (157/157 Aserciones OK)**
+- **Alcance Implementado y Verificado (Subfase 3.6.3):**
+  1. **Blindaje contra Inyección SQL (SQLi - OWASP A03:2021):**
+     - Verificación del 100% de consultas preparadas PDO parametrizadas con `bindValue()` en `CreacionRepository`, `PedidoRepository` y `UsuarioRepository`.
+     - Inyección de vectores SQLi clásicos y avanzados (`' OR '1'='1`, `1; DROP TABLE usuarios; --`, `UNION SELECT ...`, `admin' --`, comillas, nulos `\0`, comentarios `--`) en filtros de búsqueda, categoría, artesano, precios y estados.
+     - Neutralización absoluta: tratados como strings literales sin producir errores de sintaxis (`PDOException`), sin fuga de datos entre tablas y con el conteo de registros de SQLite 100% inalterado.
+  2. **Defensa contra Cross-Site Scripting (XSS - OWASP A03:2021):**
+     - Almacenamiento íntegro y limpio en persistencia bajo principios de Clean Architecture.
+     - Validación de escape HTML riguroso en la capa de presentación mediante `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')` en vistas y atributos, neutralizando `<script>`, `onerror`, `onload`, `onmouseover` y protocolos `javascript:`.
+     - Garantía de cabecera `Content-Type: application/json; charset=utf-8` en todas las respuestas de la API REST.
+     - Codificación de enlaces de WhatsApp con `rawurlencode()`, transformando `<>` en `%3C%3E`.
+     - Rechazo por validación alfanumérica de nombres de usuario con caracteres XSS en `UsuarioService::createUser`.
+  3. **Seguridad en Carga de Medios & Detección MIME Real (OWASP A08:2021):**
+     - Validación de tipo de archivo mediante inspección binaria (`finfo_file` / `mime_content_type`) en `CreacionService::handleImageUpload`, restringida a `image/jpeg`, `image/png` y `image/webp`.
+     - Detección y rechazo con HTTP 422 de archivos camuflados (scripts PHP con extensión `.jpg`, HTML con extensión `.png`, shell scripts con extensión `.webp`, ejecutables binarios).
+     - Límite de tamaño estricto ($\le 5\text{MB}$ / 5,242,880 bytes).
+     - Carga exitosa de imágenes binarias JPEG, PNG y WebP genuinas, y asignación de fallback SVG temático cuando no se adjunta archivo.
+  4. **Prevención de Path Traversal & Carga Arbitraria (OWASP A08:2021):**
+     - Nombres de archivo generados en el servidor con entropía criptográfica (`creacion_[16-hex]_[timestamp].[ext]`), neutralizando secuencias de escape (`../../`, `..\\`).
+     - Verificación de confinamiento físico estricto dentro de `uploads/`.
+     - Inmunidad en `unlinkPreviousUploadFile` mediante `basename()`, imposibilitando la eliminación de archivos externos (ej. `database/database.sqlite`).
+     - Regla de Oro ADR-008: Preservación de fotografías en disco durante bajas lógicas (`activo = 0`).
+  5. **Seguridad Vectorial SVG:**
+     - Inspección del 100% de archivos SVG en `assets/svg/` (34 archivos): 0 scripts, 0 controladores de eventos inline y 0 entidades externas XXE.
+     - Sanitización y escape de comillas/etiquetas en `SvgHelper::render()` mediante `htmlspecialchars()`.
+     - Escape de caracteres en comentarios de error ante archivos no encontrados.
+     - Comprobación en disco de todas las rutas de fallback temático.
+  6. **Pruebas de Integración HTTP en Vivo contra Servidor Local:**
+     - Endpoints de catálogo y pedidos devuelven HTTP 200 limpio sin fugas ante consultas con vectores SQLi.
+     - `POST /api/creaciones/crear.php` rechaza con HTTP 422 la subida multipart de archivos PHP camuflados.
+     - `POST /api/pedidos/solicitar.php` registra de forma segura pedidos con payloads XSS devolviendo HTTP 201 Created.
+- **Entregables:**
+  - `tests/test-subfase-3.6.3.php` (157 aserciones aprobadas en 119.92 ms).
+  - `logs/subfase-3.6.3-cli.log` y `logs/subfase-3.6.3-http.log`.
+  - `docs/testing/subfase-3.6.3-inyeccion-medios.md`.
+  - Actualizados `docs/testing/README.md`, `docs/architecture/subfase-3.6-auditoria-seguridad.md` y `docs/architecture/phase-3-plan.md`.
+- **Total Acumulado Fase 3:** **1,015 / 1,015 Aserciones Aprobadas (100% OK en verde)**.
+- **Compás de Espera Inviolable:** Detención total para aguardar autorización explícita antes de la Subfase 3.6.4.
+
+---
+
+## Hito Previo: Subfase 3.6.2: Criptografía, Autenticación & Protección de Datos Sensibles (Opción B)
+
+- **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (161/161 Aserciones OK)**
+- **Alcance Implementado y Verificado (Subfase 3.6.2):**
+  1. **Integridad Criptográfica de Tokens Bearer HMAC-SHA256 (OWASP A02):**
+     - Recálculo de firma HMAC-SHA256 con comparación en tiempo constante `hash_equals()`.
+     - Detección y rechazo inmediato (`null` / HTTP 401) ante payload adulterado, firma corrompida, clave secreta errónea y formatos malformados.
+  2. **Ciclo de Vida y Expiración Estricta de Tokens (OWASP A07):**
+     - Adherencia al TTL configurado (86400s / 24 horas por defecto).
+     - Detección de token expirado con `TokenManager::isExpired() = true` y rechazo instantáneo con HTTP 401 ante cualquier petición.
+  3. **Almacenamiento Criptográfico Bcrypt & Mitigación Timing Attack:**
+     - Verificación de hash Bcrypt cost factor 10 (`$2y$10$...`) y longitud canónica de 60 caracteres en el 100% de usuarios semilla.
+     - CERO contraseñas en texto plano en la base de datos SQLite.
+     - Mitigación de timing attack en `AuthService::authenticate` con dummy hash en usuarios inexistentes.
+     - Mensajes de error no enumerables: fallo por usuario inexistente y por clave errónea devuelven el mismo error genérico con HTTP 401.
+  4. **Cero Exposición de Datos Sensibles (Data Exposure - OWASP A02):**
+     - Exclusión total de campos `password_hash` en respuestas de `login.php`, `me.php`, `usuarios/index.php` y en las consultas de repositorio `findByIdSafe()`, `listAll()` y `listAllWithCreationsCount()`.
+     - Guardia de acceso directo en `app/config.php` (HTTP 403).
+  5. **Políticas de Higiene de Contraseñas & Reseteo Seguro:**
+     - Validación de longitud mínima ($\ge 6$ caracteres) en creación de usuarios (HTTP 422).
+     - Autoservicio de cambio de contraseña validando clave actual, longitud mínima y actualizando hash en BD (HTTP 401 / 422 / 200).
+     - Reseteo administrativo manual o autogenerado con clave temporal segura bajo el patrón `Crochet!<hex>!`.
+  6. **Revocación Inmediata de Tokens en Bajas Lógicas:**
+     - Desactivación de cuenta (`activo = 0`) invalida inmediatamente tokens activos en `AuthService::validateToken()`, respondiendo HTTP 401 sin esperar las 24h de TTL.
+     - Bloqueo de autenticación en login para cuentas inactivas (HTTP 401).
+     - Reactivación formal de cuenta mediante `/api/usuarios/reactivar.php` y restauración del acceso.
+  7. **Ciclo de Cierre de Sesión & Contrato Stateless:**
+     - Respuesta limpia y orientada al cliente en `POST /api/auth/logout.php` (HTTP 200).
+     - Restricción de método HTTP: `GET /api/auth/logout.php` devuelve HTTP 405 Method Not Allowed.
+- **Entregables:**
+  - `tests/test-subfase-3.6.2.php` (161 aserciones aprobadas en 1473.29 ms).
+  - `logs/subfase-3.6.2-cli.log` y `logs/subfase-3.6.2-http.log`.
+  - `docs/testing/subfase-3.6.2-criptografia-autenticacion.md`.
+  - `docs/architecture/subfase-3.6-auditoria-seguridad.md` (Especificación completa de las 5 sub-subfases).
+  - Actualizados `docs/architecture/phase-3-plan.md`, `docs/architecture/proceso-desarrollo-fases.md`, `docs/architecture/README.md`, `docs/testing/README.md` y `docs/README.md`.
+- **Total Acumulado Fase 3:** **858 / 858 Aserciones Aprobadas (100% OK en verde)**.
+- **Compás de Espera Inviolable:** Detención total para aguardar autorización explícita antes de la Subfase 3.6.3.
 
 ---
 

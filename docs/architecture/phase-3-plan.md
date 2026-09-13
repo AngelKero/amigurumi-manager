@@ -15,9 +15,13 @@ La **Fase 3** implementa la capa de backend completa para el sistema **Crochet M
 | **3.3** | Gestión de Usuarios, Roles RBAC & Bajas Lógicas | ✅ **Completado & Verificado** | 105 / 105 OK | [subfase-3.3-usuarios.md](../testing/subfase-3.3-usuarios.md) |
 | **3.4** | Catálogo, Creaciones & Ciclo de Vida de Fotos | ✅ **Completado & Verificado** | 126 / 126 OK | [subfase-3.4-creaciones.md](../testing/subfase-3.4-creaciones.md) |
 | **3.5** | Pedidos, Transacciones Atómicas & WhatsApp | ✅ **Completado & Verificado** | 139 / 139 OK | [subfase-3.5-pedidos.md](../testing/subfase-3.5-pedidos.md) |
-| **3.6** | Auditoría Integral de Seguridad & Regresión | ⏳ Pendiente | Suite completa | `docs/testing/subfase-3.6-seguridad.md` |
+| **3.6.1** | Acceso, Autorización, IDOR & Blindaje RBAC (OWASP A01) | ✅ **Completado & Verificado** | 165 / 165 OK | [subfase-3.6.1-idor-access-control.md](../testing/subfase-3.6.1-idor-access-control.md) |
+| **3.6.2** | Criptografía, Auth & Datos Sensibles (OWASP A02+A07) | ✅ **Completado & Verificado** | 161 / 161 OK | [subfase-3.6.2-criptografia-autenticacion.md](../testing/subfase-3.6.2-criptografia-autenticacion.md) |
+| **3.6.3** | Inyección, Sanitización & Medios (OWASP A03+A08) | ✅ **Completado & Verificado** | 157 / 157 OK | [subfase-3.6.3-inyeccion-medios.md](../testing/subfase-3.6.3-inyeccion-medios.md) |
+| **3.6.4** | Lógica de Negocio, Precios & Multibyte (OWASP A04) | ✅ **Completado & Verificado** | 151 / 151 OK | [subfase-3.6.4-logica-precios.md](../testing/subfase-3.6.4-logica-precios.md) |
+| **3.6.5** | Rendimiento SQLite, Clean Architecture & Regresión | ✅ **Completado & Verificado** | 141 / 141 OK | [subfase-3.6.5-rendimiento-regresion.md](../testing/subfase-3.6.5-rendimiento-regresion.md) |
 
-**Total Acumulado a la fecha:** **532 / 532 aserciones aprobadas (100% OK)**.
+**Total Acumulado Fase 3 Completa (3.1 a 3.6.5):** **1,307 / 1,307 aserciones aprobadas (100% OK en verde)**.
 
 ---
 
@@ -54,10 +58,13 @@ La **Fase 3** implementa la capa de backend completa para el sistema **Crochet M
 - `App\Services\PedidoService`: Validación de existencias, cálculo de precios congelados en servidor (`precio * cantidad`), enlaces directos a WhatsApp y verificación de cancelación idempotente (409 Conflict si ya estaba cancelado).
 - Controladores en `api/pedidos/`: `index.php`, `solicitar.php`, `crear.php`, `cambiar-estado.php`, `cancelar.php`.
 
-### Subfase 3.6: Auditoría Integral de Seguridad & Regresión
-- Auditoría OWASP Top Ten: prevención de inyección SQL, XSS, autenticación rota y control de acceso roto (IDOR).
-- Pruebas de estrés y concurrencia SQLite con `busy_timeout`.
-- Suite completa de regresión ejecutando las suites 3.1 a 3.5 consecutivamente.
+### Subfase 3.6: Auditoría Integral de Seguridad OWASP, Rendimiento SQLite & Regresión Global
+Para garantizar la máxima exhaustividad y robustez técnica, esta subfase se desglosa en 5 sub-subfases individuales ([Ver Documento de Especificación Completo](./subfase-3.6-auditoria-seguridad.md)):
+- **3.6.1 (OWASP A01:2021):** Control vertical RBAC, prevención IDOR horizontal en Creaciones y Pedidos, salvaguarda de cuenta raíz ID #1, bloqueo de auto-eliminación activa, aislamiento de recursos inactivos y método 405 en los 25 controladores (165/165 OK).
+- **3.6.2 (OWASP A02:2021 + A07:2021):** Integridad criptográfica de tokens Bearer HMAC-SHA256 con `hash_equals()`, ciclo de vida y TTL 24h, higiene bcrypt cost factor 10, mitigación timing attack con dummy hash, mensajes no enumerables, cero exposición de `password_hash`, políticas de contraseñas ($\ge 6$ chars y temporales `Crochet!<hex>!`), revocación inmediata en bajas lógicas y logout stateless.
+- **3.6.3 (OWASP A03:2021 + A08:2021):** Blindaje SQLi 100% prepared statements, mitigación XSS en capa de presentación, detección MIME binaria real (`finfo`), protección contra path traversal (`../../`) y desinfección SVG.
+- **3.6.4 (OWASP A04:2021):** Cálculo de precios en servidor, aislamiento transaccional de stock atómico, cancelación idempotente y resiliencia UTF-8 4-byte (emojis 🧶🧸).
+- **3.6.5 (Rendimiento & Regresión):** Auditoría `EXPLAIN QUERY PLAN` sobre índices (`idx_*`), erradicación N+1, tolerancia `busy_timeout = 5000` y suite de regresión acumulada total (3.1 a 3.6.4).
 
 ---
 

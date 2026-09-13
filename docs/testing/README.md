@@ -14,12 +14,12 @@
 | **3.4** | Catálogo, Creaciones & Ciclo de Imágenes | `tests/test-subfase-3.4.php` | 126 / 126 (100%) | ✅ Aprobado | [Ver Reporte 3.4](./subfase-3.4-creaciones.md) |
 | **3.5** | Pedidos & Transacciones Atómicas | `tests/test-subfase-3.5.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 3.5](./subfase-3.5-pedidos.md) |
 | **3.6.1** | Acceso, Autorización, IDOR & RBAC | `tests/test-subfase-3.6.1.php` | 165 / 165 (100%) | ✅ Aprobado | [Ver Reporte 3.6.1](./subfase-3.6.1-idor-access-control.md) |
-| **3.6.2** | Criptografía, Auth & Datos Sensibles | `tests/test-subfase-3.6.2.php` | Pendiente | ⏳ Siguiente | *En espera de aprobación* |
-| **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | Pendiente | ⏳ Planificado | *Opción B* |
-| **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | Pendiente | ⏳ Planificado | *Opción B* |
-| **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | Pendiente | ⏳ Planificado | *Opción B* |
+| **3.6.2** | Criptografía, Auth & Datos Sensibles | `tests/test-subfase-3.6.2.php` | 161 / 161 (100%) | ✅ Aprobado | [Ver Reporte 3.6.2](./subfase-3.6.2-criptografia-autenticacion.md) |
+| **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | 157 / 157 (100%) | ✅ Aprobado | [Ver Reporte 3.6.3](./subfase-3.6.3-inyeccion-medios.md) |
+| **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | 151 / 151 (100%) | ✅ Aprobado | [Ver Reporte 3.6.4](./subfase-3.6.4-logica-precios.md) |
+| **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
 
-**Total Acumulado Actual:** **697 / 697 Aserciones Aprobadas (100% OK en verde)**
+**Total Acumulado Fase 3:** **1,307 / 1,307 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)**
 
 
 ## 🏛️ Arquitectura de Testing en 3 Niveles
@@ -35,7 +35,11 @@ proyecto-web/
 │   ├── subfase-3.3-usuarios.md        # Reporte de RBAC y salvaguarda ID #1
 │   ├── subfase-3.4-creaciones.md      # Reporte de catálogo, imágenes y SVG fallback
 │   ├── subfase-3.5-pedidos.md         # Reporte de transacciones atómicas y stock
-│   └── subfase-3.6-seguridad.md       # Reporte de auditoría integral y regresión
+│   ├── subfase-3.6.1-idor-access-control.md # Reporte de IDOR, RBAC y método 405
+│   ├── subfase-3.6.2-criptografia-autenticacion.md # Reporte de tokens HMAC, bcrypt y data exposure
+│   ├── subfase-3.6.3-inyeccion-medios.md # Reporte de SQLi, XSS y carga de medios
+│   ├── subfase-3.6.4-logica-precios.md # Reporte de precios en servidor y stock atómico
+│   └── subfase-3.6.5-rendimiento-regresion.md # Reporte de EXPLAIN QUERY PLAN y regresión
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
 │   ├── TestHelper.php                 # Utilidades de aserción y llamadas HTTP curl
@@ -44,13 +48,17 @@ proyecto-web/
 │   ├── test-subfase-3.3.php           # Suite ejecutable de la subfase 3.3
 │   ├── test-subfase-3.4.php           # Suite ejecutable de la subfase 3.4
 │   ├── test-subfase-3.5.php           # Suite ejecutable de la subfase 3.5
-│   └── test-subfase-3.6.php           # Suite de seguridad y estrés
+│   ├── test-subfase-3.6.1.php         # Suite de IDOR, RBAC y acceso
+│   ├── test-subfase-3.6.2.php         # Suite de criptografía y datos sensibles
+│   ├── test-subfase-3.6.3.php         # Suite de inyección y medios
+│   ├── test-subfase-3.6.4.php         # Suite de lógica y multibyte
+│   └── test-subfase-3.6.5.php         # Suite de rendimiento y regresión total
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)
     ├── .gitignore                     # Ignora *.log, preserva la carpeta
     ├── .htaccess                      # Bloqueo total HTTP (Require all denied)
-    ├── subfase-3.1-cli.log            # Salida cruda de terminal de la prueba 3.1
-    └── subfase-3.1-http.log           # Trazas de curl con headers de respuesta
+    ├── subfase-3.X-cli.log            # Salida cruda de terminal de la prueba 3.X
+    └── subfase-3.X-http.log           # Trazas de curl con headers de respuesta
 ```
 
 ---

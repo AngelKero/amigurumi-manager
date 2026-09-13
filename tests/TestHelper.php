@@ -150,10 +150,10 @@ class TestHelper {
      * @param string $method Método HTTP (GET, POST, PUT, DELETE, OPTIONS)
      * @param string $url URL destino (ej. "http://localhost:8000/api/auth/login.php")
      * @param array $headers Encabezados en formato ['Authorization: Bearer ...', 'Content-Type: application/json']
-     * @param string|null $body Cuerpo de la petición (JSON o raw)
+     * @param string|array|null $body Cuerpo de la petición (JSON, raw o array multipart)
      * @return array{status: int, headers: array<string, string>, body: string, json: ?array, duration_ms: float}
      */
-    public static function curl(string $method, string $url, array $headers = [], ?string $body = null): array {
+    public static function curl(string $method, string $url, array $headers = [], string|array|null $body = null): array {
         $ch = curl_init();
         $responseHeaders = [];
 
