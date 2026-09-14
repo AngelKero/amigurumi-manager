@@ -9,6 +9,7 @@
 ## Gobernanza ✅
 
 - **Fuente de Verdad Única (Acción 1 · audit 14/09/2026)** — Jerarquía de precedencia de fuentes canónica (P1–P6) publicada en `AGENTS.md §6` y encadenada desde `.agents/rules/docs-source-of-truth.md`; gate de testing 3-tier sincronizado con paso HTTP curl (`AGENTS.md §3`); purga completa del mecanismo obsoleto "Memory Bank" en `docs/`, `README.md`, `.htaccess` y aserciones; suites 3.1 y 3.6.5 en verde.
+- **Blindaje del Ciclo de Token (Acción 2 · audit 14/09/2026)** — CSP estricto en layout y API (H-004); auditoría de sanitización `innerHTML` (36 → 0 vectores sin escalar, `dom-safe.js` + `AGENTS.md §4` + regla P1); `login_intentos` con lockout 5/cuenta + 20/IP → HTTP 429 + backoff (H-003); revocación server-side por denylist de `jti` en `logout.php` (H-002) + rotación de secretos con claim `ver`; ADR-016 + enmienda ADR-002; prerequisito de seguridad de la feature 004.
 
 ## Siguiente 🔜
 

@@ -23,9 +23,30 @@ El token consta de dos segmentos codificados en Base64Url unidos por un punto (`
 - `iat`: Timestamp Unix de emisión (`int`).
 - `exp`: Timestamp Unix de expiración (`iat + 86400`).
 - `jti`: Identificador único de token de 32 caracteres hexadecimales.
+- `ver`: Versión de secreto HMAC usada en la firma (rotación de claves).
 
 ### Verificación y Resistencia a Ataques de Temporización
-La verificación de la firma se ejecuta mediante `hash_equals()`, garantizando comparación en tiempo constante para prevenir fugas por canales laterales (timing attacks).
+La verificación de la firma se ejecuta mediante `hash_equals()`, garantizando comparación en tiempo constante para prevenir fugas por canales laterales (timing attacks). Para soportar **rotación de claves**, la firma se recalcula con `auth.token_secret` (actual) y, si no coincide, con `auth.token_secret_anterior` (secreto previo configurado durante el cambio).
+
+### Ciclo de Vida del Token (con revocación, ADR-016)
+Diagrama del ciclo completo tras el blindaje de la Acción 2:
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│ 1. Emisión      POST /api/auth/login.php  → payload + firma HMAC    │
+│ 2. Almacenado   localStorage (cliente) + CSP estricto (H-004)       │
+│ 3. Uso          Authorization: Bearer <token> en cada petición      │
+│ 4. Bloqueo      login_intentos: 429 tras 5 fallos/cuenta o 20/IP    │
+│ 5. Heartbeat    GET /api/auth/me.php (+ SSE /heartbeat en 004)     │
+│ 6. Renovación   N/A (24 h TTL — cliente vuelve a autenticar)        │
+│ 7. Cierre       POST /api/auth/logout.php → revoca jti en           │
+│                tokens_revocados (denylist) → 200                    │
+│ 8. Purga        pruneExpirados() borra jti vencidos de la denylist │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+Un token cuya `jti` figure en `tokens_revocados` (no expirado) es rechazado por
+`AuthService::validateToken()` antes de resolver el usuario.
 
 ---
 
@@ -33,8 +54,8 @@ La verificación de la firma se ejecuta mediante `hash_equals()`, garantizando c
 
 | Módulo / Endpoint | Público | `asistente` | `artesano` | `admin` | Mecanismo de Control |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `POST /api/auth/login.php` | ✅ | ✅ | ✅ | ✅ | Ninguno |
-| `POST /api/auth/logout.php` | ✅ | ✅ | ✅ | ✅ | Ninguno |
+| `POST /api/auth/login.php` | ✅ | ✅ | ✅ | ✅ | `LoginGuard` (5/cuenta · 20/IP · ventana 15 min → 429 + backoff) |
+| `POST /api/auth/logout.php` | ✅ | ✅ | ✅ | ✅ | Revoca Bearer: denylist `tokens_revocados` por `jti` (ADR-016) |
 | `GET /api/auth/me.php` | ❌ | ✅ | ✅ | ✅ | `AuthGuard` |
 | `POST /api/auth/cambiar-password.php` | ❌ | ✅ | ✅ | ✅ | `AuthGuard` |
 | `GET /api/creaciones/index.php` | ✅ | ✅ | ✅ | ✅ | Ninguno (Filtra `activo = 1`) |

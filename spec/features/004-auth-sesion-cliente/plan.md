@@ -22,9 +22,12 @@ Encapsular toda la lógica de autenticación del cliente dentro del módulo ES6 
 ## Decisiones
 
 - **`localStorage` para persistencia de Bearer token:** Permite que la sesión sobreviva a la navegación entre distintas páginas estáticas del sitio (`index.php` $\rightarrow$ `detalle.php` $\rightarrow$ `creaciones.php`) sin depender de cookies de sesión PHP en SSR.
-- **Validación silenciosa de sesión en background:** En cada carga de página se invoca `GET /api/auth/me.php` en segundo plano para corroborar que el token no haya expirado ni la cuenta haya sido dada de baja lógicamente (`activo = 0`), garantizando revocación inmediata.
+- **`localStorage` aprobado por gobernanza (Acción 2 · H-004) ÚNICAMENTE bajo CSP estricto y sanitización JS:** El layout ya emite `Content-Security-Policy` (`script-src 'self'` + CDN, `connect-src 'self'`, `frame-ancestors 'none'`) y la auditoría eliminó los vectores de `innerHTML`. Violar cualquiera de las dos condiciones invalida esta decisión (ver ADR-016 y `docs/security/auditoria-sanitizacion-js.md`).
+- **`logout()` debe manejar la respuesta del backend:** tras el 200 de `POST /api/auth/logout.php` (revocación server-side del `jti`, ADR-016) el cliente descarta `localStorage`. Ante red caída, descarte local igualmente (best-effort del cliente).
+- **`login()` debe mapear `HTTP 429`:** el backend devuelve 429 por bloqueo de fuerza bruta (`login_intentos`, 5/cuenta · 20/IP · 15 min). El modal mostrará mensaje diferenciado.
+- **Validación silenciosa de sesión en background:** En cada carga de página se invoca `GET /api/auth/me.php` en segundo plano para corroborar que el token no haya expirado, haya sido revocado (`tokens_revocados`) ni la cuenta haya sido dada de baja lógicamente (`activo = 0`), garantizando revocación inmediata.
 
 ## Riesgos
 
-- **Exposición a XSS:** Mitigado por el escape riguroso en vistas y la inexistencia de inyección de scripts en el backend.
+- **Exposición a XSS:** Mitigado por el CSP estricto en el layout, el escape riguroso en vistas y la auditoría de sanitización de `innerHTML` (H-004: `docs/security/auditoria-sanitizacion-js.md`). Cualquier nueva interpolación de datos en `innerHTML` debe usar `escapeHtml` (`src/js/modules/dom-safe.js`) — regla en `.agents/rules/innerhtml-dom-safety.md`.
 - **Desincronización visual momentánea (FOUC de autenticación):** Ocultar suavemente el contenedor de usuario hasta que `auth.js` confirme el estado del token o mostrar placeholder no invasivo.

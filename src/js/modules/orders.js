@@ -6,6 +6,7 @@
  */
 
 import { formatPesos } from './currency.js';
+import { escapeHtml, setIconText } from './dom-safe.js';
 
 export function initOrders() {
   if (!document.getElementById('ordersGrid') && !document.getElementById('formNuevoPedido') && !document.getElementById('modalNuevoPedido')) return;
@@ -77,7 +78,7 @@ export function initOrders() {
         if (inspectCliente) inspectCliente.textContent = btn.getAttribute('data-cliente') || 'Mariana Gómez';
         if (inspectContacto) {
           const tel = btn.getAttribute('data-contacto') || '+52 55 4892 1039';
-          inspectContacto.innerHTML = `<i class="bi bi-whatsapp text-success me-1"></i>${tel}`;
+          setIconText(inspectContacto, 'bi bi-whatsapp text-success me-1', tel);
         }
         if (inspectEstadoPago) {
           const ep = btn.getAttribute('data-estado-pago') || 'Pendiente';
@@ -119,7 +120,7 @@ export function initOrders() {
       default:
         return {
           className: 'badge bg-secondary px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: status
+          html: escapeHtml(status)
         };
     }
   }
@@ -289,8 +290,19 @@ export function initOrders() {
       const formattedTotal = formatPesos(totalOrder);
 
       const newIdString = `#${nextOrderId++}`;
-      const searchData = `${newIdString.replace('#', '')} ${clienteNombre} ${clienteContacto} ${productName}`.toLowerCase();
+      const searchData = `${newIdString.replace('#', '')} ${escCliente} ${escContacto} ${escProduct}`.toLowerCase();
       const waDigits = clienteContacto.replace(/[^0-9]/g, '');
+
+      // Escapado seguro (H-004): nunca interpolar datos de usuario/servidor sin escapeHtml()
+      const escNewId = escapeHtml(newIdString);
+      const escFecha = escapeHtml(fechaEntrega);
+      const escProduct = escapeHtml(productName);
+      const escCliente = escapeHtml(clienteNombre);
+      const escContacto = escapeHtml(clienteContacto);
+      const escWa = escapeHtml(waDigits);
+      const escTotal = escapeHtml(formattedTotal);
+      const escNotas = escapeHtml(notas);
+      const escEstado = escapeHtml(estadoPago);
 
       // Determinar thumbnail SVG según la selección
       let svgThumbHtml = '';
@@ -319,10 +331,10 @@ export function initOrders() {
           <div class="card card-admin-pedido card-stitched h-100">
             <!-- Encabezado Superior de la Card -->
             <div class="card-order-header d-flex justify-content-between align-items-center">
-              <span class="order-id-badge">${newIdString}</span>
+              <span class="order-id-badge">${escNewId}</span>
               <span class="order-delivery-chip" title="Fecha pactada de entrega">
                 <i class="bi bi-calendar3 text-primary"></i>
-                <span class="font-monospace text-dark">${fechaEntrega}</span>
+                <span class="font-monospace text-dark">${escFecha}</span>
               </span>
             </div>
 
@@ -335,8 +347,8 @@ export function initOrders() {
             <div class="card-order-body">
               <!-- Título y Metadata del Amigurumi -->
               <div class="mb-3">
-                <h5 class="order-product-title text-truncate" title="${productName}">
-                  ${productName}
+                <h5 class="order-product-title text-truncate" title="${escProduct}">
+                  ${escProduct}
                 </h5>
                 <div class="d-flex flex-wrap align-items-center gap-2">
                   <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.18rem 0.5rem;">
@@ -356,15 +368,15 @@ export function initOrders() {
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <div class="order-client-label">Cliente / Destinatario</div>
-                    <div class="order-client-name">${clienteNombre}</div>
+                    <div class="order-client-name">${escCliente}</div>
                   </div>
-                  <a href="https://wa.me/${waDigits}" target="_blank" class="btn-wa-pill" title="Contactar por WhatsApp">
+                  <a href="https://wa.me/${escWa}" target="_blank" class="btn-wa-pill" title="Contactar por WhatsApp">
                     <i class="bi bi-whatsapp"></i>
                     <span>WhatsApp</span>
                   </a>
                 </div>
                 <div class="small text-muted font-monospace mt-1" style="font-size: 0.74rem;">
-                  <i class="bi bi-telephone me-1"></i>${clienteContacto}
+                  <i class="bi bi-telephone me-1"></i>${escContacto}
                 </div>
               </div>
 
@@ -372,7 +384,7 @@ export function initOrders() {
               <div class="order-financial-strip">
                 <div>
                   <span class="text-muted small d-block" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;">Total Acordado</span>
-                  <span class="order-price-amount">${formattedTotal}</span>
+                  <span class="order-price-amount">${escTotal}</span>
                 </div>
                 <div>
                   ${getPaymentBadge(estadoPago)}
@@ -380,8 +392,8 @@ export function initOrders() {
               </div>
 
               <!-- Notas Especiales -->
-              <div class="order-notes-preview" title="${notas}">
-                <i class="bi bi-chat-quote me-1 text-warning"></i>"${notas}"
+              <div class="order-notes-preview" title="${escNotas}">
+                <i class="bi bi-chat-quote me-1 text-warning"></i>"${escNotas}"
               </div>
             </div>
 
@@ -396,15 +408,15 @@ export function initOrders() {
               <div class="d-flex align-items-center gap-1">
                 <button type="button" class="btn btn-sm btn-craft-outline btn-inspect-order"
                         data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-                        data-order-id="${newIdString}"
-                        data-cliente="${clienteNombre}"
-                        data-contacto="${clienteContacto}"
-                        data-estado-pago="${estadoPago}"
-                        data-product="${productName}"
+                        data-order-id="${escNewId}"
+                        data-cliente="${escCliente}"
+                        data-contacto="${escContacto}"
+                        data-estado-pago="${escEstado}"
+                        data-product="${escProduct}"
                         data-qty="${qty}"
-                        data-total="${formattedTotal}"
-                        data-fecha="${fechaEntrega}"
-                        data-notes="${notas}"
+                        data-total="${escTotal}"
+                        data-fecha="${escFecha}"
+                        data-notes="${escNotas}"
                         title="Ver ficha técnica y notas completas">
                   <i class="bi bi-eye"></i>
                 </button>
@@ -415,17 +427,17 @@ export function initOrders() {
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: var(--craft-radius-sm);">
                     <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${newIdString}" data-target-status="Pendiente">
+                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="Pendiente">
                         <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
                       </button>
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${newIdString}" data-target-status="En Proceso">
+                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="En Proceso">
                         <i class="bi bi-gear-wide-connected text-primary me-2"></i>En Confección (Proceso)
                       </button>
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${newIdString}" data-target-status="Entregado">
+                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="Entregado">
                         <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
                       </button>
                     </li>
@@ -433,9 +445,9 @@ export function initOrders() {
                     <li>
                       <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#"
                          data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-                         data-order-id="${newIdString}"
+                         data-order-id="${escNewId}"
                          data-qty="${qty}"
-                         data-product="${productName}">
+                         data-product="${escProduct}">
                         <i class="bi bi-x-circle me-2"></i>Cancelar (Restaura Stock)
                       </a>
                     </li>

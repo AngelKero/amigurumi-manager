@@ -11,6 +11,13 @@
  */
 require_once __DIR__ . '/../../app/autoload.php';
 
+// Content-Security-Policy estricta (H-004): sin scripts inline, conexiones solo al propio origen,
+// frames y plugins bloqueados. 'unsafe-inline' se limita a estilos por los atributos style= artesanales existentes.
+$csp = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
+if (!headers_sent()) {
+    header('Content-Security-Policy: ' . $csp);
+}
+
 $pageTitle = $pageTitle ?? 'Crochet Manager | Micro-ERP & Catálogo Textil';
 $pageDescription = $pageDescription ?? 'Sistema de gestión de catálogo, inventario físico, costos y pedidos para creaciones en crochet.';
 $activePage = $activePage ?? 'catalogo';

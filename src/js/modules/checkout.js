@@ -4,10 +4,13 @@
  */
 
 import { formatPesos, parseCurrency } from './currency.js';
+import { setIconText } from './dom-safe.js';
 
 export function initCheckout() {
   const checkoutModal = document.getElementById('checkoutModal');
   if (!checkoutModal) return;
+
+  const modalTitle = document.getElementById('checkoutModalTitle');
 
   const btnDec = document.getElementById('btnCheckoutDec');
   const btnInc = document.getElementById('btnCheckoutInc');
@@ -58,7 +61,6 @@ export function initCheckout() {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-grid-item, .card-product-item');
       
-      const modalTitle = document.getElementById('checkoutModalTitle');
       const modalProductName = document.getElementById('modalProductName');
       const modalUnitPriceDisplay = document.getElementById('modalUnitPriceDisplay');
       const modalStockBadge = document.getElementById('modalStockBadge');
@@ -70,7 +72,7 @@ export function initCheckout() {
         const price = parseFloat(card.getAttribute('data-price') || '0');
         const stock = parseInt(card.getAttribute('data-stock') || '0', 10);
 
-        if (modalTitle) modalTitle.innerHTML = `<i class="bi bi-bag-heart me-2 text-primary"></i>Solicitud de Pedido: ${name}`;
+        setIconText(modalTitle, 'bi bi-bag-heart me-2 text-primary', `Solicitud de Pedido: ${name}`);
         if (modalProductName) modalProductName.textContent = name;
         if (modalUnitPriceDisplay) modalUnitPriceDisplay.textContent = `Precio Unitario: ${formatPesos(price)}`;
         if (unitPriceHidden) unitPriceHidden.value = price;
@@ -100,7 +102,7 @@ export function initCheckout() {
         if (detailTitle && modalProductName) {
           const name = detailTitle.textContent.trim();
           modalProductName.textContent = name;
-          if (modalTitle) modalTitle.innerHTML = `<i class="bi bi-bag-heart me-2 text-primary"></i>Solicitud de Pedido: ${name}`;
+          setIconText(modalTitle, 'bi bi-bag-heart me-2 text-primary', `Solicitud de Pedido: ${name}`);
         }
         if (detailPrice && unitPriceHidden) {
           const price = parseCurrency(detailPrice.textContent) || 450;

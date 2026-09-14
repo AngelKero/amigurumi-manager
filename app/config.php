@@ -31,10 +31,19 @@ return [
     'auth' => [
         // Clave secreta para firma criptográfica HMAC-SHA256 de Bearer Tokens
         'token_secret' => 'crochet_artisan_secret_key_change_in_prod_2026_nordic_cotton',
+        // Secreto previo durante rotación (verificación de tokens firmados antes del cambio de clave)
+        'token_secret_anterior' => '',
+        // Versión de secreto incluida como claim 'ver' + clave 'secret_version' para futuras rotaciones
+        'secret_version' => 1,
         'jwt_secret' => 'crochet_artisan_secret_key_change_in_prod_2026_nordic_cotton',
         'token_ttl' => 86400, // 24 horas en segundos
         'jwt_ttl_seconds' => 86400,
         'algo' => 'sha256',
+        // Endurecimiento anti-fuerza-bruta del login (H-003)
+        'max_intentos_username' => 5,   // Umbra de fallos por cuenta en la ventana
+        'max_intentos_ip'       => 20,  // Umbral de fallos por IP en la ventana
+        'ventana_segundos'      => 900, // 15 minutos
+        'backoff_ms'            => 400, // Pausa tras cada intento fallido
     ],
     'database' => [
         'path' => realpath(__DIR__ . '/../database/database.sqlite') ?: (__DIR__ . '/../database/database.sqlite'),

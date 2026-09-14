@@ -44,6 +44,7 @@ class TokenManager {
             'iat'      => $now,
             'exp'      => $now + $ttl,
             'jti'      => bin2hex(random_bytes(16)),
+            'ver'      => (int)(Config::get('auth.secret_version', 1)),
         ];
 
         $encodedPayload = self::base64UrlEncode((string)json_encode($payload, JSON_UNESCAPED_SLASHES));
@@ -63,6 +64,7 @@ class TokenManager {
         if (trim($secret) === '') {
             return null;
         }
+        $previousSecret = (string)(Config::get('auth.token_secret_anterior', ''));
 
         $parts = explode('.', trim($token));
         if (count($parts) !== 2) {
@@ -71,11 +73,17 @@ class TokenManager {
 
         [$encodedPayload, $providedSignature] = $parts;
 
-        // 1. Recalcular la firma esperada
+        // 1. Recalcular la firma esperada con el secreto actual
         $expectedSignature = hash_hmac(self::ALGO, $encodedPayload, $secret);
 
-        // 2. Comparación en tiempo constante contra ataques de temporización
-        if (!hash_equals($expectedSignature, $providedSignature)) {
+        // 2. Rotación de secreto (H-002): aceptar la firma con el secreto anterior si está configurado
+        $signatureValid = hash_equals($expectedSignature, $providedSignature);
+        if (!$signatureValid && trim($previousSecret) !== '') {
+            $previousSignature = hash_hmac(self::ALGO, $encodedPayload, $previousSecret);
+            $signatureValid = hash_equals($previousSignature, $providedSignature);
+        }
+
+        if (!$signatureValid) {
             return null;
         }
 

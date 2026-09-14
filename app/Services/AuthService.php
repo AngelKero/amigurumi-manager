@@ -12,16 +12,27 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Core\Config;
+use App\Core\Request;
 use App\Core\TokenManager;
+use App\Repositories\LoginGuardRepository;
+use App\Repositories\TokenRevocadoRepository;
 use App\Repositories\UsuarioRepository;
 use InvalidArgumentException;
 use RuntimeException;
 
 class AuthService {
     private UsuarioRepository $usuarioRepo;
+    private LoginGuardRepository $loginGuard;
+    private TokenRevocadoRepository $tokenRevocadoRepo;
 
-    public function __construct(?UsuarioRepository $usuarioRepo = null) {
+    public function __construct(
+        ?UsuarioRepository $usuarioRepo = null,
+        ?LoginGuardRepository $loginGuard = null,
+        ?TokenRevocadoRepository $tokenRevocadoRepo = null
+    ) {
         $this->usuarioRepo = $usuarioRepo ?? new UsuarioRepository();
+        $this->loginGuard = $loginGuard ?? new LoginGuardRepository();
+        $this->tokenRevocadoRepo = $tokenRevocadoRepo ?? new TokenRevocadoRepository();
     }
 
     /**
@@ -31,7 +42,7 @@ class AuthService {
      * @param string $password Contraseña en texto plano
      * @return array{token: string, tipo_token: string, expira_en: int, usuario: array{id: int, username: string, rol: string}}
      * @throws InvalidArgumentException Si las entradas son inválidas o vacías (HTTP 422)
-     * @throws RuntimeException Si las credenciales no coinciden (HTTP 401)
+     * @throws RuntimeException Si las credenciales no coinciden (HTTP 401) o hay bloqueo por fuerza bruta (HTTP 429)
      */
     public function authenticate(string $username, string $password): array {
         $username = trim($username);
@@ -45,6 +56,9 @@ class AuthService {
             throw new InvalidArgumentException('El nombre de usuario debe tener entre 3 y 50 caracteres.', 422);
         }
 
+        // 1. Endurecimiento anti-fuerza-bruta (H-003): bloqueo por username e IP
+        $this->verificarBloqueo($username, Request::clientIp());
+
         $user = $this->usuarioRepo->findByUsername($username);
 
         // Mitigación de timing attack con hash dummy si el usuario no existe
@@ -54,8 +68,15 @@ class AuthService {
         $isValid = password_verify($password, $hashToVerify);
 
         if ($user === null || !$isValid) {
+            // 2. Registrar intento fallido con backoff progresivo
+            $this->loginGuard->registerIntent($username, Request::clientIp(), false);
+            $this->aplicarBackoff();
             throw new RuntimeException('Credenciales de acceso incorrectas.', 401);
         }
+
+        // 3. Éxito: restablecer contador de fallos del usuario y registrar acierto
+        $this->loginGuard->clearFailuresByUsername($username);
+        $this->loginGuard->registerIntent($username, Request::clientIp(), true);
 
         $ttl = (int)(Config::get('auth.token_ttl') ?? Config::get('auth.jwt_ttl_seconds', 86400));
         $token = TokenManager::generate($user, $ttl);
@@ -90,8 +111,75 @@ class AuthService {
             return null;
         }
 
+        // 2. Denylist por jti (H-002): tokens revocados en logout se rechazan
+        $jti = (string)($payload['jti'] ?? '');
+        if ($jti !== '' && $this->tokenRevocadoRepo->isRevoked($jti)) {
+            return null;
+        }
+
+        // 3. Purga oportunista de la denylist (1% de las validaciones)
+        if ($jti !== '' && random_int(1, 100) === 1) {
+            $this->tokenRevocadoRepo->pruneExpirados();
+        }
+
         $user = $this->usuarioRepo->findByIdSafe($userId);
         return is_array($user) ? $user : null;
+    }
+
+    /**
+     * Revoca un Bearer token en servidor añadiendo su jti a la denylist (H-002).
+     *
+     * @param string $token Token en formato "payloadB64.firma"
+     * @return bool True si el token era válido y se revocó; false si era inválido/expirado
+     */
+    public function revokeToken(string $token): bool {
+        $payload = TokenManager::verify($token);
+        if ($payload === null) {
+            return false;
+        }
+
+        $jti = (string)($payload['jti'] ?? '');
+        if ($jti === '') {
+            return false;
+        }
+
+        $this->tokenRevocadoRepo->revoke(
+            $jti,
+            (int)($payload['sub'] ?? 0),
+            (int)($payload['exp'] ?? 0)
+        );
+
+        return true;
+    }
+
+    /**
+     * Verifica si una combinación username + IP ha excedido los umbrales anti-fuerza-bruta.
+     *
+     * @throws RuntimeException HTTP 429 Too Many Requests si hay bloqueo activo
+     */
+    private function verificarBloqueo(string $username, string $ip): void {
+        $ventana  = (int)(Config::get('auth.ventana_segundos', 900));
+        $maxU     = (int)(Config::get('auth.max_intentos_username', 5));
+        $maxIp    = (int)(Config::get('auth.max_intentos_ip', 20));
+
+        $fallosU  = $this->loginGuard->countFailuresByUsername($username, $ventana);
+        $fallosIp = $this->loginGuard->countFailuresByIp($ip, $ventana);
+
+        if ($fallosU >= $maxU || $fallosIp >= $maxIp) {
+            throw new RuntimeException(
+                'Demasiados intentos de acceso fallidos. Cuenta temporalmente bloqueada.', 429
+            );
+        }
+    }
+
+    /**
+     * Aplica una pausa de backoff configurable para frenar ataques de fuerza bruta.
+     */
+    private function aplicarBackoff(): void {
+        $ms = (int)(Config::get('auth.backoff_ms', 400));
+        if ($ms > 0) {
+            usleep(min(2000, $ms) * 1000);
+        }
     }
 
     /**

@@ -182,6 +182,17 @@ class Request {
     }
 
     /**
+     * Resuelve la dirección IP del cliente.
+     *
+     * Utiliza REMOTE_ADDR como fuente fiable. Las cabeceras de reenvío
+     * (X-Forwarded-For) se ignoran por defecto para impedir suplantación
+     * cuando el servidor actúa como origen de la petición.
+     */
+    public static function clientIp(): string {
+        return (string)($_SERVER['REMOTE_ADDR'] ?? $_SERVER['SERVER_ADDR'] ?? '0.0.0.0');
+    }
+
+    /**
      * Determina si la petición declara Content-Type application/json.
      */
     public static function isJson(): bool {

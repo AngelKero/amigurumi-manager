@@ -104,6 +104,8 @@ When developing in phases or subphases:
   - Craft detailing: Dashed running seams (`.card-stitched`), textile care tags (`.badge-textile-tag`), quilted mat frames (`.product-photo-stitched-frame`).
   - Strict prohibition of default Bootstrap electric blue (`#0d6efd`).
 - **Vanilla JS Modules:** Pure ES Modules in `src/js/modules/`. No build step or bundler needed.
+- **Content Security Policy & DOM Safety (H-004):** Every HTML page renders with a strict `Content-Security-Policy` (`script-src 'self'` + allowed CDNs, `connect-src 'self'`, `frame-ancestors 'none'`); API JSON responses carry `default-src 'none'`. Never interpolate server/user data into `innerHTML` — use `textContent`/DOM APIs or the shared `escapeHtml` helper (`src/js/modules/dom-safe.js`). Only constant craft markup and numeric counters may concatenate inside `innerHTML` string literals.
+- **Content Security Policy (H-004):** Every HTML page must emit a strict CSP via the layout (`script-src 'self'` + allowed CDN, `connect-src 'self'`, `frame-ancestors 'none'`). Never interpolate server/user data into `innerHTML`; use `textContent`/DOM APIs or the shared `escapeHtml` helper (`src/js/modules/dom-safe.js`). Numeric-only interpolations in `innerHTML` are exempt.
 
 ---
 
@@ -143,6 +145,9 @@ When developing in phases or subphases:
 
 9. **Secure File Uploads:**
    Uploaded files must be verified using real binary MIME detection (`finfo_file` / `mime_content_type`) restricted strictly to `image/jpeg`, `image/png`, and `image/webp` with a $\le 5\text{MB}$ ceiling. Cryptographic file names (`creacion_[16-hex]_[timestamp].[ext]`) and `basename()` confinement prevent path traversal. If no photo is uploaded, automatically assign a thematic SVG fallback from `assets/svg/piezas/`.
+
+10. **Brute-Force Login Hardening & Token Revocation (H-002/H-003):**
+    `POST /api/auth/login.php` must throttle each account and each IP via the `login_intentos` failed-attempt counter (defaults: 5/username, 20/IP within a 15-minute window → `HTTP 429 Too Many Requests`), apply a timing backoff after each failure, and reset the counter on success. `POST /api/auth/logout.php` must revoke the presented Bearer token server-side via the `tokens_revocados` denylist keyed by `jti`; revoked tokens are rejected during validation. HMAC secret rotation is supported via the `ver` claim and `auth.token_secret_anterior`.
 
 ---
 

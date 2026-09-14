@@ -29,6 +29,16 @@ Implementar un sistema de tokens Bearer firmado mediante HMAC-SHA256 en `App\Cor
 - No se almacena estado de sesión en disco ni memoria del servidor.
 - La invalidación inmediata se refuerza validando que la cuenta esté activa (`activo = 1`) en cada consulta protegida.
 
+### Enmienda 2026-09-14 (gobernanza · Acción 2 · H-002/H-003)
+
+- El claim `ver` (versión de secreto) se incorpora al payload; `TokenManager::verify()`
+  acepta firmas válidas con `auth.token_secret` actual o `auth.token_secret_anterior`, habilitando
+  **rotación caliente de claves** sin invalidar tokens emitidos previos.
+- La revocación de tokens ya no depende solo de `activo = 1` (no cubre logout explícito):
+  `tokens_revocados` (denylist por `jti`) permite invalidación inmediata en cerrar sesión.
+  Ver **ADR-016**. El comportamiento global sigue siendo stateless (no hay sesión en servidor);
+  la denylist existe solo para tokens emitidos recientemente y se purga al expirar.
+
 ---
 
 [← Anterior (ADR-001)](./ADR-001-clean-architecture-php-sqlite.md) • [Índice de ADRs](./README.md) • [Siguiente (ADR-003) →](./ADR-003-zero-html-error-leaks.md)

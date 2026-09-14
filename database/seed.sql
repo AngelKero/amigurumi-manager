@@ -12,6 +12,8 @@ PRAGMA foreign_keys = ON;
 DROP TABLE IF EXISTS pedidos;
 DROP TABLE IF EXISTS creaciones;
 DROP TABLE IF EXISTS amigurumis; -- Legacy cleanup
+DROP TABLE IF EXISTS tokens_revocados;
+DROP TABLE IF EXISTS login_intentos;
 DROP TABLE IF EXISTS usuarios;
 
 -- ------------------------------------------------------------------------------
@@ -256,6 +258,30 @@ CREATE TABLE IF NOT EXISTS pedidos (
 );
 
 -- ------------------------------------------------------------------------------
+-- 2.5 TABLES DE SEGURIDAD DEL CICLO DE TOKEN (H-002 / H-003)
+-- ------------------------------------------------------------------------------
+
+-- Table: login_intentos (Brute-Force Login Hardening / H-003)
+CREATE TABLE IF NOT EXISTS login_intentos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    ip TEXT NOT NULL DEFAULT '',
+    intento_ok INTEGER NOT NULL DEFAULT 0,
+    creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+
+    CONSTRAINT chk_login_intentos_ok
+        CHECK(intento_ok IN (0, 1))
+);
+
+-- Table: tokens_revocados (Denylist de Bearer Tokens por jti / H-002)
+CREATE TABLE IF NOT EXISTS tokens_revocados (
+    jti TEXT PRIMARY KEY,
+    sub INTEGER NOT NULL,
+    expira_en INTEGER NOT NULL,
+    revocado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+
+-- ------------------------------------------------------------------------------
 -- 3. QUERY PERFORMANCE INDEXES
 -- ------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
@@ -267,6 +293,9 @@ CREATE INDEX IF NOT EXISTS idx_creaciones_activo ON creaciones(activo);
 CREATE INDEX IF NOT EXISTS idx_pedidos_creacion ON pedidos(creacion_id);
 CREATE INDEX IF NOT EXISTS idx_pedidos_estado ON pedidos(estado_pedido);
 CREATE INDEX IF NOT EXISTS idx_pedidos_activo ON pedidos(activo);
+CREATE INDEX IF NOT EXISTS idx_login_intentos_username ON login_intentos(username, creado_en);
+CREATE INDEX IF NOT EXISTS idx_login_intentos_ip ON login_intentos(ip, creado_en);
+CREATE INDEX IF NOT EXISTS idx_tokens_revocados_expira ON tokens_revocados(expira_en);
 
 -- ------------------------------------------------------------------------------
 -- 4. INITIAL SEED MOCK DATA

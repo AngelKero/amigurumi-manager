@@ -9,6 +9,8 @@
  * 4. Salvaguardas de seguridad RBAC para proteger la cuenta raíz de administración.
  */
 
+import { escapeHtml } from './dom-safe.js';
+
 export function initUsers() {
   const formCrearUsuario = document.getElementById('formCrearUsuario');
   const formEditarRol = document.getElementById('formEditarRolUsuario');
@@ -138,6 +140,25 @@ export function initUsers() {
     });
   }
 
+  // Eliminación de usuarios: delegación sin onclick inline (H-004: contexto de atributo)
+  function bindDeleteUserButtons() {
+    document.querySelectorAll('.btn-eliminar-usuario').forEach((btn) => {
+      if (btn.dataset.bound === 'true') return;
+      btn.dataset.bound = 'true';
+      btn.addEventListener('click', handleDeleteUser);
+    });
+  }
+
+  function handleDeleteUser(event) {
+    const btn = event.currentTarget;
+    const username = btn.getAttribute('data-username') || '';
+    if (!window.confirm(`¿Eliminar usuario @${username}?`)) return;
+    const row = btn.closest('tr');
+    if (row) row.remove();
+    const table = document.getElementById('tablaUsuarios');
+    if (table) table.dispatchEvent(new Event('userCountChanged'));
+  }
+
   // 3. Formulario de Alta de Nuevo Usuario
   if (formCrearUsuario) {
     const usernameInput = document.getElementById('nuevoUsername');
@@ -175,18 +196,23 @@ export function initUsers() {
         const initial = username.charAt(0).toUpperCase();
         const badgeHtml = getRoleBadgeHtml(rol);
 
+        // Escapado seguro (H-004): evitar inyección por contexto de elemento y de atributo
+        const escUsername = escapeHtml(username);
+        const escRol = escapeHtml(rol);
+        const escInitial = escapeHtml(initial);
+
         const tr = document.createElement('tr');
         tr.setAttribute('data-user-id', String(newId));
-        tr.setAttribute('data-username', username);
-        tr.setAttribute('data-rol', rol);
+        tr.setAttribute('data-username', escUsername);
+        tr.setAttribute('data-rol', escRol);
         tr.id = `userRow_${newId}`;
         tr.innerHTML = `
           <td class="fw-bold font-monospace text-primary px-3">#${newId}</td>
           <td>
             <div class="d-flex align-items-center gap-3">
-              <div class="user-avatar-circle">${initial}</div>
+              <div class="user-avatar-circle">${escInitial}</div>
               <div>
-                <strong class="d-block text-dark username-text">@${username}</strong>
+                <strong class="d-block text-dark username-text">@${escUsername}</strong>
                 <small class="text-muted">Creador Independiente</small>
               </div>
             </div>
@@ -205,12 +231,13 @@ export function initUsers() {
               <button type="button" class="btn btn-outline-secondary btn-editar-rol" 
                       data-bs-toggle="modal" data-bs-target="#modalEditarRolUsuario"
                       data-user-id="${newId}"
-                      data-username="${username}"
-                      data-rol="${rol}"
+                      data-username="${escUsername}"
+                      data-rol="${escRol}"
                       title="Modificar Rol de Acceso">
                 <i class="bi bi-pencil-square"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" onclick="if(confirm('¿Eliminar usuario @${username}?')) { this.closest('tr').remove(); document.querySelector('#tablaUsuarios').dispatchEvent(new Event('userCountChanged')); }" title="Eliminar Usuario">
+              <button type="button" class="btn btn-outline-danger btn-eliminar-usuario"
+                      data-username="${escUsername}" title="Eliminar Usuario">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -219,6 +246,7 @@ export function initUsers() {
         tablaBody.appendChild(tr);
 
         bindEditRoleButtons();
+        bindDeleteUserButtons();
         recalculateUserKPIs();
       }
 

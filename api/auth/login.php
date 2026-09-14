@@ -34,5 +34,5 @@ try {
 } catch (InvalidArgumentException $e) {
     Response::error($e->getMessage(), 422);
 } catch (RuntimeException $e) {
-    Response::error($e->getMessage(), 401);
+    Response::error($e->getMessage(), $e->getCode() > 0 ? $e->getCode() : 401);
 }
