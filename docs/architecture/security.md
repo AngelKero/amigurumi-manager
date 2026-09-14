@@ -79,4 +79,4 @@ El usuario ID #1 (`@admin`) tiene salvaguardas inviolables en la capa de persist
 - `ErrorHandler` captura errores fatales y emite JSON 500 sin exponer trazas de stack trace al cliente en producción.
 
 ### 3.5 Blindaje Apache (`.htaccess`)
-Bloquea acceso directo HTTP a extensiones sensibles (`.sqlite`, `.sql`, `.md`, `.log`, `.env`) y directorios internos (`app/`, `database/`, `memory-bank/`, `tests/`, `logs/`) con código `HTTP 403 Forbidden`.
+Bloquea acceso directo HTTP a extensiones sensibles (`.sqlite`, `.sql`, `.md`, `.log`, `.env`) y directorios internos (`app/`, `database/`, `tests/`, `logs/`, `spec/`) con código `HTTP 403 Forbidden`.

@@ -319,7 +319,7 @@ TestHelper::assertFalse($resAppConfig['json']['exito'] ?? true, 'Respuesta 403 d
 $htaccessPath = dirname(__DIR__) . '/.htaccess';
 TestHelper::assertTrue(file_exists($htaccessPath), 'El archivo raíz .htaccess de seguridad existe');
 $htaccessContent = (string)file_get_contents($htaccessPath);
-TestHelper::assertStringContains('app|database|memory-bank|logs|tests', $htaccessContent, '.htaccess contiene regla de bloqueo 403 para carpetas del sistema');
+TestHelper::assertStringContains('app|database|logs|tests|spec', $htaccessContent, '.htaccess contiene regla de bloqueo 403 para carpetas del sistema');
 TestHelper::assertStringContains('sqlite|sqlite3|sql|md', $htaccessContent, '.htaccess contiene regla de bloqueo Require all denied para extensiones de BD');
 TestHelper::assertStringContains('HTTP_AUTHORIZATION', $htaccessContent, '.htaccess contiene regla de reenvío de cabecera Authorization para FastCGI');
 

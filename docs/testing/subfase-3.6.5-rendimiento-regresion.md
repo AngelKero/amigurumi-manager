@@ -159,7 +159,7 @@ Se confirmó que la arquitectura de persistencia (`app/Repositories/`) resuelve 
    - Directorio `vendor/` inexistente (**0 dependencias de Composer**).
    - Autocargador PSR-4 nativo de alto rendimiento en `app/autoload.php`.
 5. **Blindaje de Servidor Apache (`.htaccess`):**
-   - Reglas de bloqueo 403 para carpetas del sistema (`app`, `database`, `memory-bank`, `logs`, `tests`).
+   - Reglas de bloqueo 403 para carpetas del sistema (`app`, `database`, `logs`, `tests`, `spec`).
    - Reglas `FilesMatch` para extensiones sensibles (`.sqlite`, `.sqlite3`, `.sql`, `.md`).
    - Reenvío de cabecera `Authorization` para entornos FastCGI.
 

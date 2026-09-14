@@ -73,10 +73,11 @@ php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1
 When developing in phases or subphases:
 1. Implement the subphase code.
 2. Run the automated CLI test suite and verify 100% assertions pass.
-3. Generate the executive markdown report in `docs/testing/`.
-4. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
-5. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
-6. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
+3. Perform HTTP curl checks against the local server, logging responses to `logs/subfase-3.X-http.log`.
+4. Generate the executive markdown report in `docs/testing/`.
+5. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
+6. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
+7. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
 
 ---
 
@@ -148,8 +149,23 @@ When developing in phases or subphases:
 ## 6. Spec-Driven Development (SDD) Governance
 
 The single, absolute source of truth for ongoing context and execution is the `spec/` directory under **Spec-Anchored** SDD.
+
+### Canonical Source-of-Truth Precedence (never ambiguous)
+
+When two sources conflict, resolve strictly in this order:
+
+1. **P1 · Operational Rules** — `AGENTS.md` + `.agents/rules/*`: how to work. Permanent.
+2. **P2 · Constitution** — `spec/constitution/` (`mission.md` > `tech-stack.md` > `roadmap.md`): what to build and its hard limits.
+3. **P3 · ADRs** — `docs/architecture/decisiones/`: only a new ADR supersedes an existing ADR.
+4. **P4 · Active Feature** — `spec/features/NNN-nombre-feature/` (`spec.md` > `plan.md` > `tasks.md`).
+5. **P5 · Reference Docs** — `docs/`: living narrative. If a doc contradicts P1–P4 it is a *doc defect*: fix the doc, never the rule or the code.
+6. **P6 · Source Code** — material authority. If `docs/`/`spec/` fall out of sync with the code, **the code prevails** and the agent MUST report the desynchronization to the human (who re-anchors the source).
+
+**Discrepancy rule:** never silently "fix" a rule, spec, or ADR to match code. Report the conflict; only the human decides which source to re-anchor.
+
 - **Project Constitution:** Consult `spec/constitution/` (`mission.md`, `tech-stack.md`, `roadmap.md`) for stable project identity, Clean Architecture rules, and feature ordering.
 - **Active Feature:** Work exclusively within `spec/features/NNN-nombre-feature/` (`spec.md`, `plan.md`, `tasks.md`).
+- **Governance Work:** Remediation of governance/audit findings lives under `spec/gobernanza/` (outside product feature numbering).
 - **Gated Workflow:** The human acts as the Intent Validator. Validate `spec.md` and `plan.md` before any code is generated or edited.
 - **Task Progression:** Check off tasks in `tasks.md` as verified, ensure acceptance criteria in `spec.md` pass, and advance `spec/constitution/roadmap.md`.
 

@@ -19,7 +19,7 @@ Se establece una arquitectura de pruebas de 3 niveles con compuertas secuenciale
 2. **Nivel 2 — Suites Automatizadas CLI (`tests/`):** Scripts PHP nativos sin dependencias (`test-subfase-3.X.php`) que ejecutan aserciones unitarias y peticiones HTTP en vivo contra `localhost:8000`. Bloqueados en web por `.htaccess`.
 3. **Nivel 3 — Logs Crudos y Trazas (`logs/`):** Volcados completos de salida de consola (`logs/subfase-3.X-cli.log`) y respuestas HTTP (`logs/subfase-3.X-http.log`), excluidos de Git por `.gitignore` y bloqueados por `.htaccess`.
 
-**Regla de Compuerta Inviolable:** Al concluir cada subfase, el asistente de IA debe ejecutar las pruebas, redactar el reporte, sincronizar el Memory Bank y **detenerse completamente a esperar la aprobación explícita del usuario** antes de escribir código para la siguiente subfase.
+**Regla de Compuerta Inviolable:** Al concluir cada subfase, el asistente de IA debe ejecutar las pruebas, redactar el reporte, sincronizar `spec/constitution/roadmap.md` y `docs/` (Cierre Documental) y **detenerse completamente a esperar la aprobación explícita del usuario** antes de escribir código para la siguiente subfase.
 
 ## Alternativas Consideradas
 - **PHPUnit vía Composer:** Requiere Composer e infraestructura externa; la suite nativa en `tests/TestHelper.php` ofrece aserciones exactas en milisegundos con 0 dependencias.

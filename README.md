@@ -180,7 +180,7 @@ El frontend implementa una estética textil escandinava cálida y de alta gama:
 
 ## 🔒 Seguridad & Salvaguardas de Integridad
 
-1. **Aislamiento de Persistencia (.htaccess):** Peticiones web directas a archivos `.sqlite`, `.sql`, `.md`, carpetas `app/`, `database/`, `memory-bank/`, `logs/` o `tests/` son rechazadas con HTTP 403 Forbidden.
+1. **Aislamiento de Persistencia (.htaccess):** Peticiones web directas a archivos `.sqlite`, `.sql`, `.md`, carpetas `app/`, `database/`, `logs/`, `tests/` o `spec/` son rechazadas con HTTP 403 Forbidden.
 2. **Cero Fugas HTML:** `ErrorHandler` captura errores y excepciones en producción, purga el búfer con `ob_end_clean()` y emite respuestas homogéneas JSON 500.
 3. **Stateless Bearer Tokens:** Autenticación sin estado con tokens HMAC-SHA256 (24h TTL) validados en tiempo constante con `hash_equals()`.
 4. **Regla Universal de Baja Lógica (Zero Physical Deletions):** Quedan prohibidas las sentencias `DELETE FROM` en tablas de negocio. Todas las bajas son lógicas (`activo = 0`, `eliminado_en = timestamp`).

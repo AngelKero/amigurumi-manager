@@ -121,5 +121,5 @@ Para cada una de las 5 sub-subfases de la 3.6, se ejecuta rigurosamente el sigui
 2. **Suite CLI Nativa:** Ejecución de `php tests/test-subfase-3.6.X.php > logs/subfase-3.6.X-cli.log 2>&1`.
 3. **Trazas HTTP en Vivo:** Captura de peticiones curl contra el servidor local en `logs/subfase-3.6.X-http.log`.
 4. **Reporte Ejecutivo Formal:** Redacción de `docs/testing/subfase-3.6.X-[nombre].md` con matriz de aserciones, evidencias JSON y estado de base de datos.
-5. **Sincronización de Memoria:** Actualización inmediata de `memory-bank/activeContext.md` y `memory-bank/progress.md`.
+5. **Sincronización Documental:** Actualización inmediata de `spec/constitution/roadmap.md` y del reporte ejecutivo en `docs/testing/`.
 6. **Compás de Espera Inviolable (*Halt*):** Detener toda ejecución de herramientas y aguardar la instrucción explícita y por escrito del usuario antes de avanzar a la siguiente sub-subfase. Queda estrictamente prohibido agrupar o adelantar subfases.

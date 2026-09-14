@@ -377,7 +377,7 @@ $htaccessPath = dirname(__DIR__) . '/.htaccess';
 TestHelper::assert(file_exists($htaccessPath), 'Archivo raíz .htaccess presente');
 $htaccessContent = file_get_contents($htaccessPath);
 TestHelper::assertStringContains('Options -Indexes', $htaccessContent, '.htaccess desactiva listado de directorios');
-TestHelper::assertStringContains('app|database|memory-bank|logs|tests', $htaccessContent, '.htaccess bloquea carpetas críticas de backend');
+TestHelper::assertStringContains('app|database|logs|tests|spec', $htaccessContent, '.htaccess bloquea carpetas críticas de backend');
 TestHelper::assertStringContains('(sqlite|sqlite3|sql|md)$', $htaccessContent, '.htaccess bloquea extensiones sensibles (.sqlite, .sqlite3, .sql, .md)');
 TestHelper::assertStringContains('HTTP:Authorization', $htaccessContent, '.htaccess preserva cabecera Authorization para FastCGI');
 

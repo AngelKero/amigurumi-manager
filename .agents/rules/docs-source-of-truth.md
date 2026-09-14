@@ -1,6 +1,19 @@
 
 # Docs como Fuente de Verdad Obligatoria (Anti-Alucinación)
 
+## Precedencia de Fuentes (Canónico — Ver `AGENTS.md §6`)
+
+`docs/` es la referencia técnica viva, pero **no** es la fuente de decisión cuando hay conflicto. Ante discrepancias entre fuentes se resuelve estrictamente en este orden:
+
+1. **P1 · Reglas operativas** (`AGENTS.md` + `.agents/rules/*`) — mandan sobre la forma de trabajo.
+2. **P2 · Constitución** (`spec/constitution/`: `mission.md` > `tech-stack.md` > `roadmap.md`).
+3. **P3 · ADRs** (`docs/architecture/decisiones/`) — solo un ADR nuevo deroga a otro.
+4. **P4 · Feature vigente** (`spec/features/NNN/`: `spec.md` > `plan.md` > `tasks.md`).
+5. **P5 · `docs/`** — narrativa viva; si contradice a P1–P4 es *defecto del doc*: se corrige el doc, jamás la regla ni el código.
+6. **P6 · Código fuente** — autoridad material. Si `docs/`/`spec/` quedan desincronizados con el código, **el código prevalece** y el agente **DEBE** reportar la desincronización al humano.
+
+**Regla de discrepancia:** Nunca corregir en silencio una regla, spec o ADR para que coincida con el código. Reportar el conflicto; solo el humano re-ancle la fuente.
+
 ## Regla Principal
 
 Antes de iniciar **cualquier tarea** de desarrollo, corrección, análisis o planificación, el agente **DEBE** leer `docs/README.md` como paso obligatorio. Este archivo es el índice maestro y punto de entrada a toda la documentación verificada del proyecto.

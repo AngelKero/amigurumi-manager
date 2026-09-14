@@ -74,7 +74,7 @@ Definir con precisión el modelo de negocio, los actores del sistema y los princ
 
 #### Entregables:
 - Especificación de requerimientos y reglas heurísticas de negocio.
-- Documentos de contexto inicial en `memory-bank/projectbrief.md` y `memory-bank/productContext.md`.
+- Documentos de contexto inicial en `spec/constitution/mission.md` (Qué construimos / Para quién) y `docs/README.md` (índice maestro de referencia).
 
 ---
 
@@ -198,7 +198,7 @@ Al concluir cada subfase, se ejecutan obligatoriamente los 3 niveles antes de de
 1. **Nivel 1 (Reporte Ejecutivo de QA):** Redactado en `docs/testing/subfase-3.X-[nombre].md` con matriz de aserciones, evidencias JSON y verificación SQLite.
 2. **Nivel 2 (Suite CLI Nativa):** Ejecución de `php tests/test-subfase-3.X.php > logs/subfase-3.X-cli.log 2>&1`.
 3. **Nivel 3 (Trazas HTTP Reales):** Peticiones curl contra el servidor local registradas en `logs/subfase-3.X-http.log`.
-4. **Compuerta de Detención Absoluta (*Halt*):** Detener toda ejecución, sincronizar Memory Bank y **aguardar la aprobación explícita por escrito del usuario** antes de escribir código para la siguiente subfase.
+4. **Compuerta de Detención Absoluta (*Halt*):** Detener toda ejecución, sincronizar `spec/constitution/roadmap.md` y `docs/` conforme al Cierre Documental, y **aguardar la aprobación explícita por escrito del usuario** antes de escribir código para la siguiente subfase.
 
 ---
 
@@ -280,4 +280,4 @@ Mantener, consolidar y culminar la documentación del proyecto bajo la arquitect
 3. **Baja Lógica Universal:** No existen eliminaciones físicas (`DELETE FROM`) en ninguna tabla de negocio. Todas las bajas son lógicas (`activo = 0`).
 4. **Algodón Nórdico:** Ningún componente o vista puede revertir a estilos por defecto de Bootstrap o colores eléctricos ajenos a la paleta oficial.
 5. **Cero Monolitos en Documentación:** Toda nueva documentación debe ser modular, residir en el dominio correspondiente y mantener enlaces relativos bidireccionales.
-6. **Sincronización del Memory Bank:** Al concluir cualquier hito o cambio arquitectónico, los 5 archivos de `/memory-bank/` deben actualizarse de inmediato.
+6. **Sincronización Documental (Spec-Driven):** Al concluir cualquier hito o cambio arquitectónico, `spec/constitution/roadmap.md` y los `docs/` del dominio afectado deben actualizarse de inmediato conforme al Cierre Documental.

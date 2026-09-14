@@ -74,5 +74,5 @@ Al concluir el código de cada subfase, se ejecuta rigurosamente:
 1. **Suite CLI Nativa:** `php tests/test-subfase-3.X.php > logs/subfase-3.X-cli.log 2>&1`.
 2. **Pruebas HTTP en Vivo:** Pruebas curl con cabeceras hacia `logs/subfase-3.X-http.log`.
 3. **Reporte Ejecutivo:** Redacción de `docs/testing/subfase-3.X-[nombre].md`.
-4. **Sincronización:** Actualización del Memory Bank.
+4. **Sincronización:** Actualización de `spec/constitution/roadmap.md` y `docs/` (Cierre Documental).
 5. **Compás de Espera Inviolable:** Detención total para aguardar la aprobación explícita del usuario antes de iniciar la siguiente subfase.

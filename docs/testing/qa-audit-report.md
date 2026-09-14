@@ -190,7 +190,7 @@ En el Master Footer ([footer.php](../../views/components/footer.php)) y catálog
 
 1. **Configuración Apache (`.htaccess`):**
    - Directiva `Options -Indexes` activa para impedir el listado de directorios.
-   - Bloqueo 403 Forbidden para accesos web a `database/` y `memory-bank/`.
+   - Bloqueo 403 Forbidden para accesos web a `app/`, `database/`, `logs/`, `tests/` y `spec/`.
    - Denegación estricta a archivos con extensiones `.sqlite`, `.sqlite3`, `.sql` y `.md`.
    - Bloqueo de archivos ocultos y de configuración (`.git`, `.env`, `.htaccess`).
 2. **Script de Inicialización CLI (`setup.php`):**
