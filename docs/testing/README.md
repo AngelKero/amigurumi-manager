@@ -21,6 +21,16 @@
 
 **Total Acumulado Fase 3:** **1,307 / 1,307 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)**
 
+---
+
+## 🔍 Auditorías Normativas con Context7 (Estándares & Librerías Oficiales)
+
+| Parte | Fase Auditada | Tecnología / Librería | Identificador Context7 | Estado | Reporte de Auditoría |
+| :---: | :--- | :--- | :--- | :---: | :--- |
+| **Parte 1** | **Fase 1** (Base de Datos) | SQLite 3 Engine & DDL | `/websites/sqlite_docs` | ✅ Aprobado | [Ver Auditoría Fase 1](./auditoria-context7-fase-1.md) |
+| **Parte 2** | **Fase 2** (Layout & UI) | Bootstrap 5.3 & a11y | `/websites/getbootstrap_5_3` | ✅ Aprobado | [Ver Auditoría Fase 2](./auditoria-context7-fase-2.md) |
+| **Parte 3** | **Fase 3** (Backend Core) | PHP 8.1+ & OWASP | `/websites/php_net_manual_en` | ✅ Aprobado | [Ver Auditoría Fase 3](./auditoria-context7-fase-3.md) |
+
 
 ## 🏛️ Arquitectura de Testing en 3 Niveles
 

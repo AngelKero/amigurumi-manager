@@ -41,7 +41,7 @@ $usuariosList = [
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
         <span>Comunidad &amp; Roles de la Plataforma</span>
       </div>
-      <h2 class="fw-bold font-theme-display text-dark mb-1">Comunidad de Artesanos &amp; Usuarios</h2>
+      <h1 class="h2 fw-bold font-theme-display text-dark mb-1">Comunidad de Artesanos &amp; Usuarios</h1>
       <p class="text-muted small mb-0" style="max-width: 650px;">
         Directorio de creadores registrados, roles operativos y autoría en la plataforma.
       </p>

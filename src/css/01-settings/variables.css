@@ -43,5 +43,12 @@
   --craft-font-sans-display: 'Outfit', sans-serif;              /* Modern Geometric Display */
   --craft-font-cute-display: 'Fredoka', cursive, sans-serif;    /* Plush Amigurumi Display */
   --craft-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Bootstrap 5.3 Direct Theme Mapping */
+  --bs-primary: var(--craft-primary);
+  --bs-primary-rgb: 142, 91, 116;
+  --bs-body-bg: var(--craft-bg);
+  --bs-body-color: var(--craft-text-main);
+  --bs-body-font-family: var(--craft-font-body);
 }
 

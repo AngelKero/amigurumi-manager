@@ -1,13 +1,41 @@
-## Hito Activo: Configuración de MCP Server Context7 a Nivel de Proyecto (.agents)
+## Hito Activo: Aplicación Quirúrgica de Observaciones Context7 & Certificación Total
 
-- **Estado:** **100% COMPLETADO Y VERIFICADO**.
-- **Acción Ejecutada:**
-  1. Comprobación de requerimientos para el MCP Server Context7 (`@upstash/context7-mcp`).
-  2. Creación del archivo de configuración de MCP a nivel de workspace en [`.agents/mcp_config.json`](file:///Users/angelzaragoza/Desktop/proyecto-web/.agents/mcp_config.json) usando transporte estándar `stdio` con `npx -y @upstash/context7-mcp`.
-  3. Verificación de ejecución del binario vía CLI con código de salida 0.
-- **Compás de Espera Inviolable:** Sistema listo y a la espera de autorización explícita para iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
+- **Estado:** **100% COMPLETADO, APLICADO, TESTEADO Y VERIFICADO (Regresión 141/141 en Verde)**.
+- **Acciones Quirúrgicas Aplicadas en Código:**
+  1. **Accesibilidad en Modal de Inspección (`views/components/modal_inspect_creacion.php`):** Corregido `aria-labelledby="inspectCreacionTitle"` alineándolo con el ID del título `<h4>`, garantizando anuncio accesible en lectores de pantalla (NVDA/VoiceOver/JAWS).
+  2. **Microcopia de Preservación de Activos (`views/components/modal_eliminar_creacion.php`):** Actualizada la microcopia del modal de baja lógica para reflejar la regla inmutable ADR-008 (las fotos se preservan en disco sin `unlink()` para auditoría histórica de pedidos y comprobantes).
+  3. **Mapeo Canónico de Variables CSS Bootstrap 5.3 (`src/css/01-settings/variables.css`):** Añadidas variables nativas `--bs-primary: var(--craft-primary);`, `--bs-primary-rgb: 142, 91, 116;`, `--bs-body-bg`, `--bs-body-color` y `--bs-body-font-family` en `:root`, permitiendo que todos los componentes, outlines de foco y utilidades de Bootstrap hereden la paleta "Algodón Nórdico" automáticamente.
+  4. **Jerarquía Semántica WCAG 2.1 AA (`creaciones_content.php`, `pedidos_content.php`, `usuarios_content.php`):** Promovidos los encabezados principales de los paneles administrativos de `<h2>` a `<h1 class="h2 ...">`, garantizando la regla canónica de un único `<h1>` por vista manteniendo intacta la escala visual.
+  5. **Análisis Técnico de Transacciones SQLite PDO:** Se verificó que `$pdo->beginTransaction()` coordinado con `PRAGMA busy_timeout = 5000;` es la estrategia idónea para el driver PDO de PHP (evitando desincronizaciones del struct interno de PDO al invocar sentencias SQL directas de `BEGIN IMMEDIATE`).
+  6. **Preservación de Índice Relacional:** Se preservó `idx_usuarios_username` en `database/seed.sql` garantizando compatibilidad 100% con las suites de prueba existentes.
+- **Resultados de Verificación Automatizada:**
+  - `php tests/test-subfase-3.6.5.php`: **141 / 141 aserciones pasadas (100% OK en verde)**, con 1,146 aserciones de regresión acumulada de todas las subfases previas aprobadas sin fallos.
+  - Sintaxis PHP (`find app api views *.php -name "*.php" -exec php -l {} +`): 0 errores en los 54 archivos del proyecto.
+  - Sintaxis JS (`find src/js -name "*.js" -exec node --check {} +`): 0 errores.
+- **Compás de Espera Inviolable:** Fases 1, 2 y 3 certificadas y refinadas. Sistema completamente listo y detenido a la espera de la autorización explícita del usuario para iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
 
 ---
+
+## Hito Previo: Auditoría Context7 — Parte 2: Fase 2 (UI/UX, Componentes PHP & Bootstrap 5.3)
+
+- **Estado:** **100% COMPLETADA, AUDITADA Y DOCUMENTADA**.
+- **Acción Ejecutada:**
+  1. Consulta a Context7 (`/websites/getbootstrap_5_3`) para recuperar especificaciones canónicas de Bootstrap 5.3: `aria-labelledby`, `tabindex="-1"`, `aria-hidden`, focus trap, variables CSS `--bs-primary`, `--bs-primary-rgb` y landmarks semánticos.
+  2. Inspección técnica de modales ([`views/components/modal_*.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/views/components/)), layout maestro ([`views/layouts/main.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/views/layouts/main.php)) y arquitectura ITCSS ([`src/css/`](file:///Users/angelzaragoza/Desktop/proyecto-web/src/css/)).
+  3. Verificación de sintaxis de PHP (`php -l`) y JS (`node --check`) en el 100% de archivos con 0 errores.
+  4. Identificación de 4 hallazgos de accesibilidad y diseño documentados en [`docs/testing/auditoria-context7-fase-2.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/auditoria-context7-fase-2.md).
+
+
+## Hito Previo: Auditoría Context7 — Parte 1: Fase 1 (Base de Datos & SQLite 3)
+
+- **Estado:** **100% COMPLETADA, AUDITADA Y DOCUMENTADA**.
+- **Acción Ejecutada:**
+  1. Consulta a Context7 (`/websites/sqlite_docs`) para recuperar estándares canónicos de SQLite 3: `PRAGMA foreign_keys`, `PRAGMA busy_timeout`, `PRAGMA journal_mode`, `CHECK constraints`, precisión de montos enteros y `EXPLAIN QUERY PLAN`.
+  2. Inspección técnica de [`database/seed.sql`](file:///Users/angelzaragoza/Desktop/proyecto-web/database/seed.sql), [`setup.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/setup.php) y [`app/Core/Database.php`](file:///Users/angelzaragoza/Desktop/proyecto-web/app/Core/Database.php).
+  3. Verificación de ejecución y salud relacional: `PRAGMA foreign_keys = 1`, `PRAGMA busy_timeout = 5000`, `PRAGMA integrity_check = ok`, y 141/141 aserciones de regresión aprobadas (1,146 acumuladas).
+  4. Identificación de hallazgos de alto valor: detección del índice redundante en `usuarios.username` (ya cubierto por autoindex único) y recomendación de modo WAL (`PRAGMA journal_mode = WAL;`) para escalabilidad web.
+  5. Redacción del reporte ejecutivo formal en [`docs/testing/auditoria-context7-fase-1.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/auditoria-context7-fase-1.md) e indexación en [`docs/testing/README.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/docs/testing/README.md).
+
 
 ## Hito Previo: Creación de AGENTS.md Canónico & Revisión Progresiva Integral
 

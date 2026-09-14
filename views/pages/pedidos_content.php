@@ -72,7 +72,7 @@ foreach ($mockOrders as $ord) {
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
         <span>Gestión de Pedidos &amp; Encargos</span>
       </div>
-      <h2 class="fw-bold font-theme-display text-dark mb-1">Control de Pedidos y Encargos</h2>
+      <h1 class="h2 fw-bold font-theme-display text-dark mb-1">Control de Pedidos y Encargos</h1>
       <p class="text-muted small mb-0" style="max-width: 650px;">
         Seguimiento de encargos coordinados con clientes, control de entregas, anticipos y comunicación directa vía WhatsApp.
       </p>

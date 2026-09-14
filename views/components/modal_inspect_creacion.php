@@ -4,7 +4,7 @@
  * Detailed technical and financial inspection dialog for crochet creations.
  */
 ?>
-<div class="modal fade" id="modalInspectCreacion" tabindex="-1" aria-labelledby="modalInspectCreacionTitle" aria-hidden="true">
+<div class="modal fade" id="modalInspectCreacion" tabindex="-1" aria-labelledby="inspectCreacionTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow-lg modal-content-stitched" style="border-radius: var(--craft-radius);">
       <div class="modal-header border-bottom py-3" style="background-color: var(--craft-surface-muted);">

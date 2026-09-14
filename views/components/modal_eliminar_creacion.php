@@ -33,14 +33,14 @@
           </div>
         </div>
 
-        <!-- 2. Política de Archivos Huérfanos -->
+        <!-- 2. Preservación de Activos Históricos (ADR-008) -->
         <div class="p-3 mb-3 border rounded" style="background-color: var(--craft-surface-muted);">
           <div class="d-flex align-items-start gap-2">
-            <i class="bi bi-file-earmark-x-fill text-primary fs-5 mt-1"></i>
+            <i class="bi bi-file-earmark-check-fill text-primary fs-5 mt-1"></i>
             <div>
-              <strong class="d-block text-dark small">Limpieza de Archivos en Servidor:</strong>
+              <strong class="d-block text-dark small">Preservación de Archivo en Servidor (ADR-008):</strong>
               <span class="text-muted small">
-                Si no existen pedidos vinculados, el backend ejecutará <code>unlink()</code> en el servidor local eliminando el archivo fotográfico de <code>/uploads/</code> para mantener el almacenamiento limpio.
+                Al aplicar la baja lógica, la fotografía se preservará intacta en el almacenamiento seguro (sin <code>unlink()</code>) para garantizar la auditoría e integridad histórica de pedidos y comprobantes previos.
               </span>
             </div>
           </div>

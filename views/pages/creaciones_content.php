@@ -139,7 +139,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
         <?= svg('branding/isologo-sello-taller', ['width' => 20, 'height' => 20]) ?>
         <span>Inventario &amp; Catálogo del Creador</span>
       </div>
-      <h2 class="fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones en Crochet</h2>
+      <h1 class="h2 fw-bold font-theme-display text-dark mb-1">Inventario y Creaciones en Crochet</h1>
       <p class="text-muted small mb-0" style="max-width: 650px;">
         Administración de piezas, costos de insumos, horas de tejido, existencias físicas y modalidades de encargo en la plataforma.
       </p>
