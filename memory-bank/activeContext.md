@@ -1,15 +1,17 @@
-## Hito Activo: Consolidación de Reglas de Aprendizaje (/learn) — Workspace Hardened & Sincronizado
+## Hito Activo: Creación de AGENTS.md Canónico & Revisión Progresiva Integral
 
 - **Estado:** **100% COMPLETADO, VERIFICADO Y PERSISTIDO**.
-- **Acción Ejecutada:** Procesamiento del comando `/learn` para incorporar de forma permanente y reusable las directrices, correcciones e invariantes del usuario en los archivos de reglas del workspace:
-  1. **Descomposición Obligatoria de Fases Extensas ("Divide y Vencerás"):** Regla inviolable para particionar cualquier fase o subfase amplia en sub-subfases secuenciales acotadas con compuertas de testing independientes y compás de espera obligatorio sin bundling.
-  2. **Transparencia en Fallos de Tests:** Obligatoriedad de incluir la sección *"Fallos Detectados & Correcciones Quirúrgicas"* en los reportes de testing ante cualquier discrepancia resuelta en el ciclo Red-Green-Refactor.
-  3. **Invariante Universal de Borrado Lógico (Cero Borrados Físicos):** Prohibición terminante de sentencias `DELETE FROM` en base de datos y preservación garantizada de archivos físicos en `uploads/` en bajas lógicas (`activo = 0`).
-  4. **Autonomía Operativa de Creadores & Garantías de Plataforma:** Guardrail que prohíbe promesas de fábrica centralizada o plazos fijos de confección ("5-7 días"), consagrando la plataforma como Micro-ERP colaborativo para creadores independientes cuyas garantías residen en las herramientas provistas (fichas técnicas, WhatsApp directo, costeo ético).
-  5. **Sincronización de Estado en Reglas:** Actualizados `.agents/rules/general.md`, `.agents/workflows/general.md` y `.agents/rules/ui-ux-design-system.md` reflejando la Fase 3 completada al 100% (1,307/1,307 aserciones) y preparando el desglose para la Fase 4.
+- **Acción Ejecutada:**
+  1. Lectura exhaustiva de la especificación oficial y mejores prácticas en `https://agents.md/`.
+  2. Lectura secuencial y progresiva de toda la documentación modular del proyecto en `docs/` (`api/`, `architecture/` con 15 ADRs, `database/`, `design-system/`, `testing/`).
+  3. Lectura secuencial del código fuente: Infraestructura nuclear (`app/autoload.php`, `app/config.php`, `app/Core/*`), Repositorios (`app/Repositories/*`), Servicios (`app/Services/*`), Middleware (`app/Middleware/*`), Controladores REST delgados (`api/*`), Vistas y layouts (`views/*`, entrypoints raíz), Frontend (`src/css/*`, `src/js/*`), Base de datos (`database/seed.sql`, `setup.php`) y Apache `.htaccess`.
+  4. Creación del archivo canónico [`AGENTS.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/AGENTS.md) en la raíz del repositorio y del enlace simbólico [`AGENT.md`](file:///Users/angelzaragoza/Desktop/proyecto-web/AGENT.md) para compatibilidad universal con herramientas y agentes.
+  5. Verificación de sintaxis de PHP (`php -l`) y JavaScript (`node --check`) en el 100% de los archivos con 0 errores.
 - **Compás de Espera Inviolable:** Sistema listo y a la espera de autorización explícita para iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
 
 ---
+
+## Hito Previo: Consolidación de Reglas de Aprendizaje (/learn) — Workspace Hardened & Sincronizado
 
 ## Hito Previo: Compás de Espera Inviolable — Fase 3: Backend & Clean Architecture Completada al 100% (Subfase 3.6.5 Aprobada)
 
