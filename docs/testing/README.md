@@ -23,6 +23,26 @@
 
 ---
 
+## 🔁 Suites de Regresión Acumulada por Fase (Gobernanza · Acción 3 · H-020)
+
+Cada fase queda respaldada por una suite acumulada **obligatoria** al tocar sus features:
+
+| Fase | Suite Acumulada | Mandato | Comando |
+| :---: | :--- | :--- | :--- |
+| **3** (Backend) | `tests/test-subfase-3.6.5.php` | Regresión global de Fase 3 | `php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1` |
+| **4** (Fullstack 004–008) | `tests/test-fase-4-acumulado.php` | Obligatoria al tocar features 004–008 | `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1` |
+
+La suite de Fase 4 hace **despliegue dinámico** (`test-subfase-4.*.php`): con 0 subfases implementadas
+reporta un estado vacío válido (exit 0) y detecta `test-subfase-4.1.php` automáticamente cuando nazca.
+Cada suite descubierta debe tener fila en este índice y cada fila su script físico (verificación estructural
+incluida en el propio runner).
+
+> **Divergencia CLI vs. HTTP:** si al completar una subfase CLI y HTTP no coinciden, aplicar el
+> [Protocolo de Divergencia CLI/HTTP](./protocolo-divergencia-cli-http.md) (triaje entorno vs. código)
+> antes de aprobar — regla anclada en `AGENTS.md §3`.
+
+---
+
 ## 🔍 Auditorías Normativas con Context7 (Estándares & Librerías Oficiales)
 
 | Parte | Fase Auditada | Tecnología / Librería | Identificador Context7 | Estado | Reporte de Auditoría |
@@ -49,7 +69,8 @@ proyecto-web/
 │   ├── subfase-3.6.2-criptografia-autenticacion.md # Reporte de tokens HMAC, bcrypt y data exposure
 │   ├── subfase-3.6.3-inyeccion-medios.md # Reporte de SQLi, XSS y carga de medios
 │   ├── subfase-3.6.4-logica-precios.md # Reporte de precios en servidor y stock atómico
-│   └── subfase-3.6.5-rendimiento-regresion.md # Reporte de EXPLAIN QUERY PLAN y regresión
+│   ├── subfase-3.6.5-rendimiento-regresion.md # Reporte de EXPLAIN QUERY PLAN y regresión
+│   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
 │   ├── TestHelper.php                 # Utilidades de aserción y llamadas HTTP curl
@@ -62,7 +83,8 @@ proyecto-web/
 │   ├── test-subfase-3.6.2.php         # Suite de criptografía y datos sensibles
 │   ├── test-subfase-3.6.3.php         # Suite de inyección y medios
 │   ├── test-subfase-3.6.4.php         # Suite de lógica y multibyte
-│   └── test-subfase-3.6.5.php         # Suite de rendimiento y regresión total
+│   ├── test-subfase-3.6.5.php         # Suite de rendimiento y regresión total
+│   └── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)
     ├── .gitignore                     # Ignora *.log, preserva la carpeta

@@ -34,10 +34,11 @@ Development will strictly follow these sequential phases. You must halt complete
     At the conclusion of EACH subphase, the agent MUST:
     1. Run native CLI test suite: `php tests/test-subfase-3.X.php > logs/subfase-3.X-cli.log 2>&1`.
     2. Perform HTTP curl checks logging responses to `logs/subfase-3.X-http.log`.
-    3. Generate executive Markdown report in `docs/testing/subfase-3.X-[nombre].md` using the template in `docs/testing/README.md`.
-    4. Include a dedicated "Fallos Detectados & Correcciones Quirúrgicas" section in the report if any test failed or required code adaptation during the Red-Green-Refactor cycle.
-    5. Update feature `tasks.md`, check acceptance criteria in `spec.md`, and update `spec/constitution/roadmap.md`.
-    6. **HALT COMPLETELY:** Stop calling tools and await the user's explicit written approval before writing any code for the next subphase. Never bundle multiple subphases together.
+    3. If CLI and HTTP diverge, apply the **CLI/HTTP divergence triage protocol** (`docs/testing/protocolo-divergencia-cli-http.md`): environment vs. code, and record the decision before proceeding.
+    4. Generate executive Markdown report in `docs/testing/subfase-3.X-[nombre].md` using the template in `docs/testing/README.md`.
+    5. Include a dedicated "Fallos Detectados & Correcciones Quirúrgicas" section in the report if any test failed or required code adaptation during the Red-Green-Refactor cycle.
+    6. Update feature `tasks.md`, check acceptance criteria in `spec.md`, and update `spec/constitution/roadmap.md`.
+    7. **HALT COMPLETELY:** Stop calling tools and await the user's explicit written approval before writing any code for the next subphase. Never bundle multiple subphases together.
 
 - **Phase 4 - CRUD Operations & Fullstack Wiring (Pending):**
   Wire the frontend ES modules (`src/js/modules/`) to the backend `api/` endpoints with asynchronous `fetch()`, handling server validation errors, optimistic feedback, and reactive state updates.

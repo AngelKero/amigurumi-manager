@@ -67,17 +67,24 @@ php tests/test-subfase-3.1.php > logs/subfase-3.1-cli.log 2>&1
 
 # Run accumulated regression suite (all subphases):
 php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1
+
+# Run per-phase accumulated regression suite when touching Phase 4 features (004-008):
+php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1
 ```
+
+Any divergence between CLI and HTTP checks must be triaged per the CLI/HTTP divergence protocol
+(`docs/testing/protocolo-divergencia-cli-http.md`, H-015) before the subphase is approved.
 
 ### Invariant: Subphase Testing & Halting Gate
 When developing in phases or subphases:
 1. Implement the subphase code.
 2. Run the automated CLI test suite and verify 100% assertions pass.
 3. Perform HTTP curl checks against the local server, logging responses to `logs/subfase-3.X-http.log`.
-4. Generate the executive markdown report in `docs/testing/`.
-5. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
-6. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
-7. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
+4. If CLI and HTTP diverge, apply the **CLI/HTTP divergence triage protocol** (`docs/testing/protocolo-divergencia-cli-http.md`) — environment vs. code — and record the decision before proceeding.
+5. Generate the executive markdown report in `docs/testing/`.
+6. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
+7. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
+8. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
 
 ---
 

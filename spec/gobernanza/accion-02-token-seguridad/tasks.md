@@ -31,11 +31,11 @@
 - [x] ADR-016 nuevo + enmienda ADR-002.
 - [x] `security.md`: matriz login/logout + sección ciclo de vida.
 - [x] `spec/features/004`: registrar decisiones (localStorage+CSP; revocación server-side; 429).
-- [ ] `roadmap.md`: entrada Gobernanza · Acción 2.
+- [x] `roadmap.md`: entrada Gobernanza · Acción 2.
 
 ## M6 · Gate
-- [ ] Suite `tests/test-gobernanza-accion-2.php` al 100%.
-- [ ] `php -l` en PHP tocados.
-- [ ] Regresión 3.1 y 3.6.5 en verde (servidor local).
-- [ ] Logs en `logs/` + reporte `docs/testing/gobernanza-accion-2-token-seguridad.md`.
-- [ ] HALT: aguardar aprobación explícita del usuario.
+- [x] Suite `tests/test-gobernanza-accion-2.php` al 100% (96/96).
+- [x] `php -l` en PHP tocados (91 archivos, 0 errores).
+- [x] Regresión 3.1 (93/93) y 3.6.5 (141/141) en verde (servidor local).
+- [x] Logs en `logs/` + reporte `docs/testing/gobernanza-accion-2-token-seguridad.md`.
+- [x] HALT: aguardar aprobación explícita del usuario.
