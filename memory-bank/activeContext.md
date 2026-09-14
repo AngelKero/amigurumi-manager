@@ -1,4 +1,15 @@
-## Hito Activo: Creación de AGENTS.md Canónico & Revisión Progresiva Integral
+## Hito Activo: Configuración de MCP Server Context7 a Nivel de Proyecto (.agents)
+
+- **Estado:** **100% COMPLETADO Y VERIFICADO**.
+- **Acción Ejecutada:**
+  1. Comprobación de requerimientos para el MCP Server Context7 (`@upstash/context7-mcp`).
+  2. Creación del archivo de configuración de MCP a nivel de workspace en [`.agents/mcp_config.json`](file:///Users/angelzaragoza/Desktop/proyecto-web/.agents/mcp_config.json) usando transporte estándar `stdio` con `npx -y @upstash/context7-mcp`.
+  3. Verificación de ejecución del binario vía CLI con código de salida 0.
+- **Compás de Espera Inviolable:** Sistema listo y a la espera de autorización explícita para iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
+
+---
+
+## Hito Previo: Creación de AGENTS.md Canónico & Revisión Progresiva Integral
 
 - **Estado:** **100% COMPLETADO, VERIFICADO Y PERSISTIDO**.
 - **Acción Ejecutada:**
