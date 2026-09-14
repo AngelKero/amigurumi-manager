@@ -22,7 +22,40 @@
   background-color: var(--craft-primary-subtle);
 }
 
-.user-avatar-circle {
+/* ==========================================================================
+   Team Directory & Artisan Management Aesthetic (regla §5.16 de
+   .agents/rules/ui-ux-design-system.md) — implante en 04-components/users.css
+   ========================================================================== */
+
+.table-artisan-team {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-artisan-team tbody td {
+  border-bottom: 1px dashed var(--craft-border);
+}
+
+.table-artisan-team tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-artisan-team thead th {
+  background-color: var(--craft-surface-muted);
+  color: var(--craft-text-muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--craft-border);
+}
+
+.table-artisan-team tbody tr:hover {
+  background-color: var(--craft-primary-subtle);
+}
+
+.avatar-artisan-initials {
   width: 44px;
   height: 44px;
   border-radius: var(--craft-radius-pill);

@@ -21,7 +21,7 @@ La **Fase 3** implementa la capa de backend completa para el sistema **Crochet M
 | **3.6.4** | Lógica de Negocio, Precios & Multibyte (OWASP A04) | ✅ **Completado & Verificado** | 151 / 151 OK | [subfase-3.6.4-logica-precios.md](../testing/subfase-3.6.4-logica-precios.md) |
 | **3.6.5** | Rendimiento SQLite, Clean Architecture & Regresión | ✅ **Completado & Verificado** | 141 / 141 OK | [subfase-3.6.5-rendimiento-regresion.md](../testing/subfase-3.6.5-rendimiento-regresion.md) |
 
-**Total Acumulado Fase 3 Completa (3.1 a 3.6.5):** **1,307 / 1,307 aserciones aprobadas (100% OK en verde)**.
+**Total Acumulado Fase 3 Completa (3.1 a 3.6.5):** **1,287 / 1,287 aserciones aprobadas (100% OK en verde)** · cifra verificada sobre semilla limpia (regenerable: `php tests/cuenta-aserciones.php`, H-006).
 
 ---
 

@@ -14,12 +14,12 @@
 | **3.4** | Catálogo, Creaciones & Ciclo de Imágenes | `tests/test-subfase-3.4.php` | 126 / 126 (100%) | ✅ Aprobado | [Ver Reporte 3.4](./subfase-3.4-creaciones.md) |
 | **3.5** | Pedidos & Transacciones Atómicas | `tests/test-subfase-3.5.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 3.5](./subfase-3.5-pedidos.md) |
 | **3.6.1** | Acceso, Autorización, IDOR & RBAC | `tests/test-subfase-3.6.1.php` | 165 / 165 (100%) | ✅ Aprobado | [Ver Reporte 3.6.1](./subfase-3.6.1-idor-access-control.md) |
-| **3.6.2** | Criptografía, Auth & Datos Sensibles | `tests/test-subfase-3.6.2.php` | 161 / 161 (100%) | ✅ Aprobado | [Ver Reporte 3.6.2](./subfase-3.6.2-criptografia-autenticacion.md) |
+| **3.6.2** | Criptografía, Auth & Datos Sensibles | `tests/test-subfase-3.6.2.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.2](./subfase-3.6.2-criptografia-autenticacion.md) |
 | **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | 157 / 157 (100%) | ✅ Aprobado | [Ver Reporte 3.6.3](./subfase-3.6.3-inyeccion-medios.md) |
 | **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | 151 / 151 (100%) | ✅ Aprobado | [Ver Reporte 3.6.4](./subfase-3.6.4-logica-precios.md) |
 | **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
 
-**Total Acumulado Fase 3:** **1,307 / 1,307 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)**
+**Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
 
 ---
 

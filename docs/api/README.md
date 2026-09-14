@@ -128,10 +128,12 @@ Access-Control-Max-Age: 86400
 
 ## 8. Estándar Universal de Baja Lógica (Zero Physical Delete)
 
+>  **Invariante canónico R-01 / R-02 (`AGENTS.md §5`)** · Esta sección referencia el estándar; no es fuente normativa independiente.
+
 1. Queda estrictamente prohibido ejecutar sentencias SQL `DELETE FROM` en las tablas `usuarios`, `creaciones` y `pedidos`.
-2. Las eliminaciones se aplican lógicamente:
+2. La eliminación es una actualización lógica (R-01):
    ```sql
    UPDATE <tabla> SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1;
    ```
 3. Las consultas de lectura filtran por defecto `WHERE activo = 1`.
-4. **Preservación de Archivos:** Las imágenes de creaciones dadas de baja lógica **NUNCA se borran del disco con `unlink()`** para preservar las miniaturas en pedidos históricos.
+4. **Preservación de Archivos (R-02):** Las imágenes de creaciones dadas de baja lógica **NUNCA se borran del disco con `unlink()`** para preservar las miniaturas en pedidos históricos.

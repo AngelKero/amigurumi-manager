@@ -210,7 +210,7 @@ export function initUsers() {
           <td class="fw-bold font-monospace text-primary px-3">#${newId}</td>
           <td>
             <div class="d-flex align-items-center gap-3">
-              <div class="user-avatar-circle">${escInitial}</div>
+              <div class="avatar-artisan-initials">${escInitial}</div>
               <div>
                 <strong class="d-block text-dark username-text">@${escUsername}</strong>
                 <small class="text-muted">Creador Independiente</small>

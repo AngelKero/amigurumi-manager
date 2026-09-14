@@ -21,6 +21,8 @@ Este documento consolida las evaluaciones heurísticas de interfaz, los análisi
 
 ## 2. Guardias Heurísticas de Negocio
 
+> Numeración única canónica (H-012): espejo de `.agents/rules/ui-ux-design-system.md §4`.
+
 1. **[CR-1] Guardia de Stock Agotado (`cantidad_stock === 0`):**
    - El botón de compra inmediata se deshabilita automáticamente (`disabled`, `aria-disabled="true"`).
    - Se despliega el badge `.badge-stock-out` con el texto *"Agotado para Entrega Inmediata"*.
@@ -29,11 +31,15 @@ Este documento consolida las evaluaciones heurísticas de interfaz, los análisi
    - Input de cantidad en modo solo lectura (`readonly`).
    - Botones `[-] [ 1 ] [+]` acotados entre `1` y `cantidad_stock`.
    - Deshabilitación dinámica de botones al alcanzar los límites.
-3. **[CR-2] Responsividad Móvil en Pedidos:**
+3. **[CR-3] Responsividad Móvil en Pedidos:**
    - En pantallas menores a 768px, las filas de tabla se transforman en tarjetas móviles apiladas (`.order-card-mobile`).
-4. **[QW-2] Restitución de Stock al Cancelar:**
+4. **[CR-4] Aislamiento de Roles Artesano:**
+   - La vista pública del cliente nunca revela rutas administrativas (`Nueva Creación`, `Gestión de Pedidos`); solo se muestran con sesión `admin/artesano` activa.
+5. **[QW-1] Contraste WCAG 2.1 AA:**
+   - Texto sobre badges, botones y píldoras de estado con ratio ≥ 4.5:1.
+6. **[QW-2] Restitución de Stock al Cancelar:**
    - Todo diálogo de cancelación de pedido informa con precisión el número de unidades y el nombre de la creación que se reintegran físicamente al inventario.
-5. **[QW-2] Microcopy de Coordinación Directa:**
+7. **[QW-3] Microcopy de Coordinación Directa:**
    - Todos los modales de encargo especifican que los plazos y personalizaciones se coordinan de forma directa con el creador independiente a través de la plataforma.
-6. **Protección Anti-Desbordamiento en Dimensiones:**
+8. **Protección Anti-Desbordamiento en Dimensiones:**
    - Contenedor `.card-product-meta` con `flex-wrap: wrap` y píldora `.card-product-dimension` con truncado elíptico protector para evitar que textos largos de medidas rompan la cuadrícula de tarjetas.

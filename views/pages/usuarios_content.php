@@ -128,7 +128,7 @@ $usuariosList = [
     </div>
 
     <div class="table-responsive">
-      <table class="table table-users align-middle mb-0" id="tablaUsuarios">
+      <table class="table table-users table-artisan-team align-middle mb-0" id="tablaUsuarios">
         <thead>
           <tr>
             <th scope="col" class="py-3 px-3">ID</th>
@@ -145,7 +145,7 @@ $usuariosList = [
               <td class="fw-bold font-monospace text-primary px-3">#<?= $u['id'] ?></td>
               <td>
                 <div class="d-flex align-items-center gap-3">
-                  <div class="user-avatar-circle">
+                  <div class="avatar-artisan-initials">
                     <?= strtoupper(substr($u['username'], 0, 1)) ?>
                   </div>
                   <div>

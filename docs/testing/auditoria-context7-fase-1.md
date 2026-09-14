@@ -169,7 +169,7 @@ La consulta con Context7 permitió contrastar el esquema físico con las mejores
 | **Tolerancia a Concurrencia** | **Aprobado** | `PRAGMA busy_timeout = 5000;` activo. |
 | **Precisión Monetaria** | **Aprobado** | 100% en centavos enteros (`INTEGER`). Cero `REAL`. |
 | **Restricciones CHECK** | **Aprobado** | 13 reglas de negocio forzadas a nivel de motor. |
-| **Regresión Acumulada** | **Aprobado** | 141/141 aserciones en verde (1,146 acumuladas OK). |
+| **Regresión Acumulada** | **Aprobado** | 141/141 aserciones en verde (1,146 acumuladas pre-3.6.5 OK sobre semilla limpia; total Fase 3 regenerable: `php tests/cuenta-aserciones.php` → 1,287, H-006). |
 
 > **Certificación Fase 1:** La base de datos y la capa relacional de la Fase 1 están **completamente validadas y certificadas contra la documentación canónica de SQLite 3**.
 

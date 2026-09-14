@@ -10,6 +10,6 @@
 - [x] Ejecutar e integrar suites de pruebas CLI para Subfases 3.1 a 3.5 (532 aserciones aprobadas).
 - [x] Ejecutar e integrar suites de auditoría de seguridad Subfases 3.6.1 a 3.6.5 (775 aserciones aprobadas).
 - [x] Verificar que el 100% de consultas utilicen índices (`EXPLAIN QUERY PLAN` con 0 `SCAN TABLE`).
-- [x] Certificar la suite de regresión acumulada con 1,307/1,307 aserciones en verde.
+- [x] Certificar la suite de regresión acumulada con 1,287/1,287 aserciones en verde (regenerable, H-006).
 - [x] Validar contra los criterios de aceptación de `spec.md`.
 - [x] Mover la feature a "Hecho" en `../../constitution/roadmap.md`.

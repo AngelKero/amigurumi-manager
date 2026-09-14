@@ -4,7 +4,7 @@
 
 ## Qué hace
 
-Construye el núcleo del backend de **Crochet Manager** bajo Clean Architecture y principios SOLID dentro del directorio protegido `app/`. Proporciona un autocargador PSR-4 nativo sin dependencias de Composer, conexión Singleton PDO SQLite, captura global de errores con salida estandarizada JSON 500, capas desacopladas de repositorios y servicios, middleware de autenticación (HMAC-SHA256 Bearer tokens) y autorización RBAC, 25 controladores REST delgados en `api/`, y una suite de pruebas automatizadas con 1,307 aserciones aprobadas al 100%.
+Construye el núcleo del backend de **Crochet Manager** bajo Clean Architecture y principios SOLID dentro del directorio protegido `app/`. Proporciona un autocargador PSR-4 nativo sin dependencias de Composer, conexión Singleton PDO SQLite, captura global de errores con salida estandarizada JSON 500, capas desacopladas de repositorios y servicios, middleware de autenticación (HMAC-SHA256 Bearer tokens) y autorización RBAC, 25 controladores REST delgados en `api/`, y una suite de pruebas automatizadas con 1,287 aserciones aprobadas al 100% (regenerable, H-006).
 
 ## Por qué
 
@@ -23,7 +23,7 @@ Garantiza que la lógica de negocio, la persistencia de datos y la seguridad ope
 - [x] Aislamiento horizontal de recursos IDOR: los artesanos solo pueden mutar sus creaciones y pedidos propios (ADR-007).
 - [x] Salvaguarda inmutable para el administrador raíz (ID #1: `@admin` no degradable ni eliminable, ADR-010).
 - [x] Validación binaria estricta de imágenes (`finfo_file`, JPEG/PNG/WebP $\le 5\text{MB}$) y preservación estricta de fotos en bajas lógicas (ADR-008).
-- [x] 1,307 de 1,307 aserciones aprobadas en verde en las suites de prueba nativas CLI (`tests/test-subfase-3.X.php`).
+- [x] 1,287 de 1,287 aserciones aprobadas en verde en las suites de prueba nativas CLI (`tests/test-subfase-3.X.php`; regenerable con `php tests/cuenta-aserciones.php`, H-006).
 
 ## Fuera de alcance
 

@@ -82,3 +82,28 @@ Leer docs/ → Trabajar → Tests en verde → Aprobación del usuario → Actua
 2. **NUNCA dejar documentación desincronizada** — si el código cambió, los docs cambian.
 3. **Actualizar `docs/README.md`** si se crearon nuevos archivos de documentación que necesiten aparecer en el índice maestro.
 4. **Actualizar `spec/constitution/roadmap.md`** para reflejar el avance de la feature o subfase completada.
+
+---
+
+## Ciclo de Vida Documental: Deprecación y Archivado (Gobernanza · Acción 5 · H-022)
+
+`docs/` es la biblioteca viva; `docs/archive/` es el histórico **no autoritativo**. Cuando una documentación queda obsoleta se **archiva, jamás se borra físicamente** (integridad del rastro).
+
+### Protocolo de archivado (aplicar en este orden)
+
+1. **Detectar obsoletos:** rutas muertas, decisiones reemplazadas por ADR posterior, procesos sustituidos por reglas (P1), o snapshots históricos cuya vigencia terminó.
+2. **Mover** el archivo a `docs/archive/` (misma estructura de nombre legible).
+3. **Cabecera de obsoleto:** al inicio del documento marcarlo con el formato obligatorio:
+   ```markdown
+   > 🤖 **ARQUIVADO — OBSOLETO:** [fecha ISO] · Reemplazado por <ruta/regla> · NO autoritativo.
+   ```
+4. **Indexar en histórico:** añadir la entrada en `docs/archive/README.md` con su estado y motivo.
+5. **Desenlazar la fuente viva:** retirar la entrada del índice maestro `docs/README.md` (y del README de su dominio si la listaba); el histórico queda accesible solo vía `docs/archive/README.md`.
+6. **Verificar enlaces:** la suite de gobernanza (`tests/test-gobernanza-accion-5.php`) valida que todo `docs/**/*.md` siga enlazado y que ningún archivo obsoleto figure como referencia viva en reglas o workflows.
+
+### Reglas de deprecación
+
+1. **NUNCA `rm` de un doc:** un documento archivado se conserva para auditoría y rastro de decisiones.
+2. **Los mockups HTML históricos** (`docs/archive/*.html`) son no autoritativos: los workflows los referencian solo como lectura/contexto, nunca como target de implementación.
+3. **Reemplazo obligatorio:** todo obsoleto debe indicar qué regla/doc lo sustituye (trazabilidad P1–P6); un doc en el limbo sin reemplazo no se archiva, se tria con el humano.
+4. **Los workflows-glue** (`.agents/workflows/`) nunca deben apuntar a rutas muertas; cualquier desfase se corrige en el propio workflow o se archiva el workflow (mismo protocolo).

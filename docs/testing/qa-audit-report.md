@@ -16,7 +16,7 @@
 | **Calidad de Código & Arquitectura** | Clean Architecture, ITCSS, ES Modules, 0 errores sintaxis | ✅ APROBADO | **100 / 100** |
 | **Sistema de Diseño "Algodón Nórdico"** | Tokens HSL, Fraunces/Outfit, WCAG 2.1 AA (>4.5:1), pespuntes | ✅ APROBADO | **98 / 100** |
 | **Base de Datos & Integridad Relacional** | DDL SQLite, CHECK constraints, FKs activas, centavos enteros | ✅ APROBADO | **100 / 100** |
-| **Reglas de Negocio & Guardias Heurísticas** | [CR-1], [CR-2], [QW-1], [QW-2], Blur Shield, Root Admin Lock | ✅ APROBADO | **99 / 100** |
+| **Reglas de Negocio & Guardias Heurísticas** | [CR-1]–[CR-4], [QW-1]–[QW-3], Blur Shield, Root Admin Lock | ✅ APROBADO | **99 / 100** |
 | **Copywriting & Modelo Multi-Artesano** | Autonomía creadores, calidad de plataforma, 0 menciones obsoletas | ✅ APROBADO | **98 / 100** |
 | **Seguridad & Protección de Servidor** | Apache `.htaccess`, CLI-only guard, XSS sanitization | ✅ APROBADO | **96 / 100** |
 
@@ -150,7 +150,7 @@ erDiagram
 - Está estrictamente acotado entre el valor mínimo (`1`) y el stock máximo disponible (`cantidad_stock`).
 - Los botones `[-]` y `[+]` se deshabilitan reactivamente al alcanzar los límites extremos.
 
-### [CR-2] Responsividad Móvil en Gestión de Pedidos
+### [CR-3] Responsividad Móvil en Gestión de Pedidos
 - En pantallas móviles (`< 768px`), el sistema no fuerza barras de desplazamiento horizontal sobre tablas anchas.
 - Renderiza la cuadrícula responsiva de tarjetas artesanales `.card-admin-pedido` con datos del cliente y botón directo de contacto WhatsApp.
 

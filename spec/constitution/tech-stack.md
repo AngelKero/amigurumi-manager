@@ -26,7 +26,8 @@
 
 - `php -S localhost:8000` — Arranca el servidor local de desarrollo.
 - `php setup.php` — Inicializa o restablece la base de datos física SQLite desde `seed.sql` (estrictamente CLI-only).
-- `php tests/test-subfase-3.6.5.php` — Ejecuta la suite de regresión acumulada del backend (141 aserciones directas, 1,146 acumuladas).
+- `php tests/test-subfase-3.6.5.php` — Ejecuta la suite de regresión acumulada del backend (141 aserciones directas en la propia subfase).
+- `php tests/cuenta-aserciones.php` — **Contador regenerable de aserciones (H-006)**: ejecuta las 10 suites de Fase 3 sobre semilla limpia y verifica el total en runtime (valor actual verificado: **1,287** acumuladas). Toda cifra de aserciones se obtiene con este comando; jamás se copia a mano.
 - `find app api views *.php -name "*.php" -exec php -l {} +` — Linter sintáctico de todo el backend y vistas PHP.
 - `find src/js -name "*.js" -exec node --check {} +` — Linter sintáctico de todos los módulos JavaScript ES6.
 
@@ -60,9 +61,17 @@
 
 ## Límites Duros (Inviolables)
 
-1. **Borrado Lógico Universal (Cero `DELETE FROM`):** Prohibidas las eliminaciones físicas en `usuarios`, `creaciones` y `pedidos`. Se ejecuta siempre `UPDATE <table> SET activo = 0, eliminado_en = datetime('now', 'localtime')`.
-2. **Preservación de Fotos en Bajas Lógicas (ADR-008):** Las fotos en `uploads/` **NUNCA se eliminan con `unlink()`** al dar de baja una creación (`activo = 0`), garantizando auditoría histórica de pedidos pasados. `unlink()` solo se permite al reemplazar foto en edición activa.
-3. **Prevención de IDOR Multi-Artesano (ADR-007):** Un artesano solo puede mutar o cancelar sus propias creaciones y pedidos (`artesano_id === user.id`). Intentos ajenos abortan de inmediato con HTTP 403 Forbidden.
-4. **Protección del Administrador Raíz (ADR-010):** El usuario ID #1 (`@admin`) no puede ser degradado en rol ni dado de baja lógica bajo ninguna circunstancia (HTTP 403).
-5. **Estándar Monetario en Centavos Enteros (ADR-005):** Todo monto financiero se almacena como entero (`INTEGER`) en SQLite y se enriquece bidireccionalmente con `CurrencyHelper` (PHP) y `currency.js` (JS). Prohibidos tipos de coma flotante (`REAL`) para dinero.
-6. **Transacciones Atómicas de Inventario (ADR-009):** Creación de pedidos descuenta stock de forma inmediata y atómica en servidor (`BEGIN IMMEDIATE TRANSACTION`). La cancelación restituye las unidades e invalida re-cancelaciones (idempotencia estricta).
+> **Fuente canónica:** los 10 invariantes operativos viven en `AGENTS.md §5` y se citan por **clave semántica `R-0X`**, nunca por número posicional (H-005).
+
+| Clave | Invariante | ADR / Ref. |
+| :--- | :--- | :--- |
+| **R-01** | Borrado lógico universal (cero `DELETE FROM`) | ADR-004 |
+| **R-02** | Preservación de fotos en bajas lógicas (nunca `unlink()` de assets) | ADR-008 |
+| **R-03** | Autonomía multi-artesano y garantías de plataforma | — |
+| **R-04** | Prevención de IDOR multi-artesano (403 a recursos ajenos) | ADR-007 |
+| **R-05** | Protección del administrador raíz ID #1 (403 irrestricto) | ADR-010 |
+| **R-06** | Estándar monetario en centavos enteros (nunca `REAL`) | ADR-005 |
+| **R-07** | Transacciones atómicas de inventario y cancelación idempotente | ADR-009 |
+| **R-08** | Concurrencia SQLite: `foreign_keys = ON` + `busy_timeout = 5000` | `App\Core\Database` |
+| **R-09** | Carga segura de archivos: MIME binario real, ≤5 MB, nombres criptográficos | ADR-008 |
+| **R-10** | Hardening de login (429/backoff) y revocación server-side de tokens | H-002/H-003 |

@@ -182,6 +182,8 @@ Se ejecutaron secuencialmente todas las suites de prueba desarrolladas a lo larg
 | `tests/test-subfase-3.6.4.php` | 3.6.4: Lógica de Negocio, Precios & Multibyte | 196.75 ms | 151 / 151 | ✅ OK |
 | **TOTAL REGRESIÓN GLOBAL** | **9 Suites Secuenciales sin Interrupción** | **4444.01 ms** | **1,146 / 1,146** | ✅ **100% VERDE** |
 
+> **Nota de verificación (H-006):** el total 1,146 de esta regresión corresponde al snapshot de las 9 suites previas a 3.6.5 (con 3.6.2 = 141 aserciones) y es **aritméticamente consistente** con la semilla limpia actual. El total acumulado de Fase 3 es **1,287** y se regenera con `php tests/cuenta-aserciones.php` (nunca se copia a mano).
+
 ---
 
 ## 5. Pruebas de Integración HTTP en Vivo contra Servidor Local

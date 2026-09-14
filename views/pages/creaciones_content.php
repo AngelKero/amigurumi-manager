@@ -395,7 +395,7 @@ $kpiMargenPromedio = $kpiValorInventario > 0 ? (($kpiValorInventario - $kpiCosto
         <div class="d-flex justify-content-between align-items-center pt-2 border-top mt-1">
           <!-- Autor -->
           <div class="d-flex align-items-center gap-1 text-truncate" style="max-width: 120px;" title="@<?= htmlspecialchars($item['artesano_username']) ?>">
-            <div class="user-avatar-circle" style="width: 24px; height: 24px; font-size: 0.7rem;">
+            <div class="avatar-artisan-initials" style="width: 24px; height: 24px; font-size: 0.7rem;">
               <?= strtoupper(substr($item['artesano_username'], 0, 1)) ?>
             </div>
             <small class="text-dark fw-bold text-truncate" style="font-size: 0.74rem;">@<?= htmlspecialchars($item['artesano_username']) ?></small>

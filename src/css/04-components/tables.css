@@ -1,5 +1,5 @@
 /* ==========================================================================
-   04-COMPONENTS: DATA TABLES & MOBILE ORDER CARDS (CR-2)
+   04-COMPONENTS: DATA TABLES & MOBILE ORDER CARDS (CR-3)
    ========================================================================== */
 
 /* Order Management Table */
@@ -29,7 +29,7 @@
   background-color: #FAFBFD;
 }
 
-/* Mobile Order Cards (CR-2) */
+/* Mobile Order Cards (CR-3) */
 .order-card-mobile {
   background: var(--craft-surface);
   border: 1px solid var(--craft-border);

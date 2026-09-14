@@ -57,6 +57,18 @@ All components, styles, and templates must strictly use the following semantic t
 
 ## 4. Heuristic Usability & Business Guardrails (Never Violate)
 
+> **Registro canónico de heurísticas (H-012):** IDs únicos citables. Estado: **implantada** = verificada en CSS/JS/vistas; **pendiente** = cableado UI previsto en Fase 4.
+
+| ID | Regla | Estado |
+| :--- | :--- | :--- |
+| **[CR-1](#1-cr-1-out-of-stock-guard-cantidad_stock--0)** | Guardia de stock agotado (`cantidad_stock === 0`) | Implantada |
+| **[CR-2](#2-cr-2-bounded-stepper-quantity-control)** | Stepper de cantidad acotado | Implantada |
+| **[CR-3](#3-cr-3-mobile-first-order-responsiveness)** | Responsividad móvil de pedidos (<768px) | Implantada |
+| **[CR-4](#7-cr-4-artisan-role-isolation)** | Aislamiento de roles artesano (UI pública) | Implantada |
+| **[QW-1](#4-qw-1-wcag-21-aa-contrast-standard)** | Contraste WCAG 2.1 AA | Implantada |
+| **[QW-2](#5-qw-2-stock-restitution-on-cancellation)** | Restitución de stock al cancelar | Implantada |
+| **[QW-3](#6-qw-3-direct-commission-agreement--autonomous-lead-time-microcopy)** | Microcopy de coordinación directa (sin plazos de taller) | Implantada |
+
 1. **[CR-1] Out-of-Stock Guard (`cantidad_stock === 0`):**
    - In catalog grids and detail pages, any product with `stock === 0` MUST have its direct purchase button **disabled** (`disabled`, `aria-disabled="true"`).
    - Display a distinct badge: `.badge-stock-out` with text _"Agotado para Entrega Inmediata"_.
@@ -65,15 +77,15 @@ All components, styles, and templates must strictly use the following semantic t
    - Quantity inputs in public checkout modals must be `readonly` and controlled via `[-] [ 1 ] [+]` stepper buttons.
    - The stepper must be strictly bounded: minimum `1`, maximum `cantidad_stock`.
    - Stepper buttons must disable (`disabled`) dynamically when limits are reached.
-3. **[CR-2] Mobile-First Order Responsiveness:**
+3. **[CR-3] Mobile-First Order Responsiveness:**
    - On screens `< 768px`, order dashboards must display stacked order cards (`.order-card-mobile` via `d-block d-md-none`) instead of forcing horizontal scrolling on data tables (`d-none d-md-block`).
 4. **[QW-1] WCAG 2.1 AA Contrast Standard:**
    - Text contrast on badges, buttons, and status pills must always meet or exceed **4.5:1** (e.g. `--craft-secondary-text: #235048` on `--craft-secondary-subtle: #EBF4F2` provides > 6.2:1 contrast).
 5. **[QW-2] Stock Restitution on Cancellation:**
    - Any order cancellation dialog MUST clearly notify the artisan of the exact number of units and product name being reintegrated into physical inventory (`+X unidad(es) reintegradas a [Producto]`).
-6. **[QW-2] Direct Commission Agreement & Autonomous Lead-Time Microcopy:**
+6. **[QW-3] Direct Commission Agreement & Autonomous Lead-Time Microcopy:**
    - In keeping with artisan operational autonomy, custom commission and order modals must NEVER state rigid factory turnaround times (e.g. "5 a 7 días hábiles"). Instead, they must include direct coordination microcopy: _"Los plazos de confección, materiales personalizados y entregas se acuerdan directamente con el creador a través de WhatsApp."_
-7. **Artisan Role Isolation:**
+7. **[CR-4] Artisan Role Isolation:**
    - Public customer view must NEVER reveal administration routes (`Nueva Creación`, `Gestión de Pedidos`). These are displayed only when an authenticated session (`rol: admin/artesano`) is active.
 
 ---
@@ -120,8 +132,9 @@ To evoke the handmade, cozy, tactile nature of crochet and textile sewing, views
     - Authorship must be displayed in a warm parchment card (`#FFFDF9`) framed by golden honey dashed stitches (`1.5px dashed #E0A868`) with a crest avatar and official workshop registration.
 15. **Tailored Specifications Table & Story Quote (`.table-craft-specs`, `.story-quote-craft`):**
     - Technical specifications must use dashed thread dividers (`1px dashed var(--craft-border)`), plum micro-badges for spec icons, and artisan descriptions framed with a 3.5px primary left border and lino-tinted background.
-16. **Team Directory & Artisan Management Aesthetic (`.table-artisan-team`, `.avatar-artisan-initials`):**
+16. **Team Directory & Artisan Management Aesthetic (`.table-artisan-team`, `.avatar-artisan-initials`) — ✓ Implantada:**
     - The team directory (`usuarios.php`) uses soft circular avatars with primary/secondary tinted background initials, high-contrast role badges (`badge-role-admin`, `badge-role-artesano`, `badge-role-asistente`), and stitched role modification triggers.
+    - CSS real: `src/css/04-components/users.css` (`.table-artisan-team`, `.avatar-artisan-initials`); vista: `views/pages/usuarios_content.php` y render dinámico en `src/js/modules/users.js` (H-011 resuelto).
 17. **Root Administrator Lockout Safeguard (ID #1):**
     - The root admin user (`id: 1`, `@admin`) must NEVER have their administrator role downgraded or deleted. The UI must disable role editing controls for ID #1 with a lock indicator and clear explanation tooltip.
 18. **Advanced Catalog Filter Bar (`#filterPriceMin`, `#filterPriceMax`, `#filterArtisan`):**

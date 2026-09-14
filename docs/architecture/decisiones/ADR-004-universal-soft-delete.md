@@ -10,6 +10,8 @@ Aceptada
 ## Fecha
 2026-09-12
 
+> **Clave canónica:** este ADR materializa el invariante **R-01** (y, junto a ADR-008, el **R-02**) de `AGENTS.md §5`. Se cita por clave semántica, nunca por número posicional.
+
 ## Contexto
 El usuario estableció como regla inviolable de negocio que no deben existir eliminaciones físicas en la base de datos para preservar la trazabilidad contable, el historial de pedidos y la autoría de creaciones.
 

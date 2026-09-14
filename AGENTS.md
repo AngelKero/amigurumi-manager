@@ -70,6 +70,10 @@ php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1
 
 # Run per-phase accumulated regression suite when touching Phase 4 features (004-008):
 php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1
+
+# Verify/regenerate the total Phase-3 assertion count (H-006 — figures are
+# regenerable, never hand-copied; resets DB to pristine seed before counting):
+php tests/cuenta-aserciones.php
 ```
 
 Any divergence between CLI and HTTP checks must be triaged per the CLI/HTTP divergence protocol
@@ -118,42 +122,42 @@ When developing in phases or subphases:
 
 ## 5. Critical Invariants & Security Guardrails (Never Violate)
 
-1. **Universal Soft-Deletion Guardrail (Zero Physical Deletions):**
+1. **(R-01) Universal Soft-Deletion Guardrail (Zero Physical Deletions):**
    Direct SQL `DELETE FROM` statements are **strictly forbidden** across `usuarios`, `creaciones`, and `pedidos`. All removals must execute logical updates:
    ```sql
    UPDATE <table> SET activo = 0, eliminado_en = datetime('now', 'localtime') WHERE id = :id AND activo = 1;
    ```
    Read queries must filter `activo = 1` by default.
 
-2. **Asset Preservation on Soft-Delete (ADR-008):**
+2. **(R-02) Asset Preservation on Soft-Delete (ADR-008):**
    Uploaded photos in `uploads/` must **NEVER be unlinked (`unlink()`)** upon creation soft-deletion (`activo = 0`), guaranteeing referential audit integrity for historical orders and client receipts. `unlink()` is only permitted when replacing an image during active update.
 
-3. **Multi-Artisan Autonomy & Platform Guarantees:**
+3. **(R-03) Multi-Artisan Autonomy & Platform Guarantees:**
    This application is an open, collaborative platform for independent creators. **Never write code or copy promising centralized workshop lead times (e.g. "5 a 7 días hábiles")**. Guarantees must focus strictly on platform transparency: rigorous specification sheets, direct WhatsApp communication, and verified artisan profiles.
 
-4. **Multi-Artisan IDOR Prevention (ADR-007):**
+4. **(R-04) Multi-Artisan IDOR Prevention (ADR-007):**
    Artisans can only mutate (`update`, `delete`, `adjustStock`, `toggleCommission`) their own creations (`artesano_id === user.id`) and orders. Modifying another creator's resources must abort immediately with `HTTP 403 Forbidden`. Only `admin` has global oversight.
 
-5. **Root Administrator Lockout Safeguard (ID #1 / ADR-010):**
+5. **(R-05) Root Administrator Lockout Safeguard (ID #1 / ADR-010):**
    The root administrator (`id: 1`, `@admin`) can never be degraded in role or soft-deleted under any circumstance (`HTTP 403 Forbidden`).
 
-6. **Monetary Value Standard (ADR-005):**
+6. **(R-06) Monetary Value Standard (ADR-005):**
    All financial values (`precio`, `costo_materiales`, `precio_final`) must be stored as **integer cents** in SQLite. Floating-point types (`REAL`) for money are strictly prohibited. Use `App\Utils\CurrencyHelper` (PHP) and `src/js/modules/currency.js` (JS) for symmetric conversion.
 
-7. **Atomic Stock Transactions & Idempotent Cancellation (ADR-009):**
+7. **(R-07) Atomic Stock Transactions & Idempotent Cancellation (ADR-009):**
    Order creations reserve inventory within `BEGIN IMMEDIATE TRANSACTION`. Order cancellations validate that the order is not already cancelled, restore reserved units to `creaciones.cantidad_stock`, and update timestamps idempotently.
 
-8. **SQLite Concurrency & Foreign Keys:**
+8. **(R-08) SQLite Concurrency & Foreign Keys:**
    Every PDO connection must execute:
    ```sql
    PRAGMA foreign_keys = ON;
    PRAGMA busy_timeout = 5000;
    ```
 
-9. **Secure File Uploads:**
+9. **(R-09) Secure File Uploads:**
    Uploaded files must be verified using real binary MIME detection (`finfo_file` / `mime_content_type`) restricted strictly to `image/jpeg`, `image/png`, and `image/webp` with a $\le 5\text{MB}$ ceiling. Cryptographic file names (`creacion_[16-hex]_[timestamp].[ext]`) and `basename()` confinement prevent path traversal. If no photo is uploaded, automatically assign a thematic SVG fallback from `assets/svg/piezas/`.
 
-10. **Brute-Force Login Hardening & Token Revocation (H-002/H-003):**
+10. **(R-10) Brute-Force Login Hardening & Token Revocation (H-002/H-003):**
     `POST /api/auth/login.php` must throttle each account and each IP via the `login_intentos` failed-attempt counter (defaults: 5/username, 20/IP within a 15-minute window → `HTTP 429 Too Many Requests`), apply a timing backoff after each failure, and reset the counter on success. `POST /api/auth/logout.php` must revoke the presented Bearer token server-side via the `tokens_revocados` denylist keyed by `jti`; revoked tokens are rejected during validation. HMAC secret rotation is supported via the `ver` claim and `auth.token_secret_anterior`.
 
 ---

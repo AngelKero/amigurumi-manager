@@ -155,7 +155,7 @@ La auditoría certifica que:
 | **Preservación de Fotos** | **Aprobado** | ADR-008 cumplido: 0 `unlink()` en soft-delete. |
 | **Output Buffering & Errores** | **Aprobado** | `ob_end_clean()` en bucle. Cero fugas HTML. |
 | **Controladores Delgados** | **Aprobado** | 25 archivos $\le 60$ líneas (promedio 45.7). |
-| **Regresión Acumulada** | **Aprobado** | 1,307/1,307 aserciones en verde (100% OK). |
+| **Regresión Acumulada** | **Aprobado** | 1,287/1,287 aserciones en verde (100% OK; regenerable: `php tests/cuenta-aserciones.php`, H-006). |
 
 > **Certificación Fase 3:** El backend, la arquitectura limpia, la capa REST y la seguridad de la Fase 3 están **plenamente verificados y certificados contra la documentación canónica de PHP 8.1+ y los estándares OWASP**.
 
@@ -168,4 +168,4 @@ Con la culminación de la **Parte 3**, las tres fases completadas del proyecto h
 * **Fase 2 (UI/UX & Layout):** Certificada contra Bootstrap 5.3 y WCAG 2.1 AA (`docs/testing/auditoria-context7-fase-2.md`).
 * **Fase 3 (Backend & Seguridad):** Certificada contra PHP 8.1+ y OWASP (`docs/testing/auditoria-context7-fase-3.md`).
 
-El proyecto **Crochet Manager** cuenta con una base arquitectónica extraordinariamente sólida, respaldada por **1,307 aserciones automatizadas** y lista para avanzar con plena confianza hacia la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
+El proyecto **Crochet Manager** cuenta con una base arquitectónica extraordinariamente sólida, respaldada por **1,287 aserciones automatizadas** (regenerable: `php tests/cuenta-aserciones.php`, H-006) y lista para avanzar con plena confianza hacia la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
