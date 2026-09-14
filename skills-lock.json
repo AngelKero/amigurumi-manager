@@ -1,11 +1,41 @@
 {
   "version": 1,
   "skills": {
+    "brand-identity": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/brand-identity/SKILL.md",
+      "computedHash": "4760034af34c0e5a60ceaccab792d09410c0dec5cf0d06a7f22d9c1b098daa31"
+    },
+    "clean-code-architect": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/clean-code-architect/SKILL.md",
+      "computedHash": "84516a61bffa3719a6ea80b73d0d21fa8797cb56bbbde9f8a255248de51b45e1"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
-      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
+      "computedHash": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3"
+    },
+    "logo-generator": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/logo-generator/SKILL.md",
+      "computedHash": "9879c2eda8647626baeab84559b5db4f894016d95255008f0341a64b0f55013e"
+    },
+    "spec-driven-development": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/spec-driven-development/SKILL.md",
+      "computedHash": "00c6df922d100644c09902e6176d95d4d0a67d2124c92666a301042de2bb33ee"
+    },
+    "design-auditor": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": ".agents/skills/ui-ux-reviewer/SKILL.md",
+      "computedHash": "bd88d2d4e3afadea5ad6ffd25e081aac301d62877a77a7f4fe1d77bbdaf042b7"
     }
   }
 }
