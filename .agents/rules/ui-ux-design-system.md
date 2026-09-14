@@ -71,10 +71,10 @@ All components, styles, and templates must strictly use the following semantic t
    - Text contrast on badges, buttons, and status pills must always meet or exceed **4.5:1** (e.g. `--craft-secondary-text: #235048` on `--craft-secondary-subtle: #EBF4F2` provides > 6.2:1 contrast).
 5. **[QW-2] Stock Restitution on Cancellation:**
    - Any order cancellation dialog MUST clearly notify the artisan of the exact number of units and product name being reintegrated into physical inventory (`+X unidad(es) reintegradas a [Producto]`).
-6. **[QW-2] Transparent Lead-Time Microcopy:**
-   - All custom commission modals must include the standard lead time note: _"Los pedidos personalizados o sin existencias requieren de 5 a 7 días hábiles de confección artesanal."_
+6. **[QW-2] Direct Commission Agreement & Autonomous Lead-Time Microcopy:**
+   - In keeping with artisan operational autonomy, custom commission and order modals must NEVER state rigid factory turnaround times (e.g. "5 a 7 días hábiles"). Instead, they must include direct coordination microcopy: _"Los plazos de confección, materiales personalizados y entregas se acuerdan directamente con el creador a través de WhatsApp."_
 7. **Artisan Role Isolation:**
-   - Public customer view must NEVER reveal administration routes (`Nuevo Amigurumi`, `Gestión de Pedidos`). These are displayed only when an authenticated session (`rol: admin/artesano`) is active.
+   - Public customer view must NEVER reveal administration routes (`Nueva Creación`, `Gestión de Pedidos`). These are displayed only when an authenticated session (`rol: admin/artesano`) is active.
 
 ---
 

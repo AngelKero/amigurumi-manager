@@ -1,4 +1,17 @@
-## Hito Activo: Compás de Espera Inviolable — Fase 3: Backend & Clean Architecture Completada al 100% (Subfase 3.6.5 Aprobada)
+## Hito Activo: Consolidación de Reglas de Aprendizaje (/learn) — Workspace Hardened & Sincronizado
+
+- **Estado:** **100% COMPLETADO, VERIFICADO Y PERSISTIDO**.
+- **Acción Ejecutada:** Procesamiento del comando `/learn` para incorporar de forma permanente y reusable las directrices, correcciones e invariantes del usuario en los archivos de reglas del workspace:
+  1. **Descomposición Obligatoria de Fases Extensas ("Divide y Vencerás"):** Regla inviolable para particionar cualquier fase o subfase amplia en sub-subfases secuenciales acotadas con compuertas de testing independientes y compás de espera obligatorio sin bundling.
+  2. **Transparencia en Fallos de Tests:** Obligatoriedad de incluir la sección *"Fallos Detectados & Correcciones Quirúrgicas"* en los reportes de testing ante cualquier discrepancia resuelta en el ciclo Red-Green-Refactor.
+  3. **Invariante Universal de Borrado Lógico (Cero Borrados Físicos):** Prohibición terminante de sentencias `DELETE FROM` en base de datos y preservación garantizada de archivos físicos en `uploads/` en bajas lógicas (`activo = 0`).
+  4. **Autonomía Operativa de Creadores & Garantías de Plataforma:** Guardrail que prohíbe promesas de fábrica centralizada o plazos fijos de confección ("5-7 días"), consagrando la plataforma como Micro-ERP colaborativo para creadores independientes cuyas garantías residen en las herramientas provistas (fichas técnicas, WhatsApp directo, costeo ético).
+  5. **Sincronización de Estado en Reglas:** Actualizados `.agents/rules/general.md`, `.agents/workflows/general.md` y `.agents/rules/ui-ux-design-system.md` reflejando la Fase 3 completada al 100% (1,307/1,307 aserciones) y preparando el desglose para la Fase 4.
+- **Compás de Espera Inviolable:** Sistema listo y a la espera de autorización explícita para iniciar la **Fase 4: Operaciones CRUD & Cableado Fullstack Asíncrono**.
+
+---
+
+## Hito Previo: Compás de Espera Inviolable — Fase 3: Backend & Clean Architecture Completada al 100% (Subfase 3.6.5 Aprobada)
 
 - **Estado:** **100% COMPLETADO, TESTEADO Y VERIFICADO (141/141 Aserciones OK en 4642.67 ms)**.
 - **Total Acumulado Fase 3:** **1,307 / 1,307 Aserciones Aprobadas (100% OK en verde)**.
