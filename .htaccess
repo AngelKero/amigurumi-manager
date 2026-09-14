@@ -16,22 +16,22 @@ Options -Indexes
 
 # ------------------------------------------------------------------------------
 # 3. Strictly Block Direct Web Access to Sensitive Directories
-#    (app/, database/, memory-bank/, logs/, tests/)
+#    (app/, database/, spec/, memory-bank/, logs/, tests/)
 # ------------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
     RewriteEngine On
     # Return 403 Forbidden for any request attempting to access protected folders
-    RewriteRule ^(app|database|memory-bank|logs|tests)(/.*)?$ - [F,L,NC]
+    RewriteRule ^(app|database|memory-bank|logs|tests|spec)(/.*)?$ - [F,L,NC]
 </IfModule>
 
 <IfModule mod_authz_core.c>
-    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests)(/.*)?$">
+    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests|spec)(/.*)?$">
         Require all denied
     </DirectoryMatch>
 </IfModule>
 
 <IfModule !mod_authz_core.c>
-    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests)(/.*)?$">
+    <DirectoryMatch "^.*/(app|database|memory-bank|logs|tests|spec)(/.*)?$">
         Order allow,deny
         Deny from all
     </DirectoryMatch>

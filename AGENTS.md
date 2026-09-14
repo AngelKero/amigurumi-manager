@@ -20,7 +20,7 @@
 - `tests/`: Native CLI test suites (`TestHelper.php`, `test-subfase-3.X.php`).
 - `logs/`: Ephemeral CLI and HTTP test logs (git-ignored, HTTP 403).
 - `docs/`: Domain-driven modular documentation (`docs/api/`, `docs/architecture/`, `docs/database/`, `docs/design-system/`, `docs/testing/`).
-- `memory-bank/`: Canonical source of truth for AI agents (`projectbrief.md`, `productContext.md`, `techContext.md`, `activeContext.md`, `progress.md`).
+- `spec/`: Canonical source of truth for AI agents under Spec-Driven Development (SDD) (`spec/constitution/` and `spec/features/`).
 
 ---
 
@@ -75,7 +75,7 @@ When developing in phases or subphases:
 2. Run the automated CLI test suite and verify 100% assertions pass.
 3. Generate the executive markdown report in `docs/testing/`.
 4. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
-5. Update `memory-bank/activeContext.md` and `memory-bank/progress.md`.
+5. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
 6. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
 
 ---
@@ -145,12 +145,13 @@ When developing in phases or subphases:
 
 ---
 
-## 6. Memory Bank Governance
+## 6. Spec-Driven Development (SDD) Governance
 
-The single, absolute source of truth for ongoing context is the `/memory-bank/` directory.
-- **Before starting any task:** Read the 5 markdown files in `/memory-bank/` (`activeContext.md`, `productContext.md`, `progress.md`, `projectbrief.md`, `techContext.md`).
-- **Session start:** Verify and update `memory-bank/activeContext.md` before writing code.
-- **Milestone completion:** Keep `memory-bank/activeContext.md` and `memory-bank/progress.md` strictly synchronized.
+The single, absolute source of truth for ongoing context and execution is the `spec/` directory under **Spec-Anchored** SDD.
+- **Project Constitution:** Consult `spec/constitution/` (`mission.md`, `tech-stack.md`, `roadmap.md`) for stable project identity, Clean Architecture rules, and feature ordering.
+- **Active Feature:** Work exclusively within `spec/features/NNN-nombre-feature/` (`spec.md`, `plan.md`, `tasks.md`).
+- **Gated Workflow:** The human acts as the Intent Validator. Validate `spec.md` and `plan.md` before any code is generated or edited.
+- **Task Progression:** Check off tasks in `tasks.md` as verified, ensure acceptance criteria in `spec.md` pass, and advance `spec/constitution/roadmap.md`.
 
 ---
 

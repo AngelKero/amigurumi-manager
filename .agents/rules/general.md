@@ -36,7 +36,7 @@ Development will strictly follow these sequential phases. You must halt complete
     2. Perform HTTP curl checks logging responses to `logs/subfase-3.X-http.log`.
     3. Generate executive Markdown report in `docs/testing/subfase-3.X-[nombre].md` using the template in `docs/testing/README.md`.
     4. Include a dedicated "Fallos Detectados & Correcciones Quirúrgicas" section in the report if any test failed or required code adaptation during the Red-Green-Refactor cycle.
-    5. Update `memory-bank/activeContext.md` and `memory-bank/progress.md`.
+    5. Update feature `tasks.md`, check acceptance criteria in `spec.md`, and update `spec/constitution/roadmap.md`.
     6. **HALT COMPLETELY:** Stop calling tools and await the user's explicit written approval before writing any code for the next subphase. Never bundle multiple subphases together.
 
 - **Phase 4 - CRUD Operations & Fullstack Wiring (Pending):**
