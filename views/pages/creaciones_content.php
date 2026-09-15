@@ -262,7 +262,7 @@
   <div class="d-flex align-items-center gap-2 flex-wrap">
     <div class="pagination-results-chip">
       <i class="bi bi-collection-fill" style="color: var(--craft-primary);"></i>
-      <span>Mostrando <strong id="creacionesShowingCount">0</strong> de <strong id="creacionesTotalCount">0</strong> piezas del inventario</span>
+      <span>Mostrando <strong id="creacionesShowingFrom">0</strong>–<strong id="creacionesShowingTo">0</strong> de <strong id="creacionesTotalCount">0</strong> piezas del inventario</span>
     </div>
   </div>
   <nav aria-label="Navegación del inventario" id="creacionesPaginationNav">

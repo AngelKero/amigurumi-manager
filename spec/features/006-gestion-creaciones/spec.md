@@ -1,6 +1,6 @@
 # 006 · Gestión de Creaciones & Subida Multipart (Subfase 4.3)
 
-**Estado:** implementada y validada (AC 14/14 · suites 212/212 + 62/62 · gate 3-tier verde)
+**Estado:** implementada y validada (AC 16/16 · suites 212/212 + 62/62 + 35/35 · gate 3-tier verde)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**
 > Cubre la **subfase 4.3** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a
@@ -66,6 +66,8 @@ multipart → servicio → repositorio → render del sistema Algodón Nórdico.
 - [x] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); regresión Fase 3 y cifra regenerable `php tests/cuenta-aserciones.php` (**1.287**) en verde si se tocó backend compartido (H-006).
 - [x] El panel lee desde `GET /api/creaciones/mias.php` con Bearer: como artesano solo devuelve piezas propias aunque se falsee `artesano_id` (anti-spoof, 401 sin token); como `admin`, visión global con filtro `artesano_id` opcional (4.3.1, ADR-017).
 - [x] La papelera es usable: `estado=inactivas` lista solo `activo=0` propios, `estado=todas` ambas, y el botón Restaurar aparece solo en inactivas (4.3.1).
+- [x] El badge del panel muestra el total filtrado (`N piezas`) y la paginación el rango real (`Mostrando A–B de N`, 0 si vacío) (4.3.2).
+- [x] Los KPIs son globales del ámbito visible (scoping + `estado`, sin filtros de búsqueda) y exactos vía agregado servidor `mias.php?resumen=1` (centavos enteros, sin tope) (4.3.2).
 
 ## Fuera de alcance
 

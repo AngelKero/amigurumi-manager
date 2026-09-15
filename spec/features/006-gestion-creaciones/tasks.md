@@ -53,9 +53,11 @@
 - [x] Regresiones: 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**468/468**), H-006 (1.287).
 - [x] README testing (fila 4.3.1 + total 468), `009/tasks.md`, `roadmap.md`.
 
-## 8. Correctivo 4.3.2 — Contadores (pendiente)
+## 8. Correctivo 4.3.2 — Contadores (ejecutado)
 
-- [ ] Badge `N piezas` + paginación `Mostrando A–B de N` + KPIs globales con agregado servidor.
-- [ ] Suite `tests/test-subfase-4.3.2.php` → `logs/subfase-4.3.2-{cli,http}.log`; reporte `docs/testing/subfase-4.3.2-contadores.md`.
-- [ ] Regresión acumulada + README + roadmap + **HALT**.
+- [x] `getStockSummary()` + `getOwnSummary()` + `applyOwnershipScope()` + `mias.php?resumen=1` + contrato §2b.
+- [x] Badge `N piezas`, rango `A–B de N`, KPIs globales exactos (sin loop 960).
+- [x] Suite `tests/test-subfase-4.3.2.php` → `logs/subfase-4.3.2-{cli,http}.log` (**35/35**); reporte `docs/testing/subfase-4.3.2-contadores.md`.
+- [x] Regresiones: 4.3 (212/212), 4.3.1 (62/62), 3.6.5 (141/141), acumulado (**503/503**).
+- [x] README testing (fila 4.3.2 + total 503), spec AC-15/16, `009/tasks.md`, `roadmap.md`.
 - [ ] **HALT:** aprobación explícita del usuario antes de la siguiente feature (007 / 4.4).

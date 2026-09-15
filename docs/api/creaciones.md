@@ -129,6 +129,7 @@ Recupera el inventario del panel del artesano con **scoping forzado por rol**
 | :--- | :---: | :---: | :--- |
 | `estado` | `string` | Sí | `activas` (defecto, incluye valores inválidos), `inactivas` (papelera, `activo = 0`), `todas` (sin filtro de `activo`). |
 | `artesano_id` | `int` | Sí | Solo `admin`: filtra por artesano real. Para `artesano` se ignora. |
+| `resumen` | `string` | Sí | `1` → en lugar de la lista, devuelve el agregado exacto `{modelos, unidades, valor_centavos, costo_centavos}` del ámbito visible (scoping + `estado`, sin filtros de búsqueda ni paginación). |
 
 ### Ejemplo de Petición
 

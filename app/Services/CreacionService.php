@@ -138,6 +138,43 @@ class CreacionService {
      * @return array{datos: array, paginacion: array}
      */
     public function getOwnCreations(array $query, array $currentUser): array {
+        $query = $this->applyOwnershipScope($query, $currentUser);
+
+        return $this->getCatalog($query);
+    }
+
+    /**
+     * Agrega el inventario propio del panel en una sola consulta exacta (KPIs
+     * globales del ámbito visible: scoping por rol + `estado`, sin filtros de
+     * búsqueda/categoría/stock y sin tope de paginación).
+     *
+     * @param array $query Parámetros (estado, artesano_id solo admin)
+     * @param array $currentUser Usuario autenticado (con 'id' y 'rol')
+     * @return array{modelos: int, unidades: int, valor_centavos: int, costo_centavos: int}
+     */
+    public function getOwnSummary(array $query, array $currentUser): array {
+        $scoped = $this->applyOwnershipScope($query, $currentUser);
+
+        $filters = [];
+        if (array_key_exists('activo', $scoped)) {
+            $filters['activo'] = $scoped['activo'];
+        }
+        if (!empty($scoped['artesano_id']) && (int)$scoped['artesano_id'] > 0) {
+            $filters['artesano_id'] = (int)$scoped['artesano_id'];
+        }
+
+        return $this->creacionRepo->getStockSummary($filters);
+    }
+
+    /**
+     * Normaliza el query del panel: `estado` → filtro `activo` y scoping forzado
+     * por rol (extiende ADR-007 a la lectura — ver ADR-017).
+     *
+     * @param array $query Parámetros de consulta
+     * @param array $currentUser Usuario autenticado (con 'id' y 'rol')
+     * @return array Query con `activo` y `artesano_id` impuestos por servidor
+     */
+    private function applyOwnershipScope(array $query, array $currentUser): array {
         $userId = (int)($currentUser['id'] ?? 0);
         if ($userId <= 0) {
             throw new InvalidArgumentException('El usuario autenticado no es válido.', 422);
@@ -153,12 +190,12 @@ class CreacionService {
             $query['activo'] = '1';
         }
 
-        // 2. Scoping forzado por rol (extiende ADR-007 a la lectura)
+        // 2. Scoping forzado por rol: artesano solo ve lo suyo (anti-spoof)
         if (($currentUser['rol'] ?? '') !== 'admin') {
             $query['artesano_id'] = $userId;
         }
 
-        return $this->getCatalog($query);
+        return $query;
     }
 
     /**

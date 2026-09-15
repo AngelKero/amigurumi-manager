@@ -28,6 +28,18 @@ $currentUser = RoleGuard::artisanOrAdmin();
 // 4. Delegación con scoping forzado por rol (anti-spoof)
 try {
     $creacionService = new CreacionService();
+
+    // 4a. Agregado exacto para los KPIs globales del panel (sin paginación)
+    if (Request::input('resumen', '') === '1') {
+        $summary = $creacionService->getOwnSummary(Request::query(), $currentUser);
+
+        Response::json([
+            'exito'   => true,
+            'mensaje' => 'Resumen de inventario propio recuperado exitosamente.',
+            'datos'   => $summary,
+        ], 200);
+    }
+
     $result = $creacionService->getOwnCreations(Request::query(), $currentUser);
 
     Response::json([

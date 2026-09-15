@@ -41,6 +41,7 @@ const state = {
 
 let grid = null;
 let template = null;
+let kpiSeq = 0;
 const itemCache = new Map();
 
 function authHeaders(extra = {}) {
@@ -93,13 +94,9 @@ function showEmptyState(show) {
   if (grid) grid.classList.toggle('d-none', show);
 }
 
-function updateCountBadge(shownOnPage, totalItems) {
+function updateCountBadge(totalItems) {
   const badge = document.getElementById('creacionesCountBadge');
-  if (badge) setIconText(badge, 'bi bi-box2-heart me-1', `${shownOnPage} de ${totalItems} piezas`);
-  const showing = document.getElementById('creacionesShowingCount');
-  const total = document.getElementById('creacionesTotalCount');
-  if (showing) showing.textContent = String(shownOnPage);
-  if (total) total.textContent = String(totalItems);
+  if (badge) setIconText(badge, 'bi bi-box2-heart me-1', `${totalItems} piezas`);
 }
 
 function formatMoneyFromCents(cents) {
@@ -113,48 +110,31 @@ async function fetchKpis() {
   const kpiValor = document.getElementById('kpiCreacionesValor');
   const kpiCostos = document.getElementById('kpiCreacionesCostos');
   if (!kpiModelos && !kpiStock && !kpiValor && !kpiCostos) return;
+  const seq = ++kpiSeq;
 
   try {
-    const first = await fetch(`${MINE_URL}?${buildQueryWithoutPage(1)}`, { headers: authHeaders() });
-    const firstJson = await first.json();
-    if (!firstJson || firstJson.exito !== true) return;
-    const pag = firstJson.paginacion || {};
-    const totalItems = Number(pag.total_items) || 0;
-    const totalPages = Math.min(Number(pag.total_paginas) || 1, 20);
-
-    let items = Array.isArray(firstJson.datos) ? [...firstJson.datos] : [];
-    for (let p = 2; p <= totalPages; p++) {
-      const res = await fetch(`${MINE_URL}?${buildQueryWithoutPage(p)}`, { headers: authHeaders() });
-      const json = await res.json();
-      if (json && json.exito === true && Array.isArray(json.datos)) {
-        items = items.concat(json.datos);
-      }
+    const q = new URLSearchParams();
+    q.set('resumen', '1');
+    q.set('estado', state.estado);
+    if (state.artisan !== 'all') q.set('artesano_id', String(state.artisan));
+    const res = await fetch(`${MINE_URL}?${q}`, { headers: authHeaders() });
+    if (res.status === 401) {
+      clearSession();
+      return;
     }
+    if (!res.ok) return;
+    const json = await res.json();
+    if (seq !== kpiSeq) return;
+    if (!json || json.exito !== true || !json.datos) return;
 
-    let totalStock = 0;
-    let totalValor = 0;
-    let totalCostos = 0;
-    items.forEach((item) => {
-      const stock = Number(item.cantidad_stock) || 0;
-      totalStock += stock;
-      totalValor += stock * (Number(item.precio_centavos) || 0);
-      totalCostos += stock * (Number(item.costo_materiales_centavos) || 0);
-    });
-
-    if (kpiModelos) kpiModelos.textContent = String(totalItems);
-    if (kpiStock) kpiStock.textContent = String(totalStock);
-    if (kpiValor) kpiValor.textContent = formatMoneyFromCents(totalValor);
-    if (kpiCostos) kpiCostos.textContent = formatMoneyFromCents(totalCostos);
+    const summary = json.datos;
+    if (kpiModelos) kpiModelos.textContent = String(Number(summary.modelos) || 0);
+    if (kpiStock) kpiStock.textContent = String(Number(summary.unidades) || 0);
+    if (kpiValor) kpiValor.textContent = formatMoneyFromCents(Number(summary.valor_centavos) || 0);
+    if (kpiCostos) kpiCostos.textContent = formatMoneyFromCents(Number(summary.costo_centavos) || 0);
   } catch {
     /* Los KPIs conservan su último valor ante un fallo de red. */
   }
-}
-
-function buildQueryWithoutPage(page) {
-  const q = buildQuery();
-  q.set('pagina', String(page));
-  q.set('limite', '48');
-  return q;
 }
 
 function setStockBadge(badge, stock, onDemand) {
@@ -361,6 +341,18 @@ function makeNumberItem(page) {
 function renderPagination(pag) {
   const current = Number(pag.pagina_actual) || 1;
   const totalPages = Number(pag.total_paginas) || 1;
+  const totalItems = Number(pag.total_items) || 0;
+  const limit = Number(pag.limite) || PAGE_LIMIT;
+
+  const fromEl = document.getElementById('creacionesShowingFrom');
+  const toEl = document.getElementById('creacionesShowingTo');
+  const totalEl = document.getElementById('creacionesTotalCount');
+  const from = totalItems === 0 ? 0 : (current - 1) * limit + 1;
+  const to = Math.min(current * limit, totalItems);
+  if (fromEl) fromEl.textContent = String(from);
+  if (toEl) toEl.textContent = String(to);
+  if (totalEl) totalEl.textContent = String(totalItems);
+
   const nav = document.getElementById('creacionesPaginationNav');
   const ul = nav && nav.querySelector('ul');
   if (!ul) return;
@@ -411,7 +403,7 @@ async function fetchPage() {
     const items = Array.isArray(json.datos) ? json.datos : [];
     renderCards(items);
     renderPagination(pag);
-    updateCountBadge(items.length, pag.total_items ?? 0);
+    updateCountBadge(pag.total_items ?? 0);
     grid.dataset.total = String(pag.total_items ?? 0);
     showLoading(false);
     showEmptyState(items.length === 0);

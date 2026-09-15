@@ -161,6 +161,46 @@ class CreacionRepository {
     }
 
     /**
+     * Agrega el inventario que satisface los filtros en una sola consulta exacta
+     * (modelos, unidades y valorización en centavos enteros — sin tope de paginación).
+     *
+     * @param array $filters Filtros de catálogo (misma gramática que buildWhereClause)
+     * @return array{modelos: int, unidades: int, valor_centavos: int, costo_centavos: int}
+     */
+    public function getStockSummary(array $filters = []): array {
+        [$whereClause, $params] = $this->buildWhereClause($filters);
+
+        $sql = "
+            SELECT COUNT(*) AS modelos,
+                   COALESCE(SUM(c.cantidad_stock), 0) AS unidades,
+                   COALESCE(SUM(c.cantidad_stock * c.precio), 0) AS valor_centavos,
+                   COALESCE(SUM(c.cantidad_stock * c.costo_materiales), 0) AS costo_centavos
+            FROM creaciones c
+            INNER JOIN usuarios u ON u.id = c.artesano_id
+            {$whereClause}
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $key => $val) {
+            if (is_int($val)) {
+                $stmt->bindValue($key, $val, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $val, PDO::PARAM_STR);
+            }
+        }
+
+        $stmt->execute();
+        $row = $stmt->fetch() ?: [];
+
+        return [
+            'modelos'        => (int)($row['modelos'] ?? 0),
+            'unidades'       => (int)($row['unidades'] ?? 0),
+            'valor_centavos' => (int)($row['valor_centavos'] ?? 0),
+            'costo_centavos' => (int)($row['costo_centavos'] ?? 0),
+        ];
+    }
+
+    /**
      * Lista creaciones pertenecientes a un artesano específico.
      * 
      * @param int $artesanoId Identificador del artesano

@@ -119,7 +119,7 @@ TestHelper::assertStringContains('data-part="deleteBtn"', $panelView, 'El templa
 TestHelper::assertStringContains('data-part="restoreBtn"', $panelView, 'El template expone la parte [data-part=restoreBtn] (restauración con UI)');
 TestHelper::assertStringContains('btn-card-restore', $panelView, 'La tarjeta incluye el botón .btn-card-restore');
 TestHelper::assertStringContains('id="creacionesPaginationNav"', $panelView, 'La estación de paginación expone #creacionesPaginationNav');
-TestHelper::assertStringContains('id="creacionesShowingCount"', $panelView, 'El chip "Mostrando X de Y" expone #creacionesShowingCount');
+TestHelper::assertStringContains('id="creacionesShowingFrom"', $panelView, 'El chip "Mostrando A–B de N" expone #creacionesShowingFrom (rango real, 4.3.2)');
 TestHelper::assertStringContains('id="creacionesTotalCount"', $panelView, 'El chip "Mostrando X de Y" expone #creacionesTotalCount');
 TestHelper::assertStringContains('id="emptyCreacionesState"', $panelView, 'Se conserva #emptyCreacionesState con botón de restablecimiento');
 TestHelper::assertStringContains('value="en_stock"', $panelView, 'El filtro de stock usa el valor real del contrato (en_stock)');
