@@ -9,7 +9,7 @@
 | **Fase 1** · Base de Datos, DDL & Concurrencia SQLite | — | ✅ Hecho |
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
-| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 Auth & Sesión de Cliente → 4.5 Directorio & RBAC | 🔄 **En curso** · **4.1 activa**: `spec/features/004-auth-sesion-cliente/tasks.md` · suite `tests/test-subfase-4.1.php` |
+| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 activa**: `spec/features/004-auth-sesion-cliente/tasks.md` · suite `tests/test-subfase-4.1.php` · maestro `spec/features/009-plan-maestro-fase-4/` |
 | **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔄 Continua |
 
 ## Hecho ✅
@@ -29,7 +29,8 @@
 
 ## Siguiente 🔜
 
-4. **004 · Autenticación, Token Bearer & Estado Reactivo del Navbar (Fase 4.1)** — Cableado AJAX de login/logout, almacenamiento seguro de token Bearer en cliente, detección de sesión expirada y reactividad visual inmediata del Navbar y sidebar. *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
+4. **009 · Plan Maestro de la Fase 4 (coordinación · `spec/features/009-plan-maestro-fase-4/`)** — Registrador y plan maestro de toda la Fase 4: realinea `004` a su subfase 4.1, re-ancla este `roadmap.md` como registrador canónico (4.1–4.5 ↔ 004–008) y despliega los `spec/plan/tasks` de las features hijas 005–008. *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
+5. **004 · Autenticación, Token Bearer & Estado Reactivo del Navbar (Fase 4.1)** — Cableado AJAX de login/logout, almacenamiento seguro de token Bearer en cliente, detección de sesión expirada y reactividad visual inmediata del Navbar y sidebar. *(Ejecución bajo el maestro 009.)*
 
 ## Backlog / Ideas 💡
 
@@ -38,4 +39,4 @@
 - **007 · Checkout Público, Pedidos Atómicos & WhatsApp (Fase 4.4)** — Modal de compra rápida en ficha de detalle, reserva atómica de existencias, cálculo seguro de precio en servidor y enlaces directos pre-formateados a WhatsApp.
 - **008 · Directorio de Creadores & Roles RBAC (Fase 4.5)** — Panel de administración de usuarios en `usuarios.php`, actualización reactiva de roles con salvaguarda ID #1, reseteo de claves y reactivación de cuentas.
 
-> Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código.
+> Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código. Las features 005–008 se planifican bajo el maestro `009` (subfases 4.2–4.5).

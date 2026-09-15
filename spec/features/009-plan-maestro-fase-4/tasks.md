@@ -1,0 +1,67 @@
+# 009 · Plan Maestro de la Fase 4 — Tareas
+
+**Estado:** propuesto (sin código) · derivado de `plan.md`
+
+> `009` es coordinación: este `tasks.md` registra el avance de TODO el esqueleto de Fase 4 y
+> deriva las subfases 4.1–4.5 hacia sus **features hijas 004–008**. Cada subfase se ejecuta en
+> su feature hija con **gate 3-tier completo** (suite CLI + logs CLI/HTTP + reporte ejecutivo).
+
+## 1. Especificación (antes de código)
+
+- [x] `spec.md` de 009 validado y aprobado por el usuario (HALT cumplido).
+- [x] `plan.md` de 009 validado y aprobado por el usuario (HALT cumplido).
+
+## 2. Alineación del esqueleto maestro (prerequisito)
+
+- [x] Realinear `004-auth-sesion-cliente/tasks.md`: retirar subfases 4.2–4.5 y la sección de
+      regresión; añadir nota de remisión a `009`.
+- [x] Confirmar que `004/spec.md` y `004/plan.md` no desdicen del alcance auth (4.1); ajustar
+      únicamente si divergen.
+- [x] Re-anclar `spec/constitution/roadmap.md`: Fase 4 = subfases 4.1–4.5 ↔ features 004–008;
+      anotar `009` como maestro de coordinación (fuera del backlog de producto).
+- [x] Baseline limpio (cero código tocado): `find app api views *.php -name "*.php" -exec php -l {} +`
+      y `find src/js -name "*.js" -exec node --check {} +`.
+- [x] Regresión Fase 3: `php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1` → 100% verde.
+- [x] Cifra regenerable: `php tests/cuenta-aserciones.php` → **1,287** (H-006).
+
+## 3. Despliegue de features hijas 005–008 (planificación, sin código)
+
+> Cada feature hija sigue el flujo guiado SDD: `spec.md` → HALT → `plan.md` → HALT → `tasks.md` → HALT.
+
+- [ ] `005` · Catálogo Dinámico & Filtros Textiles (4.2) — spec/plan/tasks creados y aprobados.
+- [ ] `006` · Gestión de Creaciones & Subida Multipart (4.3) — spec/plan/tasks creados y aprobados.
+- [ ] `007` · Checkout Público, Pedidos Atómicos & WhatsApp (4.4) — spec/plan/tasks creados y aprobados.
+- [ ] `008` · Directorio de Creadores & Roles RBAC (4.5) — spec/plan/tasks creados y aprobados.
+- [ ] Actualizar `roadmap.md` al estado "planificado" de 005–008.
+
+## 4. Ejecución de subfases 4.1–4.5 (en features hijas · gate 3-tier)
+
+- [ ] **4.1** Auth & Sesión de Cliente (`004`): suite `tests/test-subfase-4.1.php` →
+      `logs/subfase-4.1-cli.log`; HTTP → `logs/subfase-4.1-http.log`; reporte
+      `docs/testing/subfase-4.1-auth-sesion.md` · **HALT**.
+- [ ] **4.2** Catálogo Dinámico & Filtros (`005`): suite `tests/test-subfase-4.2.php` →
+      `logs/subfase-4.2-cli.log`; HTTP → `logs/subfase-4.2-http.log`; reporte
+      `docs/testing/subfase-4.2-catalogo.md` · **HALT**.
+- [ ] **4.3** Gestión de Creaciones & Multipart (`006`): suite `tests/test-subfase-4.3.php` →
+      `logs/subfase-4.3-cli.log`; HTTP → `logs/subfase-4.3-http.log`; reporte
+      `docs/testing/subfase-4.3-creaciones.md` · **HALT**.
+- [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
+      `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
+      `docs/testing/subfase-4.4-pedidos.md` · **HALT**.
+- [ ] **4.5** Directorio de Creadores & RBAC (`008`): suite `tests/test-subfase-4.5.php` →
+      `logs/subfase-4.5-cli.log`; HTTP → `logs/subfase-4.5-http.log`; reporte
+      `docs/testing/subfase-4.5-usuarios.md` · **HALT**.
+
+## 5. Regresión por fase (obligatorio, H-020)
+
+- [ ] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`.
+- [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
+      + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
+
+## 6. Verificación & Cierre
+
+- [ ] Criterios de aceptación de `spec.md` de 009 al 100% (`- [x]`).
+- [ ] `spec/constitution/roadmap.md`: Fase 4 movida a **Hecho ✅** (4.1–4.5 cerradas).
+- [ ] Reporte de cierre de la fase con resumen de "Fallos Detectados & Correcciones Quirúrgicas".
+- [ ] **HALT:** aprobación explícita del usuario antes de iniciar cualquier otra feature
+      (p.ej. Fase 5).
