@@ -104,6 +104,14 @@ TestHelper::assertStringContains(
     'Layout HTML: CSP permite la fuente de iconos Bootstrap Icons (cdn.jsdelivr.net) en font-src'
 );
 
+// 1.6 Post-login por rol y reload al logout en home (correctivo UX)
+TestHelper::assertStringContains('export function pageForRole', $authJs, 'auth.js exporta pageForRole() (destino post-login por rol)');
+TestHelper::assertStringContains("return 'usuarios.php'", $authJs, 'pageForRole: admin → usuarios.php');
+TestHelper::assertStringContains("return 'creaciones.php'", $authJs, 'pageForRole: artesano → creaciones.php');
+TestHelper::assertStringContains("return 'pedidos.php'", $authJs, 'pageForRole: asistente → pedidos.php');
+TestHelper::assertStringContains('window.location.href = pageForRole', $authJs, 'Tras login exitoso redirige al panel según rol');
+TestHelper::assertStringContains('window.location.reload()', $authJs, 'Al logout en página pública recarga (home) en vez de quedarse con sesión vieja');
+
 // =============================================================================
 // 2. AUTH SERVICE: EMISIÓN TOKEN BEARER & REVOCACIÓN SERVER-SIDE
 // =============================================================================

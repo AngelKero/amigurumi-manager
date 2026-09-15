@@ -111,7 +111,7 @@ Fuerza bruta (6.º intento, usuario dedicado) → HTTP 429
 
 | Prueba | Resultado |
 | :--- | :--- |
-| `php tests/test-subfase-4.1.php` | 58 / 58 (100%) ✅ |
+| `php tests/test-subfase-4.1.php` | 64 / 64 (100%) ✅ (58 base + 6 adenda post-login por rol y reload al logout) |
 | `php tests/test-fase-4-acumulado.php` | Exit 0 · subfase 4.1 en verde (10 aserciones runner + 58 subproceso) ✅ |
 | `php tests/test-subfase-3.6.5.php` (regresión global Fase 3) | 141 / 141 (100%) ✅ |
 | `php tests/cuenta-aserciones.php` (H-006, semilla limpia) | **1,287 aserciones Fase 3** en verde ✅ |
@@ -126,4 +126,5 @@ Fuerza bruta (6.º intento, usuario dedicado) → HTTP 429
 - [x] CSP estricta intacta en HTML y API (H-004), incluida la fuente de Bootstrap Icons (`font-src` con `cdn.jsdelivr.net`) tras el hotfix #2.
 - [x] **Criterios de aceptación de `spec.md` (004) verificados AC-1…AC-8** y marcados `[x]` (§4 de este reporte).
 - [x] Logs respaldados y reporte generado.
+- [x] **Adenda UX post-4.4:** tras login exitoso redirige al panel según rol (`pageForRole`: admin→`usuarios.php`, artesano→`creaciones.php`, asistente→`pedidos.php`); al logout en página privada va al home y en página pública recarga (6 asserts §1.6).
 - **Estado:** ⏸ **HALT — esperando autorización humana** para iniciar la siguiente subfase (4.2 · `005-catalogos-filtros`, o la que el plan maestro 009 indique).

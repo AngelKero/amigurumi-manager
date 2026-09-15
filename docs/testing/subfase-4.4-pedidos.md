@@ -5,7 +5,7 @@
 - **Entorno:** PHP 8.3 CLI + Servidor Built-in (`localhost:8000`) + SQLite 3 + `node --check`
 - **Archivo de Log Crudo:** `logs/subfase-4.4-cli.log` (suite, 137/137) · `logs/subfase-4.4-http.log` (curls manuales)
 - **Script de Pruebas:** `tests/test-subfase-4.4.php` (Feature 007 · maestro 009)
-- **Resultado General:** **137 / 137 Aprobados (100%)** — ✅ APTO PARA AVANZAR
+- **Resultado General:** **139 / 139 Aprobados (100%)** — ✅ APTO PARA AVANZAR
 
 ---
 
@@ -27,14 +27,14 @@
 | `api/pedidos/index.php` | Rama `?resumen=1` (56 líneas, ≤60) |
 | `tests/test-subfase-4.4.php` | Suite §§1-5, 137 aserciones |
 | `docs/api/pedidos.md` | §1 fila `resumen` + §2 `enlace_whatsapp` en solicitar |
-| `docs/testing/README.md` | Fila 4.4 (137/137) + total Fase 4 → **670/670** |
+| `docs/testing/README.md` | Fila 4.4 (137/137) + total Fase 4 → **676/676** |
 
 ## 2. Matriz de Aserciones agrupadas
 
 | # | Dominio | Caso | Aprobadas |
 | - | :--- | :--- | :---: |
 | 1 | Modal checkout | Sin onsubmit/alert/hardcode/fechaEntrega; hiddens, contacto, feedback, éxito, estimado | 15/15 |
-| 2 | JS + sintaxis | catalog data-*; detail hidratación sin mocks/sin innerHTML; checkout solicitar/201/422/409/encargo/sin-450; 7×`node --check` | 24/24 |
+| 2 | JS + sintaxis + grafo vivo | catalog data-*; detail hidratación sin mocks/sin innerHTML; checkout solicitar/201/422/409/encargo/sin-450; 7×`node --check` + harness `eval-main.mjs` (2) | 26/26 |
 | 3 | Servicio | Pedido público (ID, precio servidor, wa E.164+?text=, estados); stock −2; 409; encargo sin stock; 2×422; IDOR 403; manual 201; cambio estado; cancelar + restitución + 409; resumen vs SQL (5) | 28/28 |
 | 4 | Panel | Sin mocks/wa crudos; grid/loading/template (15 parts)/paginación/vacío/KPIs; alta sin mock + estado; orders.js (URLs, resumen, wa servidor, sin nextOrderId/innerHTML/wa, clone, 409/403) | 40/40 |
 | 5 | HTTP vivo | Logins; pieza efímera; compra 201 + precio + wa + stock−; 422/404/409; scoping Ana/admin/401; manual 201/403/200/cancel+restituir/409; resumen == servicio; páginas CSP sin mocks | 30/30 |
@@ -69,6 +69,7 @@
 | 2 | `actualizar.php`-like: `index.php` pedidos +12 líneas | Rama resumen | 56 líneas (≤60 verificado) | ✅ |
 | 3 | Flake 4.2 bajo runner (1/136, 6ª aparición) | **Entorno** transitorio | Re-corrida en verde; registrado (H-015) | ✅ |
 | 4 | 3.6.5 clobber de claves (3.2 §4.10) | **Entorno** conocido | Orden: Fase 3 → claves README → gate Fase 4 re-verificado | ✅ |
+| 5 | Post-cierre: login muerto + catálogo en spinner infinito | **`const INDEX_URL` duplicado en `orders.js`** (entró tras el lint, en el commit): SyntaxError que tumba todo `main.js` | Línea duplicada eliminada + harness permanente `tests/eval-main.mjs` (evalúa el grafo ES con DOM simulado) con 2 asserts en la suite | ✅ |
 
 ## 5. Integridad SQLite
 
@@ -77,7 +78,7 @@
 
 ## 6. Veredicto
 
-- [x] Suite CLI 137/137 + HTTP vivo + AC 10/10 validados.
-- [x] Regresiones: 4.3.x (212+62+43+22), 3.6.5 (141/141), acumulado Fase 4 (**670/670**), H-006 (1.287, previo).
+- [x] Suite CLI 139/139 + HTTP vivo + AC 10/10 validados.
+- [x] Regresiones: 4.3.x (212+62+43+22), 3.6.5 (141/141), acumulado Fase 4 (**678/678**), H-006 (1.287, previo).
 - [x] `007` (AC), `007/tasks.md`, `009/tasks.md`, `roadmap.md`, README actualizados.
 - **Estado:** ⏸ **HALT — esperando autorización para 4.5 (Feature 008).**

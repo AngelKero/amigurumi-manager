@@ -174,6 +174,14 @@ export function isPrivatePage() {
   return PRIVATE_PAGES.includes(page);
 }
 
+/** Página del panel según el rol (post-login). */
+export function pageForRole(rol) {
+  if (rol === 'admin') return 'usuarios.php';
+  if (rol === 'artesano') return 'creaciones.php';
+  if (rol === 'asistente') return 'pedidos.php';
+  return 'index.php';
+}
+
 /** Activa los listeners del modal de login con manejo de estados 401/429/carga. */
 function attachLoginModalListeners() {
   const loginForm = document.getElementById('loginForm');
@@ -199,7 +207,7 @@ function attachLoginModalListeners() {
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span> Validando...';
 
     try {
-      await login(usernameInput.value.trim(), passwordInput.value);
+      const body = await login(usernameInput.value.trim(), passwordInput.value);
 
       if (alertEl) alertEl.classList.add('d-none');
 
@@ -208,7 +216,9 @@ function attachLoginModalListeners() {
         const instance = window.bootstrap.Modal.getInstance(modalEl);
         if (instance) instance.hide();
       }
-      renderAuthState(getUser());
+      const user = getUser();
+      renderAuthState(user);
+      window.location.href = pageForRole(user && user.rol);
     } catch (err) {
       if (alertEl) {
         alertEl.textContent =
@@ -233,6 +243,8 @@ function attachLogoutListeners() {
       renderAuthState(null);
       if (isPrivatePage()) {
         window.location.replace('index.php');
+      } else {
+        window.location.reload();
       }
     });
   });

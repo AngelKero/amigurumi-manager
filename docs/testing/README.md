@@ -18,16 +18,16 @@
 | **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | 157 / 157 (100%) | ✅ Aprobado | [Ver Reporte 3.6.3](./subfase-3.6.3-inyeccion-medios.md) |
 | **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | 151 / 151 (100%) | ✅ Aprobado | [Ver Reporte 3.6.4](./subfase-3.6.4-logica-precios.md) |
 | **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
-| **4.1** | Auth Bearer & Navbar Reactivo (Feature 004) | `tests/test-subfase-4.1.php` | 58 / 58 (100%) | ✅ Aprobado | [Ver Reporte 4.1](./subfase-4.1-auth-sesion.md) |
+| **4.1** | Auth Bearer & Navbar Reactivo (Feature 004) | `tests/test-subfase-4.1.php` | 64 / 64 (100%) | ✅ Aprobado | [Ver Reporte 4.1](./subfase-4.1-auth-sesion.md) |
 | **4.2** | Catálogo Dinámico & Filtros Textiles (Feature 005) | `tests/test-subfase-4.2.php` | 136 / 136 (100%) | ✅ Aprobado | [Ver Reporte 4.2](./subfase-4.2-catalogo.md) |
 | **4.3** | Gestión de Creaciones & Subida Multipart (Feature 006) | `tests/test-subfase-4.3.php` | 212 / 212 (100%) | ✅ Aprobado | [Ver Reporte 4.3](./subfase-4.3-creaciones.md) |
 | **4.3.1** | Scoping Servidor del Panel & Papelera (Feature 006) | `tests/test-subfase-4.3.1.php` | 62 / 62 (100%) | ✅ Aprobado | [Ver Reporte 4.3.1](./subfase-4.3.1-panel-scoping.md) |
 | **4.3.2** | Contadores Correctos del Panel (Feature 006) | `tests/test-subfase-4.3.2.php` | 43 / 43 (100%) | ✅ Aprobado | [Ver Reporte 4.3.2](./subfase-4.3.2-contadores.md) |
 | **4.3.3** | Centavos Multipart & Subida Clicable (Feature 006) | `tests/test-subfase-4.3.3.php` | 22 / 22 (100%) | ✅ Aprobado | [Ver Reporte 4.3.3](./subfase-4.3.3-centavos-upload.md) |
-| **4.4** | Checkout Público, Pedidos Atómicos & WhatsApp (Feature 007) | `tests/test-subfase-4.4.php` | 137 / 137 (100%) | ✅ Aprobado | [Ver Reporte 4.4](./subfase-4.4-pedidos.md) |
+| **4.4** | Checkout Público, Pedidos Atómicos & WhatsApp (Feature 007) | `tests/test-subfase-4.4.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 4.4](./subfase-4.4-pedidos.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **670 / 670 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.4)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **678 / 678 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.4)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 

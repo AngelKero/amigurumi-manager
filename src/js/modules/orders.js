@@ -15,7 +15,6 @@ import { formatPesos, pesosToCents } from './currency.js';
 import { setIconText } from './dom-safe.js';
 
 const INDEX_URL = '/api/creaciones/mias.php';
-const INDEX_URL = '/api/creaciones/mias.php';
 const PEDIDOS_URL = '/api/pedidos/index.php';
 const CREAR_URL = '/api/pedidos/crear.php';
 const ESTADO_URL = '/api/pedidos/cambiar-estado.php';

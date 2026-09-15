@@ -96,6 +96,12 @@ foreach ($jsChecks as $label => $jsPath) {
     TestHelper::assertSame(0, $jsExit, "node --check de {$label} sin errores de sintaxis");
 }
 
+// 2b. Grafo ES vivo: main.js debe evaluarse e inicializarse sin excepciones
+// (caza duplicados/top-level throws que rompen login + catálogo a la vez).
+TestHelper::assertTrue(is_file("$root/tests/eval-main.mjs"), 'Existe el harness tests/eval-main.mjs (DOM simulado)');
+exec('node ' . escapeshellarg("$root/tests/eval-main.mjs") . ' 2>&1', $evalOut, $evalExit);
+TestHelper::assertSame(0, $evalExit, 'El grafo ES de main.js se evalúa e inicializa sin excepciones (login + catálogo vivos)');
+
 // =============================================================================
 // 3. SERVICIO: atomicidad, precio servidor, idempotencia, IDOR, WhatsApp
 // =============================================================================

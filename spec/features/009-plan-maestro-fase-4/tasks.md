@@ -36,7 +36,7 @@
 
 ## 4. Ejecución de subfases 4.1–4.5 (en features hijas · gate 3-tier)
 
-- [x] **4.1** Auth & Sesión de Cliente (`004`): suite `tests/test-subfase-4.1.php` → **58/58**;
+- [x] **4.1** Auth & Sesión de Cliente (`004`): suite `tests/test-subfase-4.1.php` → **64/64**;
       logs `logs/subfase-4.1-cli.log` + `logs/subfase-4.1-http.log` (sin divergencia); reporte
       `docs/testing/subfase-4.1-auth-sesion.md` · **HALT** (aprobación pendiente para 4.2).
 - [x] **4.2** Catálogo Dinámico & Filtros (`005`): suite `tests/test-subfase-4.2.php` →
@@ -53,17 +53,17 @@
 - [x] **4.3.1** Scoping servidor & papelera (`006` correctivo): `api/creaciones/mias.php` +
       `getOwnCreations()` + índice + ADR-017; suite `tests/test-subfase-4.3.1.php` → **62/62**;
       HTTP → `logs/subfase-4.3.1-http.log`; reporte `docs/testing/subfase-4.3.1-panel-scoping.md`;
-      regresiones 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**468/468**), H-006 (1.287).
+      regresiones 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**474/474**), H-006 (1.287).
 - [x] **4.3.2** Contadores del panel (`006` correctivo): `getStockSummary()` + `getOwnSummary()` +
       `mias.php?resumen=1`; badge `N piezas` + rango `A–B de N` + KPIs globales exactos; suite
       `tests/test-subfase-4.3.2.php` → **43/43**; HTTP → `logs/subfase-4.3.2-http.log`; reporte
-      `docs/testing/subfase-4.3.2-contadores.md`; acumulado (**511/511**).
+      `docs/testing/subfase-4.3.2-contadores.md`; acumulado (**517/517**).
 - [x] **4.3.3** Centavos multipart & subida clicable (`006` correctivo): `resolveCents()` dual +
       `*_centavos` en crear/actualizar/JS; dato #316 ($350/$100); dropzone + hero sin handlers
       inline (CSP); suite `tests/test-subfase-4.3.3.php` → **22/22**; reporte
-      `docs/testing/subfase-4.3.3-centavos-upload.md`; acumulado (**533/533**).
+      `docs/testing/subfase-4.3.3-centavos-upload.md`; acumulado (**539/539**).
 - [x] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
-      **137/137** (`logs/subfase-4.4-cli.log`); HTTP → `logs/subfase-4.4-http.log` (201 público +
+      **139/139** (`logs/subfase-4.4-cli.log); HTTP → `logs/subfase-4.4-http.log` (201 público +
       precio congelado + WhatsApp, 422/404/409, panel Bearer con scoping, manual/estados/
       cancelar+restituir, sin divergencia); reporte `docs/testing/subfase-4.4-pedidos.md` con
       **validación AC 10/10** · **HALT** (aprobación pendiente para 4.5).
@@ -74,12 +74,9 @@
 ## 5. Regresión por fase (obligatorio, H-020)
 
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
-      (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0; tras 4.3:
-      **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
-      **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
-      **511/511** — 58 + 136 + 212 + 62 + 43, EXIT 0; tras 4.3.3: **533/533**
-      — 58 + 136 + 212 + 62 + 43 + 22, EXIT 0; tras 4.4: **670/670**
-      — 58 + 136 + 212 + 62 + 43 + 22 + 137, EXIT 0).
+      (tras 4.3: **412/412** — 64 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2: **517/517** —
+      64 + 136 + 212 + 62 + 43, EXIT 0; tras 4.3.3: **539/539** — 64 + 136 + 212 + 62 + 43 + 22,
+      EXIT 0; tras 4.4: **678/678** — 64 + 136 + 212 + 62 + 43 + 22 + 139, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 
