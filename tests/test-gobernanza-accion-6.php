@@ -70,7 +70,7 @@ TestHelper::assertStringContains('755/755', $roadmap, 'roadmap.md registra la ag
 TestHelper::assertStringContains('4.1', $roadmap, 'roadmap.md registra la subfase 4.1');
 TestHelper::assertStringContains('4.5', $roadmap, 'roadmap.md registra la subfase 4.5');
 TestHelper::assertStringContains('test-subfase-4.1.php', $roadmap, 'roadmap.md ancla la suite CLI de la subfase 4.1');
-TestHelper::assertStringContains('004-auth-sesion-cliente', $roadmap, 'roadmap.md apunta a la feature activa 004');
+TestHelper::assertStringContains('005-catalogo-dinamico-filtros', $roadmap, 'roadmap.md apunta a la feature activa del siguiente hito (005 / 4.2)');
 TestHelper::assertStringContains('1,307→1,287', $roadmap, 'roadmap.md documenta la transición de cifras (H-006)');
 TestHelper::assert(substr_count($roadmap, '1,307') === 1, 'roadmap.md solo menciona 1,307 como transición documentada');
 TestHelper::assertStringContains('registrador canónico', $roadmap, 'roadmap.md se identifica como registrador canónico de fases');

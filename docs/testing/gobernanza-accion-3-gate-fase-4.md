@@ -5,7 +5,7 @@
 | **Acción** | `spec/gobernanza/accion-03-gate-testing/` |
 | **Origen** | `reporte-auditoria-gobernanza.md` → Recomendación #3 (H-008 severe, H-015 severe, H-020 🟡) |
 | **Aprobación** | 14/09/2026 — alcance H-008+H-015+H-020; runner dinámico con estado vacío OK; triaje anclado en docs/testing + AGENTS §3 + regla general |
-| **Tier 1 (CLI)** | 33/33 aserciones · `tests/test-gobernanza-accion-3.php` |
+| **Tier 1 (CLI)** | 34/34 aserciones · `tests/test-gobernanza-accion-3.php` |
 | **Tier 2 (HTTP)** | Smoke en vivo (204 preflight, 401 me sin token, CSP en `/`) — sin divergencia CLI/HTTP |
 | **Tier 3 (Reporte)** | Este documento |
 | **Regresión** | 3.1 (93/93) · 3.6.5 (141/141) · gobernanza-2 (96/96) · fase-4 runner (4/4) |
@@ -45,7 +45,7 @@ Blindar el protocolo de testing de la Fase 4 antes de que arranque su codificaci
 | Reg | `logs/gobernanza-accion-2-regresion.log` | 96 / 96 |
 | Lint | `php -l tests/test-fase-4-acumulado.php tests/test-gobernanza-accion-3.php tests/TestHelper.php` | 0 errores de sintaxis |
 
-> **Triaje CLI/HTTP (Protocolo H-015):** escenario **A · Coherente**. CLI 33/33 y smoke HTTP en verde; no se registró divergencia y no se activó HALT por bloqueo de defecto de código.
+> **Triaje CLI/HTTP (Protocolo H-015):** escenario **A · Coherente**. CLI 34/34 y smoke HTTP en verde; no se registró divergencia y no se activó HALT por bloqueo de defecto de código.
 
 ## 4. Fallos Detectados & Correcciones Quirúrgicas
 
@@ -61,7 +61,7 @@ No hubo fallos de aserciones (R-G verde a la primera). Sin embargo, durante la f
 - [x] Anclas en AGENTS.md §3 y `.agents/rules/general.md`.
 - [x] `test-fase-4-acumulado.php` ejecutable, dinámico y con estado vacío exitoso.
 - [x] README.md de testing con suites acumuladas por fase.
-- [x] Suite de la Acción 3 (33/33) + regresión 3.1/3.6.5/2 en verde.
+- [x] Suite de la Acción 3 (34/34) + regresión 3.1/3.6.5/2 en verde.
 - [x] Reporte ejecutivo con sección de fallos (este documento).
 - [x] `spec/constitution/roadmap.md` actualizado (ver entrada nueva).
 - [x] **HALT COMPLETO** — se pasa la pelota al humano.

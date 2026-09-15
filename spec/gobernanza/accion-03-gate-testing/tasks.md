@@ -17,7 +17,7 @@
 - [x] `docs/testing/README.md`: sección "Suites Acumuladas por Fase" + árbol actualizado.
 
 ## M4 · Gate 3-tier de la Acción 3
-- [x] Suite `tests/test-gobernanza-accion-3.php` al 100% (33/33).
+- [x] Suite `tests/test-gobernanza-accion-3.php` al 100% (34/34).
 - [x] `php -l` en PHP tocados + `node --check`.
 - [x] Servidor local + regresión 3.1 (93/93) y 3.6.5 (141/141) en verde.
 - [x] Logs en `logs/gobernanza-accion-3-cli.log` y `-http.log`.

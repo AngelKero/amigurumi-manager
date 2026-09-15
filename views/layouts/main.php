@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../app/autoload.php';
 
 // Content-Security-Policy estricta (H-004): sin scripts inline, conexiones solo al propio origen,
 // frames y plugins bloqueados. 'unsafe-inline' se limita a estilos por los atributos style= artesanales existentes.
-$csp = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
+$csp = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 if (!headers_sent()) {
     header('Content-Security-Policy: ' . $csp);
 }

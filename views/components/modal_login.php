@@ -43,7 +43,7 @@
 
         <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm">
+          <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm" id="btnLoginSubmit">
             <i class="bi bi-box-arrow-in-right me-1"></i> Acceder al Panel
           </button>
         </div>

@@ -18,8 +18,10 @@
 | **3.6.3** | Inyección, Sanitización & Medios | `tests/test-subfase-3.6.3.php` | 157 / 157 (100%) | ✅ Aprobado | [Ver Reporte 3.6.3](./subfase-3.6.3-inyeccion-medios.md) |
 | **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | 151 / 151 (100%) | ✅ Aprobado | [Ver Reporte 3.6.4](./subfase-3.6.4-logica-precios.md) |
 | **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
+| **4.1** | Auth Bearer & Navbar Reactivo (Feature 004) | `tests/test-subfase-4.1.php` | 58 / 58 (100%) | ✅ Aprobado | [Ver Reporte 4.1](./subfase-4.1-auth-sesion.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
+**Total Acumulado Fase 4:** **58 / 58 Aserciones Aprobadas (100% OK en verde — Subfase 4.1)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 
@@ -70,6 +72,7 @@ proyecto-web/
 │   ├── subfase-3.6.3-inyeccion-medios.md # Reporte de SQLi, XSS y carga de medios
 │   ├── subfase-3.6.4-logica-precios.md # Reporte de precios en servidor y stock atómico
 │   ├── subfase-3.6.5-rendimiento-regresion.md # Reporte de EXPLAIN QUERY PLAN y regresión
+│   ├── subfase-4.1-auth-sesion.md  # Reporte de Auth Bearer & Navbar reactivo (Fase 4)
 │   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
@@ -84,6 +87,7 @@ proyecto-web/
 │   ├── test-subfase-3.6.3.php         # Suite de inyección y medios
 │   ├── test-subfase-3.6.4.php         # Suite de lógica y multibyte
 │   ├── test-subfase-3.6.5.php         # Suite de rendimiento y regresión total
+│   ├── test-subfase-4.1.php           # Suite de Auth Bearer & Navbar reactivo (004)
 │   └── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)

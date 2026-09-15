@@ -36,9 +36,9 @@
 
 ## 4. Ejecución de subfases 4.1–4.5 (en features hijas · gate 3-tier)
 
-- [ ] **4.1** Auth & Sesión de Cliente (`004`): suite `tests/test-subfase-4.1.php` →
-      `logs/subfase-4.1-cli.log`; HTTP → `logs/subfase-4.1-http.log`; reporte
-      `docs/testing/subfase-4.1-auth-sesion.md` · **HALT**.
+- [x] **4.1** Auth & Sesión de Cliente (`004`): suite `tests/test-subfase-4.1.php` → **58/58**;
+      logs `logs/subfase-4.1-cli.log` + `logs/subfase-4.1-http.log` (sin divergencia); reporte
+      `docs/testing/subfase-4.1-auth-sesion.md` · **HALT** (aprobación pendiente para 4.2).
 - [ ] **4.2** Catálogo Dinámico & Filtros (`005`): suite `tests/test-subfase-4.2.php` →
       `logs/subfase-4.2-cli.log`; HTTP → `logs/subfase-4.2-http.log`; reporte
       `docs/testing/subfase-4.2-catalogo.md` · **HALT**.
@@ -54,7 +54,8 @@
 
 ## 5. Regresión por fase (obligatorio, H-020)
 
-- [ ] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`.
+- [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
+      (tras 4.1: EXIT 0, subfase en verde).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

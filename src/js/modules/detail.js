@@ -3,6 +3,8 @@
  * Single Responsibility: Interacción de la vista de detalle del amigurumi y simulación de inventario.
  */
 
+import { isAuthenticated } from './auth.js';
+
 export function initDetail() {
   const stockBadge = document.getElementById('detalleStockBadge');
   const btnCheckout = document.getElementById('btnDetalleCheckout') || document.getElementById('btnComprarDetalle');
@@ -114,7 +116,7 @@ export function initDetail() {
   });
 
   // Activar barra de autoría y métricas privadas si hay sesión activa
-  const isArtisanSession = localStorage.getItem('crochet_session_active') === 'true' || localStorage.getItem('amigurumi_session_active') === 'true';
+  const isArtisanSession = isAuthenticated();
   const artisanToolbar = document.getElementById('artisanDetailToolbar');
   const privateMetricsCard = document.getElementById('artisanPrivateMetricsCard');
 

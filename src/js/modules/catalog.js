@@ -4,6 +4,7 @@
  */
 
 import { parseCurrency, centsToPesos } from './currency.js';
+import { isAuthenticated } from './auth.js';
 
 export function initCatalog() {
   const searchInput = document.getElementById('filterSearch') || document.getElementById('searchCatalog');
@@ -90,7 +91,7 @@ export function initCatalog() {
   }
 
   // Activar acciones del artesano en tarjetas si hay sesión activa
-  const isArtisanSession = localStorage.getItem('crochet_session_active') === 'true' || localStorage.getItem('amigurumi_session_active') === 'true';
+  const isArtisanSession = isAuthenticated();
   if (isArtisanSession) {
     document.querySelectorAll('.artisan-card-actions').forEach(el => {
       el.classList.remove('d-none');

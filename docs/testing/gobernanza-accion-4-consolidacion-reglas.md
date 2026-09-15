@@ -58,7 +58,7 @@ php tests/test-gobernanza-accion-4.php > logs/gobernanza-accion-4-cli.log 2>&1  
 php tests/test-subfase-3.1.php                 > logs/subfase-3.1-cli.log        2>&1   # 93/93 ✅
 php tests/test-subfase-3.6.5.php               > logs/subfase-3.6.5-cli.log      2>&1   # 141/141 ✅
 php tests/test-gobernanza-accion-2.php         > logs/gobernanza-accion-2-cli.log 2>&1  # 96/96 ✅
-php tests/test-gobernanza-accion-3.php         > logs/gobernanza-accion-3-cli.log 2>&1  # 33/33 ✅
+php tests/test-gobernanza-accion-3.php         > logs/gobernanza-accion-3-cli.log 2>&1  # 34/34 ✅
 php tests/test-fase-4-acumulado.php            > logs/fase-4-acumulado.log       2>&1   # 4/4 ✅
 
 # Lint global

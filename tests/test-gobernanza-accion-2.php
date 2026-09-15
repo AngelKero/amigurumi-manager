@@ -118,13 +118,14 @@ TestHelper::assertStringContains('import { escapeHtml }', $users, 'users.js impo
 TestHelper::assertStringContains('btn-eliminar-usuario', $users, 'users.js: botón de borrado por clase + delegación');
 TestHelper::assert(!str_contains($users, "onclick=\"if(confirm"), 'users.js: eliminado onclick inline con ${username} (contexto de atributo)');
 
-// Conteo global de innerHTML restantes (33 usos reales: 0 vectores de datos sin escalar)
+// Conteo global de innerHTML restantes (36 usos reales: 0 vectores de datos sin escalar;
+// 4.1 añadió en auth.js 3 usos de markup constante del spinner de login — H-004 conforme)
 $innerHtmlCount = 0;
 foreach (glob($modulesDir . '/*.js') as $jsFile) {
     if (basename($jsFile) === 'dom-safe.js') continue;
     $innerHtmlCount += substr_count(file_get_contents($jsFile), 'innerHTML');
 }
-TestHelper::assertTrue($innerHtmlCount <= 34, sprintf('Recuento final de innerHTML coaccionado: %d (≤34 inventariados)', $innerHtmlCount));
+TestHelper::assertTrue($innerHtmlCount <= 36, sprintf('Recuento final de innerHTML coaccionado: %d (≤36 inventariados)', $innerHtmlCount));
 
 TestHelper::assertTrue(is_file(dirname(__DIR__) . '/.agents/rules/innerhtml-dom-safety.md'), 'Regla P1 innerhtml-dom-safety.md publicada');
 TestHelper::assertTrue(is_file(dirname(__DIR__) . '/docs/security/auditoria-sanitizacion-js.md'), 'Reporte de auditoría de sanitización publicado');

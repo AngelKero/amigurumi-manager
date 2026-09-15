@@ -87,7 +87,7 @@ When developing in phases or subphases:
 4. If CLI and HTTP diverge, apply the **CLI/HTTP divergence triage protocol** (`docs/testing/protocolo-divergencia-cli-http.md`) — environment vs. code — and record the decision before proceeding.
 5. Generate the executive markdown report in `docs/testing/`.
 6. Include a dedicated **"Fallos Detectados & Correcciones Quirúrgicas"** section if any test failed or was adapted during Red-Green-Refactor.
-7. Update feature `tasks.md`, verify acceptance criteria in `spec.md`, and advance `spec/constitution/roadmap.md`.
+7. Update feature `tasks.md`, **validate the acceptance criteria in `spec.md` ONE BY ONE per the mandatory "Criterios de Aceptación · Gate de Validación" in `.agents/rules/general.md`**, and advance `spec/constitution/roadmap.md`. If any AC is not met: revise `plan.md` + `tasks.md`, make the full STOP/HALT, ask the human to review, and only re-execute (Red→Green→Refactor) after explicit written confirmation. Never declare a subphase "Hecho" or advance with unvalidated ACs.
 8. **HALT COMPLETELY:** Stop calling tools and await the user's explicit approval before proceeding to the next subphase. Never bundle multiple subphases together.
 
 ---

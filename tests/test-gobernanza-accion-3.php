@@ -7,7 +7,8 @@
  *   H-008 · el SDD de 004 incorpora el gate 3-tier por subfase.
  *   H-015 · el protocolo de divergencia CLI/HTTP existe y está anclado (AGENTS §3 + regla general).
  *   H-020 · la suite de regresión acumulada de Fase 4 existe, descubre dinámicamente
- *           y con 0 subfases reporta un estado vacío válido (exit 0).
+ *           y con subfases presentes las ejecuta en secuencia (exit 0); el estado
+ *           vacío (0 subfases) sigue contemplado en el código del runner.
  *
  * Ejecución:
  *   php tests/test-gobernanza-accion-3.php > logs/gobernanza-accion-3-cli.log 2>&1
@@ -23,6 +24,7 @@ TestHelper::init('Gobernanza · Acción 3 · Gate de Testing de la Fase 4 (H-008
 
 $rootDir  = dirname(__DIR__);
 $tasks004 = (string)@file_get_contents($rootDir . '/spec/features/004-auth-sesion-cliente/tasks.md');
+$tasks009 = (string)@file_get_contents($rootDir . '/spec/features/009-plan-maestro-fase-4/tasks.md');
 $agents   = (string)@file_get_contents($rootDir . '/AGENTS.md');
 $generalRule = (string)@file_get_contents($rootDir . '/.agents/rules/general.md');
 $readmeTesting = (string)@file_get_contents($rootDir . '/docs/testing/README.md');
@@ -39,8 +41,9 @@ TestHelper::assertStringContains('logs/subfase-4.1-http.log', $tasks004, 'tasks.
 TestHelper::assertStringContains('docs/testing/subfase-4.1-auth-sesion.md', $tasks004, 'tasks.md exige reporte ejecutivo en docs/testing/');
 TestHelper::assertStringContains('Fallos Detectados & Correcciones Quirúrgicas', $tasks004, 'tasks.md hereda la sección de fallos detectados');
 TestHelper::assertStringContains('HALT', $tasks004, 'tasks.md conserva el HALT por subfase');
-TestHelper::assertStringContains('tests/test-subfase-4.2.php', $tasks004, 'tasks.md prevé el gate para subfase 4.2');
-TestHelper::assertStringContains('tests/test-subfase-4.5.php', $tasks004, 'tasks.md prevé el gate para subfase 4.5');
+TestHelper::assertStringContains('movidas a features hijas', $tasks004, '004/tasks.md documenta el realineo 4.2–4.5 a features hijas 005–008');
+TestHelper::assertStringContains('tests/test-subfase-4.2.php', $tasks009, '009/tasks.md (maestro de la Fase 4) prevé el gate para subfase 4.2');
+TestHelper::assertStringContains('tests/test-subfase-4.5.php', $tasks009, '009/tasks.md (maestro de la Fase 4) prevé el gate para subfase 4.5');
 TestHelper::assertStringContains('Prerrequisitos de seguridad', $tasks004, 'tasks.md ancla los prerrequisitos de la Acción 2');
 TestHelper::assertStringContains('429', $tasks004, 'La subfase 4.1 verificará el bloqueo 429 del login (Acción 2)');
 TestHelper::assertStringContains('test-fase-4-acumulado.php', $tasks004, 'tasks.md incluye la regresión por fase obligatoria');
@@ -80,7 +83,7 @@ TestHelper::assertStringContains("glob(__DIR__ . '/test-subfase-4.*.php')", $run
 TestHelper::assertStringContains('0 subfases', $runnerCode, 'El runner contempla explícitamente el estado vacío (0 subfases)');
 TestHelper::assertStringContains('README', $runnerCode, 'El runner incluye la validación estructural contra docs/testing/README.md');
 
-TestHelper::section('H-020 · Ejecución real del runner (fase 4 vacía → exit 0)');
+TestHelper::section('H-020 · Ejecución real del runner (descubrimiento dinámico → exit 0)');
 
 $output = [];
 $exitCode = 0;
@@ -89,8 +92,8 @@ exec('php ' . escapeshellarg($runnerFile) . ' 2>&1', $output, $exitCode);
 $durationMs = round((microtime(true) - $t0) * 1000, 2);
 $joined = preg_replace("/\x1b\[[0-9;]*m/", '', implode("\n", $output));
 
-TestHelper::assertSame(0, $exitCode, "El runner con fase 4 vacía finaliza con exit 0 ({$durationMs} ms)");
-TestHelper::assertStringContains('0 subfases', $joined, 'El runner reporta el estado vacío sin errores');
+TestHelper::assertSame(0, $exitCode, "El runner con subfases de Fase 4 descubiertas finaliza con exit 0 ({$durationMs} ms)");
+TestHelper::assertStringContains('subfase(s) de Fase 4 descubierta', $joined, 'El runner reporta el descubrimiento dinámico de subfases');
 TestHelper::assertStringContains('100% OK', $joined, 'El runner cerrado en verde (100% OK)');
 
 // ============================================================================

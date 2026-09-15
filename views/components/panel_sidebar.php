@@ -17,7 +17,7 @@ $activePage = $activePage ?? 'creaciones';
     <div class="panel-profile-avatar mx-auto mb-2 d-flex align-items-center justify-content-center" style="background: var(--craft-surface-muted);">
       <?= svg('branding/isotipo-ovillo-corazon', ['width' => 42, 'height' => 42]) ?>
     </div>
-    <div class="panel-profile-username text-center">@admin</div>
+    <div class="panel-profile-username text-center" id="panelProfileUsername">@admin</div>
     <div class="text-center mb-1">
       <span class="panel-profile-role d-inline-flex align-items-center gap-1">
         <i class="bi bi-patch-check-fill text-warning"></i> Artesano Verificado
@@ -36,7 +36,7 @@ $activePage = $activePage ?? 'creaciones';
   <!-- Lista de Enlaces de Administración -->
   <ul class="panel-nav-list">
     <li>
-      <a href="usuarios.php" class="panel-nav-link <?= $activePage === 'usuarios' ? 'active' : '' ?>">
+      <a href="usuarios.php" class="panel-nav-link <?= $activePage === 'usuarios' ? 'active' : '' ?>" id="sidebarLinkUsuarios">
         <span class="d-flex align-items-center gap-2">
           <i class="bi bi-people-fill text-primary"></i>
           <span>Comunidad de Artesanos</span>

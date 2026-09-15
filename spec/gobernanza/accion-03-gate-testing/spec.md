@@ -18,7 +18,7 @@ Blinda el protocolo de testing **antes** de que la Fase 4 (features 004–008) a
 - [x] `AGENTS.md §3` y `.agents/rules/general.md` referencian el protocolo y el mandato de regresión por fase.
 - [x] `tests/test-fase-4-acumulado.php` existe, es ejecutable, descubre subfases de forma dinámica y con 0 subphases reporta "0 subfases aún" sin fallar (exit 0).
 - [x] `docs/testing/README.md` lista las suites acumuladas por fase.
-- [x] Suite `tests/test-gobernanza-accion-3.php` al 100% (33/33) y regresión 3.1 (93/93) / 3.6.5 (141/141) / gobernanza-2 (96/96) en verde.
+- [x] Suite `tests/test-gobernanza-accion-3.php` al 100% (34/34) y regresión 3.1 (93/93) / 3.6.5 (141/141) / gobernanza-2 (96/96) en verde.
 - [x] Reporte ejecutivo `docs/testing/gobernanza-accion-3-gate-fase-4.md` con sección "Fallos Detectados & Correcciones Quirúrgicas".
 - [x] `spec/constitution/roadmap.md` actualizado y **HALT** (aprobación explícita del humano antes de la siguiente acción/subfase).
 

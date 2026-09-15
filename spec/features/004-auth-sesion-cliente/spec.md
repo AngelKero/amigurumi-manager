@@ -18,14 +18,17 @@ Actualmente, las vistas del frontend y los controladores de `api/auth/` operan d
 
 ## Criterios de aceptación
 
-- [ ] El envío de credenciales en el modal `#modalLogin` realiza una petición asíncrona `POST /api/auth/login.php`.
-- [ ] Ante **bloqueo por fuerza bruta (HTTP 429)**, muestra feedback diferenciado (cuenta/Ip temporalmente bloqueada) sin recargar la página.
-- [ ] Ante credenciales erróneas o cuenta inactiva (401), muestra feedback visual de error accesible dentro del propio modal, sin recargar la página ni usar diálogos nativos `alert()`.
-- [ ] Ante login exitoso (200), almacena el token Bearer y la información de perfil en `localStorage` y cierra el modal automáticamente.
-- [ ] El Navbar reacciona de inmediato: sustituye el botón "Iniciar Sesión" por el sello artesanal pespunteado (`.badge-artisan-seal`) con el nombre del usuario y el botón de cierre de sesión (`.btn-craft-logout`).
-- [ ] Si el rol es `artesano`, despliega los accesos a Creaciones y Pedidos; si es `admin`, habilita adicionalmente el acceso a Usuarios.
-- [ ] Al cargar cualquier página, el cliente verifica el token almacenado invocando `GET /api/auth/me.php`. Si el token expiró o fue revocado (401), limpia `localStorage` y restaura el estado público sin errores en consola.
-- [ ] El clic en el botón de logout invoca `POST /api/auth/logout.php`. Ante **200**, descarta el token y perfil de `localStorage` (revocación en servidor ya confirmada por el backend) y, si el usuario se encuentra en una vista administrativa privada (`creaciones.php`, `pedidos.php`, `usuarios.php`), lo redirige al catálogo público (`index.php`).
+> ✅ **Verificados en la subfase 4.1 (2026-09-14)** — traceabilidad AC-1…AC-8 y evidencia en `docs/testing/subfase-4.1-auth-sesion.md` §Criterios de aceptación.
+> Observación de nomenclatura: la spec menciona `#modalLogin`, pero el componente `modal_login.php` usa el id real `#loginModal` (referenciado por `#btnNavLogin`); correspondencia funcional exacta. Sin cambio de código ni spec (regla de discrepancia P6).
+
+- [x] El envío de credenciales en el modal `#loginModal` realiza una petición asíncrona `POST /api/auth/login.php`.
+- [x] Ante **bloqueo por fuerza bruta (HTTP 429)**, muestra feedback diferenciado (cuenta/IP temporalmente bloqueada) sin recargar la página.
+- [x] Ante credenciales erróneas o cuenta inactiva (401), muestra feedback visual de error accesible dentro del propio modal, sin recargar la página ni usar diálogos nativos `alert()`.
+- [x] Ante login exitoso (200), almacena el token Bearer y la información de perfil en `localStorage` y cierra el modal automáticamente.
+- [x] El Navbar reacciona de inmediato: sustituye el botón "Iniciar Sesión" por el sello artesanal pespunteado (`.badge-artisan-seal`) con el nombre del usuario y el botón de cierre de sesión (`.btn-craft-logout`).
+- [x] Si el rol es `artesano`, despliega los accesos a Creaciones y Pedidos; si es `admin`, habilita adicionalmente el acceso a Usuarios.
+- [x] Al cargar cualquier página, el cliente verifica el token almacenado invocando `GET /api/auth/me.php`. Si el token expiró o fue revocado (401), limpia `localStorage` y restaura el estado público sin errores en consola.
+- [x] El clic en el botón de logout invoca `POST /api/auth/logout.php`. Ante **200**, descarta el token y perfil de `localStorage` (revocación en servidor ya confirmada por el backend) y, si el usuario se encuentra en una vista administrativa privada (`creaciones.php`, `pedidos.php`, `usuarios.php`), lo redirige al catálogo público (`index.php`).
 
 ## Fuera de alcance
 

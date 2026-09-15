@@ -47,8 +47,21 @@ Al concluir CADA subfase, el agente DEBE ejecutar obligatoriamente el gate en 3 
 3. **Nivel 3 (Reporte ejecutivo):** `docs/testing/subfase-N.X-[nombre].md` siguiendo la plantilla de `docs/testing/README.md`, con sección "Fallos Detectados & Correcciones Quirúrgicas" si algún test requirió adaptación Red-Green-Refactor.
 4. **Divergencia CLI vs HTTP:** si discrepan, aplicar el protocolo de divergencia (`protocolo-divergencia-cli-http.md`): reproducir 2×, aislar la variable, clasificar **defecto de código** vs **defecto de entorno**, registrar la traza con escenario y NO silenciar ninguna divergencia. Defecto de código (C2/D) = bloqueo + HALT.
 5. **Regresión por fase (H-020):** al tocar features 004–008, ejecutar también `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`.
-6. **Cierre documental:** actualizar feature `tasks.md`, verificar criterios de aceptación en `spec.md`, sincronizar `docs/` del dominio afectado y actualizar `spec/constitution/roadmap.md`.
+6. **Cierre documental:** actualizar feature `tasks.md`, **validar uno a uno los criterios de aceptación de `spec.md` (sección `Criterios de Aceptación · Gate de Validación` abajo)**, sincronizar `docs/` del dominio afectado y actualizar `spec/constitution/roadmap.md`.
 7. **HALT COMPLETO:** detener el uso de herramientas y esperar la aprobación explícita por escrito del usuario antes de escribir código de la siguiente subfase. **Nunca empaquetar subfases múltiples.**
+
+## Criterios de Aceptación · Gate de Validación Obligatorio (spec.md)
+
+> **Mandatorio al terminar CADA subfase o feature** (antes de declarar "Hecho" / "APTO PARA AVANZAR"). Refuerza el paso 6 del gate 3-tier y es independiente del resultado del testing: una suite 100% en verde NO equivale a AC verificados si el plan cambió de alcance.
+
+1. **Validar AC uno a uno:** leer `spec/features/NNN/spec.md` → sección `## Criterios de aceptación` y verificar CADA criterio `[ ]` contra la implementación real (`código + evidencia de prueba`). Documentar la trazabilidad en el reporte ejecutivo (tabla AC → evidencia).
+2. **Si TODOS los AC son válidos** → marcarlos `[x]` en `spec.md`, cerrar documentalmente y **continuar al siguiente feature/subfase**, que a su vez debe validar sus propios AC. No hay avance sin validación de AC (todo debe quedar validado).
+3. **Si ALGÚN AC NO es válido** (incumplido, cambiado de alcance o divergente de la spec) → **NO** marcar `[x]`, **NO** declarar la subfase "Hecho" y **NO** avanzar. En su lugar:
+   a. **Modificar el plan y las tasks** (`plan.md` y `tasks.md` de la feature) para re-alinear el alcance con el AC fallido y añadir las tareas/checks necesarios.
+   b. **STOP / HALT forzoso:** detener por completo el uso de herramientas y **pedir al humano que revise** los cambios (plan + tasks + AC cuestionado).
+   c. **Solo tras confirmación explícita por escrito** del humano → **re-ejecutar el loop Red→Green→Refactor** (re-implementar, re-testear, re-documentar) y volver al paso 1 hasta que el/los AC queden validados.
+   d. La confirmación debe ser explícita para RE-EJECUTAR; una negativa o revisión pendiente mantiene el HALT.
+4. **Ciclo completo:** repetir hasta validar todos los AC de todas las features del hito/fase en curso.
 
 ## Subphase Decomposition & Atomic Gate Invariant (Mandatory)
 

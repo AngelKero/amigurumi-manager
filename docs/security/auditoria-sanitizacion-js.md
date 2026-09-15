@@ -47,15 +47,20 @@ markup craft constante y contadores de interpolación **numérica** pura.
    `class="btn-eliminar-usuario"` + `data-username` + **delegación** de eventos
    (`bindDeleteUserButtons` / `handleDeleteUser` con `window.confirm` y `textContent`).
 
-## 5. Recuento final (34 coincidencias de búsqueda, 33 usos reales)
+## 5. Recuento final (37 coincidencias de búsqueda, 36 usos reales)
 
 - **1** comentario de documentación en `dom-safe.js` (no es uso).
-- **20** constantes puras sin interpolación → seguras.
+- **23** constantes puras sin interpolación → seguras.
 - **6** interpolación numérica pura → exentas por política.
 - **3** whitelist mapeable a templates constantes → seguras.
 - **2** plantillas grandes → **escapadas** con `escapeHtml` (users, orders).
 - **3** vectores de elemento → **remediados** con `textContent`/DOM (`checkout` ×2, `orders`).
 - **1** default de badge → **escapado** (`orders.js:getBadgeConfig`).
+
+> **Actualización · Subfase 4.1 (2026-09-14):** `auth.js` añade **3** usos de markup
+> constante del spinner de login (`submitBtn.innerHTML`, sin interpolación) →
+> clasificados como constantes puras, seguros por política H-004 (el recuento pasa de
+> 33 a 36 usos reales / 34 a 37 coincidencias).
 
 **Resultado: 0 vectores de datos de usuario/servidor sin escalar en `innerHTML`.**
 
