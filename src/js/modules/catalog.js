@@ -18,6 +18,7 @@ import { isAuthenticated } from './auth.js';
 const CATALOG_URL = '/api/creaciones/index.php';
 const ARTISANS_URL = '/api/creaciones/artesanos.php';
 const PAGE_LIMIT = 12;
+const GENERIC_FALLBACK = 'assets/svg/piezas/ovillo-generico.svg';
 
 let grid = null;
 let template = null;
@@ -42,9 +43,14 @@ function stockToEstadoStock(value) {
 }
 
 function sortToOrden(value) {
-  if (value === 'price-asc') return 'precio_asc';
-  if (value === 'price-desc') return 'precio_desc';
-  return 'recientes';
+  const map = {
+    'price-asc': 'precio_asc',
+    'price-desc': 'precio_desc',
+    'name-asc': 'nombre_asc',
+    'name-desc': 'nombre_desc',
+    'stock-desc': 'stock_desc',
+  };
+  return map[value] || 'recientes';
 }
 
 function buildQuery() {
@@ -170,29 +176,21 @@ function renderCard(item) {
   setStockBadge(part('stockBadge'), stock, onDemand);
 
   const img = part('productImg');
-  const fallback = item.imagen_fallback_svg || '';
-  if (item.imagen_url) {
-    img.setAttribute('src', item.imagen_url);
-    img.setAttribute('alt', String(item.nombre || 'Pieza artesanal'));
-    if (fallback) {
-      let retried = false;
-      img.addEventListener('error', () => {
-        if (!retried) {
-          retried = true;
-          img.setAttribute('src', fallback);
-        } else {
-          img.classList.add('d-none');
-        }
-      });
+  const sources = [];
+  if (item.imagen_url) sources.push(String(item.imagen_url));
+  if (item.imagen_fallback_svg) sources.push(String(item.imagen_fallback_svg));
+  sources.push(GENERIC_FALLBACK);
+  img.setAttribute('src', sources[0]);
+  img.setAttribute('alt', String(item.nombre || 'Pieza artesanal'));
+  let attempt = 0;
+  img.addEventListener('error', () => {
+    attempt += 1;
+    if (attempt < sources.length) {
+      img.setAttribute('src', sources[attempt]);
     } else {
-      img.addEventListener('error', () => img.classList.add('d-none'));
+      img.classList.add('d-none');
     }
-  } else if (fallback) {
-    img.setAttribute('src', fallback);
-    img.setAttribute('alt', String(item.nombre || 'Pieza artesanal'));
-  } else {
-    img.classList.add('d-none');
-  }
+  });
 
   part('category').textContent = String(item.categoria || '');
   part('dimensions').textContent = String(item.dimensiones || 'Estándar');

@@ -6,7 +6,7 @@
 - **Archivo de Log Crudo:** `logs/subfase-4.2-cli.log`
 - **Log de Trazas HTTP:** `logs/subfase-4.2-http.log`
 - **Script de Pruebas:** `tests/test-subfase-4.2.php`
-- **Resultado General:** **116 / 116 Aprobados (100%)** — ✅ APTO PARA AVANZAR
+- **Resultado General:** **136 / 136 Aprobados (100%)** — ✅ APTO PARA AVANZAR
 
 ---
 
@@ -25,7 +25,7 @@ Conversión de la vitrina estática PHP en un **catálogo reactivo server-driven
 
 ---
 
-## 2. Matriz de Aserciones y Casos Evaluados (116 aserciones, agrupadas)
+## 2. Matriz de Aserciones y Casos Evaluados (136 aserciones, agrupadas)
 
 | # | Dominio | Caso de Prueba | Resultado | Aprobadas |
 | - | :--- | :--- | :---: | :---: |
@@ -41,11 +41,13 @@ Conversión de la vitrina estática PHP en un **catálogo reactivo server-driven
 | 10 | Backend | Envelope `datos` + `paginacion` completo (`total_items`, `total_paginas`, `pagina_actual`, `limite`, `tiene_*`) | ✅ PASS | 9 |
 | 11 | Backend | Precios **enteros en centavos** (`precio_centavos` int) y `precio_formateado` `$X.YY MXN` (R-06) | ✅ PASS | 3 |
 | 11b | Backend | Vector temático de respaldo `imagen_fallback_svg` presente y mapeado a SVG existente en disco (R-09) | ✅ PASS | 3 |
+| 11c | Backend | **SVG genérico último recurso:** sin coincidencia temática → `ovillo-generico.svg`; TODAS las 275 piezas (todas las páginas, límite 48) con fallback existente en disco | ✅ PASS | 3 |
 | 12 | Backend | Partición `estado_stock`: **en_stock 94 + agotados 90 + bajo_encargo 91 = 275** (total exacto) | ✅ PASS | 4 |
 | 13 | Backend | Filtros `en_stock`/`agotados`/`bajo_encargo` filtra por `cantidad_stock` y `es_sobre_encargo` | ✅ PASS | 3 |
 | 14 | Backend | Filtro categoría exacta, artesano real (`artesano_id`), precio en centavos (25000–50000), búsqueda texto | ✅ PASS | 4 |
 | 15 | Backend | Orden `precio_asc` no decreciente; clamps de página (9999→vacío + total intacto, 0→página 1) y límite ≤ 48 | ✅ PASS | 4 |
 | 15b | Backend | **Refinamiento UX:** orden por defecto agrupa por disponibilidad — **agotados siempre al final** (`recientes` → tier `CASE ... THEN 0/1/2` + `id DESC`); primera pieza en stock, tier no decreciente | ✅ PASS | 3 |
+| 15c | Backend/UI | **Nuevos ordenamientos:** `nombre_asc` (A→Z), `nombre_desc` (Z→A, nuevo backend `COLLATE NOCASE DESC`) y `stock_desc` (mayor existencia) — CLI, HTTP y opciones del dropdown `#filterSort` | ✅ PASS | 10 |
 | 16 | HTTP | Preflight CORS `OPTIONS` → 204; catálogo 200 con `total_items=275` y `total_paginas=23` | ✅ PASS | 3 |
 | 17 | HTTP | Filtros combinados por query string (categoría + `estado_stock=agotados` + precio) respetados | ✅ PASS | 3 |
 | 18 | HTTP | `/api/creaciones/artesanos.php` (ADR-014) con `id`, `username`, `total_creaciones` | ✅ PASS | 4 |
@@ -67,7 +69,7 @@ Validados contra código + evidencia de prueba; trazabilidad completa:
 | 5 | Paginación reactiva con bloque `paginacion`; "Mostrando X de Y" con total real | `renderPagination` + `makeNavItem`/`makeNumberItem` → `state.page` + re-fetch; `updateCounters()`. HTTP: 275 items / 23 páginas | ✅ VALIDADO |
 | 6 | Cero coincidencias → `#emptyCatalogState`; botón restablece **todos** los filtros | `showEmptyState(true)` (§5 fixture de 0 resultados); `btnResetFiltersEmpty`/`btnClearFilters` → `resetFilters()` borra buscador, chips, dropdowns, precios, artesano y página | ✅ VALIDADO |
 | 7 | Todo render con DOM APIs/`textContent`/`escapeHtml`; cero interpolación en `innerHTML` (H-004) | Aserción estática "cero `innerHTML =`" + `textContent` en `renderCard` (suite §2); CSP `script-src 'self'` servida (suite §5.5) | ✅ VALIDADO |
-| 8 | Suite `tests/test-subfase-4.2.php` verde + trazas HTTP + reporte | **116/116**; `logs/subfase-4.2-cli.log` y `logs/subfase-4.2-http.log`; este reporte | ✅ VALIDADO |
+| 8 | Suite `tests/test-subfase-4.2.php` verde + trazas HTTP + reporte | **136/136**; `logs/subfase-4.2-cli.log` y `logs/subfase-4.2-http.log`; este reporte | ✅ VALIDADO |
 | 9 | Seed CLI-only e idempotente (no duplica) | Guard `php_sapi_name() !== 'cli'` (suite §3); re-ejecución del seed: total 275 → 275 (0 duplicados) | ✅ VALIDADO |
 | 10 | Seed lista matriz completa e inserta ≥ 200 nuevas; imágenes = SVG temáticos repetibles (R-09) | Matriz 270 impresa; seed sobre BD recién inicializada creó **270** (≥200); 0 `imagen_url` null, 10 URLs = los 5 SVG temáticos de categoría    | ✅ VALIDADO |
 | 11 | Tras sembrar, catálogo sin filtros: `total_items ≥ 205` y `total_paginas > 1` | HTTP y CLI: **275** items, **23** páginas | ✅ VALIDADO |
@@ -117,9 +119,10 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdel
 | # | Fallo detectado | Causa raíz | Corrección quirúrgica | Estado tras corrección |
 | - | :--- | :--- | :--- | :--- |
 | 1 | `scripts/seed-catalogo-pruebas.php` abortaba en el primer printf (ValorError `Unknown format specifier ","`) | Especificador `%,.2f` de C no soportado por `printf()` nativo en la impresión de la matriz | Formateo previo con `number_format($precio/100, 2)` e impresión como `%s` | 270 variantes creadas sin errores |
-| 2 | Aserción "cero `innerHTML`" fallaba | La literal `innerHTML` aparece en un comentario de cabecera del módulo (no es asignación) | Aserción afinada a detectar **asignación real** (`innerHTML =`), no menciones en comentario | 105/105 PASS |
-| 3 | Aserción de shape en `getCatalog()` sin sentido operativo | Resto heredado de un borrador (`$catalogAll['exito']`) que no existe en el envelope de servicio | Sustituida por `assertArrayHasKey('datos')` y `assertArrayHasKey('paginacion')` | 116/116 PASS |
-| 4 | **Imágenes grises en tarjetas del catálogo (reportado por el usuario)** | Las 5 piezas base de `seed.sql` referencia `uploads/dragon_ignis.jpg`, `suculenta.jpg`, `ajolote.jpg`, `cardigan_granny.jpg` y `tote_bag.jpg`, archivos **ausentes** en `uploads/` (solo existen `dragon.jpg` y banners) → el `<img>` falla y la tarjeta mostraba el placeholder gris `--craft-surface-muted` | **Fix observado → corregido:** `CreacionService::enrichCreation` expone ahora `imagen_fallback_svg` (vector temático por categoría/nombre, R-09) y `catalog.js` aplica el respaldo en vivo ante `error` de carga (con reintento único antes de ocultar). Evidencia: `GET /api/creaciones/index.php?busqueda=Ignis` → `imagen_fallback_svg=assets/svg/piezas/dragon-ignis.svg` servido 200 (mientras `uploads/dragon_ignis.jpg` es 404). Nuevas aserciones 4.2b/5.3b | 116/116 PASS |
+| 2 | Aserción "cero `innerHTML`" fallaba | La literal `innerHTML` aparece en un comentario de cabecera del módulo (no es asignación) | Aserción afinada a detectar **asignación real** (`innerHTML =`), no menciones en comentario | 136/136 PASS |
+| 3 | Aserción de shape en `getCatalog()` sin sentido operativo | Resto heredado de un borrador (`$catalogAll['exito']`) que no existe en el envelope de servicio | Sustituida por `assertArrayHasKey('datos')` y `assertArrayHasKey('paginacion')` | 136/136 PASS |
+| 4 | **Imágenes grises en tarjetas del catálogo (reportado por el usuario)** | Las 5 piezas base de `seed.sql` referencia `uploads/dragon_ignis.jpg`, `suculenta.jpg`, `ajolote.jpg`, `cardigan_granny.jpg` y `tote_bag.jpg`, archivos **ausentes** en `uploads/` (solo existen `dragon.jpg` y banners) → el `<img>` falla y la tarjeta mostraba el placeholder gris `--craft-surface-muted` | **Fix observado → corregido:** `CreacionService::enrichCreation` expone ahora `imagen_fallback_svg` (vector temático por categoría/nombre, R-09) y `catalog.js` aplica el respaldo en vivo ante `error` de carga (con reintento único antes de ocultar). Evidencia: `GET /api/creaciones/index.php?busqueda=Ignis` → `imagen_fallback_svg=assets/svg/piezas/dragon-ignis.svg` servido 200 (mientras `uploads/dragon_ignis.jpg` es 404). Nuevas aserciones 4.2b/5.3b | 136/136 PASS |
+| 5 | **Tarjetas grises persistentes (reportado por el usuario)** → **último recurso genérico** | Aunque cada pieza ya mapeaba a un temático, aún podía llegarse al placeholder gris si el vector no encajaba realmente | **Nuevo `assets/svg/piezas/ovillo-generico.svg`:** el resolutor PHP cede ante él cuando no hay coincidencia temática (o si el vector mapeado no existe en disco), y `catalog.js` encadena `imagen_url → imagen_fallback_svg → ovillo-generico.svg → ocultar`. Cobertura nueva: TODAS las 275 piezas (todas las páginas) con fallback existente en disco + asset servido 200 por HTTP (§[9]) | 136/136 PASS |
 
 ---
 
@@ -129,11 +132,15 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdel
   las agotadas al final → inversión visual del inventario.
 - **Corrección quirúrgica** (`app/Repositories/CreacionRepository.php`, case `'recientes'`):
   clave de disponibilidad primero (`0` en stock → `1` bajo encargo → `2` agotadas) y `id DESC`
-  como tie-breaker. Los ordenados explícitos (`precio_asc/desc`, `nombre_asc`, `stock_desc`)
+  como tie-breaker. Los ordenados explícitos (`precio_asc/desc`, `nombre_asc/desc`, `stock_desc`)
   se mantienen sin alteración.
+- **Ampliación de ordenamientos (reportado por el usuario):** el dropdown `#filterSort` pasó de
+  3 a 6 opciones — `Más recientes`, `Precio: menor a mayor`, `Precio: mayor a menor`,
+  `Nombre: A → Z`, `Nombre: Z → A` (nuevo case `nombre_desc` en backend) y `Mayor existencia`
+  (`stock_desc`). `sortToOrden()` mapea todo el conjunto. Traza HTTP `logs/subfase-4.2-http.log` §[10].
 - **Evidencia:** primera pieza del catálogo `GET /api/creaciones/index.php` → stock=5;
   última página (`pagina=23`) → 11 piezas, 100% agotadas. Suite: tier no decreciente + primer
-  ítem en stock (3 aserciones nuevas → 116). Traza HTTP en `logs/subfase-4.2-http.log` §[8].
+  ítem en stock (3 aserciones nuevas → 136). Traza HTTP en `logs/subfase-4.2-http.log` §[8].
 
 ---
 
@@ -151,11 +158,11 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdel
 ---
 
 ## 6. Veredicto y Siguientes Pasos
-- [x] Suite CLI **116/116 (100%)** desde `logs/subfase-4.2-cli.log`.
+- [x] Suite CLI **136/136 (100%)** desde `logs/subfase-4.2-cli.log`.
 - [x] Checks HTTP en vivo desde `logs/subfase-4.2-http.log` (catálogo, filtros, artesanos, CORS, CSP, fallback SVG).
 - [x] Divergencia CLI vs. HTTP: **sin divergencias** (mismos totales y reglas observadas por ambos canales).
 - [x] **Criterios de aceptación de `spec.md` validados uno por uno (11/11)** → marcados `[x]` (sección 2b).
-- [x] Regresión Fase 4 acumulada (`php tests/test-fase-4-acumulado.php`) **174/174** en verde (58+116).
+- [x] Regresión Fase 4 acumulada (`php tests/test-fase-4-acumulado.php`) **194/194** en verde (58+136).
 - [x] Regresión Fase 3 (141/141) e invariante 1,287 verificados en la corrida previa al fix de imágenes.
 - [x] `spec/features/005-catalogo-dinamico-filtros/tasks.md`, `009-plan-maestro-fase-4/tasks.md` y `roadmap.md` actualizados.
 - [x] Dataset de siembra (275 piezas) **conservado** para futuros testings (sin reset de BD).

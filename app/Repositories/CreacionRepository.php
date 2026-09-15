@@ -90,6 +90,7 @@ class CreacionRepository {
             'precio_asc'  => 'ORDER BY c.precio ASC, c.id DESC',
             'precio_desc' => 'ORDER BY c.precio DESC, c.id DESC',
             'nombre_asc'  => 'ORDER BY c.nombre COLLATE NOCASE ASC, c.id DESC',
+            'nombre_desc' => 'ORDER BY c.nombre COLLATE NOCASE DESC, c.id DESC',
             'stock_desc'  => 'ORDER BY c.cantidad_stock DESC, c.id DESC',
             'recientes'   => 'ORDER BY (CASE WHEN c.cantidad_stock > 0 THEN 0 WHEN c.es_sobre_encargo = 1 THEN 1 ELSE 2 END) ASC, c.id DESC',
             default       => 'ORDER BY c.id DESC',

@@ -164,6 +164,9 @@
             <option value="recent" selected>Más recientes</option>
             <option value="price-asc">Precio: menor a mayor</option>
             <option value="price-desc">Precio: mayor a menor</option>
+            <option value="name-asc">Nombre: A → Z</option>
+            <option value="name-desc">Nombre: Z → A</option>
+            <option value="stock-desc">Mayor existencia</option>
           </select>
         </div>
       </div>

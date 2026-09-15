@@ -65,6 +65,9 @@ TestHelper::assertStringContains('id="paginationTotalCount"', $view, 'El chip "M
 TestHelper::assertStringContains('id="filterResultsCountText"', $view, 'El contador de piezas expone #filterResultsCountText');
 TestHelper::assertStringContains('id="emptyCatalogState"', $view, 'Se conserva #emptyCatalogState con botón de restablecimiento');
 TestHelper::assertStringContains('id="textileCategoryChips"', $view, 'Se conserva el grupo de chips textiles #textileCategoryChips');
+TestHelper::assertStringContains('value="name-asc"', $view, 'El selector de orden ofrece Nombre: A → Z (name-asc)');
+TestHelper::assertStringContains('value="name-desc"', $view, 'El selector de orden ofrece Nombre: Z → A (name-desc)');
+TestHelper::assertStringContains('value="stock-desc"', $view, 'El selector de orden ofrece Mayor existencia (stock-desc)');
 
 // =============================================================================
 // 2. MÓDULO catalog.js (server-driven) + node --check
@@ -92,6 +95,10 @@ TestHelper::assertStringContains('.textContent =', $catalogJs, 'catalog.js inyec
 TestHelper::assertFalse(str_contains($catalogJs, 'innerHTML ='), 'catalog.js NO asigna innerHTML en absoluto (cero vectores H-004)');
 TestHelper::assertStringContains('imagen_fallback_svg', $catalogJs, 'catalog.js resuelve el SVG temático de respaldo por categoría (R-09)');
 TestHelper::assertStringContains("addEventListener('error'", $catalogJs, 'catalog.js escucha el error de carga de imagen para aplicar el respaldo en vivo');
+TestHelper::assertStringContains('sources.push', $catalogJs, 'catalog.js encadena fuentes de imagen (imagen → temático → genérico)');
+TestHelper::assertStringContains('ovillo-generico.svg', $catalogJs, 'catalog.js cierra la cadena con el SVG genérico como último recurso (R-09)');
+TestHelper::assertStringContains("'name-desc': 'nombre_desc'", $catalogJs, 'catalog.js mapea name-desc → nombre_desc');
+TestHelper::assertStringContains("'stock-desc': 'stock_desc'", $catalogJs, 'catalog.js mapea stock-desc → stock_desc');
 TestHelper::assertStringContains('state.seq', $catalogJs, 'catalog.js usa secuencia/token para descartar respuestas obsoletas');
 TestHelper::assertStringContains('page > totalPages', $catalogJs, 'catalog.js aplica clamp de página fuera de rango tras filtrar');
 
@@ -169,6 +176,20 @@ foreach ($catalogAll['datos'] as $item) {
     if ($fb === '' || !is_file($root . '/' . $fb)) $fallbacksOk = false;
 }
 TestHelper::assertTrue($fallbacksOk, 'Todas las piezas de la primera página mapean a SVG temáticos que existen en disco');
+
+// 4.2c SVG genérico como último recurso: sin imagen o sin coincidencia temática → ovillo-generico.svg
+$generic = $service->getThematicSvgFallback('Categoría Inexistente 123', 'Nombre Sin Coincidencia Temática');
+TestHelper::assertStringContains('ovillo-generico.svg', $generic, 'Sin coincidencia temática, el resolutor cede ante el SVG genérico');
+TestHelper::assertTrue(is_file($root . '/' . $generic), 'El SVG genérico ovillo-generico.svg existe en disco');
+$allFallbacksDiskOk = true;
+$pages = (int)$service->getCatalog()['paginacion']['total_paginas'];
+for ($pg = 1; $pg <= $pages; $pg++) {
+    foreach ($service->getCatalog(['pagina' => $pg, 'limite' => 48])['datos'] as $item) {
+        $fb = (string)($item['imagen_fallback_svg'] ?? '');
+        if ($fb === '' || !is_file($root . '/' . $fb)) $allFallbacksDiskOk = false;
+    }
+}
+TestHelper::assertTrue($allFallbacksDiskOk, 'TODAS las 275 piezas del catálogo (todas las páginas) tienen imagen_fallback_svg en disco sin excepciones');
 
 // 4.3 Partición por estado_stock (en_stock + agotados + bajo_encargo = total)
 $enStock = $service->getCatalog(['estado_stock' => 'en_stock']);
@@ -265,6 +286,40 @@ foreach ($sortCatalog['datos'] as $item) {
 }
 TestHelper::assertTrue($asc, 'orden=precio_asc devuelve precios no decrecientes');
 
+// 4.9b Nuevos ordenamientos: nombre A-Z / Z-A (NOCASE) y mayor existencia (stock_desc)
+$nameAsc = $service->getCatalog(['orden' => 'nombre_asc', 'limite' => 48]);
+$nameAscOk = true;
+$prevName = '';
+foreach ($nameAsc['datos'] as $item) {
+    $n = mb_strtolower((string)$item['nombre']);
+    if ($prevName !== '' && $n < $prevName) $nameAscOk = false;
+    $prevName = $n;
+}
+TestHelper::assertTrue($nameAscOk, 'orden=nombre_asc devuelve nombres en orden alfabético A→Z (NOCASE)');
+TestHelper::assertTrue(isset($nameAsc['datos'][0]['nombre']) && $nameAsc['datos'][0]['nombre'] !== '', 'orden=nombre_asc devuelve piezas (primer ítem con nombre)');
+
+$nameDesc = $service->getCatalog(['orden' => 'nombre_desc', 'limite' => 48]);
+$nameDescOk = true;
+$prevName = '';
+foreach ($nameDesc['datos'] as $item) {
+    $n = mb_strtolower((string)$item['nombre']);
+    if ($prevName !== '' && $n > $prevName) $nameDescOk = false;
+    $prevName = $n;
+}
+TestHelper::assertTrue($nameDescOk, 'orden=nombre_desc devuelve nombres en orden alfabético inverso Z→A (NOCASE)');
+TestHelper::assertTrue($nameDesc['datos'][0]['nombre'] !== $nameAsc['datos'][0]['nombre'], 'nombre_desc invierte el sentido: primer ítem distinto al de nombre_asc');
+
+$stockDesc = $service->getCatalog(['orden' => 'stock_desc', 'limite' => 48]);
+$stockDescOk = true;
+$prevStock = PHP_INT_MAX;
+foreach ($stockDesc['datos'] as $item) {
+    $s = (int)$item['cantidad_stock'];
+    if ($s > $prevStock) $stockDescOk = false;
+    $prevStock = $s;
+}
+TestHelper::assertTrue($stockDescOk, 'orden=stock_desc devuelve existencias no crecientes (más stock primero)');
+TestHelper::assertTrue((int)($stockDesc['datos'][0]['cantidad_stock'] ?? 0) > 0, 'orden=stock_desc arranca con una pieza con existencia disponible');
+
 // 4.10 Clamps de página y límite
 $outOfRange = $service->getCatalog(['pagina' => 9999]);
 TestHelper::assertSame(0, count($outOfRange['datos']), 'Una página fuera de rango devuelve datos vacíos (sin error)');
@@ -314,6 +369,22 @@ TestHelper::assertSame(1, count($httpDragon['json']['datos'] ?? []), 'La búsque
 $fbHttpUrl = 'http://localhost:8000/' . ltrim((string)($httpDragon['json']['datos'][0]['imagen_fallback_svg'] ?? ''), '/');
 TestHelper::assertStringContains('dragon-ignis.svg', (string)($httpDragon['json']['datos'][0]['imagen_fallback_svg'] ?? ''), 'El respaldo de Dragón Ignis es el vector temático dragon-ignis.svg');
 TestHelper::assertSame(200, TestHelper::curl('GET', $fbHttpUrl)['status'], 'El SVG temático de respaldo de la pieza base se sirve con 200 OK');
+
+// 5.3c HTTP: nuevos ordenamientos (nombre A-Z / Z-A, mayor existencia) por query string
+$httpNameAsc = TestHelper::curl('GET', 'http://localhost:8000/api/creaciones/index.php?orden=nombre_asc&limite=12');
+$httpNameAscOk = true;
+foreach (($httpNameAsc['json']['datos'] ?? []) as $i => $item) {
+    if ($i > 0) {
+        $prev = mb_strtolower((string)$httpNameAsc['json']['datos'][$i - 1]['nombre']);
+        if (mb_strtolower((string)$item['nombre']) < $prev) $httpNameAscOk = false;
+    }
+}
+TestHelper::assertSame(200, $httpNameAsc['status'], 'HTTP ?orden=nombre_asc devuelve 200 OK');
+TestHelper::assertTrue($httpNameAscOk, 'HTTP: orden=nombre_asc respeta el orden alfabético en servidor');
+
+$httpStockDesc = TestHelper::curl('GET', 'http://localhost:8000/api/creaciones/index.php?orden=stock_desc&limite=12');
+TestHelper::assertSame(200, $httpStockDesc['status'], 'HTTP ?orden=stock_desc devuelve 200 OK');
+TestHelper::assertTrue((int)($httpStockDesc['json']['datos'][0]['cantidad_stock'] ?? 0) > 0, 'HTTP: orden=stock_desc arranca con una pieza con existencia disponible');
 
 // 5.4 Endpoint de artesanos activos (ADR-014)
 $httpArtisans = TestHelper::curl('GET', 'http://localhost:8000/api/creaciones/artesanos.php');

@@ -40,7 +40,7 @@
       logs `logs/subfase-4.1-cli.log` + `logs/subfase-4.1-http.log` (sin divergencia); reporte
       `docs/testing/subfase-4.1-auth-sesion.md` · **HALT** (aprobación pendiente para 4.2).
 - [x] **4.2** Catálogo Dinámico & Filtros (`005`): suite `tests/test-subfase-4.2.php` →
-      `logs/subfase-4.2-cli.log` (116/116, incl. fallback SVG R-09 y regla "agotados al
+      `logs/subfase-4.2-cli.log` (136/136, incl. fallback SVG R-09 y regla "agotados al
       final"); HTTP → `logs/subfase-4.2-http.log` (sin divergencia); reporte
       `docs/testing/subfase-4.2-catalogo.md` con **validación AC 11/11** · **HALT** (aprobación
       pendiente para 4.3).
@@ -57,7 +57,7 @@
 ## 5. Regresión por fase (obligatorio, H-020)
 
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
-      (tras 4.1: EXIT 0; tras 4.2: **174/174** aserciones acumuladas, EXIT 0).
+      (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

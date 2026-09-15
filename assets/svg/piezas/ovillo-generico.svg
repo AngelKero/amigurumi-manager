@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background Canvas -->
+  <rect width="500" height="500" rx="28" fill="#F8F9FB"/>
+  <rect x="12" y="12" width="476" height="476" rx="20" fill="none" stroke="#52857C" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.25"/>
+
+  <!-- Base Shadow -->
+  <ellipse cx="250" cy="420" rx="145" ry="20" fill="#E2E6EC" opacity="0.6"/>
+
+  <!-- Needles (Cruzadas) -->
+  <g stroke="#C9D1D9" stroke-width="8" stroke-linecap="round">
+    <line x1="92" y1="140" x2="188" y2="360"/>
+    <line x1="300" y1="140" x2="204" y2="360"/>
+  </g>
+
+  <!-- Yarn Ball (Spruce + Plum palette) -->
+  <g>
+    <circle cx="250" cy="260" r="120" fill="#52857C"/>
+    <path d="M 155 230 Q 210 165 330 200" stroke="#3E6B62" stroke-width="5" fill="none"/>
+    <path d="M 165 300 Q 250 360 340 285" stroke="#3E6B62" stroke-width="5" fill="none"/>
+    <path d="M 145 260 Q 230 330 355 245" stroke="#6C9A91" stroke-width="4" fill="none"/>
+    <path d="M 180 180 Q 300 160 330 250" stroke="#8E5B74" stroke-width="4" fill="none"/>
+    <path d="M 160 340 Q 320 300 335 220" stroke="#7A4E65" stroke-width="4" fill="none"/>
+    <path d="M 200 155 Q 330 230 320 335" stroke="#F8F9FB" stroke-width="2.5" stroke-dasharray="6 6" fill="none"/>
+  </g>
+
+  <!-- Trailing Yarn to Bottom Ribbon -->
+  <path d="M 235 375 Q 180 420 150 415 Q 120 410 130 440" stroke="#52857C" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- Bottom Crafted Care Tag -->
+  <g transform="translate(130, 440)">
+    <rect width="240" height="40" rx="20" fill="#FFFFFF" stroke="#8E5B74" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="120" y="17" text-anchor="middle" font-family="'Outfit', system-ui, sans-serif" font-weight="600" font-size="13" fill="#235048">Pieza Artesanal</text>
+    <text x="120" y="32" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="500" font-size="10" fill="#7A4E65">Colección Algodón Nórdico</text>
+  </g>
+</svg>

@@ -19,10 +19,10 @@
 | **3.6.4** | Lógica Negocio, Precios & Multibyte | `tests/test-subfase-3.6.4.php` | 151 / 151 (100%) | ✅ Aprobado | [Ver Reporte 3.6.4](./subfase-3.6.4-logica-precios.md) |
 | **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
 | **4.1** | Auth Bearer & Navbar Reactivo (Feature 004) | `tests/test-subfase-4.1.php` | 58 / 58 (100%) | ✅ Aprobado | [Ver Reporte 4.1](./subfase-4.1-auth-sesion.md) |
-| **4.2** | Catálogo Dinámico & Filtros Textiles (Feature 005) | `tests/test-subfase-4.2.php` | 116 / 116 (100%) | ✅ Aprobado | [Ver Reporte 4.2](./subfase-4.2-catalogo.md) |
+| **4.2** | Catálogo Dinámico & Filtros Textiles (Feature 005) | `tests/test-subfase-4.2.php` | 136 / 136 (100%) | ✅ Aprobado | [Ver Reporte 4.2](./subfase-4.2-catalogo.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **174 / 174 Aserciones Aprobadas (100% OK en verde — Subfases 4.1 y 4.2)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **194 / 194 Aserciones Aprobadas (100% OK en verde — Subfases 4.1 y 4.2)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 

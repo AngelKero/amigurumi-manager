@@ -23,6 +23,8 @@ use InvalidArgumentException;
 use RuntimeException;
 
 class CreacionService {
+    private const GENERIC_FALLBACK_SVG = 'assets/svg/piezas/ovillo-generico.svg';
+
     private CreacionRepository $creacionRepo;
     private UsuarioRepository $usuarioRepo;
     private string $uploadsDir;
@@ -465,6 +467,8 @@ class CreacionService {
 
     /**
      * Resuelve un vector temático de alta fidelidad desde assets/svg/piezas/ según la categoría o nombre.
+     * Si no hay coincidencia (o el vector mapeado no existe en disco), cede ante el SVG genérico
+     * `ovillo-generico.svg` como último recurso (nunca se regresa vacío).
      * 
      * @param string $categoria
      * @param string|null $nombre
@@ -473,54 +477,55 @@ class CreacionService {
     public function getThematicSvgFallback(string $categoria, ?string $nombre = null): string {
         $cat = mb_strtolower(trim($categoria));
         $name = mb_strtolower(trim((string)$nombre));
+        $candidate = self::GENERIC_FALLBACK_SVG;
 
         // Prioridad por palabras clave en el nombre
         if (str_contains($name, 'dragón') || str_contains($name, 'dragon')) {
-            return 'assets/svg/piezas/dragon-ignis.svg';
-        }
-        if (str_contains($name, 'ajolote')) {
-            return 'assets/svg/piezas/ajolote-pastel.svg';
-        }
-        if (str_contains($name, 'oso') || str_contains($name, 'osito')) {
-            return 'assets/svg/piezas/osito-nordico.svg';
-        }
-        if (str_contains($name, 'gatito') || str_contains($name, 'gato')) {
-            return 'assets/svg/piezas/gatito-ovillo.svg';
-        }
-        if (str_contains($name, 'pingüino') || str_contains($name, 'pinguino')) {
-            return 'assets/svg/piezas/pinguino-bufanda.svg';
-        }
-        if (str_contains($name, 'medusa')) {
-            return 'assets/svg/piezas/medusa-magica.svg';
-        }
-        if (str_contains($name, 'hongo')) {
-            return 'assets/svg/piezas/hongo-bosque.svg';
-        }
-        if (str_contains($name, 'cardigan') || str_contains($name, 'suéter') || str_contains($name, 'sueter')) {
-            return 'assets/svg/piezas/cardigan-granny.svg';
-        }
-        if (str_contains($name, 'tote') || str_contains($name, 'bolso') || str_contains($name, 'bolsa')) {
-            return 'assets/svg/piezas/tote-bag.svg';
+            $candidate = 'assets/svg/piezas/dragon-ignis.svg';
+        } elseif (str_contains($name, 'ajolote')) {
+            $candidate = 'assets/svg/piezas/ajolote-pastel.svg';
+        } elseif (str_contains($name, 'oso') || str_contains($name, 'osito')) {
+            $candidate = 'assets/svg/piezas/osito-nordico.svg';
+        } elseif (str_contains($name, 'gatito') || str_contains($name, 'gato')) {
+            $candidate = 'assets/svg/piezas/gatito-ovillo.svg';
+        } elseif (str_contains($name, 'pingüino') || str_contains($name, 'pinguino')) {
+            $candidate = 'assets/svg/piezas/pinguino-bufanda.svg';
+        } elseif (str_contains($name, 'medusa')) {
+            $candidate = 'assets/svg/piezas/medusa-magica.svg';
+        } elseif (str_contains($name, 'hongo')) {
+            $candidate = 'assets/svg/piezas/hongo-bosque.svg';
+        } elseif (str_contains($name, 'cardigan') || str_contains($name, 'suéter') || str_contains($name, 'sueter')) {
+            $candidate = 'assets/svg/piezas/cardigan-granny.svg';
+        } elseif (str_contains($name, 'tote') || str_contains($name, 'bolso') || str_contains($name, 'bolsa')) {
+            $candidate = 'assets/svg/piezas/tote-bag.svg';
         }
 
-        // Fallback por categoría oficial
-        if (str_contains($cat, 'amigurumi') || str_contains($cat, 'figura') || str_contains($cat, 'fantasía') || str_contains($cat, 'fantasia')) {
-            return 'assets/svg/piezas/dragon-ignis.svg';
-        }
-        if (str_contains($cat, 'prenda') || str_contains($cat, 'ropa')) {
-            return 'assets/svg/piezas/cardigan-granny.svg';
-        }
-        if (str_contains($cat, 'bolso') || str_contains($cat, 'accesorio')) {
-            return 'assets/svg/piezas/tote-bag.svg';
-        }
-        if (str_contains($cat, 'hogar') || str_contains($cat, 'decoraci')) {
-            return 'assets/svg/piezas/mini-suculenta.svg';
-        }
-        if (str_contains($cat, 'bebé') || str_contains($cat, 'bebe') || str_contains($cat, 'infantil')) {
-            return 'assets/svg/piezas/osito-nordico.svg';
+        // Fallback por categoría oficial (solo cuando el nombre no coincidió)
+        if ($candidate === self::GENERIC_FALLBACK_SVG) {
+            if (str_contains($cat, 'amigurumi') || str_contains($cat, 'figura') || str_contains($cat, 'fantasía') || str_contains($cat, 'fantasia')) {
+                $candidate = 'assets/svg/piezas/dragon-ignis.svg';
+            } elseif (str_contains($cat, 'prenda') || str_contains($cat, 'ropa')) {
+                $candidate = 'assets/svg/piezas/cardigan-granny.svg';
+            } elseif (str_contains($cat, 'bolso') || str_contains($cat, 'accesorio')) {
+                $candidate = 'assets/svg/piezas/tote-bag.svg';
+            } elseif (str_contains($cat, 'hogar') || str_contains($cat, 'decoraci')) {
+                $candidate = 'assets/svg/piezas/mini-suculenta.svg';
+            } elseif (str_contains($cat, 'bebé') || str_contains($cat, 'bebe') || str_contains($cat, 'infantil')) {
+                $candidate = 'assets/svg/piezas/osito-nordico.svg';
+            }
         }
 
-        return 'assets/svg/piezas/gatito-ovillo.svg';
+        return $this->fallbackSvgOnDisk($candidate);
+    }
+
+    /**
+     * Garantiza que el vector mapeado exista físicamente; si no, cede ante el genérico.
+     */
+    private function fallbackSvgOnDisk(string $path): string {
+        if ($path !== self::GENERIC_FALLBACK_SVG && !is_file(dirname(__DIR__, 2) . '/' . $path)) {
+            return self::GENERIC_FALLBACK_SVG;
+        }
+        return $path;
     }
 
     /**
