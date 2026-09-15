@@ -1,6 +1,6 @@
 # 006 · Gestión de Creaciones & Subida Multipart (Subfase 4.3)
 
-**Estado:** implementada y validada (AC 12/12 · suite 212/212 · gate 3-tier verde)
+**Estado:** implementada y validada (AC 14/14 · suites 212/212 + 62/62 · gate 3-tier verde)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**
 > Cubre la **subfase 4.3** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a
@@ -64,6 +64,8 @@ multipart → servicio → repositorio → render del sistema Algodón Nórdico.
 - [x] El panel es server-driven: filtros/orden/paginación consumen el bloque `paginacion` real, los valores enviados existen en el contrato (`en_stock/bajo_encargo/agotados`, `artesano_id`, `recientes/precio_asc/...`), el chip "Mostrando X de Y" refleja el total y el estado vacío restablece TODOS los filtros.
 - [x] Cero datos del servidor interpolados en `innerHTML` (auditoría `innerHTML =` en `creaciones.js`/`dropzone.js`/`margin-calculator.js`, H-004); suite `tests/test-subfase-4.3.php` en verde, trazas HTTP en `logs/subfase-4.3-http.log` y reporte `docs/testing/subfase-4.3-creaciones.md` (H-008/H-015).
 - [x] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); regresión Fase 3 y cifra regenerable `php tests/cuenta-aserciones.php` (**1.287**) en verde si se tocó backend compartido (H-006).
+- [x] El panel lee desde `GET /api/creaciones/mias.php` con Bearer: como artesano solo devuelve piezas propias aunque se falsee `artesano_id` (anti-spoof, 401 sin token); como `admin`, visión global con filtro `artesano_id` opcional (4.3.1, ADR-017).
+- [x] La papelera es usable: `estado=inactivas` lista solo `activo=0` propios, `estado=todas` ambas, y el botón Restaurar aparece solo en inactivas (4.3.1).
 
 ## Fuera de alcance
 

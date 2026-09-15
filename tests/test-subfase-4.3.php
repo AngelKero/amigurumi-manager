@@ -166,7 +166,7 @@ TestHelper::assertStringContains("from './currency.js'", $creacionesJs, 'creacio
 TestHelper::assertStringContains('pesosToCents', $creacionesJs, 'creaciones.js serializa precios en centavos enteros (R-06)');
 TestHelper::assertStringContains("from './dom-safe.js'", $creacionesJs, 'creaciones.js usa el helper DOM-safe (H-004)');
 TestHelper::assertStringContains('setIconText', $creacionesJs, 'creaciones.js inyecta insignias con setIconText (H-004)');
-TestHelper::assertStringContains("'/api/creaciones/index.php'", $creacionesJs, 'creaciones.js consume GET /api/creaciones/index.php');
+TestHelper::assertStringContains("'/api/creaciones/mias.php'", $creacionesJs, 'creaciones.js lee el panel desde mias.php (scoping servidor, 4.3.1)');
 TestHelper::assertStringContains("'/api/creaciones/artesanos.php'", $creacionesJs, 'creaciones.js puebla artesanos desde artesanos.php (IDs reales)');
 TestHelper::assertStringContains("'/api/creaciones/detalle.php'", $creacionesJs, 'creaciones.js precarga edición desde detalle.php');
 TestHelper::assertStringContains("'/api/creaciones/crear.php'", $creacionesJs, 'creaciones.js crea vía POST crear.php (201)');

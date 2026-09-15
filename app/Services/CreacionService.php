@@ -126,6 +126,42 @@ class CreacionService {
     }
 
     /**
+     * Consulta el inventario propio del panel del artesano con scoping forzado por rol (ADR-017).
+     *
+     * A diferencia de getCatalog() (público, filtro `artesano_id` controlado por el cliente),
+     * aquí el servidor impone la propiedad: rol `artesano` solo ve sus piezas (cualquier
+     * `artesano_id` del query se ignora — anti-spoof); rol `admin` conserva visión global
+     * con `artesano_id` opcional. Incluye papelera vía `estado ∈ {activas,inactivas,todas}`.
+     *
+     * @param array $query Parámetros de consulta (filtros de getCatalog + estado)
+     * @param array $currentUser Usuario autenticado (con 'id' y 'rol')
+     * @return array{datos: array, paginacion: array}
+     */
+    public function getOwnCreations(array $query, array $currentUser): array {
+        $userId = (int)($currentUser['id'] ?? 0);
+        if ($userId <= 0) {
+            throw new InvalidArgumentException('El usuario autenticado no es válido.', 422);
+        }
+
+        // 1. Papelera: activas (default seguro, incluye valores inválidos) | inactivas | todas
+        $estado = strtolower(trim((string)($query['estado'] ?? 'activas')));
+        if ($estado === 'inactivas' || $estado === 'inactiva') {
+            $query['activo'] = '0';
+        } elseif ($estado === 'todas' || $estado === 'todos') {
+            $query['activo'] = 'todos';
+        } else {
+            $query['activo'] = '1';
+        }
+
+        // 2. Scoping forzado por rol (extiende ADR-007 a la lectura)
+        if (($currentUser['rol'] ?? '') !== 'admin') {
+            $query['artesano_id'] = $userId;
+        }
+
+        return $this->getCatalog($query);
+    }
+
+    /**
      * Obtiene la lista pública de artesanos que tienen creaciones activas a la venta (ADR-014).
      * 
      * @return array Array de items [{ id, username, total_creaciones }]

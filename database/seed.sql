@@ -287,6 +287,7 @@ CREATE TABLE IF NOT EXISTS tokens_revocados (
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
 CREATE INDEX IF NOT EXISTS idx_usuarios_activo ON usuarios(activo);
 CREATE INDEX IF NOT EXISTS idx_creaciones_artesano ON creaciones(artesano_id);
+CREATE INDEX IF NOT EXISTS idx_creaciones_artesano_activo ON creaciones(artesano_id, activo);
 CREATE INDEX IF NOT EXISTS idx_creaciones_categoria ON creaciones(categoria);
 CREATE INDEX IF NOT EXISTS idx_creaciones_stock ON creaciones(cantidad_stock);
 CREATE INDEX IF NOT EXISTS idx_creaciones_activo ON creaciones(activo);

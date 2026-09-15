@@ -347,7 +347,7 @@ foreach ($apiIterator as $file) {
     }
 }
 
-TestHelper::assertSame(25, count($controllers), 'Existen exactamente 25 controladores REST delgados en la suite de api/');
+TestHelper::assertSame(26, count($controllers), 'Existen exactamente 26 controladores REST delgados en la suite de api/ (25 + mias.php de 4.3.1)');
 
 $controllersExceedingMax = [];
 $totalLines = 0;

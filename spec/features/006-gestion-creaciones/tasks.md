@@ -44,4 +44,18 @@
 - [x] Regresión acumulada Fase 4: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`.
 - [x] Cifra regenerable: `php tests/cuenta-aserciones.php` (ground truth Fase 3 = 1.287).
 - [x] `spec/constitution/roadmap.md`: subfase 4.3 → avance/Hecho según cierre; `docs/testing/README.md`: fila 4.3 añadida y total Fase 4 actualizado.
+
+## 7. Correctivo 4.3.1 — Scoping servidor & papelera (ejecutado)
+
+- [x] `api/creaciones/mias.php` + `CreacionService::getOwnCreations()` + índice `idx_creaciones_artesano_activo` (seed + BD viva) + ADR-017 + contrato §2b.
+- [x] Panel con Bearer desde `mias.php`, `#filterEstadoSelect`, filtro de autor solo admin, baja/restaurar por `data-estado`.
+- [x] Suite `tests/test-subfase-4.3.1.php` → `logs/subfase-4.3.1-cli.log` (**62/62**); HTTP → `logs/subfase-4.3.1-http.log`; reporte `docs/testing/subfase-4.3.1-panel-scoping.md`.
+- [x] Regresiones: 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**468/468**), H-006 (1.287).
+- [x] README testing (fila 4.3.1 + total 468), `009/tasks.md`, `roadmap.md`.
+
+## 8. Correctivo 4.3.2 — Contadores (pendiente)
+
+- [ ] Badge `N piezas` + paginación `Mostrando A–B de N` + KPIs globales con agregado servidor.
+- [ ] Suite `tests/test-subfase-4.3.2.php` → `logs/subfase-4.3.2-{cli,http}.log`; reporte `docs/testing/subfase-4.3.2-contadores.md`.
+- [ ] Regresión acumulada + README + roadmap + **HALT**.
 - [ ] **HALT:** aprobación explícita del usuario antes de la siguiente feature (007 / 4.4).

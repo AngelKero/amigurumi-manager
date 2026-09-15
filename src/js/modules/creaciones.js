@@ -16,7 +16,7 @@ import { getToken, getUser, isAuthenticated, clearSession } from './auth.js';
 import { pesosToCents } from './currency.js';
 import { setIconText } from './dom-safe.js';
 
-const INDEX_URL = '/api/creaciones/index.php';
+const MINE_URL = '/api/creaciones/mias.php';
 const ARTISANS_URL = '/api/creaciones/artesanos.php';
 const DETALLE_URL = '/api/creaciones/detalle.php';
 const CREAR_URL = '/api/creaciones/crear.php';
@@ -34,6 +34,7 @@ const state = {
   stock: 'all',
   artisan: 'all',
   sort: 'recientes',
+  estado: 'activas',
   page: 1,
   seq: 0,
 };
@@ -74,6 +75,7 @@ function buildQuery() {
   if (state.stock !== 'all') q.set('estado_stock', state.stock);
   if (state.artisan !== 'all') q.set('artesano_id', String(state.artisan));
   q.set('orden', state.sort);
+  q.set('estado', state.estado);
   q.set('pagina', String(state.page));
   q.set('limite', String(PAGE_LIMIT));
   return q;
@@ -113,7 +115,7 @@ async function fetchKpis() {
   if (!kpiModelos && !kpiStock && !kpiValor && !kpiCostos) return;
 
   try {
-    const first = await fetch(`${INDEX_URL}?${buildQueryWithoutPage(1)}`);
+    const first = await fetch(`${MINE_URL}?${buildQueryWithoutPage(1)}`, { headers: authHeaders() });
     const firstJson = await first.json();
     if (!firstJson || firstJson.exito !== true) return;
     const pag = firstJson.paginacion || {};
@@ -122,7 +124,7 @@ async function fetchKpis() {
 
     let items = Array.isArray(firstJson.datos) ? [...firstJson.datos] : [];
     for (let p = 2; p <= totalPages; p++) {
-      const res = await fetch(`${INDEX_URL}?${buildQueryWithoutPage(p)}`);
+      const res = await fetch(`${MINE_URL}?${buildQueryWithoutPage(p)}`, { headers: authHeaders() });
       const json = await res.json();
       if (json && json.exito === true && Array.isArray(json.datos)) {
         items = items.concat(json.datos);
@@ -261,17 +263,25 @@ function renderCard(item) {
   inspectBtn.setAttribute('data-id', id);
   part('editLink').setAttribute('href', `formulario.php?id=${encodeURIComponent(id)}`);
 
-  const deleteBtn = part('deleteBtn');
-  deleteBtn.setAttribute('data-id', id);
-  deleteBtn.setAttribute('data-name', String(item.nombre || ''));
-  const restoreBtn = part('restoreBtn');
-  restoreBtn.setAttribute('data-id', id);
-  restoreBtn.setAttribute('data-name', String(item.nombre || ''));
-
   const col = node.querySelector('[data-part="cardCol"]');
   if (col) {
     col.id = `creacionCardCol_${id}`;
     col.setAttribute('data-id', id);
+    col.setAttribute('data-estado', Number(item.activo) === 0 ? 'inactiva' : 'activa');
+  }
+
+  const isInactive = Number(item.activo) === 0;
+  const deleteBtn = part('deleteBtn');
+  const restoreBtn = part('restoreBtn');
+  if (deleteBtn) {
+    deleteBtn.setAttribute('data-id', id);
+    deleteBtn.setAttribute('data-name', String(item.nombre || ''));
+    if (isInactive) deleteBtn.style.display = 'none';
+  }
+  if (restoreBtn) {
+    restoreBtn.setAttribute('data-id', id);
+    restoreBtn.setAttribute('data-name', String(item.nombre || ''));
+    if (!isInactive) restoreBtn.style.display = 'none';
   }
 
   return node;
@@ -378,7 +388,7 @@ async function fetchPage() {
   if (grid.childElementCount === 0) showLoading(true);
 
   try {
-    const res = await fetch(`${INDEX_URL}?${buildQuery()}`);
+    const res = await fetch(`${MINE_URL}?${buildQuery()}`, { headers: authHeaders() });
     if (res.status === 401) {
       clearSession();
       showLoading(false);
@@ -416,8 +426,14 @@ async function fetchPage() {
 async function loadArtisans() {
   const select = document.getElementById('filterArtisanSelect');
   if (!select) return;
+  const user = getUser();
+  if (!user || user.rol !== 'admin') {
+    const wrapper = select.closest('div');
+    if (wrapper) wrapper.style.display = 'none';
+    return;
+  }
   try {
-    const res = await fetch(ARTISANS_URL);
+    const res = await fetch(ARTISANS_URL, { headers: authHeaders() });
     if (!res.ok) return;
     const json = await res.json();
     const artisans = json && json.exito === true && Array.isArray(json.datos) ? json.datos : [];
@@ -432,12 +448,13 @@ async function loadArtisans() {
   }
 }
 
-function resetFilters(searchInput, filterCategory, filterStock, filterArtisan, sortSelect) {
+function resetFilters(searchInput, filterCategory, filterStock, filterArtisan, sortSelect, filterEstado) {
   state.search = '';
   state.category = 'all';
   state.stock = 'all';
   state.artisan = 'all';
   state.sort = 'recientes';
+  state.estado = 'activas';
   state.page = 1;
 
   if (searchInput) searchInput.value = '';
@@ -445,6 +462,7 @@ function resetFilters(searchInput, filterCategory, filterStock, filterArtisan, s
   if (filterStock) filterStock.value = 'all';
   if (filterArtisan) filterArtisan.value = 'all';
   if (sortSelect) sortSelect.value = 'recientes';
+  if (filterEstado) filterEstado.value = 'activas';
 
   fetchPage();
 }
@@ -650,6 +668,7 @@ export function initCreaciones() {
   const filterStock = document.getElementById('filterStockStatusSelect');
   const filterArtisan = document.getElementById('filterArtisanSelect');
   const sortSelect = document.getElementById('sortCreacionesSelect');
+  const filterEstado = document.getElementById('filterEstadoSelect');
   const btnReset = document.getElementById('btnResetCreacionFilters');
   const btnResetEmpty = document.getElementById('btnResetEmptyCreaciones');
 
@@ -688,8 +707,15 @@ export function initCreaciones() {
       fetchPage();
     });
   }
+  if (filterEstado) {
+    filterEstado.addEventListener('change', () => {
+      state.estado = filterEstado.value;
+      state.page = 1;
+      fetchPage();
+    });
+  }
 
-  const doReset = () => resetFilters(searchInput, filterCategory, filterStock, filterArtisan, sortSelect);
+  const doReset = () => resetFilters(searchInput, filterCategory, filterStock, filterArtisan, sortSelect, filterEstado);
   if (btnReset) btnReset.addEventListener('click', doReset);
   if (btnResetEmpty) btnResetEmpty.addEventListener('click', doReset);
 

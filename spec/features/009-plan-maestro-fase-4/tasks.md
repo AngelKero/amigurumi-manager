@@ -50,6 +50,12 @@
       `docs/testing/subfase-4.3-creaciones.md` con **validación AC 12/12**; fix opción A
       (`Genérica→gatito-ovillo.svg`, 3.6.5 141/141 + H-006 1.287 en verde) · **HALT** (aprobación
       pendiente para 4.4).
+- [x] **4.3.1** Scoping servidor & papelera (`006` correctivo): `api/creaciones/mias.php` +
+      `getOwnCreations()` + índice + ADR-017; suite `tests/test-subfase-4.3.1.php` → **62/62**;
+      HTTP → `logs/subfase-4.3.1-http.log`; reporte `docs/testing/subfase-4.3.1-panel-scoping.md`;
+      regresiones 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**468/468**), H-006 (1.287).
+- [ ] **4.3.2** Contadores del panel (`006` correctivo): badge `N piezas` + rango `A–B de N` + KPIs
+      globales con agregado servidor; suite `tests/test-subfase-4.3.2.php` + reporte · **HALT**.
 - [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
       `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
       `docs/testing/subfase-4.4-pedidos.md` · **HALT**.

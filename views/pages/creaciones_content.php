@@ -113,7 +113,7 @@
     <!-- Nivel 2: 4 selectores bien distribuidos con espacio completo -->
     <div class="row g-2 g-md-3">
       <!-- Filtro por Categoría -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-4">
         <label for="filterCategorySelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Categoría</label>
         <select id="filterCategorySelect" class="form-select select-craft-pill">
           <option value="all" selected>Todas las categorías</option>
@@ -126,7 +126,7 @@
       </div>
 
       <!-- Filtro por Estado de Stock -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-4">
         <label for="filterStockStatusSelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Disponibilidad</label>
         <select id="filterStockStatusSelect" class="form-select select-craft-pill">
           <option value="all" selected>Todo el inventario</option>
@@ -137,7 +137,7 @@
       </div>
 
       <!-- Filtro por Artesano -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-4">
         <label for="filterArtisanSelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Artesano Autor</label>
         <select id="filterArtisanSelect" class="form-select select-craft-pill">
           <option value="all" selected>Todos los artesanos</option>
@@ -145,7 +145,7 @@
       </div>
 
       <!-- Ordenación -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-4">
         <label for="sortCreacionesSelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Ordenar por</label>
         <select id="sortCreacionesSelect" class="form-select select-craft-pill">
           <option value="recientes" selected>Más recientes</option>
@@ -154,6 +154,16 @@
           <option value="nombre_asc">Nombre: A &rarr; Z</option>
           <option value="nombre_desc">Nombre: Z &rarr; A</option>
           <option value="stock_desc">Stock: Mayor a Menor</option>
+        </select>
+      </div>
+
+      <!-- Estado en catálogo (papelera) -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <label for="filterEstadoSelect" class="form-label small text-muted fw-bold text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.04em;">Estado</label>
+        <select id="filterEstadoSelect" class="form-select select-craft-pill">
+          <option value="activas" selected>Activas en catálogo</option>
+          <option value="inactivas">Inactivas (papelera)</option>
+          <option value="todas">Todas</option>
         </select>
       </div>
     </div>

@@ -112,6 +112,38 @@ curl -X GET http://localhost:8000/api/creaciones/artesanos.php
 
 ---
 
+## 2b. Inventario Propio del Panel (`GET /api/creaciones/mias.php`)
+
+Recupera el inventario del panel del artesano con **scoping forzado por rol**
+(ADR-017): el servidor impone la propiedad, el cliente no puede falsearla.
+
+- **Acceso:** Privado (`artesano`, `admin` vía Bearer; sin token → `401`)
+- **Método HTTP:** `GET` (otros métodos → `405`)
+- **Scoping:** rol `artesano` → solo `artesano_id = user.id` (cualquier
+  `artesano_id` del query se ignora); rol `admin` → visión global con
+  `artesano_id` opcional.
+
+### Parámetros de Consulta (hereda los de §1 + `estado`)
+
+| Parámetro | Tipo | Opcional | Descripción |
+| :--- | :---: | :---: | :--- |
+| `estado` | `string` | Sí | `activas` (defecto, incluye valores inválidos), `inactivas` (papelera, `activo = 0`), `todas` (sin filtro de `activo`). |
+| `artesano_id` | `int` | Sí | Solo `admin`: filtra por artesano real. Para `artesano` se ignora. |
+
+### Ejemplo de Petición
+
+```bash
+curl -X GET "http://localhost:8000/api/creaciones/mias.php?estado=inactivas&limite=12" \
+  -H "Authorization: Bearer <token>"
+```
+
+### Respuestas
+
+- `200 OK` con sobre `{datos[], paginacion}` idéntico a §1 (cada ítem incluye `activo` y `artesano{id,username}`).
+- `401` sin Bearer · `403` rol insuficiente · `405` método erróneo.
+
+---
+
 ## 3. Detalle de una Creación (`GET /api/creaciones/detalle.php?id=X`)
 
 Recupera la ficha técnica completa de una pieza activa por su ID.
