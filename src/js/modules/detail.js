@@ -13,6 +13,104 @@ import { setIconText } from './dom-safe.js';
 const DETALLE_URL = '/api/creaciones/detalle.php';
 const GENERIC_FALLBACK = 'assets/svg/piezas/ovillo-generico.svg';
 
+// Última pieza hidratada + cadena de fuentes activas (misma que catalog.js:
+// imagen_url -> imagen_fallback_svg -> ovillo-generico.svg). H-004: solo
+// textContent / setAttribute, cero innerHTML con datos del servidor.
+let lastItem = null;
+let detailImageSources = [GENERIC_FALLBACK];
+let detailImageIndex = 0;
+
+function currentSourceKind() {
+  const src = String(detailImageSources[detailImageIndex] || '');
+  if (src === GENERIC_FALLBACK) return 'generic';
+  if (src.startsWith('assets/svg/')) return 'thematic';
+  return 'photo';
+}
+
+function updateSourceBadges() {
+  const kind = currentSourceKind();
+  const label = kind === 'photo'
+    ? 'Fotografía real'
+    : (kind === 'thematic' ? 'Ilustración temática' : 'Ilustración genérica');
+  const mainLabel = document.getElementById('detailImageSourceLabel');
+  if (mainLabel) mainLabel.textContent = label;
+  const mainBadge = document.getElementById('detailImageSourceBadge');
+  if (mainBadge) mainBadge.classList.remove('d-none');
+  const lightLabel = document.getElementById('detailLightboxSourceLabel');
+  if (lightLabel) lightLabel.textContent = label;
+}
+
+function syncLightboxFromMain() {
+  const mainImg = document.getElementById('detailMainImage');
+  const lightImg = document.getElementById('detailLightboxImage');
+  if (!mainImg || !lightImg) return;
+  const resolved = mainImg.currentSrc || mainImg.getAttribute('src') || GENERIC_FALLBACK;
+  lightImg.setAttribute('src', String(resolved));
+  lightImg.setAttribute('alt', String(mainImg.getAttribute('alt') || 'Vista ampliada de la creación artesanal'));
+}
+
+function openDetailLightbox() {
+  const modalEl = document.getElementById('detailLightboxModal');
+  if (!modalEl) return;
+  syncLightboxFromMain();
+  updateSourceBadges();
+  if (window.bootstrap && window.bootstrap.Modal) {
+    window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+  } else {
+    modalEl.classList.add('show');
+    modalEl.style.display = 'block';
+    modalEl.removeAttribute('aria-hidden');
+  }
+}
+
+function setDetailImage(item) {
+  const mainImg = document.getElementById('detailMainImage');
+  if (!mainImg) return;
+  const sources = [];
+  const rawUrl = item.imagen_url != null ? String(item.imagen_url).trim() : '';
+  const rawFallback = item.imagen_fallback_svg != null ? String(item.imagen_fallback_svg).trim() : '';
+  if (rawUrl !== '') sources.push(rawUrl);
+  if (rawFallback !== '') sources.push(rawFallback);
+  sources.push(GENERIC_FALLBACK);
+  detailImageSources = sources;
+  detailImageIndex = 0;
+
+  const nombre = String(item.nombre || 'Pieza artesanal');
+  mainImg.classList.remove('d-none');
+  mainImg.setAttribute('alt', `Fotografía de ${nombre}`);
+  mainImg.onerror = () => {
+    detailImageIndex += 1;
+    if (detailImageIndex < detailImageSources.length) {
+      mainImg.setAttribute('src', detailImageSources[detailImageIndex]);
+    } else {
+      mainImg.onerror = null;
+      mainImg.classList.add('d-none');
+    }
+    updateSourceBadges();
+  };
+  mainImg.setAttribute('src', detailImageSources[0]);
+
+  const material = String(item.material || '');
+  const caption = document.getElementById('detailImageCaption');
+  if (caption) {
+    caption.textContent = material !== ''
+      ? `${nombre} · ${material}`
+      : `${nombre} · Toca la fotografía para verla en grande`;
+  }
+  const legacyCaption = document.getElementById('detailSvgCaption');
+  if (legacyCaption) legacyCaption.textContent = nombre;
+  const zoomBtn = document.getElementById('detailImageZoomBtn');
+  if (zoomBtn) zoomBtn.setAttribute('aria-label', `Ampliar fotografía de ${nombre}`);
+
+  const lightTitle = document.getElementById('detailLightboxTitleText');
+  if (lightTitle) lightTitle.textContent = nombre;
+  const lightCaption = document.getElementById('detailLightboxCaption');
+  if (lightCaption) {
+    lightCaption.textContent = material !== '' ? `${nombre} · ${material}` : nombre;
+  }
+  updateSourceBadges();
+}
+
 function setStockState(stock, onDemand) {
   const stockBadge = document.getElementById('detalleStockBadge');
   const btnCheckout = document.getElementById('btnDetalleCheckout') || document.getElementById('btnComprarDetalle');
@@ -86,7 +184,9 @@ function fillDetail(item) {
     if (el) el.textContent = value;
   };
 
+  lastItem = item;
   set('detalleTitle', String(item.nombre || ''));
+  set('breadcrumbCurrentItem', String(item.nombre || 'Detalle'));
   set('detallePriceDisplay', String(item.precio_formateado || ''));
   set('detalleDescription', String(item.descripcion || ''));
   set('detalleTamano', String(item.dimensiones || ''));
@@ -106,6 +206,7 @@ function fillDetail(item) {
   const stock = Number(item.cantidad_stock) || 0;
   const onDemand = Number(item.es_sobre_encargo) === 1;
   setStockState(stock, onDemand);
+  setDetailImage(item);
 
   const buyBtn = document.getElementById('btnDetalleCheckout') || document.getElementById('btnComprarDetalle');
   if (buyBtn) {
@@ -157,17 +258,32 @@ export function initDetail() {
       showNotFound();
     });
 
-  // Miniaturas textiles interactivas
+  // Lightbox artesanal: abrir la foto en grande (foto real o fallback temático)
+  // El modal debe vivir como hijo directo de <body>: dentro de <main>
+  // (position:relative + z-index:1) quedaría bajo el backdrop (1050) y la
+  // página se bloquearía. Se reparenta por si el marcado viniera anidado.
+  const lightboxModal = document.getElementById('detailLightboxModal');
+  if (lightboxModal && lightboxModal.parentElement !== document.body) {
+    document.body.appendChild(lightboxModal);
+  }
+  const zoomBtn = document.getElementById('detailImageZoomBtn');
+  if (zoomBtn) zoomBtn.addEventListener('click', openDetailLightbox);
+  const openBtn = document.getElementById('detailOpenLightboxBtn');
+  if (openBtn) openBtn.addEventListener('click', openDetailLightbox);
+  if (lightboxModal) {
+    lightboxModal.addEventListener('show.bs.modal', () => {
+      syncLightboxFromMain();
+      updateSourceBadges();
+    });
+  }
+
+  // Compatibilidad: si quedara alguna miniatura heredada, abre el lightbox
   const thumbnails = document.querySelectorAll('.card-thumb-item, .thumb-textile-item');
-  const svgCaption = document.getElementById('detailSvgCaption');
   thumbnails.forEach((thumb) => {
     thumb.addEventListener('click', () => {
       thumbnails.forEach((t) => t.classList.remove('active', 'border-primary', 'shadow-sm', 'bg-white'));
       thumb.classList.add('active');
-      if (svgCaption) {
-        const viewType = thumb.getAttribute('data-view') || '';
-        if (viewType) svgCaption.textContent = viewType;
-      }
+      openDetailLightbox();
     });
   });
 

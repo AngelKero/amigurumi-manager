@@ -43,33 +43,23 @@
     <div class="col-12 col-lg-6">
       <div class="card border-0 shadow-sm p-3 p-md-4 mb-3 bg-white card-stitched" style="border-radius: var(--craft-radius);">
         
-        <!-- Imagen Principal con Marco Acolchado Paspartú -->
-        <div class="product-photo-stitched-frame mb-3">
-          <div class="card-product-img-wrapper rounded shadow-sm" style="aspect-ratio: 1 / 1; max-height: 480px;">
-            <?= svg('dragon-ignis', ['class' => 'card-product-img', 'id' => 'detailMainProductSvg']) ?>
-          </div>
-        </div>
+        <!-- Fotografía principal con fallback R-09 + lightbox -->
+        <figure class="product-photo-stitched-frame mb-3">
+          <button type="button" id="detailImageZoomBtn" class="detail-photo-zoom-trigger card-product-img-wrapper rounded shadow-sm" style="aspect-ratio: 1 / 1; max-height: 480px;" aria-haspopup="dialog" aria-label="Ampliar fotografía de la creación">
+            <img id="detailMainImage" src="assets/svg/piezas/ovillo-generico.svg" alt="Fotografía de la creación artesanal" class="card-product-img" style="object-fit: cover;" fetchpriority="high">
+            <span class="detail-photo-zoom-hint" aria-hidden="true"><i class="bi bi-arrows-fullscreen me-1"></i>Ampliar</span>
+            <span class="badge badge-textile-tag detail-photo-source-badge d-none" id="detailImageSourceBadge"><i class="bi bi-card-image me-1"></i><span id="detailImageSourceLabel">Ilustración temática</span></span>
+          </button>
+          <figcaption id="detailImageCaption" class="detail-photo-caption text-muted small text-center px-3 pb-2">Toca la fotografía para verla en grande</figcaption>
+          <span id="detailSvgCaption" class="visually-hidden" aria-hidden="true"></span>
+        </figure>
 
-        <!-- Miniaturas Textiles Interactivas con Pespunte -->
-        <div class="row g-2 mb-3" id="detailThumbnailsContainer">
-          <div class="col-4">
-            <button type="button" class="w-100 thumb-textile-item active card-thumb-item" data-view="frontal">
-              <i class="bi bi-eye"></i>
-              <span>Frontal</span>
-            </button>
-          </div>
-          <div class="col-4">
-            <button type="button" class="w-100 thumb-textile-item card-thumb-item" data-view="escamas">
-              <i class="bi bi-zoom-in"></i>
-              <span>Escamas</span>
-            </button>
-          </div>
-          <div class="col-4">
-            <button type="button" class="w-100 thumb-textile-item card-thumb-item" data-view="perfil">
-              <i class="bi bi-camera"></i>
-              <span>Perfil / Cola</span>
-            </button>
-          </div>
+        <!-- Acciones de imagen: ver en grande + nota de origen -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3" id="detailImageActions">
+          <button type="button" class="btn btn-craft-outline btn-craft-outline-stitched btn-sm" id="detailOpenLightboxBtn">
+            <i class="bi bi-zoom-in me-1"></i>Ver en grande
+          </button>
+          <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Foto real o ilustración temática según disponibilidad</small>
         </div>
 
         <!-- Sello Oficial del Taller Artesanal (Algodón Nórdico) -->
