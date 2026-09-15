@@ -929,6 +929,31 @@ async function loadArtisanOptions() {
   }
 }
 
+// =============================================================================
+// Insignia del menú lateral (panel_sidebar.php)
+// =============================================================================
+
+/**
+ * Sincroniza #sidebarBadgeCreaciones con el total real del ámbito visible
+ * (misma fuente que el KPI Modelos Registrados: mias.php?resumen=1).
+ * Sin token se conserva el valor inicial de la vista.
+ */
+export async function initSidebarBadges() {
+  const badge = document.getElementById('sidebarBadgeCreaciones');
+  if (!badge || !isAuthenticated()) return;
+
+  try {
+    const res = await fetch(`${MINE_URL}?resumen=1&estado=activas`, { headers: authHeaders() });
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json && json.exito === true && json.datos) {
+      badge.textContent = String(Number(json.datos.modelos) || 0);
+    }
+  } catch {
+    /* La insignia conserva su valor inicial ante un fallo de red. */
+  }
+}
+
 export function initFormularioCreacion() {
   const form = document.getElementById('creacionForm');
   if (!form) return;

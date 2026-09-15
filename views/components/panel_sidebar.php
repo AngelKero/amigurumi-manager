@@ -50,7 +50,7 @@ $activePage = $activePage ?? 'creaciones';
           <i class="bi bi-collection-fill"></i>
           <span>Inventario & Creaciones</span>
         </span>
-        <span class="panel-nav-badge" id="sidebarBadgeCreaciones">5</span>
+        <span class="panel-nav-badge" id="sidebarBadgeCreaciones">0</span>
       </a>
     </li>
     <li>

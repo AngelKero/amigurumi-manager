@@ -5,7 +5,7 @@
 - **Entorno:** PHP 8.3 CLI + Servidor Built-in (`localhost:8000`) + SQLite 3 + `node --check`
 - **Archivo de Log Crudo:** `logs/subfase-4.3.2-cli.log` (suite, 35/35) · `logs/subfase-4.3.2-http.log` (curls manuales)
 - **Script de Pruebas:** `tests/test-subfase-4.3.2.php` (Feature 006 correctivo · maestro 009)
-- **Resultado General:** **35 / 35 Aprobados (100%)** — ✅ APTO PARA AVANZAR
+- **Resultado General:** **43 / 43 Aprobados (100%)** — ✅ APTO PARA AVANZAR
 
 ---
 
@@ -17,6 +17,8 @@
 | `app/Services/CreacionService.php` | `getOwnSummary()` + extracción de `applyOwnershipScope()` (reutilizado por `getOwnCreations`, cero duplicación) |
 | `api/creaciones/mias.php` | Rama `?resumen=1` → sobre `{modelos, unidades, valor_centavos, costo_centavos}` (55 líneas, ≤60 verificado) |
 | `views/pages/creaciones_content.php` | Chip `Mostrando A–B de N` (`#creacionesShowingFrom/To/TotalCount`); fuera `#creacionesShowingCount` |
+| `src/js/modules/creaciones.js` | `initSidebarBadges()` (misma fuente que el KPI) + llamada en `main.js` |
+| `views/components/panel_sidebar.php` | `#sidebarBadgeCreaciones` inicial `0` (fuera el mock `5`) |
 | `src/js/modules/creaciones.js` | Badge `N piezas`; rango real en `renderPagination`; `fetchKpis` vía `resumen=1` con `seq` + Bearer + 401; fuera el loop 20×48 (`buildQueryWithoutPage`) |
 | `docs/api/creaciones.md` | §2b: fila `resumen` |
 | `tests/test-subfase-4.3.php` | Chip actualizado al rango A–B (evolución 4.3.2) |
@@ -31,6 +33,7 @@
 | 2 | JS | From/To, formato `N piezas`, sin `X de Y`, `resumen`, sin loop, centavos, sin `innerHTML =`, `node --check` | 9/9 |
 | 3 | Servicio | Método existe; Ana vs SQL independiente (4); admin global (2) + cobertura; anti-spoof (2); papelera (2) | 11/11 |
 | 4 | HTTP vivo | 401; login; resumen Ana == servicio (3) + `costo_centavos`; admin; papelera | 10/10 |
+| 5 | Insignia lateral | `#sidebarBadgeCreaciones` sin mock (parte de 0) + `initSidebarBadges()` con misma fuente que el KPI + cableado en `main.js` | 8/8 |
 
 ## 2b. Trazabilidad con el re-plan aprobado
 
@@ -62,7 +65,7 @@
 
 ## 6. Veredicto
 
-- [x] Suite CLI 35/35 + HTTP vivo + trazabilidad completa.
-- [x] Regresiones: 4.3 (212/212), 4.3.1 (62/62), 3.6.5 (141/141), acumulado Fase 4 (**503/503**), H-006 (1.287, previo; sin nuevos asserts Fase 3).
+- [x] Suite CLI 43/43 + HTTP vivo + trazabilidad completa.
+- [x] Regresiones: 4.3 (212/212), 4.3.1 (62/62), 3.6.5 (141/141), acumulado Fase 4 (**511/511**), H-006 (1.287, previo; sin nuevos asserts Fase 3).
 - [x] `006` (AC-15/16), `006/tasks.md` §8, `009/tasks.md`, `roadmap.md`, README actualizados.
 - **Estado:** ⏸ **HALT — esperando autorización para 4.4 (Feature 007).**

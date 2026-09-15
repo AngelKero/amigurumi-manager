@@ -11,7 +11,7 @@ import { initMarginCalculator } from './modules/margin-calculator.js';
 import { initDropzone } from './modules/dropzone.js';
 import { initOrders } from './modules/orders.js';
 import { initUsers } from './modules/users.js';
-import { initCreaciones, initFormularioCreacion } from './modules/creaciones.js';
+import { initCreaciones, initFormularioCreacion, initSidebarBadges } from './modules/creaciones.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Inicialización global de sesión y autenticación
@@ -27,4 +27,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initUsers();
   initCreaciones();
   initFormularioCreacion();
+  initSidebarBadges();
 });

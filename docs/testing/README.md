@@ -22,10 +22,10 @@
 | **4.2** | Catálogo Dinámico & Filtros Textiles (Feature 005) | `tests/test-subfase-4.2.php` | 136 / 136 (100%) | ✅ Aprobado | [Ver Reporte 4.2](./subfase-4.2-catalogo.md) |
 | **4.3** | Gestión de Creaciones & Subida Multipart (Feature 006) | `tests/test-subfase-4.3.php` | 212 / 212 (100%) | ✅ Aprobado | [Ver Reporte 4.3](./subfase-4.3-creaciones.md) |
 | **4.3.1** | Scoping Servidor del Panel & Papelera (Feature 006) | `tests/test-subfase-4.3.1.php` | 62 / 62 (100%) | ✅ Aprobado | [Ver Reporte 4.3.1](./subfase-4.3.1-panel-scoping.md) |
-| **4.3.2** | Contadores Correctos del Panel (Feature 006) | `tests/test-subfase-4.3.2.php` | 35 / 35 (100%) | ✅ Aprobado | [Ver Reporte 4.3.2](./subfase-4.3.2-contadores.md) |
+| **4.3.2** | Contadores Correctos del Panel (Feature 006) | `tests/test-subfase-4.3.2.php` | 43 / 43 (100%) | ✅ Aprobado | [Ver Reporte 4.3.2](./subfase-4.3.2-contadores.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **503 / 503 Aserciones Aprobadas (100% OK en verde — Subfases 4.1, 4.2, 4.3, 4.3.1 y 4.3.2)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **511 / 511 Aserciones Aprobadas (100% OK en verde — Subfases 4.1, 4.2, 4.3, 4.3.1 y 4.3.2)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 

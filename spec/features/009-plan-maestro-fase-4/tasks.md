@@ -56,8 +56,8 @@
       regresiones 4.3 (212/212), 3.6.5 (141/141, conteo 26), acumulado (**468/468**), H-006 (1.287).
 - [x] **4.3.2** Contadores del panel (`006` correctivo): `getStockSummary()` + `getOwnSummary()` +
       `mias.php?resumen=1`; badge `N piezas` + rango `A–B de N` + KPIs globales exactos; suite
-      `tests/test-subfase-4.3.2.php` → **35/35**; HTTP → `logs/subfase-4.3.2-http.log`; reporte
-      `docs/testing/subfase-4.3.2-contadores.md`; acumulado (**503/503**).
+      `tests/test-subfase-4.3.2.php` → **43/43**; HTTP → `logs/subfase-4.3.2-http.log`; reporte
+      `docs/testing/subfase-4.3.2-contadores.md`; acumulado (**511/511**).
 - [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
       `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
       `docs/testing/subfase-4.4-pedidos.md` · **HALT**.
@@ -70,7 +70,8 @@
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
       (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0; tras 4.3:
       **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
-      **503/503** — 58 + 136 + 212 + 62 + 35, EXIT 0).
+      **503/503** — 58 + 136 + 212 + 62 + 35, EXIT 0; tras insignia lateral (4.3.2 §5):
+      **511/511** — 58 + 136 + 212 + 62 + 43, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

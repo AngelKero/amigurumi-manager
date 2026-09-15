@@ -142,6 +142,22 @@ $httpSumTrash = TestHelper::curl('GET', 'http://localhost:8000/api/creaciones/mi
 TestHelper::assertSame((int)$sumTrash['modelos'], (int)($httpSumTrash['json']['datos']['modelos'] ?? -1), 'HTTP resumen papelera: modelos exactos');
 
 // =============================================================================
+// 5. INSIGNIA LATERAL: mismo total real que el KPI (adiós mock "5")
+// =============================================================================
+TestHelper::section('5. Insignia Lateral: total real del ámbito visible');
+
+$sidebar = (string)@file_get_contents("$root/views/components/panel_sidebar.php");
+TestHelper::assertStringContains('id="sidebarBadgeCreaciones"', $sidebar, 'El menú lateral conserva #sidebarBadgeCreaciones');
+TestHelper::assertStringContains('id="sidebarBadgeCreaciones">0<', $sidebar, 'La insignia parte de 0 (sin mock de semilla)');
+TestHelper::assertFalse(str_contains($sidebar, 'id="sidebarBadgeCreaciones">5<'), 'La insignia ya no hardcodea el mock "5"');
+
+TestHelper::assertStringContains('export async function initSidebarBadges', $creacionesJs, 'creaciones.js exporta initSidebarBadges()');
+TestHelper::assertStringContains('resumen', $creacionesJs, 'La insignia usa la misma fuente que el KPI (resumen del ámbito)');
+TestHelper::assertStringContains('json.datos.modelos', $creacionesJs, 'La insignia muestra modelos del resumen (total real)');
+TestHelper::assertStringContains('initSidebarBadges', file_get_contents("$root/src/js/main.js"), 'main.js importa initSidebarBadges()');
+TestHelper::assertStringContains('initSidebarBadges();', file_get_contents("$root/src/js/main.js"), 'main.js ejecuta initSidebarBadges() en DOMContentLoaded');
+
+// =============================================================================
 // RESUMEN FINAL
 // =============================================================================
 $exitCode = TestHelper::summary();
