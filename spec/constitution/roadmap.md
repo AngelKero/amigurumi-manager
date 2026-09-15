@@ -9,7 +9,7 @@
 | **Fase 1** · Base de Datos, DDL & Concurrencia SQLite | — | ✅ Hecho |
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
-| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 ✅ completada** (58/58, reporte `docs/testing/subfase-4.1-auth-sesion.md`) · **4.2 activa**: `spec/features/005-catalogo-dinamico-filtros/` · maestro `spec/features/009-plan-maestro-fase-4/` |
+| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 ✅ completada** (58/58, reporte `docs/testing/subfase-4.1-auth-sesion.md`) · **4.2 ✅ completada** (105/105, reporte `docs/testing/subfase-4.2-catalogo.md`) · **4.3 activa**: `spec/features/006-gestion-creaciones/` (planificación pendiente) · maestro `spec/features/009-plan-maestro-fase-4/` |
 | **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔄 Continua |
 
 ## Hecho ✅
@@ -30,8 +30,8 @@
 
 ## Siguiente 🔜
 
-4. **009 · Plan Maestro de la Fase 4 (coordinación · `spec/features/009-plan-maestro-fase-4/`)** — Registrador y plan maestro de toda la Fase 4: 4.1 ✅ ejecutada (004), siguientes 4.2–4.5 (005–008) con etapa 3 (planificación de hijas) en progreso y `roadmap.md` como registrador canónico (4.1–4.5 ↔ 004–008). *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
-5. **005 · Catálogo Dinámico & Filtros Textiles (Fase 4.2)** — Conexión asíncrona de la vitrina con `/api/creaciones/`, sincronización bidireccional de chips textiles, rangos de precio y paginación reactiva; incluye `scripts/seed-catalogo-pruebas.php` (seed combinatorio 270 piezas) y extensión `estado_stock`. Spec/plan/tasks ya creados (incluyen extensión y script seed) — **planificación completa, a la espera de autorización para implementar**. 💡 *(Fase 4.1 completada; 4.2 es la siguiente subfase a ejecutar.)*
+4. **009 · Plan Maestro de la Fase 4 (coordinación · `spec/features/009-plan-maestro-fase-4/`)** — Registrador y plan maestro de toda la Fase 4: 4.1 ✅ ejecutada (004) y 4.2 ✅ ejecutada (005: **174/174** aserciones acumuladas de fase en verde), siguientes 4.3–4.5 (006–008) con etapa 3 (planificación de hijas) en progreso y `roadmap.md` como registrador canónico (4.1–4.5 ↔ 004–008). *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
+5. **005 · Catálogo Dinámico & Filtros Textiles (Fase 4.2)** — Conexión asíncrona de la vitrina con `/api/creaciones/`, sincronización bidireccional de chips textiles, rangos de precio y paginación reactiva; incluye `scripts/seed-catalogo-pruebas.php` (seed combinatorio 270 piezas), extensión `estado_stock` y catálogo server-driven con template DOM-safe (H-004). **Implementada y verificada**: suite `tests/test-subfase-4.2.php` **105/105**, HTTP en vivo sin divergencia, regresiones Fase 3 (**1,287**) y Fase 4 acumulada (**163/163**) en verde; reporte `docs/testing/subfase-4.2-catalogo.md`. ✅ *(HALT pendiente de aprobación del usuario para iniciar 4.3.)*
 
 ## Backlog / Ideas 💡
 

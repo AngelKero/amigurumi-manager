@@ -62,9 +62,22 @@ class CreacionRepository {
     }
 
     /**
+     * Verifica si ya existe una creación con el nombre exacto indicado.
+     * Garantiza la idempotencia del seed combinatorio de la subfase 4.2.
+     * 
+     * @param string $nombre Nombre exacto de la creación
+     * @return bool true si el nombre ya está registrado
+     */
+    public function existsByName(string $nombre): bool {
+        $stmt = $this->pdo->prepare('SELECT 1 FROM creaciones WHERE nombre = :nombre LIMIT 1');
+        $stmt->execute([':nombre' => trim($nombre)]);
+        return (bool)$stmt->fetchColumn();
+    }
+
+    /**
      * Lista piezas del catálogo con filtros combinables, ordenación y paginación.
      * 
-     * @param array $filters Filtros opcionales (categoria, artesano_id, precio_min, precio_max, busqueda, es_sobre_encargo, solo_en_stock, activo)
+     * @param array $filters Filtros opcionales (categoria, artesano_id, precio_min, precio_max, busqueda, es_sobre_encargo, solo_en_stock, estado_stock, activo)
      * @param int $limit Límite de elementos por página
      * @param int $offset Desplazamiento
      * @param string $orden Criterio de ordenación ('recientes', 'precio_asc', 'precio_desc', 'nombre_asc', 'stock_desc')
@@ -78,6 +91,7 @@ class CreacionRepository {
             'precio_desc' => 'ORDER BY c.precio DESC, c.id DESC',
             'nombre_asc'  => 'ORDER BY c.nombre COLLATE NOCASE ASC, c.id DESC',
             'stock_desc'  => 'ORDER BY c.cantidad_stock DESC, c.id DESC',
+            'recientes'   => 'ORDER BY (CASE WHEN c.cantidad_stock > 0 THEN 0 WHEN c.es_sobre_encargo = 1 THEN 1 ELSE 2 END) ASC, c.id DESC',
             default       => 'ORDER BY c.id DESC',
         };
 
@@ -419,6 +433,19 @@ class CreacionRepository {
         // 7. Filtro de existencias físicas disponibles
         if (!empty($filters['solo_en_stock'])) {
             $clauses[] = 'c.cantidad_stock > 0';
+        }
+
+        // 7b. Filtro combinado de estado de inventario (catálogo reactivo 4.2):
+        //     en_stock (stock > 0) | encargo/bajo_encargo (es_sobre_encargo = 1) | agotados (stock = 0 y no encargo)
+        if (!empty($filters['estado_stock'])) {
+            $estado = strtolower(trim((string)$filters['estado_stock']));
+            if (in_array($estado, ['en_stock', 'en-stock', 'in', 'in_stock', 'stock'], true)) {
+                $clauses[] = 'c.cantidad_stock > 0';
+            } elseif (in_array($estado, ['encargo', 'bajo_encargo', 'on_demand'], true)) {
+                $clauses[] = 'c.es_sobre_encargo = 1';
+            } elseif (in_array($estado, ['agotados', 'agotado', 'out', 'out_stock', 'sin_stock'], true)) {
+                $clauses[] = 'c.cantidad_stock = 0 AND c.es_sobre_encargo = 0';
+            }
         }
 
         $whereClause = !empty($clauses) ? 'WHERE ' . implode(' AND ', $clauses) : '';

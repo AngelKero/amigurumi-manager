@@ -90,6 +90,12 @@ class CreacionService {
             $filters['solo_en_stock'] = true;
         }
 
+        // 6b. Filtro combinado de estado de inventario (catálogo reactivo 4.2):
+        //     en_stock | encargo/bajo_encargo | agotados
+        if (!empty($query['estado_stock'])) {
+            $filters['estado_stock'] = trim((string)$query['estado_stock']);
+        }
+
         // 7. Filtro de estado activo
         if (isset($query['activo'])) {
             if ($query['activo'] === 'todos' || $query['activo'] === null) {
@@ -124,6 +130,17 @@ class CreacionService {
      */
     public function getActiveArtisans(): array {
         return $this->creacionRepo->findActiveArtisansWithCreations();
+    }
+
+    /**
+     * Verifica idempotentemente si ya existe una creación activa con el nombre dado.
+     * Utilizado por el seed combinatorio para omitir variantes ya registradas.
+     * 
+     * @param string $nombre Nombre exacto de la creación a consultar
+     * @return bool true si el nombre ya está registrado en el catálogo
+     */
+    public function existsCreationByName(string $nombre): bool {
+        return $this->creacionRepo->existsByName($nombre);
     }
 
     /**
@@ -601,6 +618,13 @@ class CreacionService {
      */
     private function enrichCreation(array $creacion): array {
         $enriched = CurrencyHelper::enrichCreation($creacion);
+
+        // R-09: vector temático SVG de respaldo por categoría/nombre para renders resilientes
+        // (p. ej. piezas base cuya fotografía original no está presente en uploads/).
+        $enriched['imagen_fallback_svg'] = $this->getThematicSvgFallback(
+            (string)($enriched['categoria'] ?? ''),
+            (string)($enriched['nombre'] ?? '')
+        );
 
         $precio = (int)$enriched['precio'];
         $costo = (int)$enriched['costo_materiales'];

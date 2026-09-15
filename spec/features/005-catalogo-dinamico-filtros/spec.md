@@ -1,6 +1,6 @@
 # 005 · Catálogo Dinámico & Filtros Textiles (Subfase 4.2)
 
-**Estado:** propuesto (solo spec · sin código)
+**Estado:** implementada y validada (AC 11/11 · suite 113/113 · gate 3-tier verde)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**
 > Cubre la **subfase 4.2** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a
@@ -47,34 +47,34 @@ amplio**, por lo que la feature incluye el script de siembra que agota las varia
 
 ## Criterios de aceptación
 
-- [ ] Al cargar `index.php`, la rejilla `#productCardGrid` se puebla asíncronamente desde
+- [x] Al cargar `index.php`, la rejilla `#productCardGrid` se puebla asíncronamente desde
       `GET /api/creaciones/index.php` (sin el mock PHP) y muestra el contador real de piezas.
-- [ ] Un clic en un **chip textil** (`.btn-chip-textile`) activa el chip, sincroniza el dropdown
+- [x] Un clic en un **chip textil** (`.btn-chip-textile`) activa el chip, sincroniza el dropdown
       `#filterCategory` y dispara una petición con `categoria`; el dropdown provoca el mismo
       efecto inverso en los chips (sincronización bidireccional).
-- [ ] El **rango de precio** se transmite como **centavos enteros** (`precio_min`/`precio_max` a
+- [x] El **rango de precio** se transmite como **centavos enteros** (`precio_min`/`precio_max` a
       `GET /api/creaciones/index.php`) usando `currency.js` (R-06); la UI muestra el rango real
       en pesos y el servidor responde únicamente piezas dentro del rango.
-- [ ] El filtro **artesano** puebla su dropdown desde `GET /api/creaciones/artesanos.php` y
+- [x] El filtro **artesano** puebla su dropdown desde `GET /api/creaciones/artesanos.php` y
       filtra por `artesano_id` real (no por username mock).
-- [ ] La **paginación** es reactiva: los botones anterior/siguiente y las páginas consumen el
+- [x] La **paginación** es reactiva: los botones anterior/siguiente y las páginas consumen el
       bloque `paginacion` del API (total_items, pagina_actual, total_paginas) y re-renderizan la
       rejilla sin recarga; el chip "Mostrando X de Y" refleja el total real.
-- [ ] Ante **cero coincidencias**, se muestra `#emptyCatalogState` y su botón restablece TODOS
+- [x] Ante **cero coincidencias**, se muestra `#emptyCatalogState` y su botón restablece TODOS
       los filtros (chips, dropdowns, precios, buscador y página).
-- [ ] Todo render de datos del servidor usa **DOM APIs/`textContent` o `escapeHtml`
+- [x] Todo render de datos del servidor usa **DOM APIs/`textContent` o `escapeHtml`
       (`src/js/modules/dom-safe.js`)**: cero interpolación de datos en `innerHTML` (H-004).
-- [ ] Suite `tests/test-subfase-4.2.php` en verde (contrato de filtros/paginación del endpoint +
+- [x] Suite `tests/test-subfase-4.2.php` en verde (contrato de filtros/paginación del endpoint +
       `node --check` de `catalog.js`), trazas HTTP en `logs/subfase-4.2-http.log` y reporte
       `docs/testing/subfase-4.2-catalogo.md` (H-008/H-015).
-- [ ] `scripts/seed-catalogo-pruebas.php` es **CLI-only** (bloquea ejecución vía HTTP, como
+- [x] `scripts/seed-catalogo-pruebas.php` es **CLI-only** (bloquea ejecución vía HTTP, como
       `setup.php`) e **idiempotente**: al re-ejecutarlo no duplica creaciones (omite los nombres
       ya existentes).
-- [ ] El script **lista todas las combinaciones posibles** (matriz de variantes:
+- [x] El script **lista todas las combinaciones posibles** (matriz de variantes:
       categoría × material × estado de stock × rango de precio × artesano) e inserta **≥ 200
       creaciones nuevas** en una base recién inicializada; las imágenes registradas son **SVG
       temáticos repetibles por categoría** (R-09, sin subir archivos).
-- [ ] Tras sembrar, `GET /api/creaciones/index.php` sin filtros devuelve `paginacion` con
+- [x] Tras sembrar, `GET /api/creaciones/index.php` sin filtros devuelve `paginacion` con
       `total_items ≥ 205` y `total_paginas > 1` (dataset suficiente para paginar).
 
 ## Fuera de alcance
