@@ -1,484 +1,693 @@
 /**
- * Module: Orders (Gestión de Pedidos, Inspección, Filtros y Encargos Manuales)
- * Algodón Nórdico Design System
- * Responsabilidad: Control del ciclo de vida de pedidos mediante Cards responsivas 3x/2x,
- * filtrado reactivo textil, métricas dinámicas y registro de nuevos encargos.
+ * Module: Orders (Panel de Pedidos Server-Driven — Subfase 4.4)
+ * Single Responsibility: rejilla reactiva de pedidos contra
+ * `GET /api/pedidos/index.php` (Bearer + scoping por rol), alta manual,
+ * cambio de estado y cancelación idempotente con restitución visible.
+ *
+ * Seguridad DOM (H-004): marcado constante en
+ * `<template id="pedidoCardTemplate">`; datos solo con `textContent`/DOM APIs.
+ * Cero `innerHTML` con datos. WhatsApp: solo enlaces del servidor.
+ * Moneda (R-06): centavos enteros en el wire, pesos solo para mostrar.
  */
 
-import { formatPesos } from './currency.js';
-import { escapeHtml, setIconText } from './dom-safe.js';
+import { getToken, getUser, isAuthenticated, clearSession } from './auth.js';
+import { formatPesos, pesosToCents } from './currency.js';
+import { setIconText } from './dom-safe.js';
+
+const INDEX_URL = '/api/creaciones/mias.php';
+const INDEX_URL = '/api/creaciones/mias.php';
+const PEDIDOS_URL = '/api/pedidos/index.php';
+const CREAR_URL = '/api/pedidos/crear.php';
+const ESTADO_URL = '/api/pedidos/cambiar-estado.php';
+const CANCELAR_URL = '/api/pedidos/cancelar.php';
+const PAGE_LIMIT = 20;
+const GENERIC_FALLBACK = 'assets/svg/piezas/ovillo-generico.svg';
+
+const state = {
+  search: '',
+  status: 'all',
+  pago: 'all',
+  page: 1,
+  seq: 0,
+};
+
+let grid = null;
+let template = null;
+let kpiSeq = 0;
+const itemCache = new Map();
+
+function authHeaders(extra = {}) {
+  const headers = { ...extra };
+  const token = getToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
+
+async function parseJsonBody(res) {
+  const contentType = res.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) return null;
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+function debounce(fn, wait = 250) {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), wait);
+  };
+}
+
+function buildQuery() {
+  const q = new URLSearchParams();
+  if (String(state.search).trim() !== '') q.set('busqueda', state.search.trim());
+  if (state.status !== 'all') q.set('estado_pedido', state.status);
+  if (state.pago !== 'all') q.set('estado_pago', state.pago);
+  q.set('pagina', String(state.page));
+  q.set('limite', String(PAGE_LIMIT));
+  return q;
+}
+
+function showLoading(show) {
+  const el = document.getElementById('ordersLoadingState');
+  if (el) el.style.display = show ? '' : 'none';
+}
+
+function showEmptyState(show) {
+  const empty = document.getElementById('emptyOrdersGrid');
+  if (!empty) {
+    if (grid) grid.classList.toggle('d-none', show);
+    return;
+  }
+  empty.classList.toggle('d-none', !show);
+  if (grid) grid.classList.toggle('d-none', show);
+}
+
+function formatMoneyFromCents(cents) {
+  const pesos = Number(cents) / 100;
+  return `$${pesos.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+async function fetchSummary() {
+  const totalEl = document.getElementById('kpiOrdersTotal');
+  const pendEl = document.getElementById('kpiOrdersPendientes');
+  const procEl = document.getElementById('kpiOrdersProceso');
+  const ingEl = document.getElementById('kpiOrdersIngresos');
+  if (!totalEl && !pendEl && !procEl && !ingEl) return;
+  const seq = ++kpiSeq;
+
+  try {
+    const res = await fetch(`${PEDIDOS_URL}?resumen=1`, { headers: authHeaders() });
+    if (res.status === 401) {
+      clearSession();
+      return;
+    }
+    if (!res.ok) return;
+    const json = await res.json();
+    if (seq !== kpiSeq) return;
+    if (!json || json.exito !== true || !json.datos) return;
+
+    const s = json.datos;
+    if (totalEl) totalEl.textContent = String(Number(s.total) || 0);
+    if (pendEl) pendEl.textContent = String(Number(s.pendientes) || 0);
+    if (procEl) procEl.textContent = String(Number(s.proceso) || 0);
+    if (ingEl) ingEl.textContent = formatMoneyFromCents(Number(s.ingresos_centavos) || 0);
+
+    const counts = {
+      countFilterAll: Number(s.total) || 0,
+      countFilterPendiente: Number(s.pendientes) || 0,
+      countFilterProceso: Number(s.proceso) || 0,
+      countFilterEntregado: Number(s.entregados) || 0,
+      countFilterCancelado: Number(s.cancelados) || 0,
+    };
+    Object.entries(counts).forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(value);
+    });
+  } catch {
+    /* KPIs y conteos conservan su último valor ante un fallo de red. */
+  }
+}
+
+function paymentBadge(container, estadoPago) {
+  if (!container) return;
+  container.replaceChildren();
+  const badge = document.createElement('span');
+  const icon = document.createElement('i');
+  badge.appendChild(icon);
+  if (estadoPago === 'Liquidado') {
+    badge.className = 'badge bg-success-subtle text-success border border-success-subtle rounded-pill font-monospace';
+    icon.className = 'bi bi-check-all me-1';
+    badge.appendChild(document.createTextNode('Liquidado'));
+  } else if (estadoPago === 'Anticipo 50%') {
+    badge.className = 'badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace';
+    icon.className = 'bi bi-coin me-1';
+    badge.appendChild(document.createTextNode('Anticipo 50%'));
+  } else {
+    badge.className = 'badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace';
+    icon.className = 'bi bi-clock-history me-1';
+    badge.appendChild(document.createTextNode('Pendiente'));
+  }
+  badge.style.fontSize = '0.72rem';
+  container.appendChild(badge);
+}
+
+function statusBadge(container, estado) {
+  if (!container) return;
+  container.replaceChildren();
+  const badge = document.createElement('span');
+  const icon = document.createElement('i');
+  badge.appendChild(icon);
+  const base = 'px-2.5 py-1.5 rounded-pill font-monospace order-status-badge ';
+  if (estado === 'En Proceso') {
+    badge.className = `badge badge-order-proceso ${base}`;
+    icon.className = 'bi bi-gear-wide-connected me-1';
+  } else if (estado === 'Pendiente') {
+    badge.className = `badge badge-order-pendiente ${base}`;
+    icon.className = 'bi bi-hourglass-split me-1';
+  } else if (estado === 'Entregado') {
+    badge.className = `badge badge-order-entregado ${base}`;
+    icon.className = 'bi bi-check2 text-success me-1';
+  } else {
+    badge.className = `badge badge-order-cancelado ${base}`;
+    icon.className = 'bi bi-x-circle me-1';
+  }
+  badge.appendChild(document.createTextNode(estado));
+  container.appendChild(badge);
+}
+
+function orderImageSources(item) {
+  const sources = [];
+  const url = item.creacion && item.creacion.imagen_url ? String(item.creacion.imagen_url) : '';
+  if (url) sources.push(url);
+  sources.push(GENERIC_FALLBACK);
+  return sources;
+}
+
+function renderCard(item) {
+  const node = template.content.cloneNode(true);
+  const part = (name) => node.querySelector(`[data-part="${name}"]`);
+  const id = String(item.id);
+  const cantidad = Number(item.cantidad) || 0;
+  const creacion = item.creacion || {};
+  const estado = String(item.estado_pedido || 'Pendiente');
+  const isCancelled = estado === 'Cancelado';
+
+  itemCache.set(id, item);
+
+  part('codigo').textContent = `#${id}`;
+  part('fecha').textContent = item.fecha_entrega ? String(item.fecha_entrega) : 'Sin fecha';
+
+  const img = part('photo');
+  const sources = orderImageSources(item);
+  img.setAttribute('src', sources[0]);
+  img.setAttribute('alt', String(creacion.nombre || 'Pieza del pedido'));
+  let attempt = 0;
+  img.addEventListener('error', () => {
+    attempt += 1;
+    if (attempt < sources.length) img.setAttribute('src', sources[attempt]);
+    else img.classList.add('d-none');
+  });
+
+  part('nombre').textContent = String(creacion.nombre || '');
+  part('nombre').setAttribute('title', String(creacion.nombre || ''));
+  const catEl = part('categoria');
+  if (catEl) catEl.style.display = 'none';
+  const dimEl = part('dimensiones');
+  if (dimEl && dimEl.parentElement) dimEl.parentElement.style.display = 'none';
+  const qtyEl = part('qty');
+  qtyEl.replaceChildren();
+  const qtyIcon = document.createElement('i');
+  qtyIcon.className = 'bi bi-box-seam me-1';
+  qtyEl.appendChild(qtyIcon);
+  qtyEl.appendChild(document.createTextNode(`${cantidad} ${cantidad === 1 ? 'unidad' : 'unidades'}`));
+
+  part('clienteNombre').textContent = String(item.cliente_nombre || '');
+  const waLink = part('waLink');
+  if (item.enlace_whatsapp) {
+    waLink.setAttribute('href', String(item.enlace_whatsapp));
+    waLink.classList.remove('d-none');
+  } else {
+    waLink.classList.add('d-none');
+  }
+  part('clienteContacto').textContent = String(item.cliente_contacto || '');
+  part('precioTotal').textContent = String(item.precio_final_formateado || formatMoneyFromCents(item.precio_final || 0));
+
+  paymentBadge(part('pagoBadge'), String(item.estado_pago || 'Pendiente'));
+
+  const notas = String(item.notas || '').trim();
+  const notasBox = part('notasBox');
+  if (notas !== '') {
+    notasBox.classList.remove('d-none');
+    part('notas').textContent = `“${notas}”`;
+    notasBox.setAttribute('title', notas);
+  } else {
+    notasBox.classList.add('d-none');
+  }
+
+  statusBadge(part('estadoBadge'), estado);
+
+  const inspectBtn = part('inspectBtn');
+  inspectBtn.setAttribute('data-id', id);
+
+  node.querySelectorAll('.btn-change-order-status').forEach((btn) => {
+    btn.setAttribute('data-id', id);
+    if (isCancelled) btn.classList.add('disabled');
+  });
+  const cancelBtn = node.querySelector('.btn-trigger-cancel-order');
+  if (cancelBtn) {
+    cancelBtn.setAttribute('data-id', id);
+    cancelBtn.setAttribute('data-qty', String(cantidad));
+    cancelBtn.setAttribute('data-product', String(creacion.nombre || ''));
+    if (isCancelled) cancelBtn.classList.add('d-none');
+  }
+
+  const col = node.querySelector('[data-part="cardCol"]');
+  if (col) {
+    col.id = `orderCol_${id}`;
+    col.setAttribute('data-id', id);
+    col.setAttribute('data-estado', estado);
+  }
+
+  return node;
+}
+
+function renderCards(items) {
+  grid.replaceChildren();
+  itemCache.clear();
+  items.forEach((item) => grid.appendChild(renderCard(item)));
+}
+
+function pageWindow(current, total) {
+  if (total <= 7) {
+    const arr = [];
+    for (let i = 1; i <= total; i++) arr.push(i);
+    return arr;
+  }
+  const numbers = [...new Set([1, current - 1, current, current + 1, total])]
+    .filter((n) => n >= 1 && n <= total)
+    .sort((a, b) => a - b);
+  const result = [];
+  let prev = 0;
+  numbers.forEach((n) => {
+    if (n - prev > 1) result.push(null);
+    result.push(n);
+    prev = n;
+  });
+  return result;
+}
+
+function makeNavItem(kind, targetPage, enabled) {
+  const li = document.createElement('li');
+  li.className = 'page-item' + (enabled ? '' : ' disabled');
+  const a = document.createElement('a');
+  a.className = 'page-link';
+  a.setAttribute('role', 'button');
+  a.setAttribute('aria-label', kind === 'prev' ? 'Anterior' : 'Siguiente');
+  const i = document.createElement('i');
+  i.className = kind === 'prev' ? 'bi bi-chevron-left' : 'bi bi-chevron-right';
+  a.appendChild(i);
+  if (enabled) {
+    a.href = '#';
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      state.page = targetPage;
+      fetchPage();
+    });
+  } else {
+    a.setAttribute('aria-disabled', 'true');
+    a.tabIndex = -1;
+  }
+  li.appendChild(a);
+  return li;
+}
+
+function makeNumberItem(page) {
+  const li = document.createElement('li');
+  const isCurrent = page === state.page;
+  li.className = 'page-item' + (isCurrent ? ' active' : '');
+  const a = document.createElement('a');
+  a.className = 'page-link';
+  a.textContent = String(page);
+  if (isCurrent) {
+    a.setAttribute('aria-current', 'page');
+  } else {
+    a.href = '#';
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      state.page = page;
+      fetchPage();
+    });
+  }
+  li.appendChild(a);
+  return li;
+}
+
+function renderPagination(pag) {
+  const current = Number(pag.pagina_actual) || 1;
+  const totalPages = Number(pag.total_paginas) || 1;
+  const totalItems = Number(pag.total_items) || 0;
+  const limit = Number(pag.limite) || PAGE_LIMIT;
+
+  const fromEl = document.getElementById('pedidosShowingFrom');
+  const toEl = document.getElementById('pedidosShowingTo');
+  const totalEl = document.getElementById('pedidosTotalCount');
+  if (fromEl) fromEl.textContent = String(totalItems === 0 ? 0 : (current - 1) * limit + 1);
+  if (toEl) toEl.textContent = String(Math.min(current * limit, totalItems));
+  if (totalEl) totalEl.textContent = String(totalItems);
+
+  const nav = document.getElementById('pedidosPaginationNav');
+  const ul = nav && nav.querySelector('ul');
+  if (!ul) return;
+  ul.replaceChildren();
+  ul.appendChild(makeNavItem('prev', current - 1, Boolean(pag.tiene_anterior)));
+  pageWindow(current, totalPages).forEach((p) => {
+    if (p === null) {
+      const li = document.createElement('li');
+      li.className = 'page-item disabled';
+      const span = document.createElement('span');
+      span.className = 'page-link';
+      span.textContent = '…';
+      li.appendChild(span);
+      ul.appendChild(li);
+    } else {
+      ul.appendChild(makeNumberItem(p));
+    }
+  });
+  ul.appendChild(makeNavItem('next', current + 1, Boolean(pag.tiene_siguiente)));
+}
+
+async function fetchPage() {
+  if (!grid || !template) return;
+  const seq = ++state.seq;
+  if (grid.childElementCount === 0) showLoading(true);
+
+  try {
+    const res = await fetch(`${PEDIDOS_URL}?${buildQuery()}`, { headers: authHeaders() });
+    if (res.status === 401) {
+      clearSession();
+      showLoading(false);
+      return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (!json || json.exito !== true) {
+      throw new Error((json && json.error && json.error.mensaje) || 'Error del servidor.');
+    }
+    if (seq !== state.seq) return;
+
+    const pag = json.paginacion || {};
+    const totalPages = Number(pag.total_paginas) || 1;
+    if (state.page > totalPages) {
+      state.page = 1;
+      return fetchPage();
+    }
+
+    const items = Array.isArray(json.datos) ? json.datos : [];
+    renderCards(items);
+    renderPagination(pag);
+    showLoading(false);
+    showEmptyState(items.length === 0);
+    fetchSummary();
+  } catch {
+    if (seq !== state.seq) return;
+    showLoading(false);
+    showEmptyState(true);
+  }
+}
+
+function resetFilters(searchInput) {
+  state.search = '';
+  state.status = 'all';
+  state.pago = 'all';
+  state.page = 1;
+  if (searchInput) searchInput.value = '';
+  document.querySelectorAll('.filter-order-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.getAttribute('data-status') === 'all');
+  });
+  fetchPage();
+}
+
+async function postJson(url, payload) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: authHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify(payload),
+  });
+  return { status: res.status, json: await parseJsonBody(res) };
+}
+
+function hideModalById(modalId) {
+  const modalEl = document.getElementById(modalId);
+  if (modalEl && window.bootstrap) {
+    const instance = window.bootstrap.Modal.getInstance(modalEl);
+    if (instance) instance.hide();
+  }
+}
+
+function fillInspectModal(item) {
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  set('inspectOrderId', `#${item.id}`);
+  set('inspectCliente', String(item.cliente_nombre || ''));
+  set('inspectContacto', String(item.cliente_contacto || ''));
+  paymentBadge(document.getElementById('inspectEstadoPago'), String(item.estado_pago || 'Pendiente'));
+  set('inspectProducto', String((item.creacion && item.creacion.nombre) || ''));
+  set('inspectCantidad', `${Number(item.cantidad) || 0} u.`);
+  set('inspectTotal', String(item.precio_final_formateado || ''));
+  set('inspectFecha', item.fecha_entrega ? String(item.fecha_entrega) : 'Sin fecha');
+  set('inspectNotas', String(item.notas || '').trim() !== '' ? String(item.notas) : 'Sin notas especiales.');
+}
+
+function openInspectModal(item) {
+  fillInspectModal(item);
+  const modalEl = document.getElementById('modalInspeccionarPedido');
+  if (modalEl && window.bootstrap) {
+    new window.bootstrap.Modal(modalEl).show();
+  }
+}
+
+function bindCancelConfirm() {
+  const confirmBtn = document.getElementById('btnConfirmarCancelacionPedido');
+  if (!confirmBtn || confirmBtn.dataset.bound === '1') return;
+  confirmBtn.dataset.bound = '1';
+  confirmBtn.addEventListener('click', async () => {
+    const id = confirmBtn.getAttribute('data-id');
+    if (!id) return;
+    confirmBtn.disabled = true;
+    try {
+      const { status, json } = await postJson(CANCELAR_URL, { id: Number(id) });
+      if (status === 401) clearSession();
+      if ((status === 200 && json && json.exito) || status === 409) {
+        hideModalById('modalCancelarPedido');
+        await fetchPage();
+      }
+    } finally {
+      confirmBtn.disabled = false;
+    }
+  });
+}
+
+async function loadCreacionOptions() {
+  const select = document.getElementById('manualCreacionSelect');
+  if (!select) return;
+  try {
+    const res = await fetch(`${INDEX_URL}?estado=activas&limite=48&orden=recientes`, { headers: authHeaders() });
+    if (!res.ok) return;
+    const json = await res.json();
+    const items = json && json.exito === true && Array.isArray(json.datos) ? json.datos : [];
+    select.replaceChildren();
+    items.forEach((item) => {
+      const opt = document.createElement('option');
+      opt.value = String(item.id);
+      const stock = Number(item.cantidad_stock) || 0;
+      const onDemand = Number(item.es_sobre_encargo) === 1;
+      opt.setAttribute('data-precio-cents', String(item.precio_centavos || 0));
+      opt.setAttribute('data-stock', String(stock));
+      opt.setAttribute('data-on-demand', onDemand ? '1' : '0');
+      opt.textContent = `${item.nombre} — ${item.precio_formateado} (${onDemand ? 'Bajo encargo' : `Stock: ${stock}`})`;
+      select.appendChild(opt);
+    });
+    updateManualTotal();
+  } catch {
+    /* El select conserva su estado inicial. */
+  }
+}
+
+function updateManualTotal() {
+  const select = document.getElementById('manualCreacionSelect');
+  const qtyEl = document.getElementById('manualCantidad');
+  const totalEl = document.getElementById('manualTotalDisplay');
+  if (!select || !qtyEl || !totalEl) return;
+  const opt = select.selectedOptions && select.selectedOptions[0];
+  const cents = opt ? Number(opt.getAttribute('data-precio-cents')) || 0 : 0;
+  const qty = Math.max(1, parseInt(qtyEl.value, 10) || 1);
+  totalEl.textContent = formatPesos((cents * qty) / 100);
+}
+
+function showManualAlert(messages) {
+  const box = document.getElementById('nuevoPedidoAlert');
+  if (!box) return;
+  box.replaceChildren();
+  const list = Array.isArray(messages) ? messages : [messages];
+  if (list.length === 0 || (list.length === 1 && !list[0])) {
+    box.classList.add('d-none');
+    return;
+  }
+  list.forEach((message) => {
+    const div = document.createElement('div');
+    div.textContent = String(message);
+    box.appendChild(div);
+  });
+  box.classList.remove('d-none');
+}
+
+function bindManualForm() {
+  const form = document.getElementById('formNuevoPedido');
+  if (!form || form.dataset.bound === '1') return;
+  form.dataset.bound = '1';
+
+  const select = document.getElementById('manualCreacionSelect');
+  const qtyEl = document.getElementById('manualCantidad');
+  if (select) select.addEventListener('change', updateManualTotal);
+  if (qtyEl) qtyEl.addEventListener('input', updateManualTotal);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nombreEl = document.getElementById('manualClienteNombre');
+    const contactoEl = document.getElementById('manualClienteContacto');
+    const fechaEl = document.getElementById('manualFechaEntrega');
+    const pagoEl = document.getElementById('manualEstadoPago');
+    const pedidoEl = document.getElementById('manualEstadoPedido');
+    const notasEl = document.getElementById('manualNotas');
+
+    const payload = {
+      creacion_id: Number(select ? select.value : 0),
+      cliente_nombre: nombreEl ? nombreEl.value.trim() : '',
+      cliente_contacto: contactoEl ? contactoEl.value.trim() : '',
+      cantidad: qtyEl ? Math.max(1, parseInt(qtyEl.value, 10) || 1) : 1,
+      fecha_entrega: fechaEl && fechaEl.value !== '' ? fechaEl.value : null,
+      estado_pedido: pedidoEl ? pedidoEl.value : 'Pendiente',
+      estado_pago: pagoEl ? pagoEl.value : 'Pendiente',
+      notas: notasEl && notasEl.value.trim() !== '' ? notasEl.value.trim() : null,
+    };
+
+    const errors = [];
+    if (!(payload.creacion_id > 0)) errors.push('Elige una pieza del catálogo.');
+    if ([...payload.cliente_nombre].length < 2 || [...payload.cliente_nombre].length > 100) {
+      errors.push('Cliente: entre 2 y 100 caracteres.');
+    }
+    if ([...payload.cliente_contacto].length > 50) errors.push('Contacto: máximo 50 caracteres.');
+    if (payload.fecha_entrega !== null && !/^\d{4}-\d{2}-\d{2}$/.test(payload.fecha_entrega)) {
+      errors.push('Fecha: formato YYYY-MM-DD.');
+    }
+    if (errors.length > 0) {
+      showManualAlert(errors);
+      return;
+    }
+    showManualAlert([]);
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      const { status, json } = await postJson(CREAR_URL, payload);
+      if (status === 401) {
+        clearSession();
+        return;
+      }
+      if (status === 201 && json && json.exito) {
+        hideModalById('modalNuevoPedido');
+        form.reset();
+        await fetchPage();
+        return;
+      }
+      if (status === 403) {
+        showManualAlert('No tienes permiso sobre esa pieza (solo su artesano autor o un admin).');
+        return;
+      }
+      const detail = json && json.error
+        ? ([json.error.mensaje].concat(json.error.detalles || []))
+        : [`No se pudo registrar (HTTP ${status}).`];
+      showManualAlert(detail);
+    } catch {
+      showManualAlert('No se pudo contactar al servidor. Revisa tu conexión.');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+}
 
 export function initOrders() {
-  if (!document.getElementById('ordersGrid') && !document.getElementById('formNuevoPedido') && !document.getElementById('modalNuevoPedido')) return;
+  grid = document.getElementById('ordersGrid');
+  template = document.getElementById('pedidoCardTemplate');
+  if (!grid || !template) return;
 
-  let currentCancelOrderId = null;
-  let nextOrderId = 3;
-
-  function getPaymentBadge(estadoPago) {
-    if (estadoPago === 'Liquidado') {
-      return '<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-check-all me-1"></i>Liquidado</span>';
-    } else if (estadoPago === 'Anticipo 50%') {
-      return '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-coin me-1"></i>Anticipo 50%</span>';
-    } else {
-      return '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill font-monospace" style="font-size: 0.72rem;"><i class="bi bi-clock-history me-1"></i>Pendiente</span>';
-    }
-  }
-
-  // 1. Modales de Cancelación con Salvaguarda de Restitución de Stock [QW-2]
-  const cancelModalIdSpan = document.getElementById('cancelModalOrderId') || document.getElementById('cancelOrderIdSpan');
-  const cancelStockUnitsSpan = document.getElementById('cancelStockRestitutionUnits') || document.getElementById('cancelStockUnitsSpan');
-  const cancelProductNameSpan = document.getElementById('cancelStockRestitutionProduct') || document.getElementById('cancelProductNameSpan');
-  const btnConfirmCancel = document.getElementById('btnConfirmarCancelacionPedido');
-
-  function bindCancelButtons() {
-    document.querySelectorAll('.btn-cancel-order, .btn-trigger-cancel-order').forEach(btn => {
-      btn.onclick = (e) => {
-        e.preventDefault();
-        currentCancelOrderId = btn.getAttribute('data-order-id') || '#1';
-        const qty = btn.getAttribute('data-qty') || '1';
-        const product = btn.getAttribute('data-product') || 'Dragón Ignis';
-
-        if (cancelModalIdSpan) cancelModalIdSpan.textContent = currentCancelOrderId;
-        if (cancelStockUnitsSpan) cancelStockUnitsSpan.textContent = `+${qty} unidad(es)`;
-        if (cancelProductNameSpan) cancelProductNameSpan.textContent = product;
-      };
-    });
-  }
-  bindCancelButtons();
-
-  if (btnConfirmCancel) {
-    btnConfirmCancel.addEventListener('click', () => {
-      if (currentCancelOrderId) {
-        updateOrderStatus(currentCancelOrderId, 'Cancelado');
-        const modalEl = document.getElementById('modalCancelarPedido');
-        if (modalEl && window.bootstrap) {
-          const modalInstance = bootstrap.Modal.getInstance(modalEl);
-          if (modalInstance) modalInstance.hide();
-        }
-      }
-    });
-  }
-
-  // 2. Modal de Inspección Técnica
-  function bindInspectButtons() {
-    const inspectButtons = document.querySelectorAll('.btn-inspect-order');
-    const inspectId = document.getElementById('inspectOrderId');
-    const inspectCliente = document.getElementById('inspectCliente');
-    const inspectContacto = document.getElementById('inspectContacto');
-    const inspectEstadoPago = document.getElementById('inspectEstadoPago');
-    const inspectProducto = document.getElementById('inspectProducto');
-    const inspectCantidad = document.getElementById('inspectCantidad');
-    const inspectTotal = document.getElementById('inspectTotal');
-    const inspectFecha = document.getElementById('inspectFecha');
-    const inspectNotas = document.getElementById('inspectNotas');
-
-    inspectButtons.forEach(btn => {
-      btn.onclick = () => {
-        if (inspectId) inspectId.textContent = btn.getAttribute('data-order-id') || '#1';
-        if (inspectCliente) inspectCliente.textContent = btn.getAttribute('data-cliente') || 'Mariana Gómez';
-        if (inspectContacto) {
-          const tel = btn.getAttribute('data-contacto') || '+52 55 4892 1039';
-          setIconText(inspectContacto, 'bi bi-whatsapp text-success me-1', tel);
-        }
-        if (inspectEstadoPago) {
-          const ep = btn.getAttribute('data-estado-pago') || 'Pendiente';
-          inspectEstadoPago.innerHTML = getPaymentBadge(ep);
-        }
-        if (inspectProducto) inspectProducto.textContent = btn.getAttribute('data-product') || 'Dragón Ignis';
-        if (inspectCantidad) inspectCantidad.textContent = `${btn.getAttribute('data-qty') || 1} u.`;
-        if (inspectTotal) inspectTotal.textContent = btn.getAttribute('data-total') || '$450.00 MXN';
-        if (inspectFecha) inspectFecha.textContent = btn.getAttribute('data-fecha') || '2026-09-24';
-        if (inspectNotas) inspectNotas.textContent = btn.getAttribute('data-notes') || 'Sin notas especiales.';
-      };
-    });
-  }
-  bindInspectButtons();
-
-  // 3. Configuración de Badges de Estado
-  function getBadgeConfig(status) {
-    switch (status) {
-      case 'Pendiente':
-        return {
-          className: 'badge badge-order-pendiente px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: '<i class="bi bi-hourglass-split me-1"></i>Pendiente'
-        };
-      case 'En Proceso':
-        return {
-          className: 'badge badge-order-proceso px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: '<i class="bi bi-gear-wide-connected me-1"></i>En Proceso'
-        };
-      case 'Entregado':
-        return {
-          className: 'badge badge-order-entregado px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: '<i class="bi bi-check2 text-success me-1"></i>Entregado'
-        };
-      case 'Cancelado':
-        return {
-          className: 'badge badge-order-cancelado px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: '<i class="bi bi-x-circle me-1"></i>Cancelado'
-        };
-      default:
-        return {
-          className: 'badge bg-secondary px-2.5 py-1.5 rounded-pill font-monospace order-status-badge',
-          html: escapeHtml(status)
-        };
-    }
-  }
-
-  function updateOrderStatus(orderId, targetStatus) {
-    const orderCards = document.querySelectorAll(`#ordersGrid .order-card-col[data-order-id="${orderId}"]`);
-    const config = getBadgeConfig(targetStatus);
-
-    orderCards.forEach(card => {
-      card.setAttribute('data-status', targetStatus);
-      const badge = card.querySelector('.order-status-badge');
-      if (badge) {
-        badge.className = config.className;
-        badge.innerHTML = config.html;
-      }
-    });
-
-    recalculateKPIs();
-    applyCurrentFilters();
-  }
-
-  function bindStatusChangeButtons() {
-    document.querySelectorAll('.btn-change-order-status').forEach(btn => {
-      btn.onclick = (e) => {
-        e.preventDefault();
-        const orderId = btn.getAttribute('data-order-id');
-        const targetStatus = btn.getAttribute('data-target-status');
-        if (orderId && targetStatus) {
-          updateOrderStatus(orderId, targetStatus);
-        }
-      };
-    });
-  }
-  bindStatusChangeButtons();
-
-  // 4. Filtros Textiles por Estado y Búsqueda Reactiva
-  let activeStatusFilter = 'all';
-  const filterTabs = document.querySelectorAll('.filter-order-btn');
   const searchInput = document.getElementById('searchOrdersInput');
+  const debouncedSearch = debounce(() => {
+    state.search = searchInput ? searchInput.value.trim() : '';
+    state.page = 1;
+    fetchPage();
+  }, 250);
+  if (searchInput) searchInput.addEventListener('input', debouncedSearch);
 
-  filterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      filterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      activeStatusFilter = tab.getAttribute('data-status') || 'all';
-      applyCurrentFilters();
+  document.querySelectorAll('.filter-order-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-order-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.status = btn.getAttribute('data-status') || 'all';
+      state.page = 1;
+      fetchPage();
     });
   });
 
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      applyCurrentFilters();
-    });
-  }
-
-  function applyCurrentFilters() {
-    const term = (searchInput ? searchInput.value.toLowerCase().trim() : '');
-    const orderCards = document.querySelectorAll('#ordersGrid .order-card-col');
-
-    let visibleCount = 0;
-    orderCards.forEach(card => {
-      const status = card.getAttribute('data-status') || '';
-      const searchText = (card.getAttribute('data-search') || '').toLowerCase();
-      const matchesStatus = (activeStatusFilter === 'all' || status === activeStatusFilter);
-      const matchesSearch = (!term || searchText.includes(term));
-
-      if (matchesStatus && matchesSearch) {
-        card.style.display = '';
-        visibleCount++;
-      } else {
-        card.style.display = 'none';
+  grid.addEventListener('click', async (e) => {
+    const statusBtn = e.target.closest('.btn-change-order-status');
+    if (statusBtn && !statusBtn.classList.contains('disabled')) {
+      const id = statusBtn.getAttribute('data-id');
+      const target = statusBtn.getAttribute('data-target-status');
+      if (!id || !target) return;
+      statusBtn.disabled = true;
+      try {
+        const { status, json } = await postJson(ESTADO_URL, { id: Number(id), estado_pedido: target });
+        if (status === 401) clearSession();
+        if ((status === 200 && json && json.exito) || status === 409) {
+          await fetchPage();
+        }
+      } finally {
+        statusBtn.disabled = false;
       }
-    });
-
-    const emptyGrid = document.getElementById('emptyOrdersGrid');
-    if (emptyGrid) {
-      emptyGrid.classList.toggle('d-none', visibleCount > 0);
+      return;
     }
-  }
 
-  // 5. Recalcular Métricas y KPIs de Pedidos
-  function recalculateKPIs() {
-    const orderCards = document.querySelectorAll('#ordersGrid .order-card-col');
-    let totalAll = 0;
-    let pendingCount = 0;
-    let processCount = 0;
-    let deliveredCount = 0;
-    let cancelledCount = 0;
-    let totalRevenue = 0;
+    const cancelBtn = e.target.closest('.btn-trigger-cancel-order');
+    if (cancelBtn) {
+      const id = cancelBtn.getAttribute('data-id') || '';
+      const qty = cancelBtn.getAttribute('data-qty') || '1';
+      const product = cancelBtn.getAttribute('data-product') || 'esta pieza';
+      const idSpan = document.getElementById('cancelModalOrderId');
+      const unitsSpan = document.getElementById('cancelStockRestitutionUnits');
+      const productSpan = document.getElementById('cancelStockRestitutionProduct');
+      if (idSpan) idSpan.textContent = `#${id}`;
+      if (unitsSpan) unitsSpan.textContent = `+${qty} unidad(es)`;
+      if (productSpan) productSpan.textContent = product;
+      const confirmBtn = document.getElementById('btnConfirmarCancelacionPedido');
+      if (confirmBtn) confirmBtn.setAttribute('data-id', id);
+    }
 
-    orderCards.forEach(card => {
-      totalAll++;
-      const status = card.getAttribute('data-status');
-      const price = parseFloat(card.getAttribute('data-price')) || 0;
+    const inspectBtn = e.target.closest('.btn-inspect-order');
+    if (inspectBtn) {
+      const item = itemCache.get(String(inspectBtn.getAttribute('data-id')));
+      if (item) openInspectModal(item);
+    }
+  });
 
-      if (status === 'Pendiente') {
-        pendingCount++;
-        totalRevenue += price;
-      } else if (status === 'En Proceso') {
-        processCount++;
-        totalRevenue += price;
-      } else if (status === 'Entregado') {
-        deliveredCount++;
-        totalRevenue += price;
-      } else if (status === 'Cancelado') {
-        cancelledCount++;
-      }
-    });
-
-    const kpiTotal = document.getElementById('kpiOrdersTotal');
-    const kpiPendientes = document.getElementById('kpiOrdersPendientes');
-    const kpiProceso = document.getElementById('kpiOrdersProceso');
-    const kpiIngresos = document.getElementById('kpiOrdersIngresos');
-
-    if (kpiTotal) kpiTotal.textContent = totalAll;
-    if (kpiPendientes) kpiPendientes.textContent = pendingCount;
-    if (kpiProceso) kpiProceso.textContent = processCount;
-    if (kpiIngresos) kpiIngresos.textContent = formatPesos(totalRevenue, false);
-
-    // Actualizar contadores en píldoras textiles de filtro
-    const cAll = document.getElementById('countFilterAll');
-    const cPendiente = document.getElementById('countFilterPendiente');
-    const cProceso = document.getElementById('countFilterProceso');
-    const cEntregado = document.getElementById('countFilterEntregado');
-    const cCancelado = document.getElementById('countFilterCancelado');
-
-    if (cAll) cAll.textContent = totalAll;
-    if (cPendiente) cPendiente.textContent = pendingCount;
-    if (cProceso) cProceso.textContent = processCount;
-    if (cEntregado) cEntregado.textContent = deliveredCount;
-    if (cCancelado) cCancelado.textContent = cancelledCount;
-  }
-
-  // 6. Modal Nuevo Encargo Manual
-  const formNuevoPedido = document.getElementById('formNuevoPedido');
-  const selectCreacion = document.getElementById('manualCreacionSelect') || document.getElementById('manualAmigurumiSelect');
-  const inputCantidad = document.getElementById('manualCantidad');
-  const displayTotal = document.getElementById('manualTotalDisplay');
-
-  function updateManualTotal() {
-    if (!selectCreacion || !inputCantidad || !displayTotal) return;
-    const selectedOption = selectCreacion.options[selectCreacion.selectedIndex];
-    const unitPrice = parseFloat(selectedOption?.getAttribute('data-price')) || 450;
-    const qty = parseInt(inputCantidad.value, 10) || 1;
-    const total = unitPrice * qty;
-    displayTotal.textContent = formatPesos(total);
-  }
-
-  if (selectCreacion) selectCreacion.addEventListener('change', updateManualTotal);
-  if (inputCantidad) inputCantidad.addEventListener('input', updateManualTotal);
-
-  if (formNuevoPedido) {
-    formNuevoPedido.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const selectedOption = selectCreacion.options[selectCreacion.selectedIndex];
-      const selectedVal = selectedOption.value;
-      const productName = selectedOption.getAttribute('data-name') || 'Dragón Ignis';
-      const unitPrice = parseFloat(selectedOption.getAttribute('data-price')) || 450;
-      const clienteNombre = document.getElementById('manualClienteNombre').value.trim();
-      const clienteContacto = document.getElementById('manualClienteContacto').value.trim();
-      const estadoPago = document.getElementById('manualEstadoPago')?.value || 'Pendiente';
-      const qty = parseInt(inputCantidad.value, 10) || 1;
-      const fechaEntrega = document.getElementById('manualFechaEntrega').value;
-      const notas = (document.getElementById('manualNotas')?.value || '').trim() || 'Encargo registrado manualmente por el artesano.';
-      const totalOrder = unitPrice * qty;
-      const formattedTotal = formatPesos(totalOrder);
-
-      const newIdString = `#${nextOrderId++}`;
-      const searchData = `${newIdString.replace('#', '')} ${escCliente} ${escContacto} ${escProduct}`.toLowerCase();
-      const waDigits = clienteContacto.replace(/[^0-9]/g, '');
-
-      // Escapado seguro (H-004): nunca interpolar datos de usuario/servidor sin escapeHtml()
-      const escNewId = escapeHtml(newIdString);
-      const escFecha = escapeHtml(fechaEntrega);
-      const escProduct = escapeHtml(productName);
-      const escCliente = escapeHtml(clienteNombre);
-      const escContacto = escapeHtml(clienteContacto);
-      const escWa = escapeHtml(waDigits);
-      const escTotal = escapeHtml(formattedTotal);
-      const escNotas = escapeHtml(notas);
-      const escEstado = escapeHtml(estadoPago);
-
-      // Determinar thumbnail SVG según la selección
-      let svgThumbHtml = '';
-      if (selectedVal === '1') {
-        svgThumbHtml = '<img src="assets/svg/piezas/dragon-ignis.svg" alt="Dragón Ignis">';
-      } else if (selectedVal === '2') {
-        svgThumbHtml = '<img src="assets/svg/piezas/mini-suculenta.svg" alt="Mini Suculenta">';
-      } else if (selectedVal === '3') {
-        svgThumbHtml = '<img src="assets/svg/piezas/ajolote-pastel.svg" alt="Ajolote Pastel">';
-      } else {
-        svgThumbHtml = '<img src="assets/svg/branding/isologo-medallon-garantia.svg" alt="Encargo Especial">';
-      }
-
-      // Inyectar Card en el Grid Responsivo #ordersGrid (Estilo Piezas / Creaciones)
-      const ordersGrid = document.getElementById('ordersGrid');
-      if (ordersGrid) {
-        const newCol = document.createElement('div');
-        newCol.className = 'col order-card-col';
-        newCol.id = `orderCol_${newIdString.replace('#', '')}`;
-        newCol.setAttribute('data-order-id', newIdString);
-        newCol.setAttribute('data-status', 'Pendiente');
-        newCol.setAttribute('data-price', totalOrder);
-        newCol.setAttribute('data-search', searchData);
-
-        newCol.innerHTML = `
-          <div class="card card-admin-pedido card-stitched h-100">
-            <!-- Encabezado Superior de la Card -->
-            <div class="card-order-header d-flex justify-content-between align-items-center">
-              <span class="order-id-badge">${escNewId}</span>
-              <span class="order-delivery-chip" title="Fecha pactada de entrega">
-                <i class="bi bi-calendar3 text-primary"></i>
-                <span class="font-monospace text-dark">${escFecha}</span>
-              </span>
-            </div>
-
-            <!-- Marco Fotográfico Acolchado Pespunteado (Centrado) -->
-            <div class="order-card-photo-frame">
-              ${svgThumbHtml}
-            </div>
-
-            <!-- Cuerpo de la Card -->
-            <div class="card-order-body">
-              <!-- Título y Metadata del Amigurumi -->
-              <div class="mb-3">
-                <h5 class="order-product-title text-truncate" title="${escProduct}">
-                  ${escProduct}
-                </h5>
-                <div class="d-flex flex-wrap align-items-center gap-2">
-                  <span class="badge badge-textile-tag" style="font-size: 0.7rem; padding: 0.18rem 0.5rem;">
-                    Encargo Artesanal
-                  </span>
-                  <span class="order-qty-tag">
-                    <i class="bi bi-box-seam me-1"></i>${qty} ${qty > 1 ? 'unidades' : 'unidad'}
-                  </span>
-                  <small class="text-muted font-monospace" style="font-size: 0.74rem;">
-                    <i class="bi bi-magic me-1"></i>Confección Artesanal
-                  </small>
-                </div>
-              </div>
-
-              <!-- Caja de Datos del Cliente con Acceso a WhatsApp -->
-              <div class="order-client-box">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <div class="order-client-label">Cliente / Destinatario</div>
-                    <div class="order-client-name">${escCliente}</div>
-                  </div>
-                  <a href="https://wa.me/${escWa}" target="_blank" class="btn-wa-pill" title="Contactar por WhatsApp">
-                    <i class="bi bi-whatsapp"></i>
-                    <span>WhatsApp</span>
-                  </a>
-                </div>
-                <div class="small text-muted font-monospace mt-1" style="font-size: 0.74rem;">
-                  <i class="bi bi-telephone me-1"></i>${escContacto}
-                </div>
-              </div>
-
-              <!-- Franja Financiera -->
-              <div class="order-financial-strip">
-                <div>
-                  <span class="text-muted small d-block" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;">Total Acordado</span>
-                  <span class="order-price-amount">${escTotal}</span>
-                </div>
-                <div>
-                  ${getPaymentBadge(estadoPago)}
-                </div>
-              </div>
-
-              <!-- Notas Especiales -->
-              <div class="order-notes-preview" title="${escNotas}">
-                <i class="bi bi-chat-quote me-1 text-warning"></i>"${escNotas}"
-              </div>
-            </div>
-
-            <!-- Footer: Estado y Acciones -->
-            <div class="card-order-footer">
-              <div>
-                <span class="badge badge-order-pendiente px-2.5 py-1.5 rounded-pill font-monospace order-status-badge">
-                  <i class="bi bi-hourglass-split me-1"></i>Pendiente
-                </span>
-              </div>
-
-              <div class="d-flex align-items-center gap-1">
-                <button type="button" class="btn btn-sm btn-craft-outline btn-inspect-order"
-                        data-bs-toggle="modal" data-bs-target="#modalInspeccionarPedido"
-                        data-order-id="${escNewId}"
-                        data-cliente="${escCliente}"
-                        data-contacto="${escContacto}"
-                        data-estado-pago="${escEstado}"
-                        data-product="${escProduct}"
-                        data-qty="${qty}"
-                        data-total="${escTotal}"
-                        data-fecha="${escFecha}"
-                        data-notes="${escNotas}"
-                        title="Ver ficha técnica y notas completas">
-                  <i class="bi bi-eye"></i>
-                </button>
-
-                <div class="btn-group btn-group-sm">
-                  <button class="btn btn-sm btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cambiar fase de confección">
-                    Estado
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: var(--craft-radius-sm);">
-                    <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="Pendiente">
-                        <i class="bi bi-hourglass-split text-warning me-2"></i>Mover a Pendiente
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="En Proceso">
-                        <i class="bi bi-gear-wide-connected text-primary me-2"></i>En Confección (Proceso)
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" class="dropdown-item py-2 btn-change-order-status" data-order-id="${escNewId}" data-target-status="Entregado">
-                        <i class="bi bi-check2 text-success me-2"></i>Marcar como Entregado
-                      </button>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                      <a class="dropdown-item py-2 text-danger btn-trigger-cancel-order" href="#"
-                         data-bs-toggle="modal" data-bs-target="#modalCancelarPedido"
-                         data-order-id="${escNewId}"
-                         data-qty="${qty}"
-                         data-product="${escProduct}">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar (Restaura Stock)
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        ordersGrid.insertBefore(newCol, ordersGrid.firstChild);
-      }
-
-      // Re-bind listeners para los nuevos elementos insertados
-      bindCancelButtons();
-      bindInspectButtons();
-      bindStatusChangeButtons();
-      recalculateKPIs();
-      applyCurrentFilters();
-
-      formNuevoPedido.reset();
-      updateManualTotal();
-
-      const modalEl = document.getElementById('modalNuevoPedido');
-      if (modalEl && window.bootstrap) {
-        const modalInstance = bootstrap.Modal.getInstance(modalEl);
-        if (modalInstance) modalInstance.hide();
-      }
-    });
-  }
-
-  // Inicializar cálculo inicial
-  recalculateKPIs();
+  bindCancelConfirm();
+  bindManualForm();
+  loadCreacionOptions();
+  fetchPage();
 }

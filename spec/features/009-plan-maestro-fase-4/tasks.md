@@ -30,7 +30,7 @@
 
 - [x] `005` · Catálogo Dinámico & Filtros Textiles (4.2) — spec/plan/tasks creados y aprobados.
 - [x] `006` · Gestión de Creaciones & Subida Multipart (4.3) — spec/plan/tasks creados y aprobados.
-- [ ] `007` · Checkout Público, Pedidos Atómicos & WhatsApp (4.4) — spec/plan/tasks creados y aprobados.
+- [x] `007` · Checkout Público, Pedidos Atómicos & WhatsApp (4.4) — spec/plan/tasks creados y aprobados.
 - [ ] `008` · Directorio de Creadores & Roles RBAC (4.5) — spec/plan/tasks creados y aprobados.
 - [x] Actualizar `roadmap.md` al estado "planificado" de 005–008.
 
@@ -62,9 +62,11 @@
       `*_centavos` en crear/actualizar/JS; dato #316 ($350/$100); dropzone + hero sin handlers
       inline (CSP); suite `tests/test-subfase-4.3.3.php` → **22/22**; reporte
       `docs/testing/subfase-4.3.3-centavos-upload.md`; acumulado (**533/533**).
-- [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
-      `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
-      `docs/testing/subfase-4.4-pedidos.md` · **HALT**.
+- [x] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
+      **137/137** (`logs/subfase-4.4-cli.log`); HTTP → `logs/subfase-4.4-http.log` (201 público +
+      precio congelado + WhatsApp, 422/404/409, panel Bearer con scoping, manual/estados/
+      cancelar+restituir, sin divergencia); reporte `docs/testing/subfase-4.4-pedidos.md` con
+      **validación AC 10/10** · **HALT** (aprobación pendiente para 4.5).
 - [ ] **4.5** Directorio de Creadores & RBAC (`008`): suite `tests/test-subfase-4.5.php` →
       `logs/subfase-4.5-cli.log`; HTTP → `logs/subfase-4.5-http.log`; reporte
       `docs/testing/subfase-4.5-usuarios.md` · **HALT**.
@@ -76,7 +78,8 @@
       **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
       **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
       **511/511** — 58 + 136 + 212 + 62 + 43, EXIT 0; tras 4.3.3: **533/533**
-      — 58 + 136 + 212 + 62 + 43 + 22, EXIT 0).
+      — 58 + 136 + 212 + 62 + 43 + 22, EXIT 0; tras 4.4: **670/670**
+      — 58 + 136 + 212 + 62 + 43 + 22 + 137, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

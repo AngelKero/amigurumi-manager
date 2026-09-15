@@ -211,19 +211,6 @@
             </button>
           </div>
 
-          <!-- Selector Rápido de Estado para Inspección / Auditoría en Vivo -->
-          <div class="text-center mt-3 pt-3 border-top">
-            <span class="text-muted small d-block mb-1 font-monospace" style="font-size: 0.72rem;">Prueba de Auditoría UI/UX (Inventario en Vivo):</span>
-            <div class="toolbar-stock-simulator" role="group" aria-label="Simulador de Stock">
-              <button type="button" class="btn-sim-chip btn-sim-in" id="btnSimulateStockIn">
-                <i class="bi bi-check-circle-fill me-1"></i>En Stock (4 u.)
-              </button>
-              <button type="button" class="btn-sim-chip btn-sim-out" id="btnSimulateStockOut">
-                <i class="bi bi-slash-circle me-1"></i>Agotado (0 u.)
-              </button>
-            </div>
-          </div>
-
           <!-- Enlace Secundario Volver al Catálogo -->
           <div class="text-center mt-3">
             <a href="index.php" class="text-muted small text-decoration-none d-inline-flex align-items-center gap-1 hover-primary">

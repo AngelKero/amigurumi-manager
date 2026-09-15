@@ -95,6 +95,27 @@ class PedidoService {
     }
 
     /**
+     * Agrega el tablero del panel en una sola consulta exacta (conteos por estado
+     * e ingresos vigentes), con el mismo aislamiento por rol que listOrders().
+     *
+     * @param array $query Parámetros (artesano_id solo para admin/asistente)
+     * @param array $currentUser Usuario autenticado en sesión
+     * @return array{total: int, pendientes: int, proceso: int, entregados: int, cancelados: int, ingresos_centavos: int}
+     */
+    public function getOrdersSummary(array $query, array $currentUser): array {
+        $userRole = (string)($currentUser['rol'] ?? 'artesano');
+        $artesanoId = null;
+
+        if ($userRole === 'artesano') {
+            $artesanoId = (int)$currentUser['id'];
+        } elseif (!empty($query['artesano_id'])) {
+            $artesanoId = (int)$query['artesano_id'];
+        }
+
+        return $this->pedidoRepo->getOrdersSummary($artesanoId);
+    }
+
+    /**
      * Obtiene el detalle de un pedido validando autorización de autoría (IDOR).
      * 
      * @param int $id Identificador del pedido
@@ -177,6 +198,7 @@ class PedidoService {
             'estado_pedido'           => 'Pendiente',
             'estado_pago'             => 'Pendiente',
             'es_sobre_encargo'        => $isCustomOrder ? 1 : 0,
+            'enlace_whatsapp'         => $this->buildWhatsAppLink($clienteContacto, $clienteNombre, $pedidoId, (string)$creacion['nombre']),
             'mensaje'                 => $isCustomOrder 
                 ? 'Encargo registrado exitosamente. El artesano se pondrá en contacto contigo para coordinar detalles y tiempos de confección.'
                 : 'Pedido registrado exitosamente. El artesano se pondrá en contacto contigo para acordar la entrega.',

@@ -19,16 +19,16 @@ El backend de pedidos está completo en Fase 3 (5 controladores delgados, transa
 
 ## Criterios de aceptación
 
-- [ ] Comprar/Encargar abre el modal con nombre, precio formateado, stock y `creacion_id` reales de la pieza (cero hardcode $450/4, cero `alert()`).
-- [ ] El submit envía `POST /api/pedidos/solicitar.php` (`creacion_id`, `cantidad`, `cliente_nombre`, `cliente_contacto`, `notas`); ante `201` muestra precio final congelado + enlace WhatsApp con `?text=`; ante `422/404/409`, error accesible (`role="alert"`) sin recargar.
-- [ ] La cantidad se acota al stock físico (1000 si bajo encargo) y el total se calcula en vivo en pesos (`currency.js`, R-06).
-- [ ] Tras un `201`, el stock de la pieza disminuye exactamente en la cantidad pedida; sin stock y sin encargo responde `409` (R-07).
-- [ ] El panel lista desde `GET /api/pedidos/index.php` con Bearer: artesano ve solo sus pedidos, admin todos; KPIs/contadores reales, paginación y vacío con reset total.
-- [ ] Crear pedido manual (artesano/admin) → `201`; sobre pieza ajena como artesano → `403` (R-04).
-- [ ] Cambiar estado de pedido/pago → `200`; cancelar → `200` con restitución exacta y segundo intento → `409` idempotente (R-07).
-- [ ] Todos los enlaces WhatsApp del panel y la confirmación usan el formato servidor (E.164 con `52`, `?text=` codificado); cero `wa.me` crudos o sin mensaje.
-- [ ] Cero datos del servidor en `innerHTML` (H-004); suite `tests/test-subfase-4.4.php` en verde, trazas en `logs/subfase-4.4-http.log` y reporte `docs/testing/subfase-4.4-pedidos.md` (H-008/H-015).
-- [ ] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); Fase 3 y `1.287` intactas si se tocó backend compartido (H-006).
+- [x] Comprar/Encargar abre el modal con nombre, precio formateado, stock y `creacion_id` reales de la pieza (cero hardcode $450/4, cero `alert()`).
+- [x] El submit envía `POST /api/pedidos/solicitar.php` (`creacion_id`, `cantidad`, `cliente_nombre`, `cliente_contacto`, `notas`); ante `201` muestra precio final congelado + enlace WhatsApp con `?text=`; ante `422/404/409`, error accesible (`role="alert"`) sin recargar.
+- [x] La cantidad se acota al stock físico (1000 si bajo encargo) y el total se calcula en vivo en pesos (`currency.js`, R-06).
+- [x] Tras un `201`, el stock de la pieza disminuye exactamente en la cantidad pedida; sin stock y sin encargo responde `409` (R-07).
+- [x] El panel lista desde `GET /api/pedidos/index.php` con Bearer: artesano ve solo sus pedidos, admin todos; KPIs/contadores reales, paginación y vacío con reset total.
+- [x] Crear pedido manual (artesano/admin) → `201`; sobre pieza ajena como artesano → `403` (R-04).
+- [x] Cambiar estado de pedido/pago → `200`; cancelar → `200` con restitución exacta y segundo intento → `409` idempotente (R-07).
+- [x] Todos los enlaces WhatsApp del panel y la confirmación usan el formato servidor (E.164 con `52`, `?text=` codificado); cero `wa.me` crudos o sin mensaje.
+- [x] Cero datos del servidor en `innerHTML` (H-004); suite `tests/test-subfase-4.4.php` en verde, trazas en `logs/subfase-4.4-http.log` y reporte `docs/testing/subfase-4.4-pedidos.md` (H-008/H-015).
+- [x] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); Fase 3 y `1.287` intactas si se tocó backend compartido (H-006).
 
 ## Fuera de alcance
 

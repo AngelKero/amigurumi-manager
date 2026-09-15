@@ -203,7 +203,13 @@ function renderCard(item) {
 
   part('price').textContent = String(item.precio_formateado || `$${Number(item.precio_centavos || 0) / 100}`);
 
-  configureAction(part('actionButton'), part('actionLabel'), onDemand, stock);
+  const actionBtn = part('actionButton');
+  actionBtn.setAttribute('data-id', String(item.id));
+  actionBtn.setAttribute('data-nombre', String(item.nombre || ''));
+  actionBtn.setAttribute('data-precio-cents', String(item.precio_centavos || 0));
+  actionBtn.setAttribute('data-stock', String(stock));
+  actionBtn.setAttribute('data-on-demand', onDemand ? '1' : '0');
+  configureAction(actionBtn, part('actionLabel'), onDemand, stock);
 
   const artisan = (item.artesano && item.artesano.username) || item.artesano_username || '';
   part('artisanMeta').textContent = `ID: #${String(item.id)} • @${artisan}`;

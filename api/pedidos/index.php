@@ -28,6 +28,18 @@ $currentUser = RoleGuard::artisanOrAdmin();
 // 4. Ejecución de la consulta con aislamiento de artesano
 try {
     $pedidoService = new PedidoService();
+
+    // 4a. Agregado exacto para KPIs y conteos del panel (sin paginación)
+    if (Request::input('resumen', '') === '1') {
+        $summary = $pedidoService->getOrdersSummary(Request::query(), $currentUser);
+
+        Response::json([
+            'exito'   => true,
+            'mensaje' => 'Resumen de pedidos recuperado exitosamente.',
+            'datos'   => $summary,
+        ], 200);
+    }
+
     $result = $pedidoService->listOrders(Request::query(), $currentUser);
 
     Response::json([

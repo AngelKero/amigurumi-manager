@@ -71,6 +71,63 @@ class PedidoRepository {
     }
 
     /**
+     * Agrega el tablero en una sola consulta exacta (conteos por estado e
+     * ingresos de pedidos vigentes, en centavos enteros — sin tope de paginación).
+     *
+     * @param int|null $artesanoId Si se provee, restringe a piezas de dicho artesano
+     * @return array{total: int, pendientes: int, proceso: int, entregados: int, cancelados: int, ingresos_centavos: int}
+     */
+    public function getOrdersSummary(?int $artesanoId = null): array {
+        $params = [];
+        $where = ['p.activo = 1'];
+        if ($artesanoId !== null) {
+            $where[] = 'c.artesano_id = :artesano_id';
+            $params[':artesano_id'] = $artesanoId;
+        }
+
+        $sql = '
+            SELECT p.estado_pedido AS estado,
+                   COUNT(*) AS n,
+                   COALESCE(SUM(p.precio_final), 0) AS suma
+            FROM pedidos p
+            INNER JOIN creaciones c ON c.id = p.creacion_id
+            WHERE ' . implode(' AND ', $where) . '
+            GROUP BY p.estado_pedido
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        $summary = ['total' => 0, 'pendientes' => 0, 'proceso' => 0, 'entregados' => 0, 'cancelados' => 0, 'ingresos_centavos' => 0];
+        foreach ($stmt->fetchAll() as $row) {
+            $n = (int)$row['n'];
+            $summary['total'] += $n;
+            switch ((string)$row['estado']) {
+                case 'Pendiente':
+                    $summary['pendientes'] += $n;
+                    $summary['ingresos_centavos'] += (int)$row['suma'];
+                    break;
+                case 'En Proceso':
+                    $summary['proceso'] += $n;
+                    $summary['ingresos_centavos'] += (int)$row['suma'];
+                    break;
+                case 'Entregado':
+                    $summary['entregados'] += $n;
+                    $summary['ingresos_centavos'] += (int)$row['suma'];
+                    break;
+                case 'Cancelado':
+                    $summary['cancelados'] += $n;
+                    break;
+            }
+        }
+
+        return $summary;
+    }
+
+    /**
      * Lista pedidos con filtrado multicriterio, paginación y aislamiento multi-artesano.
      * 
      * @param array $filters Filtros opcionales (estado_pedido, estado_pago, creacion_id, busqueda, activo, orden)

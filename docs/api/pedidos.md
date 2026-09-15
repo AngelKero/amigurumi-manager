@@ -22,6 +22,7 @@ Recupera los pedidos con soporte para filtrado por estado de entrega, estado de 
 | `estado_pago` | `string` | Sí | `Pendiente`, `Anticipo 50%`, `Liquidado`. |
 | `pagina` | `int` | Sí | Número de página (defecto: `1`). |
 | `limite` | `int` | Sí | Elementos por página (defecto: `20`). |
+| `resumen` | `string` | Sí | `1` → en lugar de la lista, agregado exacto `{total, pendientes, proceso, entregados, cancelados, ingresos_centavos}` del ámbito visible (mismo aislamiento por rol, sin paginación). |
 
 ### Ejemplo de Petición
 ```bash
@@ -97,7 +98,8 @@ Endpoint público invocado desde el modal de checkout por los clientes de la web
     "creacion_nombre": "Dragón Ignis",
     "cantidad": 1,
     "precio_final_formateado": "$450.00 MXN",
-    "estado_pedido": "Pendiente"
+    "estado_pedido": "Pendiente",
+    "enlace_whatsapp": "https://wa.me/525512345678?text=..."
   }
 }
 ```

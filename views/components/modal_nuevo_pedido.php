@@ -26,16 +26,11 @@
 
           <div id="nuevoPedidoAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
 
-          <!-- Selección de Creación -->
+          <!-- Selección de Creación (piezas propias vía mias.php) -->
           <div class="mb-3">
             <label for="manualCreacionSelect" class="form-label fw-bold small">Pieza del Catálogo (*)</label>
             <select class="form-select select-craft-pill" id="manualCreacionSelect" required>
-              <option value="1" data-price="450" data-name="Dragón Ignis" selected>Dragón Ignis — $450.00 MXN (Amigurumi, Stock: 4)</option>
-              <option value="2" data-price="180" data-name="Mini Suculenta en Maceta">Mini Suculenta en Maceta — $180.00 MXN (Hogar, Stock: 12)</option>
-              <option value="3" data-price="320" data-name="Ajolote Rosado Pastel">Ajolote Rosado Pastel — $320.00 MXN (Bajo encargo)</option>
-              <option value="4" data-price="980" data-name="Cardigan Granny Squares">Cardigan Granny Squares — $980.00 MXN (Prenda, Stock: 2)</option>
-              <option value="5" data-price="380" data-name="Tote Bag Boho Trapillo">Tote Bag Boho Trapillo — $380.00 MXN (Bolso, Stock: 6)</option>
-              <option value="custom" data-price="500" data-name="Diseño Personalizado a Medida">✨ Encargo Especial / Personalizado — $500.00 MXN</option>
+              <option value="">Cargando piezas…</option>
             </select>
           </div>
 
@@ -66,14 +61,24 @@
             </div>
           </div>
 
-          <!-- Estado Financiero / Cobro del Encargo -->
-          <div class="mb-3">
-            <label for="manualEstadoPago" class="form-label fw-bold small">Estado de Cobro / Anticipo (*)</label>
-            <select class="form-select select-craft-pill" id="manualEstadoPago" required>
-              <option value="Pendiente">Pendiente (Sin cobro previo)</option>
-              <option value="Anticipo 50%" selected>Anticipo 50% (Anticipo para compra de hilazas recibido)</option>
-              <option value="Liquidado">Liquidado (100% pagado por el cliente)</option>
-            </select>
+          <!-- Estado del Pedido y Cobro -->
+          <div class="row g-2 mb-3">
+            <div class="col-12 col-md-6">
+              <label for="manualEstadoPedido" class="form-label fw-bold small">Estado del Pedido (*)</label>
+              <select class="form-select select-craft-pill" id="manualEstadoPedido" required>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="En Proceso">En Proceso</option>
+                <option value="Entregado">Entregado</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="manualEstadoPago" class="form-label fw-bold small">Estado de Cobro / Anticipo (*)</label>
+              <select class="form-select select-craft-pill" id="manualEstadoPago" required>
+                <option value="Pendiente">Pendiente (Sin cobro previo)</option>
+                <option value="Anticipo 50%" selected>Anticipo 50% (Anticipo para compra de hilazas recibido)</option>
+                <option value="Liquidado">Liquidado (100% pagado por el cliente)</option>
+              </select>
+            </div>
           </div>
 
           <!-- Notas y Especificaciones del Encargo -->
@@ -82,11 +87,11 @@
             <textarea class="form-control" id="manualNotas" rows="2" placeholder="Ej. Hilo color esmeralda, bordar iniciales 'VM', empaque para regalo..." maxlength="1000" style="border-radius: var(--craft-radius-sm);"></textarea>
           </div>
 
-          <!-- Resumen Financiero -->
+          <!-- Resumen Financiero (estimado: el servidor congela el total) -->
           <div class="p-3 border rounded bg-light" style="border-radius: var(--craft-radius-sm);">
             <div class="d-flex justify-content-between align-items-center">
-              <span class="text-muted fw-bold small">Monto Total del Encargo:</span>
-              <span class="fs-4 fw-bold text-dark font-monospace" id="manualTotalDisplay">$450.00 MXN</span>
+              <span class="text-muted fw-bold small">Monto Total Estimado:</span>
+              <span class="fs-4 fw-bold text-dark font-monospace" id="manualTotalDisplay">—</span>
             </div>
             <div class="small text-muted mt-1">
               <i class="bi bi-info-circle text-primary me-1"></i>Se registrará con estado inicial <strong>Pendiente</strong> en la base de datos.
