@@ -410,6 +410,16 @@ function resetFilters(searchInput, filterCategory, filterStock, filterSort, filt
 export function initCatalog() {
   grid = document.getElementById('productCardGrid');
   template = document.getElementById('catalogCardTemplate');
+
+  const heroImg = document.getElementById('heroCraftedImg');
+  if (heroImg) {
+    heroImg.addEventListener('error', () => {
+      heroImg.style.display = 'none';
+      const fallback = document.getElementById('heroFallback');
+      if (fallback) fallback.classList.remove('d-none');
+    });
+  }
+
   if (!grid || !template) return;
 
   const searchInput = document.getElementById('filterSearch');

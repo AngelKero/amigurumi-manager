@@ -58,6 +58,10 @@
       `mias.php?resumen=1`; badge `N piezas` + rango `A–B de N` + KPIs globales exactos; suite
       `tests/test-subfase-4.3.2.php` → **43/43**; HTTP → `logs/subfase-4.3.2-http.log`; reporte
       `docs/testing/subfase-4.3.2-contadores.md`; acumulado (**511/511**).
+- [x] **4.3.3** Centavos multipart & subida clicable (`006` correctivo): `resolveCents()` dual +
+      `*_centavos` en crear/actualizar/JS; dato #316 ($350/$100); dropzone + hero sin handlers
+      inline (CSP); suite `tests/test-subfase-4.3.3.php` → **22/22**; reporte
+      `docs/testing/subfase-4.3.3-centavos-upload.md`; acumulado (**533/533**).
 - [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
       `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
       `docs/testing/subfase-4.4-pedidos.md` · **HALT**.
@@ -70,8 +74,9 @@
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
       (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0; tras 4.3:
       **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
-      **503/503** — 58 + 136 + 212 + 62 + 35, EXIT 0; tras insignia lateral (4.3.2 §5):
-      **511/511** — 58 + 136 + 212 + 62 + 43, EXIT 0).
+      **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2:
+      **511/511** — 58 + 136 + 212 + 62 + 43, EXIT 0; tras 4.3.3: **533/533**
+      — 58 + 136 + 212 + 62 + 43 + 22, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

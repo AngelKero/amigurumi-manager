@@ -1005,8 +1005,8 @@ export function initFormularioCreacion() {
       fd.append('categoria', v.categoria);
       fd.append('material', v.material);
       fd.append('dimensiones', v.dimensiones);
-      fd.append('precio', String(precioCents));
-      fd.append('costo_materiales', String(costoCents));
+      fd.append('precio_centavos', String(precioCents));
+      fd.append('costo_materiales_centavos', String(costoCents));
       fd.append('cantidad_stock', String(Number(v.stock)));
       fd.append('horas_tejido', v.horas === '' ? '0' : String(Number(v.horas)));
       fd.append('descripcion', v.descripcion);

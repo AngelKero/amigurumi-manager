@@ -60,4 +60,12 @@
 - [x] Suite `tests/test-subfase-4.3.2.php` → `logs/subfase-4.3.2-{cli,http}.log` (**35/35**); reporte `docs/testing/subfase-4.3.2-contadores.md`.
 - [x] Regresiones: 4.3 (212/212), 4.3.1 (62/62), 3.6.5 (141/141), acumulado (**503/503**).
 - [x] README testing (fila 4.3.2 + total 503), spec AC-15/16, `009/tasks.md`, `roadmap.md`.
+
+## 9. Correctivo 4.3.3 — Centavos multipart & subida clicable (ejecutado)
+
+- [x] `resolveCents()` dual + `*_centavos` en crear/actualizar (≤60) + submit del panel + dato #316 ($350/$100).
+- [x] Dropzone sin `onclick` (clic + teclado por listener, `role/tabindex`) + hero sin `onerror` (listener en `catalog.js`).
+- [x] Suite `tests/test-subfase-4.3.3.php` → `logs/subfase-4.3.3-{cli,http}.log` (**22/22**); reporte `docs/testing/subfase-4.3.3-centavos-upload.md`.
+- [x] Regresiones: 4.3 (212/212), 4.3.1 (62/62), 4.3.2 (43/43), 3.6.5 (141/141), acumulado (**533/533**).
+- [x] README testing (fila 4.3.3 + total 533), spec AC-17/18, `009/tasks.md`, `roadmap.md`.
 - [ ] **HALT:** aprobación explícita del usuario antes de la siguiente feature (007 / 4.4).

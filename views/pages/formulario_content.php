@@ -222,7 +222,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
         <div class="mb-4">
           <label class="form-label fw-bold small d-block">Fotografía de la Creación (Formatos: JPG, PNG, WEBP &bull; Máx 5MB)</label>
           
-          <div class="upload-dropzone" id="uploadDropzone" onclick="document.getElementById('inputImagen').click()">
+          <div class="upload-dropzone" id="uploadDropzone" role="button" tabindex="0" aria-label="Seleccionar fotografía de la creación">
             <?= svg('decorations/nube-ovillo', ['width' => 64, 'height' => 48, 'class' => 'mx-auto mb-2 d-block']) ?>
             <strong class="d-block text-dark">
               <?= $isEditing ? 'Haz clic para reemplazar la fotografía existente' : 'Haz clic para buscar o arrastra una imagen aquí' ?>

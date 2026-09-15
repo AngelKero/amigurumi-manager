@@ -31,23 +31,23 @@ if ($id <= 0) {
     Response::error('El identificador "id" de la creación es obligatorio para actualizar.', 422);
 }
 
-// 5. Extracción de datos del cuerpo (JSON o multipart)
+// 5. Extracción de datos del cuerpo (JSON o multipart; *_centavos autoritativos, R-06)
 $data = [
     'nombre'           => Request::input('nombre', ''),
     'categoria'        => Request::input('categoria', ''),
     'material'         => Request::input('material', ''),
     'dimensiones'      => Request::input('dimensiones', ''),
     'precio'           => Request::input('precio', null),
+    'precio_centavos'  => Request::input('precio_centavos', null),
     'costo_materiales' => Request::input('costo_materiales', 0),
+    'costo_materiales_centavos' => Request::input('costo_materiales_centavos', null),
     'cantidad_stock'   => Request::input('cantidad_stock', 0),
     'horas_tejido'     => Request::input('horas_tejido', 0.0),
     'descripcion'      => Request::input('descripcion', null),
     'es_sobre_encargo' => Request::input('es_sobre_encargo', 0),
 ];
-
 $fileData = Request::file('imagen');
-
-// 6. Delegación a la capa de servicio con salvaguarda IDOR
+// 6. Delegación a servicio con salvaguarda IDOR
 try {
     $creacionService = new CreacionService();
     $updatedCreation = $creacionService->updateCreation($id, $data, $fileData, $currentUser);

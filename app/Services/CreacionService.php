@@ -610,6 +610,29 @@ class CreacionService {
      * @return array Datos normalizados y validados
      * @throws InvalidArgumentException Si alguna regla falla
      */
+    /**
+     * Resuelve un monto a centavos enteros con doble contrato explícito (R-06):
+     * - Clave `*_centavos` (int o string de dígitos desde FormData): autoritativa,
+     *   se usa tal cual. Es el contrato del panel (el JS ya convirtió con pesosToCents).
+     * - Clave legada (`precio`, `costo_materiales`): conducta histórica intacta
+     *   (int = centavos, resto = pesos → `mxnToCents()`).
+     *
+     * @throws InvalidArgumentException Si el valor es inválido (HTTP 422)
+     */
+    private static function resolveCents(mixed $cents, mixed $pesos, string $campo): int {
+        if ($cents !== null && $cents !== '') {
+            $digits = is_int($cents) ? (string)$cents : trim((string)$cents);
+            if (!preg_match('/^\d+$/', $digits)) {
+                throw new InvalidArgumentException("El campo \"{$campo}\" debe ser un entero en centavos.", 422);
+            }
+            return (int)$digits;
+        }
+        if ($pesos === null || $pesos === '') {
+            throw new InvalidArgumentException("El campo \"{$campo}\" es obligatorio.", 422);
+        }
+        return is_int($pesos) ? $pesos : CurrencyHelper::mxnToCents($pesos);
+    }
+
     private function validateCreationData(array $data): array {
         $nombre = trim((string)($data['nombre'] ?? ''));
         if (mb_strlen($nombre) < 2 || mb_strlen($nombre) > 100) {
@@ -631,22 +654,18 @@ class CreacionService {
             throw new InvalidArgumentException('Las dimensiones deben tener entre 2 y 100 caracteres.', 422);
         }
 
-        // Precio: puede llegar en centavos (int) o formato monetario/decimal (ej. "450.00" o 45000)
-        $rawPrecio = $data['precio'] ?? null;
-        if ($rawPrecio === null || $rawPrecio === '') {
-            throw new InvalidArgumentException('El precio de venta es obligatorio.', 422);
-        }
-
-        $precio = is_int($rawPrecio) ? $rawPrecio : CurrencyHelper::mxnToCents($rawPrecio);
+        // Precio y costo: `precio_centavos`/`costo_materiales_centavos` (contrato del
+        // panel, autoritativos) o claves legadas en pesos (se convierten). Así FormData
+        // nunca sufre doble conversión ×100 (pieza #316) y el contrato JSON no cambia.
+        $precio = self::resolveCents($data['precio_centavos'] ?? null, $data['precio'] ?? null, 'precio');
         if ($precio < 1 || $precio > 9999999) {
             throw new InvalidArgumentException('El precio de venta debe ser positivo y no exceder $99,999.99 MXN.', 422);
         }
 
         // Costo de materiales
         $costo = 0;
-        if (isset($data['costo_materiales']) && $data['costo_materiales'] !== '') {
-            $rawCosto = $data['costo_materiales'];
-            $costo = is_int($rawCosto) ? $rawCosto : CurrencyHelper::mxnToCents($rawCosto);
+        if ((isset($data['costo_materiales_centavos']) && $data['costo_materiales_centavos'] !== '') || (isset($data['costo_materiales']) && $data['costo_materiales'] !== '')) {
+            $costo = self::resolveCents($data['costo_materiales_centavos'] ?? null, $data['costo_materiales'] ?? null, 'costo_materiales');
         }
         if ($costo < 0 || $costo > 9999999) {
             throw new InvalidArgumentException('El costo de materiales no puede ser negativo ni exceder $99,999.99 MXN.', 422);

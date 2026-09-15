@@ -92,6 +92,15 @@ export function initDropzone() {
   }
 
   if (dropzone) {
+    dropzone.addEventListener('click', () => {
+      inputFile.click();
+    });
+    dropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        inputFile.click();
+      }
+    });
     ['dragenter', 'dragover'].forEach(eventName => {
       dropzone.addEventListener(eventName, (e) => {
         e.preventDefault();

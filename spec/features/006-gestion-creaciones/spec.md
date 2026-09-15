@@ -1,6 +1,6 @@
 # 006 · Gestión de Creaciones & Subida Multipart (Subfase 4.3)
 
-**Estado:** implementada y validada (AC 16/16 · suites 212/212 + 62/62 + 35/35 · gate 3-tier verde)
+**Estado:** implementada y validada (AC 18/18 · suites 212/212 + 62/62 + 43/43 + 22/22 · gate 3-tier verde)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**
 > Cubre la **subfase 4.3** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a
@@ -68,6 +68,8 @@ multipart → servicio → repositorio → render del sistema Algodón Nórdico.
 - [x] La papelera es usable: `estado=inactivas` lista solo `activo=0` propios, `estado=todas` ambas, y el botón Restaurar aparece solo en inactivas (4.3.1).
 - [x] El badge del panel muestra el total filtrado (`N piezas`) y la paginación el rango real (`Mostrando A–B de N`, 0 si vacío) (4.3.2).
 - [x] Los KPIs son globales del ámbito visible (scoping + `estado`, sin filtros de búsqueda) y exactos vía agregado servidor `mias.php?resumen=1` (centavos enteros, sin tope) (4.3.2).
+- [x] El panel envía `precio_centavos`/`costo_materiales_centavos` autoritativos (sin doble conversión ×100); el contrato legado (`precio`/`costo_materiales`) conserva su conducta (4.3.3, pieza #316 corregida a $350/$100).
+- [x] Cero handlers inline bloqueados por la CSP en formulario (dropzone clicable por `addEventListener` + teclado) y catálogo (fallback del hero por listener) (4.3.3).
 
 ## Fuera de alcance
 
