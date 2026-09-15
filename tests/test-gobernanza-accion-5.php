@@ -25,7 +25,6 @@ $root = dirname(__DIR__);
 $techStack   = (string)@file_get_contents($root . '/spec/constitution/tech-stack.md');
 $agents      = (string)@file_get_contents($root . '/AGENTS.md');
 $readmeTest  = (string)@file_get_contents($root . '/docs/testing/README.md');
-$rulesGen    = (string)@file_get_contents($root . '/.agents/rules/general.md');
 $roadmap     = (string)@file_get_contents($root . '/spec/constitution/roadmap.md');
 $phase3Plan  = (string)@file_get_contents($root . '/docs/architecture/phase-3-plan.md');
 $feat003spec = (string)@file_get_contents($root . '/spec/features/003-backend-clean-architecture/spec.md');
@@ -45,7 +44,6 @@ TestHelper::assert(file_exists($root . '/tests/cuenta-aserciones.php'), 'Existe 
 $canonicals = [
     'tech-stack.md'      => $techStack,
     'testing/README.md'  => $readmeTest,
-    'rules/general.md'   => $rulesGen,
     'phase-3-plan.md'    => $phase3Plan,
     'feature-003/spec.md'=> $feat003spec,
     'context7-fase-3.md' => $ctx7fase3,
@@ -62,7 +60,7 @@ TestHelper::assertStringContains('cuenta-aserciones.php', $readmeTest, 'docs/tes
 TestHelper::assert(!str_contains($techStack, '1,146'), 'tech-stack.md elimina la cifra imposible 1,146');
 
 TestHelper::assertStringContains('141 / 141 (100%)', $readmeTest, 'Tabla de Testing refleja 3.6.2 = 141 (baseline semilla)');
-TestHelper::assertStringContains('755/755', $rulesGen, 'rules/general.md refleja 755/755 en la sub-agrupación 3.6.x (baseline semilla)');
+TestHelper::assertStringContains('755/755', $roadmap, 'roadmap.md refleja 755/755 en la sub-agrupación 3.6.x (baseline semilla)');
 
 // Ejecución en vivo: el total debe regenerarse y coincidir.
 $out = [];

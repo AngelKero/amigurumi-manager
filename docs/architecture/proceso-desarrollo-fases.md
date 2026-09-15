@@ -24,11 +24,11 @@ El proyecto sigue un enfoque **Database-First y Clean Architecture**, estructura
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
 ┌───────────────────────────────────▼────────────────────────────────────┐
-│ Fase 3: Backend & Clean Architecture en app/ (6 Subfases Secuenciales) │ [EN CURSO: 3.1-3.4 OK]
+│ Fase 3: Backend & Clean Architecture en app/ (6 Subfases Secuenciales) │ [COMPLETADA]
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
 ┌───────────────────────────────────▼────────────────────────────────────┐
-│ Fase 4: Cableado Fullstack & Operaciones Asíncronas (AJAX ↔ REST)      │ [PENDIENTE]
+│ Fase 4: Cableado Fullstack & Operaciones Asíncronas (AJAX ↔ REST)      │ [EN CURSO: 4.1]
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
 ┌───────────────────────────────────▼────────────────────────────────────┐
@@ -45,8 +45,8 @@ El proyecto sigue un enfoque **Database-First y Clean Architecture**, estructura
 | **0** | **Descubrimiento & Modelo Conceptual** | ✅ **Completado** | Definición de dominio colaborativo multi-artesano | Requerimientos, reglas heurísticas, modelo de datos tripartito | Aprobación de alcance y modelo de negocio |
 | **1** | **Base de Datos & Seguridad CLI** | ✅ **Completado** | Persistencia SQLite 3 e integridad referencial | `database/seed.sql`, `setup.php`, `database.sqlite`, `.htaccess` | `PRAGMA integrity_check` (ok), 0 violaciones FK |
 | **2** | **Layout, UI & Sistema de Componentes** | ✅ **Completado** | Frontend modular, ITCSS y "Algodón Nórdico" | `views/layouts/`, `views/components/`, `src/css/`, `src/js/` | Sintaxis PHP/JS limpia, WCAG 2.1 AA, Score 98.5/100 |
-| **3** | **Backend & Clean Architecture (`app/`)** | 🔄 **En Curso** (3.1-3.4 ✅) | Lógica de negocio, Repositorios, Servicios y REST | `app/Core/`, `app/Repositories/`, `app/Services/`, `api/` | Testing 3 niveles (CLI + HTTP + QA Report), Sign-off |
-| **4** | **Cableado Fullstack Asíncrono** | ⏳ **Pendiente** | Integración reactiva AJAX/fetch $\leftrightarrow$ API REST | Conexión de `src/js/modules/` con `api/`, feedback UI | Browser Testing E2E, 0 errores 500, toasts reactivos |
+| **3** | **Backend & Clean Architecture (`app/`)** | ✅ **Completado** (10 suites 1,287 ✓) | Lógica de negocio, Repositorios, Servicios y REST | `app/Core/`, `app/Repositories/`, `app/Services/`, `api/` | Testing 3 niveles (CLI + HTTP + QA Report), Sign-off |
+| **4** | **Cableado Fullstack Asíncrono** | 🔄 **En Curso** (4.1 ✅) | Integración reactiva AJAX/fetch $\leftrightarrow$ API REST | Conexión de `src/js/modules/` con `api/`, feedback UI | Browser Testing E2E, 0 errores 500, toasts reactivos |
 | **5** | **Documentación, Rendimiento & Entrega** | 🔄 **En Curso** | Clean Documentation (Zero Monoliths) y despliegue | `docs/` (5 dominios), manual CLI `php -S`, auditoría final | Navegación 100% funcional, entrega formal |
 
 ---
@@ -147,7 +147,7 @@ Diseñar e implementar una interfaz gráfica web responsiva, estéticamente sobr
 
 ### Fase 3: Backend & Clean Architecture en `app/` (6 Subfases Secuenciales)
 
-**Estado:** 🔄 **En Curso (Subfases 3.1, 3.2, 3.3 y 3.4 Completadas; 3.5 y 3.6 Pendientes)**
+**Estado:** ✅ **Completado & Verificado** (6 subfases secuenciales · **1,287/1,287** aserciones en verde sobre semilla limpia; cifra regenerable con `php tests/cuenta-aserciones.php`, H-006)
 
 #### Objetivo:
 Implementar una capa de backend modular, desacoplada, segura y tipada en `app/` (`src/` reservado exclusivamente a frontend), organizada bajo principios de Clean Architecture y SOLID, gobernada por un protocolo estricto de pruebas en 3 niveles y compuertas de detención y firma explícita (*Sign-off*).
@@ -188,10 +188,10 @@ Implementar una capa de backend modular, desacoplada, segura y tipada en `app/` 
    - Controladores REST en `api/pedidos/` (`index.php`, `solicitar.php`, `crear.php`, `cambiar-estado.php`, `cancelar.php`).
 6. **Subfase 3.6: Auditoría Integral de Seguridad OWASP, Rendimiento SQLite & Regresión Global** (Desglosada en 5 Sub-subfases - [Ver Especificación](./subfase-3.6-auditoria-seguridad.md)):
    - **3.6.1 (OWASP A01 - Broken Access Control):** Control de acceso vertical RBAC (`admin`, `artesano`, `asistente`), prevención IDOR horizontal en creaciones y pedidos, salvaguarda ID #1 `@admin`, prevención de auto-eliminación activa, aislamiento de recursos inactivos y método 405 en los 25 controladores (✅ **Completado: 165/165 Aserciones OK**).
-   - **3.6.2 (OWASP A02 + A07 - Criptografía & Auth):** Integridad criptográfica HMAC-SHA256 con `hash_equals()`, ciclo de vida y TTL 24h, higiene bcrypt cost factor 10, mitigación timing attack con dummy hash, mensajes no enumerables, cero exposición de `password_hash`, políticas de contraseña ($\ge 6$ chars y temporales `Crochet!<hex>!`), revocación inmediata en bajas lógicas y logout stateless (🔄 **En Ejecución**).
-   - **3.6.3 (OWASP A03 + A08 - Inyección & Medios):** Blindaje SQLi 100% prepared statements, mitigación XSS, validación MIME binaria real (`finfo`), protección contra path traversal (`../../`) y desinfección SVG (⏳ *Pendiente*).
-   - **3.6.4 (OWASP A04 - Lógica & Precios):** Congelamiento de precios en servidor, aislamiento transaccional de existencias atómicas, cancelación idempotente y resiliencia UTF-8 4-byte (emojis 🧶🧸) (⏳ *Pendiente*).
-   - **3.6.5 (Rendimiento & Regresión):** Auditoría `EXPLAIN QUERY PLAN` sobre índices (`idx_*`), erradicación N+1, tolerancia `busy_timeout = 5000` y suite de regresión acumulada total (⏳ *Pendiente*).
+- **3.6.2 (OWASP A02 + A07 - Criptografía & Auth):** Integridad criptográfica HMAC-SHA256 con `hash_equals()`, ciclo de vida y TTL 24h, higiene bcrypt cost factor 10, mitigación timing attack con dummy hash, mensajes no enumerables, cero exposición de `password_hash`, políticas de contraseña ($\ge 6$ chars y temporales `Crochet!<hex>!`), revocación inmediata en bajas lógicas y logout stateless (✅ **Completado: 141/141 Aserciones OK**).
+    - **3.6.3 (OWASP A03 + A08 - Inyección & Medios):** Blindaje SQLi 100% prepared statements, mitigación XSS, validación MIME binaria real (`finfo`), protección contra path traversal (`../../`) y desinfección SVG (✅ **Completado: 157/157 Aserciones OK**).
+    - **3.6.4 (OWASP A04 - Lógica & Precios):** Congelamiento de precios en servidor, aislamiento transaccional de existencias atómicas, cancelación idempotente y resiliencia UTF-8 4-byte (emojis 🧶🧸) (✅ **Completado: 151/151 Aserciones OK**).
+    - **3.6.5 (Rendimiento & Regresión):** Auditoría `EXPLAIN QUERY PLAN` sobre índices (`idx_*`), erradicación N+1, tolerancia `busy_timeout = 5000` y suite de regresión acumulada total (✅ **Completado: 141/141 Aserciones OK**).
 
 #### Protocolo de Testing en 3 Niveles (Inviolable):
 Al concluir cada subfase, se ejecutan obligatoriamente los 3 niveles antes de detenerse:
@@ -204,7 +204,7 @@ Al concluir cada subfase, se ejecutan obligatoriamente los 3 niveles antes de de
 
 ### Fase 4: Cableado Fullstack & Operaciones Asíncronas (AJAX / ES Modules $\leftrightarrow$ API REST)
 
-**Estado:** ⏳ **Pendiente (Inicia tras concluir la Fase 3)**
+**Estado:** 🔄 **En Curso (Subfase 4.1 · Auth & Sesión de Cliente — feature `004-auth-sesion-cliente` activa; aguarda gate 3-tier y HALT)**
 
 #### Objetivo:
 Conectar de forma fluida, reactiva y asíncrona la interfaz de usuario desarrollada en la Fase 2 con los servicios y endpoints REST desarrollados en la Fase 3, sustituyendo cualquier almacenamiento temporal en memoria por peticiones asíncronas `fetch()` con autenticación Bearer token.

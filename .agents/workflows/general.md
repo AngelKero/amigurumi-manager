@@ -12,8 +12,8 @@ description: Workflow-glue de enrutamiento. El contenido normativo del flujo ite
 
 | Tipo de tarea | Sigue el flujo de |
 | :--- | :--- |
-| Desarrollo / refactor / backend / gates de subfase | [`.agents/rules/general.md`](../rules/general.md) — fases 1–5, gate 3-tier, invariantes R-01…R-10 |
-| Feature nueva o cambio no trivial (SDD) | [`.agents/workflows/sdd-feature.md`](./sdd-feature.md) (+ `spec/features/NNN/`) |
+| Desarrollo / refactor / backend / gates de subfase | [`.agents/rules/general.md`](../rules/general.md) — loop Red→Green→Refactor, gate 3-tier, guardrails R-01…R-10 · **estado de fases/subfases en [`spec/constitution/roadmap.md`](../../spec/constitution/roadmap.md)** |
+| Feature nueva o cambio no trivial (SDD) | skill [`sdd-feature`](../skills/sdd-feature/SKILL.md) · comando `/sdd-feature` (opencode: [`.opencode/command/sdd-feature.md`](../../.opencode/command/sdd-feature.md)) · glue [`.agents/workflows/sdd-feature.md`](./sdd-feature.md) · artefactos en `spec/features/NNN/` |
 | UI/UX / design system "Algodón Nórdico" | [`.agents/rules/ui-ux-design-system.md`](../rules/ui-ux-design-system.md) |
 | Documentación / fuente de verdad (P1–P6) | [`.agents/rules/docs-source-of-truth.md`](../rules/docs-source-of-truth.md) |
 | Seguridad de token / XSS / CSP / `innerHTML` | [`.agents/rules/innerhtml-dom-safety.md`](../rules/innerhtml-dom-safety.md) + `AGENTS.md §5 (R-01…R-10)` |

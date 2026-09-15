@@ -183,6 +183,7 @@ When two sources conflict, resolve strictly in this order:
 - **Active Feature:** Work exclusively within `spec/features/NNN-nombre-feature/` (`spec.md`, `plan.md`, `tasks.md`).
 - **Governance Work:** Remediation of governance/audit findings lives under `spec/gobernanza/` (outside product feature numbering).
 - **Gated Workflow:** The human acts as the Intent Validator. Validate `spec.md` and `plan.md` before any code is generated or edited.
+- **Guided SDD (`sdd-feature`):** to create a new feature, start with the `sdd-feature` skill (`.agents/skills/sdd-feature/SKILL.md`), invocable as `/sdd-feature` in opencode (command `.opencode/command/sdd-feature.md`) and Antigravity. It scaffolds `spec.md`, `plan.md` and `tasks.md` in `spec/features/NNN-nombre-feature/` from templates and enforces a HALT at each phase before any code is written.
 - **Task Progression:** Check off tasks in `tasks.md` as verified, ensure acceptance criteria in `spec.md` pass, and advance `spec/constitution/roadmap.md`.
 
 ---

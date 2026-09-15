@@ -1,0 +1,36 @@
+# NNN · <Nombre Corto> — Plan
+
+**Estado:** propuesto (sin código) · léase con `spec.md`
+
+<!-- Plantilla SDD (skill sdd-feature). Respeta spec/constitution/tech-stack.md y los ADRs. -->
+
+## Enfoque
+
+<!-- Estrategia arquitectónica. Clean Architecture: `app/` núcleo (servicios/repositorios),
+     `api/` controladores delgados (≤ 60 líneas), `views/` presentación, `src/js/modules/`
+     ES modules. Cero SQL fuera de `app/Repositories/`. -->
+
+## Implementación
+
+<!-- Archivos concretos y pasos técnicos, por capa. Tabla sugerida: -->
+
+| Capa | Archivo(s) | Cambio |
+| :--- | :--- | :--- |
+| `app/Services/` | … | … |
+| `api/<modulo>/` | … | … |
+| `views/` | … | … |
+| `src/js/modules/` | … | … |
+| `tests/` | … | … |
+
+## Decisiones
+
+<!-- Decisiones de diseño y alternativas descartadas. -->
+- **Decisión:** …
+  - Alternativa descartada: …
+- **Decisión:** …
+
+## Riesgos
+
+<!-- Puntos de fallo y mitigación. -->
+- **Riesgo:** … → **Mitigación:** …
+- **Riesgo:** … → **Mitigación:** …

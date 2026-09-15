@@ -1,0 +1,30 @@
+# NNN · <Nombre Corto de la Feature>
+
+**Estado:** propuesto (solo spec · sin código)
+
+<!-- Plantilla SDD (skill sdd-feature). Copia este archivo a
+     spec/features/NNN-nombre-feature/spec.md y rellena. -->
+
+## Qué hace
+
+<!-- Vista desde el punto de vista del usuario, SIN detalles de implementación.
+     Conecta / permite / gestiona / muestra... describe el comportamiento observable. -->
+
+## Por qué
+
+<!-- Problema real que resuelve, valor aportado y justificación de por qué ahora. -->
+
+## Criterios de aceptación
+
+<!-- Observables, binarios (sí/no) y comprobables: suite CLI, curl HTTP o verificación manual concreta.
+     Ejemplo: "- [ ] El clic en X invoca POST /api/... y ante 200 muestra Y sin recargar la página." -->
+
+- [ ]
+- [ ]
+- [ ]
+
+## Fuera de alcance
+
+<!-- Límites claros de lo que NO incluye esta feature y qué feature futura (005–008...) lo cubre. -->
+
+-

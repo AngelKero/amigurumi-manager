@@ -82,7 +82,8 @@ docs/
 │   ├── gobernanza-accion-2-token-seguridad.md # ./testing/gobernanza-accion-2-token-seguridad.md
 │   ├── gobernanza-accion-3-gate-fase-4.md # ./testing/gobernanza-accion-3-gate-fase-4.md
 │   ├── gobernanza-accion-4-consolidacion-reglas.md # ./testing/gobernanza-accion-4-consolidacion-reglas.md
-│   └── gobernanza-accion-5-resincronizacion-docs.md # ./testing/gobernanza-accion-5-resincronizacion-docs.md
+│   ├── gobernanza-accion-5-resincronizacion-docs.md # ./testing/gobernanza-accion-5-resincronizacion-docs.md
+│   └── gobernanza-accion-6-desacople-fases.md   # ./testing/gobernanza-accion-6-desacople-fases.md
 │
 ├── security/                             # 🔐 7. Seguridad & Sanitización de Frontend
 │   └── auditoria-sanitizacion-js.md      # ./security/auditoria-sanitizacion-js.md
@@ -94,7 +95,8 @@ docs/
     ├── detalle.html                       # ./archive/detalle.html (mockup)
     ├── formulario.html                    # ./archive/formulario.html (mockup)
     ├── pedidos.html                       # ./archive/pedidos.html (mockup)
-    └── wireframes.html                    # ./archive/wireframes.html (mockup)
+    ├── wireframes.html                    # ./archive/wireframes.html (mockup)
+    └── reporte-flujo-004-auth.md          # ./archive/reporte-flujo-004-auth.md (histórico)
 ```
 
 ### Catálogo de Decisiones de Arquitectura (ADRs)

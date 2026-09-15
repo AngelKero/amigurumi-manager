@@ -1,0 +1,33 @@
+# NNN · <Nombre Corto> — Tareas
+
+**Estado:** propuesto (sin código) · derivado de `plan.md`
+
+<!-- Plantilla SDD (skill sdd-feature). Desglose accionable con gate 3-tier por subfase. -->
+
+## 1. Especificación (antes de código)
+
+- [ ] `spec.md` validado y aprobado por el usuario (HALT).
+- [ ] `plan.md` validado y aprobado por el usuario (HALT).
+
+## 2. Subfase NNN.1 — <nombre corto>
+
+<!-- Cada subfase lleva su gate 3-tier completo:
+     suite CLI + log, curl HTTP + log, reporte ejecutivo, HALT. -->
+
+- [ ] Suite `tests/test-subfase-NNN.1.php` (criterios de aceptación) → `logs/subfase-NNN.1-cli.log`.
+- [ ] Trazas HTTP → `logs/subfase-NNN.1-http.log`.
+- [ ] Reporte `docs/testing/subfase-NNN.1-<nombre>.md`.
+- [ ] HALT: aprobación del usuario antes de NNN.2.
+
+## 3. Subfase NNN.2 … NNN.x
+
+<!-- Ídem, según plan.md. Nunca empaquetar subfases (AGENTS.md §3). -->
+
+## 4. Verificación & Cierre
+
+- [ ] Criterios de aceptación de `spec.md` al 100% (`- [x]`).
+- [ ] Regresión Fase 3: `php tests/test-subfase-3.6.5.php > logs/subfase-3.6.5-cli.log 2>&1`.
+- [ ] Regresión acumulada feature 004–008 (si aplica): `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`.
+- [ ] Cifra regenerable: `php tests/cuenta-aserciones.php` (ground truth Fase 3 = 1,287).
+- [ ] `spec/constitution/roadmap.md`: feature movida a **Hecho ✅**.
+- [ ] **HALT:** aprobación explícita del usuario antes de cualquier otra feature.

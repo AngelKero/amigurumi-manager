@@ -1,41 +1,24 @@
 ---
-description: Workflow canónico para la creación, planificación, implementación y verificación de features bajo Spec-Driven Development (SDD).
+description: Workflow-glue de enrutamiento SDD. El flujo guiado canónico (fases Specify → Plan → Tasks → Implement → Verify, plantillas y HALT) vive en el skill .agents/skills/sdd-feature/SKILL.md (universal: opencode y Antigravity).
 ---
 
-# Flujo de Trabajo SDD para Features
+# Workflow SDD para Features — Glue de Enrutamiento
 
-Sigue estrictamente este ciclo de 5 pasos para cualquier feature nueva o cambio no trivial:
+> **Este archivo NO duplica contenido normativo.** Es solo enrutamiento (H-023).
+> El flujo guiado canónico de Spec-Driven Development para **crear una feature nueva** vive en el skill:
+>
+> **`.agents/skills/sdd-feature/SKILL.md`** (se registra como `/sdd-feature` en Antigravity
+> y es cargable en opencode por `skill` o el comando `.opencode/command/sdd-feature.md`).
 
-## 1. Specify (`spec.md`)
-1. Crear la carpeta en `spec/features/NNN-nombre-feature/` con el siguiente número disponible.
-2. Redactar `spec.md` definiendo:
-   - **Qué hace:** Visión desde el punto de vista del usuario (sin código).
-   - **Por qué:** Valor aportado y justificación del momento.
-   - **Criterios de aceptación:** Lista de condiciones observables comprobables con sí/no (`- [ ]`).
-   - **Fuera de alcance:** Límites claros de qué NO incluye esta feature.
-3. Detenerse y validar con el usuario.
+## Cómo enrutar
 
-## 2. Plan (`plan.md`)
-1. Redactar `plan.md` respetando la `spec/constitution/tech-stack.md` y los ADRs del proyecto:
-   - **Enfoque:** Estrategia arquitectónica.
-   - **Implementación:** Archivos concretos afectados y pasos técnicos.
-   - **Decisiones:** Decisiones de diseño y alternativas descartadas.
-   - **Riesgos:** Posibles puntos de fallo y mitigación.
-2. Detenerse y validar con el usuario.
+1. **Feature nueva** o cambio no trivial → abrir el skill `sdd-feature` y seguir sus 6 fases
+   (P0 contexto → Specify → Plan → Tasks → Implement → Verify) con **HALT por fase**.
+2. **Plantillas:** `.agents/skills/sdd-feature/templates/` (`spec.md`, `plan.md`, `tasks.md`).
+3. **Siguiente número NNN:** `.agents/skills/sdd-feature/scripts/next-feature-number.sh`.
+4. **Metodología SDD de referencia:** skill `spec-driven-development`.
+5. **Work on feature activa:** si el trabajo ocurre DENTRO de una feature ya existente
+   (004 activa), usar `spec/features/NNN-nombre-feature/tasks.md` directamente, sin reabrir el skill.
 
-## 3. Tasks (`tasks.md`)
-1. Desglosar el plan en una lista de tareas pequeñas y verificables en `tasks.md`:
-   - Checklist accionable (`- [ ]`).
-   - Criterio de verificación para cada tarea (comando test, lint, curl, verificación manual).
-   - Paso final: Validar contra los criterios de aceptación de `spec.md` y mover a "Hecho" en `spec/constitution/roadmap.md`.
-
-## 4. Implementación & Loop Engineering
-1. Ejecutar las tareas una a una.
-2. Aplicar el bucle `Actuar` → `Observar` → `Corregir` ante cualquier fallo en tests o sintaxis.
-3. Marcar tareas completadas (`- [x]`) conforme se verifiquen.
-
-## 5. Verificación & Cierre
-1. Ejecutar la suite de tests (`php tests/...`) y validaciones sintácticas (`php -l`, `node --check`).
-2. Marcar los criterios de aceptación en `spec.md`.
-3. Actualizar `spec/constitution/roadmap.md` moviendo la feature a **Hecho ✅**.
-4. Detenerse y solicitar la aprobación explícita del usuario antes de pasar a la siguiente feature.
+> Límite: no regresar a la raíz SDD para bugs puntuales de una feature en curso ni para
+> labores de gobernanza (`spec/gobernanza/`).

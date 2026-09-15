@@ -14,6 +14,7 @@
 | `formulario.html` | Mockup UI | Obsoleto | `formulario.php` + `views/pages/` + `docs/design-system/` |
 | `pedidos.html` | Mockup UI | Obsoleto | `pedidos.php` + `views/pages/` + `docs/design-system/` |
 | `wireframes.html` | Mockup UI | Obsoleto | `docs/design-system/wireframes.md` |
+| `reporte-flujo-004-auth.md` | Reporte de auditoría | Histórico | `spec/features/004-auth-sesion-cliente/` + `docs/testing/` |
 
 ## Protocolo de archivado
 
