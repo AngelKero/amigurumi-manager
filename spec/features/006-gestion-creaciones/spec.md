@@ -1,6 +1,6 @@
 # 006 · Gestión de Creaciones & Subida Multipart (Subfase 4.3)
 
-**Estado:** propuesto (solo spec · sin código)
+**Estado:** implementada y validada (AC 12/12 · suite 212/212 · gate 3-tier verde)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**
 > Cubre la **subfase 4.3** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a
@@ -52,18 +52,18 @@ multipart → servicio → repositorio → render del sistema Algodón Nórdico.
 
 ## Criterios de aceptación
 
-- [ ] El submit de `formulario.php` (modo nuevo) envía `FormData` multipart con `Authorization: Bearer` a `POST /api/creaciones/crear.php`; ante `201` confirma y redirige al panel; ante `422` muestra errores por campo accesibles (`role="alert"`) sin recargar ni usar `alert()`.
-- [ ] `formulario.php?id=` precarga la pieza vía `GET /api/creaciones/detalle.php?id=` (no `$seedItems`) y su submit envía `POST /api/creaciones/actualizar.php`; sin foto nueva conserva `imagen_url`; con reemplazo elimina el previo solo si era `uploads/` (R-02).
-- [ ] La validación de cliente espeja al servidor (`nombre 2-100`, `categoria 2-50`, `material 3-80`, `dimensiones 2-100`, `precio 1-9.999.999¢`, `costo 0-9.999.999¢`, `stock 0-10000`, `horas 0-500`, `descripcion ≤2000`, `imagen jpeg/png/webp ≤5MB`) y convierte pesos→centavos con `currency.js` (R-06).
-- [ ] Sin foto se asigna SVG temático por categoría con fallback `ovillo-generico.svg` en disco (R-09); con foto el nombre es `creacion_[16-hex]_[timestamp].[ext]`, MIME verificado por `finfo` y confinado con `basename()`.
-- [ ] Los controles `+/-` de stock invocan `POST /api/creaciones/ajustar-stock.php` y refrescan badge/contador desde la respuesta (clamp `0-10000`).
-- [ ] El alternador bajo encargo invoca `POST /api/creaciones/toggle-encargo.php` y refresca el badge `on-demand` desde la respuesta.
-- [ ] El modal de baja invoca `POST /api/creaciones/eliminar.php` (200 → `activo=0` + `eliminado_en`); el fichero de imagen **sigue en disco** (R-02); el catálogo la filtra y `detalle.php` responde `404`; reintento responde `409` idempotente.
-- [ ] El control de restauración invoca `POST /api/creaciones/restaurar.php` (200 → `activo=1`, `eliminado_en=NULL`); `detalle.php` vuelve a `200`; reintento responde `409`.
-- [ ] Mutar pieza ajena como artesano (`actualizar/eliminar/ajustar-stock/toggle-encargo`) responde `403` (R-04); como `admin` responde `200/201`.
-- [ ] El panel es server-driven: filtros/orden/paginación consumen el bloque `paginacion` real, los valores enviados existen en el contrato (`en_stock/bajo_encargo/agotados`, `artesano_id`, `recientes/precio_asc/...`), el chip "Mostrando X de Y" refleja el total y el estado vacío restablece TODOS los filtros.
-- [ ] Cero datos del servidor interpolados en `innerHTML` (auditoría `innerHTML =` en `creaciones.js`/`dropzone.js`/`margin-calculator.js`, H-004); suite `tests/test-subfase-4.3.php` en verde, trazas HTTP en `logs/subfase-4.3-http.log` y reporte `docs/testing/subfase-4.3-creaciones.md` (H-008/H-015).
-- [ ] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); regresión Fase 3 y cifra regenerable `php tests/cuenta-aserciones.php` (**1.287**) en verde si se tocó backend compartido (H-006).
+- [x] El submit de `formulario.php` (modo nuevo) envía `FormData` multipart con `Authorization: Bearer` a `POST /api/creaciones/crear.php`; ante `201` confirma y redirige al panel; ante `422` muestra errores por campo accesibles (`role="alert"`) sin recargar ni usar `alert()`.
+- [x] `formulario.php?id=` precarga la pieza vía `GET /api/creaciones/detalle.php?id=` (no `$seedItems`) y su submit envía `POST /api/creaciones/actualizar.php`; sin foto nueva conserva `imagen_url`; con reemplazo elimina el previo solo si era `uploads/` (R-02).
+- [x] La validación de cliente espeja al servidor (`nombre 2-100`, `categoria 2-50`, `material 3-80`, `dimensiones 2-100`, `precio 1-9.999.999¢`, `costo 0-9.999.999¢`, `stock 0-10000`, `horas 0-500`, `descripcion ≤2000`, `imagen jpeg/png/webp ≤5MB`) y convierte pesos→centavos con `currency.js` (R-06).
+- [x] Sin foto se asigna SVG temático por categoría con fallback `ovillo-generico.svg` en disco (R-09); con foto el nombre es `creacion_[16-hex]_[timestamp].[ext]`, MIME verificado por `finfo` y confinado con `basename()`.
+- [x] Los controles `+/-` de stock invocan `POST /api/creaciones/ajustar-stock.php` y refrescan badge/contador desde la respuesta (clamp `0-10000`).
+- [x] El alternador bajo encargo invoca `POST /api/creaciones/toggle-encargo.php` y refresca el badge `on-demand` desde la respuesta.
+- [x] El modal de baja invoca `POST /api/creaciones/eliminar.php` (200 → `activo=0` + `eliminado_en`); el fichero de imagen **sigue en disco** (R-02); el catálogo la filtra y `detalle.php` responde `404`; reintento responde `409` idempotente.
+- [x] El control de restauración invoca `POST /api/creaciones/restaurar.php` (200 → `activo=1`, `eliminado_en=NULL`); `detalle.php` vuelve a `200`; reintento responde `409`.
+- [x] Mutar pieza ajena como artesano (`actualizar/eliminar/ajustar-stock/toggle-encargo`) responde `403` (R-04); como `admin` responde `200/201`.
+- [x] El panel es server-driven: filtros/orden/paginación consumen el bloque `paginacion` real, los valores enviados existen en el contrato (`en_stock/bajo_encargo/agotados`, `artesano_id`, `recientes/precio_asc/...`), el chip "Mostrando X de Y" refleja el total y el estado vacío restablece TODOS los filtros.
+- [x] Cero datos del servidor interpolados en `innerHTML` (auditoría `innerHTML =` en `creaciones.js`/`dropzone.js`/`margin-calculator.js`, H-004); suite `tests/test-subfase-4.3.php` en verde, trazas HTTP en `logs/subfase-4.3-http.log` y reporte `docs/testing/subfase-4.3-creaciones.md` (H-008/H-015).
+- [x] Regresión acumulada `php tests/test-fase-4-acumulado.php` en verde (H-020); regresión Fase 3 y cifra regenerable `php tests/cuenta-aserciones.php` (**1.287**) en verde si se tocó backend compartido (H-006).
 
 ## Fuera de alcance
 

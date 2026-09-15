@@ -512,6 +512,8 @@ class CreacionService {
                 $candidate = 'assets/svg/piezas/mini-suculenta.svg';
             } elseif (str_contains($cat, 'bebé') || str_contains($cat, 'bebe') || str_contains($cat, 'infantil')) {
                 $candidate = 'assets/svg/piezas/osito-nordico.svg';
+            } elseif (str_contains($cat, 'genérica') || str_contains($cat, 'generica')) {
+                $candidate = 'assets/svg/piezas/gatito-ovillo.svg';
             }
         }
 

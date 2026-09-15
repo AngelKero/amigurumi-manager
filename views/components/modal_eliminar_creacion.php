@@ -50,7 +50,7 @@
 
       <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Conservar Pieza</button>
-        <button type="button" class="btn btn-danger btn-sm" id="btnConfirmDeleteCreacion" onclick="alert('En Fase 4 se conectará con el endpoint transaccional POST /api/eliminar.php verificando FK'); bootstrap.Modal.getInstance(document.getElementById('modalEliminarCreacion')).hide();">
+        <button type="button" class="btn btn-danger btn-sm" id="btnConfirmDeleteCreacion" data-id="">
           <i class="bi bi-trash me-1"></i> Confirmar Eliminación
         </button>
       </div>

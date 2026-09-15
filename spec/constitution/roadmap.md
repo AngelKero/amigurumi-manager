@@ -9,7 +9,7 @@
 | **Fase 1** · Base de Datos, DDL & Concurrencia SQLite | — | ✅ Hecho |
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
-| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 ✅ completada** (58/58, reporte `docs/testing/subfase-4.1-auth-sesion.md`) · **4.2 ✅ completada** (136/136, reporte `docs/testing/subfase-4.2-catalogo.md`) · **4.3 activa**: `spec/features/006-gestion-creaciones/` (planificación pendiente) · maestro `spec/features/009-plan-maestro-fase-4/` |
+| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 ✅ completada** (58/58, reporte `docs/testing/subfase-4.1-auth-sesion.md`) · **4.2 ✅ completada** (136/136, reporte `docs/testing/subfase-4.2-catalogo.md`) · **4.3 ✅ completada** (212/212, reporte `docs/testing/subfase-4.3-creaciones.md`) · **4.4 activa**: `spec/features/007-*` (planificación pendiente) · maestro `spec/features/009-plan-maestro-fase-4/` |
 | **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔄 Continua |
 
 ## Hecho ✅
@@ -30,12 +30,12 @@
 
 ## Siguiente 🔜
 
-4. **009 · Plan Maestro de la Fase 4 (coordinación · `spec/features/009-plan-maestro-fase-4/`)** — Registrador y plan maestro de toda la Fase 4: 4.1 ✅ ejecutada (004) y 4.2 ✅ ejecutada (005: **194/194** aserciones acumuladas de fase en verde), siguientes 4.3–4.5 (006–008) con etapa 3 (planificación de hijas) en progreso y `roadmap.md` como registrador canónico (4.1–4.5 ↔ 004–008). *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
+4. **009 · Plan Maestro de la Fase 4 (coordinación · `spec/features/009-plan-maestro-fase-4/`)** — Registrador y plan maestro de toda la Fase 4: 4.1 ✅ ejecutada (004), 4.2 ✅ ejecutada (005) y 4.3 ✅ ejecutada (006: **406/406** aserciones acumuladas de fase en verde), siguientes 4.4–4.5 (007–008) con etapa 3 (planificación de hijas) en progreso y `roadmap.md` como registrador canónico (4.1–4.5 ↔ 004–008). *(Gate 3-tier por subfase: Gobernanza · Acción 3, H-008/H-015/H-020.)*
 5. **005 · Catálogo Dinámico & Filtros Textiles (Fase 4.2)** — Conexión asíncrona de la vitrina con `/api/creaciones/`, sincronización bidireccional de chips textiles, rangos de precio y paginación reactiva; incluye `scripts/seed-catalogo-pruebas.php` (seed combinatorio 270 piezas), extensión `estado_stock` y catálogo server-driven con template DOM-safe (H-004). **Implementada y verificada**: suite `tests/test-subfase-4.2.php` **136/136**, HTTP en vivo sin divergencia, regresiones Fase 3 (**1,287**) y Fase 4 acumulada (**194/194**) en verde; reporte `docs/testing/subfase-4.2-catalogo.md`. ✅ *(HALT pendiente de aprobación del usuario para iniciar 4.3.)*
+6. **006 · Gestión de Creaciones & Subida Multipart (Fase 4.3)** — Panel del artesano server-driven (`creaciones_content.php` + `<template>` + paginación + KPIs de servidor), formulario crear/editar con `FormData` multipart y validación espejo, stock in-situ, toggle bajo encargo, baja lógica con foto preservada (R-02) y **restauración con UI**. **Implementada y verificada**: suite `tests/test-subfase-4.3.php` **212/212**, HTTP multipart real sin divergencia, regresión Fase 4 acumulada (**406/406**) y Fase 3 (**141/141** + H-006 **1.287**) en verde; reporte `docs/testing/subfase-4.3-creaciones.md`. ✅ *(HALT pendiente de aprobación del usuario para iniciar 4.4.)*
 
 ## Backlog / Ideas 💡
 
-- **006 · Gestión de Creaciones & Subida Multipart (Fase 4.3)** — Cableado completo de `formulario.php` (creación y edición con subida real de fotos), ajuste de stock in-situ, toggle bajo encargo y modal de baja lógica.
 - **007 · Checkout Público, Pedidos Atómicos & WhatsApp (Fase 4.4)** — Modal de compra rápida en ficha de detalle, reserva atómica de existencias, cálculo seguro de precio en servidor y enlaces directos pre-formateados a WhatsApp.
 - **008 · Directorio de Creadores & Roles RBAC (Fase 4.5)** — Panel de administración de usuarios en `usuarios.php`, actualización reactiva de roles con salvaguarda ID #1, reseteo de claves y reactivación de cuentas.
 

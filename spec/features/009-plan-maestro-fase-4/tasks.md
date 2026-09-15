@@ -29,7 +29,7 @@
 > Cada feature hija sigue el flujo guiado SDD: `spec.md` → HALT → `plan.md` → HALT → `tasks.md` → HALT.
 
 - [x] `005` · Catálogo Dinámico & Filtros Textiles (4.2) — spec/plan/tasks creados y aprobados.
-- [ ] `006` · Gestión de Creaciones & Subida Multipart (4.3) — spec/plan/tasks creados y aprobados.
+- [x] `006` · Gestión de Creaciones & Subida Multipart (4.3) — spec/plan/tasks creados y aprobados.
 - [ ] `007` · Checkout Público, Pedidos Atómicos & WhatsApp (4.4) — spec/plan/tasks creados y aprobados.
 - [ ] `008` · Directorio de Creadores & Roles RBAC (4.5) — spec/plan/tasks creados y aprobados.
 - [x] Actualizar `roadmap.md` al estado "planificado" de 005–008.
@@ -44,9 +44,12 @@
       final"); HTTP → `logs/subfase-4.2-http.log` (sin divergencia); reporte
       `docs/testing/subfase-4.2-catalogo.md` con **validación AC 11/11** · **HALT** (aprobación
       pendiente para 4.3).
-- [ ] **4.3** Gestión de Creaciones & Multipart (`006`): suite `tests/test-subfase-4.3.php` →
-      `logs/subfase-4.3-cli.log`; HTTP → `logs/subfase-4.3-http.log`; reporte
-      `docs/testing/subfase-4.3-creaciones.md` · **HALT**.
+- [x] **4.3** Gestión de Creaciones & Multipart (`006`): suite `tests/test-subfase-4.3.php` →
+      **212/212** (`logs/subfase-4.3-cli.log`); HTTP multipart real → `logs/subfase-4.3-http.log`
+      (201/200/401/422/403/404/409, foto preservada R-02, sin divergencia); reporte
+      `docs/testing/subfase-4.3-creaciones.md` con **validación AC 12/12**; fix opción A
+      (`Genérica→gatito-ovillo.svg`, 3.6.5 141/141 + H-006 1.287 en verde) · **HALT** (aprobación
+      pendiente para 4.4).
 - [ ] **4.4** Checkout Público & Pedidos Atómicos (`007`): suite `tests/test-subfase-4.4.php` →
       `logs/subfase-4.4-cli.log`; HTTP → `logs/subfase-4.4-http.log`; reporte
       `docs/testing/subfase-4.4-pedidos.md` · **HALT**.
@@ -57,7 +60,8 @@
 ## 5. Regresión por fase (obligatorio, H-020)
 
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
-      (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0).
+      (tras 4.1: EXIT 0; tras 4.2: **194/194** aserciones acumuladas, EXIT 0; tras 4.3:
+      **406/406** aserciones acumuladas — 58 + 136 + 212, EXIT 0).
 - [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 

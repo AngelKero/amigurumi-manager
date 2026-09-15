@@ -20,9 +20,10 @@
 | **3.6.5** | Rendimiento SQLite & Regresión Global | `tests/test-subfase-3.6.5.php` | 141 / 141 (100%) | ✅ Aprobado | [Ver Reporte 3.6.5](./subfase-3.6.5-rendimiento-regresion.md) |
 | **4.1** | Auth Bearer & Navbar Reactivo (Feature 004) | `tests/test-subfase-4.1.php` | 58 / 58 (100%) | ✅ Aprobado | [Ver Reporte 4.1](./subfase-4.1-auth-sesion.md) |
 | **4.2** | Catálogo Dinámico & Filtros Textiles (Feature 005) | `tests/test-subfase-4.2.php` | 136 / 136 (100%) | ✅ Aprobado | [Ver Reporte 4.2](./subfase-4.2-catalogo.md) |
+| **4.3** | Gestión de Creaciones & Subida Multipart (Feature 006) | `tests/test-subfase-4.3.php` | 212 / 212 (100%) | ✅ Aprobado | [Ver Reporte 4.3](./subfase-4.3-creaciones.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **194 / 194 Aserciones Aprobadas (100% OK en verde — Subfases 4.1 y 4.2)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **406 / 406 Aserciones Aprobadas (100% OK en verde — Subfases 4.1, 4.2 y 4.3)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 
@@ -75,6 +76,7 @@ proyecto-web/
 │   ├── subfase-3.6.5-rendimiento-regresion.md # Reporte de EXPLAIN QUERY PLAN y regresión
 │   ├── subfase-4.1-auth-sesion.md  # Reporte de Auth Bearer & Navbar reactivo (Fase 4)
 │   ├── subfase-4.2-catalogo.md  # Reporte de Catálogo Dinámico & Filtros Textiles (Fase 4)
+│   ├── subfase-4.3-creaciones.md  # Reporte de Gestión de Creaciones & Subida Multipart (Fase 4)
 │   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
@@ -91,6 +93,7 @@ proyecto-web/
 │   ├── test-subfase-3.6.5.php         # Suite de rendimiento y regresión total
 │   ├── test-subfase-4.1.php           # Suite de Auth Bearer & Navbar reactivo (004)
 │   ├── test-subfase-4.2.php           # Suite de Catálogo Dinámico & Filtros Textiles (005)
+│   ├── test-subfase-4.3.php           # Suite de Gestión de Creaciones & Subida Multipart (006)
 │   └── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)

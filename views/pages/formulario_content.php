@@ -2,81 +2,19 @@
 /**
  * Page Content: Formulario de Alta y Edición de Creación
  * Algodón Nórdico Design System
+ *
+ * Subfase 4.3 · Feature 006: formulario server-driven. Sin mocks PHP: en modo
+ * edición la precarga llega vía `GET /api/creaciones/detalle.php?id=` y el submit
+ * envía `FormData` multipart a `POST /api/creaciones/crear|actualizar.php`
+ * (ver `src/js/modules/creaciones.js:initFormularioCreacion`).
  */
 $editId = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $isEditing = $editId !== null && $editId > 0;
 
-// Seed crochet data for pre-population in edit mode
-$seedItems = [
-  1 => [
-    'nombre' => 'Dragón Ignis',
-    'categoria' => 'Amigurumis & Figuras',
-    'material' => '100% Algodón Mercerizado',
-    'dimensiones' => '18.5 cm (Alto)',
-    'precio' => 450.00,
-    'costo' => 120.00,
-    'horas' => 6.5,
-    'stock' => 4,
-    'es_sobre_encargo' => 0,
-    'descripcion' => 'Amigurumi de dragón mítico tejido a mano con técnica crochet, escamas en relieve y fibra siliconada antialérgica.',
-    'imagen_preview' => 'uploads/dragon.jpg'
-  ],
-  2 => [
-    'nombre' => 'Mini Suculenta en Maceta',
-    'categoria' => 'Hogar & Decoración',
-    'material' => 'Algodón Rústico y Lana Acrílica',
-    'dimensiones' => '10.0 cm x 8.0 cm',
-    'precio' => 180.00,
-    'costo' => 45.00,
-    'horas' => 2.0,
-    'stock' => 12,
-    'es_sobre_encargo' => 0,
-    'descripcion' => 'Pequeña maceta tejida con suculenta en relieve botánico. No requiere riego, ideal para escritorios y repisas.',
-    'imagen_preview' => ''
-  ],
-  3 => [
-    'nombre' => 'Ajolote Rosado Pastel',
-    'categoria' => 'Amigurumis & Figuras',
-    'material' => 'Hilo Chenille Terciopelo',
-    'dimensiones' => '14.0 x 10.0 cm',
-    'precio' => 320.00,
-    'costo' => 85.00,
-    'horas' => 4.5,
-    'stock' => 0,
-    'es_sobre_encargo' => 1,
-    'descripcion' => 'Tierno ajolote mexicano con textura aterciopelada ultra suave, branquias externas kawaii y ojos de seguridad.',
-    'imagen_preview' => ''
-  ],
-  4 => [
-    'nombre' => 'Cardigan Granny Squares',
-    'categoria' => 'Prendas & Ropa',
-    'material' => 'Lana Merino y Algodón Soft',
-    'dimensiones' => 'Talla M (95 x 58 cm)',
-    'precio' => 980.00,
-    'costo' => 280.00,
-    'horas' => 18.0,
-    'stock' => 2,
-    'es_sobre_encargo' => 0,
-    'descripcion' => 'Cardigan bohemio tejido a mano con cuadros de la abuela (granny squares) florales en paleta nórdica y botones de madera rústica.',
-    'imagen_preview' => ''
-  ],
-  5 => [
-    'nombre' => 'Tote Bag Boho Trapillo',
-    'categoria' => 'Bolsos & Accesorios',
-    'material' => 'Trapillo de Algodón Reciclado',
-    'dimensiones' => '35 x 30 cm (Asas: 25 cm)',
-    'precio' => 380.00,
-    'costo' => 95.00,
-    'horas' => 4.5,
-    'stock' => 6,
-    'es_sobre_encargo' => 0,
-    'descripcion' => 'Bolsa estilo tote bag resistente tejida con punto espiga tupido, base ovalada reforzada y asas dobles ergonómicas.',
-    'imagen_preview' => ''
-  ]
-];
-
-$currentItem = ($isEditing && isset($seedItems[$editId])) ? $seedItems[$editId] : [
-  'nombre' => $isEditing ? 'Creación #' . $editId : '',
+// Valores iniciales vacíos: la precarga real la hace el cliente contra la API.
+// (En edición el título se actualiza al resolverse el nombre de la pieza.)
+$currentItem = [
+  'nombre' => '',
   'categoria' => 'Amigurumis & Figuras',
   'material' => '',
   'dimensiones' => '',
@@ -162,9 +100,12 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
         </div>
       </div>
 
-      <form id="creacionForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('<?= $isEditing ? '¡Creación actualizada con éxito! En Fase 4 se conectará con POST /api/actualizar.php' : '¡Creación registrada con éxito! En Fase 4 se conectará con POST /api/crear.php' ?>');">
-        <!-- ID Oculto para Modo Edición -->
+      <form id="creacionForm" enctype="multipart/form-data" novalidate data-edit-id="<?= $isEditing ? $editId : '' ?>">
+        <!-- ID Oculto para Modo Edición (la precarga llega vía GET detalle.php) -->
         <input type="hidden" id="creacionId" value="<?= $isEditing ? $editId : '' ?>">
+
+        <!-- Feedback accesible del submit (errores 422 / 401 / 403, sin alert() nativo) -->
+        <div id="formFeedback" class="alert d-none" role="alert" aria-live="assertive"></div>
 
         <!-- Nombre del Amigurumi / Creación -->
         <div class="mb-3">
@@ -188,6 +129,17 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
           <div class="col-12 col-sm-6">
             <label for="inputMaterial" class="form-label fw-bold small">Material Textil Principal (*)</label>
             <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Ej. 100% Algodón Mercerizado, Lana Merino..." value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
+          </div>
+        </div>
+
+        <!-- Artesano autor (solo administradores: el artesano publica como sí mismo) -->
+        <div class="row g-3 mb-3 d-none" id="artesanoField">
+          <div class="col-12">
+            <label for="inputArtesanoId" class="form-label fw-bold small">Artesano Autor (solo admin)</label>
+            <select class="form-select select-craft-pill" id="inputArtesanoId">
+              <option value="">Publicar como mi usuario</option>
+            </select>
+            <div class="form-text text-muted">Como administrador puedes atribuir la pieza a otro artesano por su ID real.</div>
           </div>
         </div>
 
@@ -278,12 +230,13 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
             <span class="text-muted small">La fotografía se optimizará y guardará en /uploads con nombre único sanitizado.</span>
           </div>
           
-          <input type="file" id="inputImagen" class="d-none" accept="image/jpeg,image/png,image/webp">
+          <input type="file" id="inputImagen" class="d-none" accept="image/jpeg,image/png,image/webp" data-max-bytes="5242880">
+          <p id="dropzoneError" class="text-danger small mt-2 mb-0 d-none" role="alert"></p>
 
-          <!-- Elemento Preview Oculto / Visible en Edición -->
-          <div id="imagePreviewContainer" class="<?= !empty($currentItem['imagen_preview']) ? '' : 'd-none' ?> mt-3 p-3 border rounded text-center bg-light">
-            <div class="small text-muted mb-2 fw-semibold"><i class="bi bi-image me-1"></i>Fotografía Actual de la Creación:</div>
-            <img id="imagePreview" src="<?= htmlspecialchars($currentItem['imagen_preview']) ?>" alt="Vista previa" class="img-fluid rounded shadow-sm border" style="max-height: 240px; object-fit: contain;">
+          <!-- Elemento Preview (lo puebla el cliente: archivo elegido o foto actual en edición) -->
+          <div id="imagePreviewContainer" class="d-none mt-3 p-3 border rounded text-center bg-light">
+            <div class="small text-muted mb-2 fw-semibold"><i class="bi bi-image me-1"></i>Fotografía de la Creación:</div>
+            <img id="imagePreview" alt="Vista previa" class="img-fluid rounded shadow-sm border" style="max-height: 240px; object-fit: contain;">
             <div class="mt-2">
               <button type="button" class="btn btn-outline-danger btn-sm" id="btnRemoveImage">
                 <i class="bi bi-trash me-1"></i> Cambiar / Quitar Imagen
