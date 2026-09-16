@@ -38,13 +38,13 @@
           <div class="row g-2 mb-3">
             <div class="col-12 col-md-6">
               <label for="manualClienteNombre" class="form-label fw-bold small">Nombre del Cliente (*)</label>
-              <input type="text" class="form-control input-craft-pill" id="manualClienteNombre" placeholder="Ej. Sofía Morales" required minlength="2" maxlength="100">
+              <input type="text" class="form-control input-craft-pill" id="manualClienteNombre" placeholder="Nombre del cliente (2–100 caracteres)" required minlength="2" maxlength="100">
             </div>
             <div class="col-12 col-md-6">
               <label for="manualClienteContacto" class="form-label fw-bold small">WhatsApp / Teléfono (*)</label>
               <div class="input-group">
                 <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);"><i class="bi bi-whatsapp text-success"></i></span>
-                <input type="text" class="form-control input-craft-pill" id="manualClienteContacto" placeholder="+52 55 1234 5678" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+                <input type="text" class="form-control input-craft-pill" id="manualClienteContacto" placeholder="WhatsApp o teléfono del cliente" required style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
           <!-- Notas y Especificaciones del Encargo -->
           <div class="mb-3">
             <label for="manualNotas" class="form-label fw-bold small">Notas / Especificaciones Especiales</label>
-            <textarea class="form-control" id="manualNotas" rows="2" placeholder="Ej. Hilo color esmeralda, bordar iniciales 'VM', empaque para regalo..." maxlength="1000" style="border-radius: var(--craft-radius-sm);"></textarea>
+            <textarea class="form-control" id="manualNotas" rows="2" placeholder="Notas o personalizaciones (máx. 1000 caracteres)" maxlength="1000" style="border-radius: var(--craft-radius-sm);"></textarea>
           </div>
 
           <!-- Resumen Financiero (estimado: el servidor congela el total) -->

@@ -53,7 +53,7 @@
           <!-- Nombre del Cliente -->
           <div class="mb-3">
             <label for="clienteNombre" class="form-label fw-bold small">Nombre Completo (*)</label>
-            <input type="text" class="form-control input-craft-pill" id="clienteNombre" placeholder="Ej. Mariana Gómez" value="" required minlength="2" maxlength="100">
+            <input type="text" class="form-control input-craft-pill" id="clienteNombre" placeholder="Tu nombre completo (2–100 caracteres)" value="" required minlength="2" maxlength="100">
           </div>
 
           <!-- Contacto del Cliente (WhatsApp / teléfono para coordinar) -->
@@ -61,7 +61,7 @@
             <label for="clienteContacto" class="form-label fw-bold small">WhatsApp / Teléfono (*)</label>
             <div class="input-group">
               <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);"><i class="bi bi-whatsapp text-success"></i></span>
-              <input type="text" class="form-control input-craft-pill" id="clienteContacto" placeholder="+52 55 1234 5678" value="" required minlength="3" maxlength="50" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+              <input type="text" class="form-control input-craft-pill" id="clienteContacto" placeholder="Tu WhatsApp o teléfono (máx. 50 caracteres)" value="" required minlength="3" maxlength="50" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
             </div>
             <div class="form-text text-muted" style="font-size: 0.7rem;">El artesano te contactará por este medio para acordar la entrega.</div>
           </div>
@@ -82,7 +82,7 @@
           <!-- Notas de Personalización -->
           <div class="mb-3">
             <label for="notasPedido" class="form-label fw-bold small">Notas o Especificaciones Especiales</label>
-            <textarea class="form-control" id="notasPedido" rows="2" style="border-radius: var(--craft-radius-sm);" placeholder="Ej. Empaque para regalo, combinación de colores..." maxlength="1000"></textarea>
+            <textarea class="form-control" id="notasPedido" rows="2" style="border-radius: var(--craft-radius-sm);" placeholder="Notas o personalizaciones (máx. 1000 caracteres)" maxlength="1000"></textarea>
           </div>
 
           <!-- Resumen Total (estimado: el precio oficial lo congela el servidor) -->

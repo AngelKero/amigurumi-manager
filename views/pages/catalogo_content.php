@@ -130,7 +130,7 @@
           <span class="input-group-text bg-white border-end-0 text-muted" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">
             <i class="bi bi-search"></i>
           </span>
-          <input type="text" id="filterSearch" class="form-control input-craft-pill border-start-0" placeholder="Buscar por nombre, hilo o material..." style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+          <input type="text" id="filterSearch" class="form-control input-craft-pill border-start-0" placeholder="Buscar por nombre, material o hilaza..." style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
         </div>
       </div>
 
@@ -187,12 +187,12 @@
           <span class="text-muted small fw-bold text-nowrap"><i class="bi bi-currency-dollar text-primary me-1"></i>Precio:</span>
           <div class="input-group input-group-sm">
             <span class="input-group-text bg-light text-muted border-end-0">Min $</span>
-            <input type="number" id="filterPriceMin" class="form-control border-start-0" placeholder="0" min="0" step="10">
+            <input type="number" id="filterPriceMin" class="form-control border-start-0" placeholder="Mínimo en pesos" min="0" step="10">
           </div>
           <span class="text-muted small">&ndash;</span>
           <div class="input-group input-group-sm">
             <span class="input-group-text bg-light text-muted border-end-0">Max $</span>
-            <input type="number" id="filterPriceMax" class="form-control border-start-0" placeholder="Max" min="0" step="10">
+            <input type="number" id="filterPriceMax" class="form-control border-start-0" placeholder="Máximo en pesos" min="0" step="10">
           </div>
         </div>
       </div>

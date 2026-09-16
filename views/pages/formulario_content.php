@@ -110,7 +110,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
         <!-- Nombre del Amigurumi / Creación -->
         <div class="mb-3">
           <label for="inputNombre" class="form-label fw-bold small">Nombre de la Creación (*)</label>
-          <input type="text" class="form-control form-control-lg input-craft-pill" id="inputNombre" placeholder="Ej. Dragón Ignis, Cardigan Granny Squares, etc." value="<?= htmlspecialchars($currentItem['nombre']) ?>" required minlength="2" maxlength="100">
+          <input type="text" class="form-control form-control-lg input-craft-pill" id="inputNombre" placeholder="Escribe el nombre de la pieza (2–100 caracteres)" value="<?= htmlspecialchars($currentItem['nombre']) ?>" required minlength="2" maxlength="100">
           <div class="form-text text-muted">Entre 2 y 100 caracteres. Será el título principal visible en el catálogo.</div>
         </div>
 
@@ -128,7 +128,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
           </div>
           <div class="col-12 col-sm-6">
             <label for="inputMaterial" class="form-label fw-bold small">Material Textil Principal (*)</label>
-            <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Ej. 100% Algodón Mercerizado, Lana Merino..." value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
+            <input type="text" class="form-control input-craft-pill" id="inputMaterial" placeholder="Describe el material o fibra (3–80 caracteres)" value="<?= htmlspecialchars($currentItem['material']) ?>" required minlength="3" maxlength="80">
           </div>
         </div>
 
@@ -149,7 +149,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
             <label for="inputDimensiones" class="form-label fw-bold small">Dimensiones / Talla (*)</label>
             <div class="input-group input-group-craft">
               <span class="input-group-text"><i class="bi bi-rulers text-primary"></i></span>
-              <input type="text" class="form-control" id="inputDimensiones" placeholder="Ej. 18.5 cm alto, 140 x 100 cm, o Talla M" value="<?= htmlspecialchars($valDimensiones) ?>" required maxlength="100">
+              <input type="text" class="form-control" id="inputDimensiones" placeholder="Indica las dimensiones (2–100 caracteres)" value="<?= htmlspecialchars($valDimensiones) ?>" required maxlength="100">
             </div>
             <div class="form-text text-muted" style="font-size: 0.7rem;">Talla/medidas en prendas; largo x ancho en mantas; altura en amigurumis.</div>
           </div>
@@ -215,7 +215,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
         <!-- Descripción -->
         <div class="mb-4">
           <label for="inputDescripcion" class="form-label fw-bold small">Descripción y Cuidados de la Pieza</label>
-          <textarea class="form-control" id="inputDescripcion" rows="3" style="border-radius: var(--craft-radius-sm);" placeholder="Detalla la técnica, tipo de ojos de seguridad, recomendaciones de lavado..."><?= htmlspecialchars($currentItem['descripcion']) ?></textarea>
+          <textarea class="form-control" id="inputDescripcion" rows="3" style="border-radius: var(--craft-radius-sm);" placeholder="Escribe la descripción (máx. 2000 caracteres)"><?= htmlspecialchars($currentItem['descripcion']) ?></textarea>
         </div>
 
         <!-- CARGA DE FOTOGRAFÍA CON PREVIEW OCULTO -->

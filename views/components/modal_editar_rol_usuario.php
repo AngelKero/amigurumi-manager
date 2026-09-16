@@ -55,7 +55,7 @@
             <label for="editWhatsapp" class="form-label fw-bold small">WhatsApp Comercial (opcional)</label>
             <div class="input-group">
               <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);"><i class="bi bi-whatsapp text-success"></i></span>
-              <input type="tel" class="form-control input-craft-pill" id="editWhatsapp" placeholder="+52 55 1234 5678" maxlength="20" autocomplete="off" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+              <input type="tel" class="form-control input-craft-pill" id="editWhatsapp" placeholder="WhatsApp comercial (opcional, máx. 20 caracteres)" maxlength="20" autocomplete="off" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
               <button type="button" class="btn btn-craft-outline btn-sm" id="btnGuardarWhatsapp" title="Guardar WhatsApp en servidor">
                 <i class="bi bi-check2-circle me-1"></i>Guardar
               </button>

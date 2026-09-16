@@ -34,7 +34,7 @@
 
         <div class="mb-3">
           <label for="motivoCancelacion" class="form-label small fw-bold">Motivo de Cancelación (Opcional)</label>
-          <textarea class="form-control" id="motivoCancelacion" rows="2" style="border-radius: var(--craft-radius-sm);" placeholder="Ej. Solicitado por el cliente, falta de material..."></textarea>
+          <textarea class="form-control" id="motivoCancelacion" rows="2" style="border-radius: var(--craft-radius-sm);" placeholder="Motivo de la cancelación (máx. 1000 caracteres)"></textarea>
         </div>
       </div>
 

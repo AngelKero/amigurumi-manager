@@ -38,7 +38,7 @@ $activePage = $activePage ?? 'creaciones';
       </div>
       <form id="formMiWhatsapp" class="d-none mt-2" novalidate>
         <div class="input-group input-group-sm">
-          <input type="tel" class="form-control" id="inputMiWhatsapp" placeholder="+52 55 ..." maxlength="20" autocomplete="off" aria-label="Mi número de WhatsApp">
+          <input type="tel" class="form-control" id="inputMiWhatsapp" placeholder="Tu WhatsApp comercial (opcional, máx. 20 caracteres)" maxlength="20" autocomplete="off" aria-label="Mi número de WhatsApp">
           <button type="submit" class="btn btn-craft-primary btn-sm" id="btnSaveMiWhatsapp" title="Guardar mi WhatsApp">
             <i class="bi bi-check-lg"></i>
           </button>

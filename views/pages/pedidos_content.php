@@ -118,7 +118,7 @@
           <span class="input-group-text bg-white text-muted border-end-0" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);">
             <i class="bi bi-search"></i>
           </span>
-          <input type="text" class="form-control border-start-0" id="searchOrdersInput" placeholder="Filtrar por cliente, producto o ID..." style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">
+          <input type="text" class="form-control border-start-0" id="searchOrdersInput" placeholder="Buscar por cliente, pieza o folio..." style="border-top-right-radius: var(--craft-radius-pill); border-bottom-right-radius: var(--craft-radius-pill);">
         </div>
       </div>
 
