@@ -166,6 +166,79 @@ export function renderAuthState(user) {
   if (panelProfile && authenticated) {
     panelProfile.textContent = `@${user.username}`;
   }
+
+  // Mi WhatsApp comercial (autoservicio): visible solo con sesión activa.
+  const waBox = document.getElementById('panelWhatsappBox');
+  const waValue = document.getElementById('panelProfileWhatsapp');
+  if (waBox) waBox.classList.toggle('d-none', !authenticated);
+  if (waValue) {
+    const wa = authenticated && user.whatsapp != null ? String(user.whatsapp).trim() : '';
+    waValue.textContent = wa !== '' ? wa : '—';
+  }
+}
+
+/** Editor inline de "Mi WhatsApp" en el sidebar del panel (autoservicio). */
+function attachMiWhatsappEditor() {
+  const box = document.getElementById('panelWhatsappBox');
+  const btnEdit = document.getElementById('btnEditMiWhatsapp');
+  const form = document.getElementById('formMiWhatsapp');
+  const input = document.getElementById('inputMiWhatsapp');
+  const err = document.getElementById('miWhatsappError');
+  if (!box || !btnEdit || !form || !input || form.dataset.bound === '1') return;
+  form.dataset.bound = '1';
+
+  const say = (msg) => {
+    if (!err) return;
+    if (!msg) {
+      err.classList.add('d-none');
+      return;
+    }
+    err.textContent = String(msg);
+    err.classList.remove('d-none');
+  };
+
+  btnEdit.addEventListener('click', () => {
+    const current = document.getElementById('panelProfileWhatsapp');
+    if (input && current) input.value = current.textContent === '—' ? '' : current.textContent.trim();
+    say(null);
+    form.classList.toggle('d-none');
+    if (!form.classList.contains('d-none') && input) input.focus();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    say(null);
+    const raw = input ? input.value.trim() : '';
+    if (raw !== '') {
+      if (raw.length > 20) {
+        say('Máx. 20 caracteres.');
+        return;
+      }
+      const digits = raw.replace(/\D/g, '');
+      if (digits.length < 8 || digits.length > 15) {
+        say('Usa entre 8 y 15 dígitos o déjalo vacío.');
+        return;
+      }
+    }
+    const user = getUser();
+    if (!user || !user.id) {
+      say('Se requiere sesión activa.');
+      return;
+    }
+    const { ok, body } = await authedFetch('/api/usuarios/actualizar-whatsapp.php', {
+      method: 'POST',
+      body: JSON.stringify({ id: Number(user.id), whatsapp: raw === '' ? null : raw }),
+    });
+    if (!ok || !body || body.exito !== true) {
+      say((body && body.error && body.error.mensaje) || 'No se pudo guardar.');
+      return;
+    }
+    const saved = (body.datos && body.datos.whatsapp != null) ? String(body.datos.whatsapp) : '';
+    const token = getToken();
+    setSession(token, { ...user, whatsapp: saved === '' ? null : saved });
+    renderAuthState(getUser());
+    form.classList.add('d-none');
+  });
 }
 
 /** Indica si la página actual es una vista administrativa privada. */
@@ -255,6 +328,7 @@ export function initAuth() {
   renderAuthState(getUser());
   attachLoginModalListeners();
   attachLogoutListeners();
+  attachMiWhatsappEditor();
 
   // Guarda de rutas privadas: sin token válido → redirección al catálogo público.
   if (isPrivatePage() && !isAuthenticated()) {

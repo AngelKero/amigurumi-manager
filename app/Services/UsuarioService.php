@@ -76,11 +76,12 @@ class UsuarioService {
      * @param string $username Nombre de usuario (3-50 chars, alfanumérico)
      * @param string $password Contraseña en texto plano (>= 6 chars)
      * @param string $rol Rol ('admin', 'artesano', 'asistente')
+     * @param string|null $whatsapp WhatsApp comercial opcional (null = sin número)
      * @return array Datos seguros del usuario creado
      * @throws InvalidArgumentException Si los datos violan las reglas de validación (HTTP 422)
      * @throws RuntimeException Si el nombre de usuario ya está ocupado (HTTP 409)
      */
-    public function createUser(string $username, string $password, string $rol = 'artesano'): array {
+    public function createUser(string $username, string $password, string $rol = 'artesano', ?string $whatsapp = null): array {
         $username = trim($username);
         $password = trim($password);
         $rol = trim($rol);
@@ -121,9 +122,10 @@ class UsuarioService {
             throw new InvalidArgumentException("El rol '{$rol}' no es válido. Roles permitidos: admin, artesano, asistente.", 422);
         }
 
-        // 5. Cifrado bcrypt y persistencia
+        // 5. Cifrado bcrypt y persistencia (WhatsApp opcional, validado)
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-        $createdId = $this->usuarioRepo->create($username, $passwordHash, $rol);
+        $cleanWhatsapp = \App\Utils\WhatsAppHelper::sanitizeOptional($whatsapp);
+        $createdId = $this->usuarioRepo->create($username, $passwordHash, $rol, $cleanWhatsapp);
 
         $createdUser = $this->usuarioRepo->findByIdSafe($createdId);
         if ($createdUser === null) {
@@ -283,6 +285,46 @@ class UsuarioService {
             'es_autogenerada'   => $isGenerated,
             'mensaje'           => "Contraseña restablecida exitosamente para el usuario '{$user['username']}'." .
                                    ($isGenerated ? " Entregue la clave temporal al artesano: {$finalPassword}" : ""),
+        ];
+    }
+
+    /**
+     * Actualiza el WhatsApp comercial de un usuario.
+     * Regla IDOR (R-04): el administrador edita cualquiera; el resto solo el propio.
+     *
+     * @param int $id Identificador del usuario objetivo
+     * @param string|null $whatsapp Nuevo número (null/vacío lo retira)
+     * @param array $currentUser Usuario autenticado que realiza la petición
+     * @return array{id: int, username: string, whatsapp: ?string}
+     * @throws InvalidArgumentException Si el formato es inválido (HTTP 422)
+     * @throws RuntimeException Si no existe (404) o sin autorización (403)
+     */
+    public function updateWhatsapp(int $id, ?string $whatsapp, array $currentUser): array {
+        if ($id <= 0) {
+            throw new InvalidArgumentException('El ID de usuario no es válido.', 422);
+        }
+
+        $user = $this->usuarioRepo->findByIdSafe($id);
+        if ($user === null) {
+            throw new RuntimeException("El usuario con ID #{$id} no existe.", 404);
+        }
+
+        $userRole = (string)($currentUser['rol'] ?? '');
+        $userId = (int)($currentUser['id'] ?? 0);
+        if ($userRole !== 'admin' && $userId !== $id) {
+            throw new RuntimeException('No tienes autorización para modificar el WhatsApp de otro usuario.', 403);
+        }
+
+        $clean = \App\Utils\WhatsAppHelper::sanitizeOptional($whatsapp);
+        $success = $this->usuarioRepo->updateWhatsapp($id, $clean);
+        if (!$success) {
+            throw new RuntimeException('No fue posible actualizar el WhatsApp del usuario.', 500);
+        }
+
+        return [
+            'id'       => $id,
+            'username' => (string)$user['username'],
+            'whatsapp' => $clean,
         ];
     }
 

@@ -40,7 +40,7 @@ class CreacionRepository {
                 c.precio, c.costo_materiales, c.cantidad_stock, c.horas_tejido,
                 c.descripcion, c.imagen_url, c.es_sobre_encargo, c.activo,
                 c.creado_en, c.actualizado_en, c.eliminado_en,
-                u.username AS artesano_username
+                u.username AS artesano_username, u.whatsapp AS artesano_whatsapp
             FROM creaciones c
             INNER JOIN usuarios u ON u.id = c.artesano_id
             WHERE c.id = :id
@@ -102,7 +102,7 @@ class CreacionRepository {
                 c.precio, c.costo_materiales, c.cantidad_stock, c.horas_tejido,
                 c.descripcion, c.imagen_url, c.es_sobre_encargo, c.activo,
                 c.creado_en, c.actualizado_en, c.eliminado_en,
-                u.username AS artesano_username
+                u.username AS artesano_username, u.whatsapp AS artesano_whatsapp
             FROM creaciones c
             INNER JOIN usuarios u ON u.id = c.artesano_id
             {$whereClause}
@@ -502,8 +502,11 @@ class CreacionRepository {
     private function hydrateRow(array $row): array {
         $artesanoId = (int)$row['artesano_id'];
         $artesanoUsername = (string)($row['artesano_username'] ?? '');
+        $artesanoWhatsapp = isset($row['artesano_whatsapp']) && $row['artesano_whatsapp'] !== null
+            ? (string)$row['artesano_whatsapp']
+            : null;
 
-        unset($row['artesano_username']);
+        unset($row['artesano_username'], $row['artesano_whatsapp']);
 
         $row['id']               = (int)$row['id'];
         $row['artesano_id']      = $artesanoId;
@@ -517,6 +520,7 @@ class CreacionRepository {
         $row['artesano'] = [
             'id'       => $artesanoId,
             'username' => $artesanoUsername,
+            'whatsapp' => $artesanoWhatsapp,
         ];
 
         return $row;

@@ -55,6 +55,16 @@
             </div>
             <div class="form-text text-muted small">Mínimo 6 caracteres. Se almacenará encriptada con <code>password_hash()</code>.</div>
           </div>
+
+          <!-- WhatsApp Comercial (Opcional) -->
+          <div class="mb-3">
+            <label for="nuevoWhatsapp" class="form-label fw-bold small">WhatsApp Comercial (opcional)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white" style="border-top-left-radius: var(--craft-radius-pill); border-bottom-left-radius: var(--craft-radius-pill);"><i class="bi bi-whatsapp text-success"></i></span>
+              <input type="tel" class="form-control input-craft-pill" id="nuevoWhatsapp" placeholder="+52 55 1234 5678" maxlength="20" autocomplete="off" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
+            </div>
+            <div class="form-text text-muted small">Número con el que los compradores coordinarán por WhatsApp. Vacío = sin botón de WhatsApp.</div>
+          </div>
         </div>
 
         <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">

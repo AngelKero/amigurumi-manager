@@ -38,5 +38,6 @@
 ## Backlog / Ideas 💡
 
 - **008 · Directorio de Creadores & Roles RBAC (Fase 4.5)** — Panel de administración de usuarios en `usuarios.php`, actualización reactiva de roles con salvaguarda ID #1, reseteo de claves y reactivación de cuentas.
+- **010 · WhatsApp al Artesano Vendedor (Fase 4.6)** — Campo opcional `usuarios.whatsapp`, `enlace_whatsapp` al artesano con mensaje en voz del comprador, `enlace_whatsapp_comprador` para el panel, exposición pública en ficha, alta/edición admin + autoservicio. **Implementada y verificada**: suite `tests/test-subfase-4.6-whatsapp-artesano.php` **64/64**, HTTP en vivo sin divergencia, regresión Fase 4 acumulada (**742/742**) y Fase 3 (**1.287**) en verde; reporte `docs/testing/subfase-4.6-whatsapp-artesano.md`. ✅ *(HALT: pendiente aprobación del usuario.)*
 
 > Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código. Las features 005–008 se planifican bajo el maestro `009` (subfases 4.2–4.5).

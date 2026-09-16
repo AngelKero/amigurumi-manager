@@ -48,7 +48,8 @@ class PedidoRepository {
                 c.cantidad_stock AS creacion_cantidad_stock,
                 c.es_sobre_encargo AS creacion_es_sobre_encargo,
                 c.artesano_id AS creacion_artesano_id,
-                u.username AS creacion_artesano_username
+                u.username AS creacion_artesano_username,
+                u.whatsapp AS creacion_artesano_whatsapp
             FROM pedidos p
             INNER JOIN creaciones c ON c.id = p.creacion_id
             INNER JOIN usuarios u ON u.id = c.artesano_id
@@ -220,7 +221,8 @@ class PedidoRepository {
                 c.cantidad_stock AS creacion_cantidad_stock,
                 c.es_sobre_encargo AS creacion_es_sobre_encargo,
                 c.artesano_id AS creacion_artesano_id,
-                u.username AS creacion_artesano_username
+                u.username AS creacion_artesano_username,
+                u.whatsapp AS creacion_artesano_whatsapp
             FROM pedidos p
             INNER JOIN creaciones c ON c.id = p.creacion_id
             INNER JOIN usuarios u ON u.id = c.artesano_id
@@ -624,6 +626,9 @@ class PedidoRepository {
                 'es_sobre_encargo'   => (int)($row['creacion_es_sobre_encargo'] ?? 0),
                 'artesano_id'        => (int)$row['creacion_artesano_id'],
                 'artesano_username'  => (string)$row['creacion_artesano_username'],
+                'artesano_whatsapp'  => isset($row['creacion_artesano_whatsapp']) && $row['creacion_artesano_whatsapp'] !== null
+                    ? (string)$row['creacion_artesano_whatsapp']
+                    : null,
             ]
         ];
     }

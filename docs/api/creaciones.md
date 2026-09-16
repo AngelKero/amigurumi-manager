@@ -56,8 +56,11 @@ curl -X GET "http://localhost:8000/api/creaciones/index.php?categoria=Fantas%C3%
       "es_sobre_encargo": 0,
       "artesano": {
         "id": 1,
-        "username": "admin"
+        "username": "admin",
+        "whatsapp": "5501112222"
       },
+      "artesano_whatsapp": "5501112222",
+      "enlace_whatsapp_artesano": "https://wa.me/525501112222?text=...",
       "metricas": {
         "margen_bruto_porcentaje": 73.33,
         "retorno_por_hora": 3882,
@@ -179,8 +182,11 @@ curl -X GET "http://localhost:8000/api/creaciones/detalle.php?id=1"
     "es_sobre_encargo": 0,
     "artesano": {
       "id": 1,
-      "username": "admin"
-    }
+      "username": "admin",
+      "whatsapp": "5501112222"
+    },
+    "artesano_whatsapp": "5501112222",
+    "enlace_whatsapp_artesano": "https://wa.me/525501112222?text=..."
   }
 }
 ```

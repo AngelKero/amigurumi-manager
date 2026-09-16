@@ -35,7 +35,7 @@ class UsuarioRepository {
      */
     public function findByUsername(string $username, bool $onlyActive = true): ?array {
         $sql = '
-            SELECT id, username, password_hash, rol, activo, creado_en, eliminado_en 
+            SELECT id, username, password_hash, rol, whatsapp, activo, creado_en, eliminado_en 
             FROM usuarios 
             WHERE username = :username
         ';
@@ -66,7 +66,7 @@ class UsuarioRepository {
      */
     public function findById(int $id, bool $onlyActive = true): ?array {
         $sql = '
-            SELECT id, username, password_hash, rol, activo, creado_en, eliminado_en 
+            SELECT id, username, password_hash, rol, whatsapp, activo, creado_en, eliminado_en 
             FROM usuarios 
             WHERE id = :id
         ';
@@ -97,7 +97,7 @@ class UsuarioRepository {
      */
     public function findByIdSafe(int $id, bool $onlyActive = true): ?array {
         $sql = '
-            SELECT id, username, rol, activo, creado_en, eliminado_en 
+            SELECT id, username, rol, whatsapp, activo, creado_en, eliminado_en 
             FROM usuarios 
             WHERE id = :id
         ';
@@ -150,7 +150,7 @@ class UsuarioRepository {
      * @return int Identificador insertado
      * @throws InvalidArgumentException Si los datos violan las reglas básicas de validación
      */
-    public function create(string $username, string $passwordHash, string $rol = 'artesano'): int {
+    public function create(string $username, string $passwordHash, string $rol = 'artesano', ?string $whatsapp = null): int {
         $username = trim($username);
         $rol = trim($rol);
 
@@ -159,17 +159,35 @@ class UsuarioRepository {
         }
 
         $stmt = $this->pdo->prepare('
-            INSERT INTO usuarios (username, password_hash, rol, activo, creado_en)
-            VALUES (:username, :password_hash, :rol, 1, datetime("now", "localtime"))
+            INSERT INTO usuarios (username, password_hash, rol, whatsapp, activo, creado_en)
+            VALUES (:username, :password_hash, :rol, :whatsapp, 1, datetime("now", "localtime"))
         ');
 
         $stmt->execute([
             ':username'      => $username,
             ':password_hash' => $passwordHash,
             ':rol'           => $rol,
+            ':whatsapp'      => $whatsapp !== null && trim($whatsapp) !== '' ? trim($whatsapp) : null,
         ]);
 
         return (int)$this->pdo->lastInsertId();
+    }
+
+    /**
+     * Actualiza el WhatsApp comercial de un usuario (contacto artesano → comprador).
+     * Acepta null para retirar el número (empty-state sin botón de WhatsApp).
+     */
+    public function updateWhatsapp(int $id, ?string $whatsapp): bool {
+        $stmt = $this->pdo->prepare('
+            UPDATE usuarios 
+            SET whatsapp = :whatsapp 
+            WHERE id = :id AND activo = 1
+        ');
+
+        return $stmt->execute([
+            ':whatsapp' => $whatsapp !== null && trim($whatsapp) !== '' ? trim($whatsapp) : null,
+            ':id'       => $id,
+        ]);
     }
 
     /**
@@ -287,7 +305,7 @@ class UsuarioRepository {
      */
     public function listAll(int $limit = 20, int $offset = 0, ?bool $onlyActive = true): array {
         $sql = '
-            SELECT id, username, rol, activo, creado_en, eliminado_en 
+            SELECT id, username, rol, whatsapp, activo, creado_en, eliminado_en 
             FROM usuarios 
         ';
         if ($onlyActive === true) {
@@ -336,7 +354,7 @@ class UsuarioRepository {
      */
     public function listAllWithCreationsCount(int $limit = 20, int $offset = 0, ?bool $onlyActive = true): array {
         $sql = '
-            SELECT u.id, u.username, u.rol, u.activo, u.creado_en, u.eliminado_en, COUNT(c.id) AS creaciones_asociadas
+            SELECT u.id, u.username, u.rol, u.whatsapp, u.activo, u.creado_en, u.eliminado_en, COUNT(c.id) AS creaciones_asociadas
             FROM usuarios u
             LEFT JOIN creaciones c ON c.artesano_id = u.id AND c.activo = 1
         ';

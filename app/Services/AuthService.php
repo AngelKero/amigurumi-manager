@@ -89,6 +89,7 @@ class AuthService {
                 'id'        => (int)$user['id'],
                 'username'  => (string)$user['username'],
                 'rol'       => (string)$user['rol'],
+                'whatsapp'  => isset($user['whatsapp']) && $user['whatsapp'] !== null ? (string)$user['whatsapp'] : null,
                 'creado_en' => (string)$user['creado_en'],
             ]
         ];

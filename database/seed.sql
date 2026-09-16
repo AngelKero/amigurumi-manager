@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     username TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     rol TEXT NOT NULL DEFAULT 'admin',
+    whatsapp TEXT DEFAULT NULL,
     activo INTEGER NOT NULL DEFAULT 1,
     creado_en TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
     eliminado_en TEXT DEFAULT NULL,
@@ -59,7 +60,15 @@ CREATE TABLE IF NOT EXISTS usuarios (
     -- QUÉ HACE: Restringe el campo activo a 1 (cuenta activa) o 0 (cuenta desactivada/eliminada lógicamente).
     -- REGLA DE NEGOCIO: Cero eliminaciones físicas; las bajas preservan la autoría e integridad histórica.
     CONSTRAINT chk_usuarios_activo 
-        CHECK(activo IN (0, 1))
+        CHECK(activo IN (0, 1)),
+
+    -- 5. WhatsApp del Artesano (Contacto Comercial Opcional)
+    -- QUÉ HACE: Permite NULL (sin número registrado) o texto de hasta 20 caracteres.
+    -- REGLA DE NEGOCIO: Canal directo comprador → artesano para coordinar encargos;
+    --   el enlace wa.me se construye en servidor (normalización E.164 MX) y si es
+    --   NULL el checkout oculta el botón de WhatsApp (empty-state).
+    CONSTRAINT chk_usuarios_whatsapp 
+        CHECK(whatsapp IS NULL OR length(trim(whatsapp)) <= 20)
 );
 
 -- Table: creaciones (Core Catalog & Physical Inventory in Crochet)
@@ -304,13 +313,14 @@ CREATE INDEX IF NOT EXISTS idx_tokens_revocados_expira ON tokens_revocados(expir
 
 -- 4.1 Users (Admin, Artisan, Assistant)
 -- Password: 'admin123' (verified bcrypt hash via password_hash)
-INSERT INTO usuarios (id, username, password_hash, rol, creado_en)
+INSERT INTO usuarios (id, username, password_hash, rol, whatsapp, creado_en)
 VALUES 
 (
     1,
     'admin',
     '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
     'admin',
+    '5501112222',
     datetime('now', 'localtime')
 ),
 (
@@ -318,6 +328,7 @@ VALUES
     'artesana_ana',
     '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
     'artesano',
+    '5512345678',
     datetime('now', '-10 days', 'localtime')
 ),
 (
@@ -325,6 +336,7 @@ VALUES
     'asistente_leo',
     '$2y$10$TiTdw7i0Dqey7iQKr1v6Ne/5GYbrWtUP/rMV8RsmT9BWR4k4ncb/S',
     'asistente',
+    NULL,
     datetime('now', '-8 days', 'localtime')
 );
 

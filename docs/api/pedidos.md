@@ -40,10 +40,11 @@ curl -X GET "http://localhost:8000/api/pedidos/index.php?estado_pedido=Pendiente
       "id": 1,
       "cliente_nombre": "Sofía Martínez",
       "cliente_contacto": "+52 55 1234 5678",
-      "enlace_whatsapp": "https://wa.me/525512345678",
+      "enlace_whatsapp": "https://wa.me/525501112222?text=...",
       "creacion": {
         "id": 1,
         "nombre": "Dragón Ignis",
+        "artesano_whatsapp": "5501112222",
         "imagen_url": "uploads/dragon_ignis.jpg",
         "precio_unitario_formateado": "$450.00 MXN"
       },
@@ -99,10 +100,23 @@ Endpoint público invocado desde el modal de checkout por los clientes de la web
     "cantidad": 1,
     "precio_final_formateado": "$450.00 MXN",
     "estado_pedido": "Pendiente",
-    "enlace_whatsapp": "https://wa.me/525512345678?text=..."
+    "enlace_whatsapp": "https://wa.me/525501112222?text=..."
   }
 }
 ```
+
+> **WhatsApp al artesano (Feature 010):** `enlace_whatsapp` apunta al número del
+> **artesano vendedor** (`usuarios.whatsapp`, opcional) con mensaje en voz del
+> comprador (*"¡Hola! Soy {comprador}, te escribo por mi pedido #{id} de
+> '{creación}' en Crochet Manager."*). Si el artesano no tiene número registrado,
+> `enlace_whatsapp` es `null` y el frontend oculta el botón con un hint alternativo.
+> `cliente_contacto` sigue siendo el teléfono del **comprador** (para que el artesano
+> lo contacte desde el panel).
+>
+> **WhatsApp al comprador (panel del artesano):** `enlace_whatsapp_comprador`
+> apunta al `cliente_contacto` con mensaje en voz del artesano (*"¡Hola
+> {comprador}! Te escribo de Crochet Manager con respecto a tu pedido..."*).
+> El panel (`orders.js`) usa este campo; el checkout usa `enlace_whatsapp`.
 
 ### Errores Posibles
 - **`HTTP 409 Conflict`:** Stock insuficiente para entrega inmediata.

@@ -80,6 +80,12 @@
           </div>
         </div>
 
+        <!-- Contacto directo con el artesano (público, server-side) -->
+        <a href="#" id="detailArtisanWhatsappBtn" class="btn btn-success btn-craft-stitched w-100 mt-3 d-none align-items-center justify-content-center gap-2" target="_blank" rel="noopener">
+          <i class="bi bi-whatsapp"></i><span>Contactar por WhatsApp</span>
+        </a>
+        <small id="detailArtisanWhatsappHint" class="text-muted text-center mt-1 d-block d-none" style="font-size: 0.72rem;">Coordinación directa con el artesano creador</small>
+
       </div>
     </div>
 

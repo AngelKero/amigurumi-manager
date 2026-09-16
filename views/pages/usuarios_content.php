@@ -11,6 +11,7 @@ $usuariosList = [
     'username' => 'admin',
     'rol' => 'admin',
     'rol_label' => 'Administrador Titular',
+    'whatsapp' => '5501112222',
     'creaciones_count' => 3,
     'creado_en' => '2026-09-10 14:00'
   ],
@@ -19,6 +20,7 @@ $usuariosList = [
     'username' => 'artesana_ana',
     'rol' => 'artesano',
     'rol_label' => 'Artesano / Diseñadora',
+    'whatsapp' => '5512345678',
     'creaciones_count' => 0,
     'creado_en' => '2026-09-11 10:30'
   ],
@@ -27,6 +29,7 @@ $usuariosList = [
     'username' => 'asistente_leo',
     'rol' => 'asistente',
     'rol_label' => 'Asistente de Envíos',
+    'whatsapp' => null,
     'creaciones_count' => 0,
     'creado_en' => '2026-09-11 11:15'
   ]
@@ -133,6 +136,7 @@ $usuariosList = [
           <tr>
             <th scope="col" class="py-3 px-3">ID</th>
             <th scope="col" class="py-3">Usuario / Perfil</th>
+            <th scope="col" class="py-3">WhatsApp</th>
             <th scope="col" class="py-3">Rol del Sistema</th>
             <th scope="col" class="py-3 text-center">Creaciones en Catálogo</th>
             <th scope="col" class="py-3">Fecha de Registro</th>
@@ -141,7 +145,7 @@ $usuariosList = [
         </thead>
         <tbody>
           <?php foreach ($usuariosList as $u): ?>
-            <tr data-user-id="<?= $u['id'] ?>" data-username="<?= htmlspecialchars($u['username']) ?>" data-rol="<?= $u['rol'] ?>" id="userRow_<?= $u['id'] ?>">
+            <tr data-user-id="<?= $u['id'] ?>" data-username="<?= htmlspecialchars($u['username']) ?>" data-rol="<?= $u['rol'] ?>" data-whatsapp="<?= htmlspecialchars((string)($u['whatsapp'] ?? '')) ?>" id="userRow_<?= $u['id'] ?>">
               <td class="fw-bold font-monospace text-primary px-3">#<?= $u['id'] ?></td>
               <td>
                 <div class="d-flex align-items-center gap-3">
@@ -153,6 +157,13 @@ $usuariosList = [
                     <small class="text-muted">Creador Independiente</small>
                   </div>
                 </div>
+              </td>
+              <td class="user-whatsapp-cell">
+                <?php if (!empty($u['whatsapp'])): ?>
+                  <span class="font-monospace small text-dark text-nowrap"><i class="bi bi-whatsapp text-success me-1"></i><?= htmlspecialchars($u['whatsapp']) ?></span>
+                <?php else: ?>
+                  <span class="text-muted small">—</span>
+                <?php endif; ?>
               </td>
               <td class="user-role-cell">
                 <?php if ($u['rol'] === 'admin'): ?>
@@ -184,6 +195,7 @@ $usuariosList = [
                           data-user-id="<?= $u['id'] ?>"
                           data-username="<?= htmlspecialchars($u['username']) ?>"
                           data-rol="<?= $u['rol'] ?>"
+                          data-whatsapp="<?= htmlspecialchars((string)($u['whatsapp'] ?? '')) ?>"
                           title="Modificar Rol de Acceso">
                     <i class="bi bi-pencil-square"></i>
                   </button>

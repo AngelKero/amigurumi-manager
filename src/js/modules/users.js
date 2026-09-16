@@ -10,6 +10,40 @@
  */
 
 import { escapeHtml } from './dom-safe.js';
+import { getToken } from './auth.js';
+
+const WHATSAPP_URL = '/api/usuarios/actualizar-whatsapp.php';
+
+/** Validación espejo del servidor (WhatsAppHelper): vacío = sin número. */
+function validateWhatsapp(raw) {
+  const value = String(raw || '').trim();
+  if (value === '') return { ok: true, value: '' };
+  if (value.length > 20) return { ok: false };
+  const digits = value.replace(/\D/g, '');
+  if (digits.length < 8 || digits.length > 15) return { ok: false };
+  return { ok: true, value };
+}
+
+/** Render DOM-safe (H-004) de la celda WhatsApp de una fila del directorio. */
+function renderWhatsappCell(cell, value) {
+  if (!cell) return;
+  cell.replaceChildren();
+  const clean = String(value || '').trim();
+  if (clean === '') {
+    const dash = document.createElement('span');
+    dash.className = 'text-muted small';
+    dash.textContent = '—';
+    cell.appendChild(dash);
+    return;
+  }
+  const wrap = document.createElement('span');
+  wrap.className = 'font-monospace small text-dark text-nowrap';
+  const icon = document.createElement('i');
+  icon.className = 'bi bi-whatsapp text-success me-1';
+  wrap.appendChild(icon);
+  wrap.appendChild(document.createTextNode(clean));
+  cell.appendChild(wrap);
+}
 
 export function initUsers() {
   const formCrearUsuario = document.getElementById('formCrearUsuario');
@@ -66,6 +100,7 @@ export function initUsers() {
         const userId = btn.getAttribute('data-user-id') || '1';
         const username = btn.getAttribute('data-username') || 'admin';
         const currentRol = btn.getAttribute('data-rol') || 'artesano';
+        const currentWa = btn.getAttribute('data-whatsapp') || '';
 
         const inputUserId = document.getElementById('editRolUserId');
         const displayUsername = document.getElementById('editRolUsernameDisplay');
@@ -73,11 +108,13 @@ export function initUsers() {
         const selectRol = document.getElementById('selectEditarRol');
         const alertBox = document.getElementById('editarRolAlert');
         const rootWarning = document.getElementById('adminRootWarning');
+        const inputWa = document.getElementById('editWhatsapp');
 
         if (inputUserId) inputUserId.value = userId;
         if (displayUsername) displayUsername.textContent = '@' + username;
         if (badgeId) badgeId.textContent = 'ID: #' + userId;
         if (selectRol) selectRol.value = currentRol;
+        if (inputWa) inputWa.value = currentWa;
         if (alertBox) alertBox.classList.add('d-none');
 
         // Salvaguarda especial para Administrador Principal (#1)
@@ -164,6 +201,7 @@ export function initUsers() {
     const usernameInput = document.getElementById('nuevoUsername');
     const rolInput = document.getElementById('nuevoRol');
     const passwordInput = document.getElementById('nuevoPassword');
+    const whatsappInput = document.getElementById('nuevoWhatsapp');
     const alertEl = document.getElementById('usuarioAlert');
 
     formCrearUsuario.addEventListener('submit', (e) => {
@@ -172,6 +210,7 @@ export function initUsers() {
       const username = usernameInput ? usernameInput.value.trim().replace(/^@/, '') : '';
       const rol = rolInput ? rolInput.value : 'artesano';
       const password = passwordInput ? passwordInput.value : '';
+      const waCheck = validateWhatsapp(whatsappInput ? whatsappInput.value : '');
 
       // Validar regla SQLite: chk_usuarios_username
       if (username.length < 3 || username.length > 50) {
@@ -190,6 +229,14 @@ export function initUsers() {
         return;
       }
 
+      if (!waCheck.ok) {
+        if (alertEl) {
+          alertEl.textContent = 'WhatsApp inválido: usa entre 8 y 15 dígitos (máx. 20 caracteres) o déjalo vacío.';
+          alertEl.classList.remove('d-none');
+        }
+        return;
+      }
+
       // Agregar fila interactiva en la tabla
       if (tablaBody) {
         const newId = tablaBody.children.length + 1;
@@ -200,11 +247,16 @@ export function initUsers() {
         const escUsername = escapeHtml(username);
         const escRol = escapeHtml(rol);
         const escInitial = escapeHtml(initial);
+        const escWa = escapeHtml(waCheck.value);
+        const waCell = waCheck.value === ''
+          ? '<span class="text-muted small">—</span>'
+          : `<span class="font-monospace small text-dark text-nowrap"><i class="bi bi-whatsapp text-success me-1"></i>${escWa}</span>`;
 
         const tr = document.createElement('tr');
         tr.setAttribute('data-user-id', String(newId));
         tr.setAttribute('data-username', escUsername);
         tr.setAttribute('data-rol', escRol);
+        tr.setAttribute('data-whatsapp', escWa);
         tr.id = `userRow_${newId}`;
         tr.innerHTML = `
           <td class="fw-bold font-monospace text-primary px-3">#${newId}</td>
@@ -217,6 +269,7 @@ export function initUsers() {
               </div>
             </div>
           </td>
+          <td class="user-whatsapp-cell">${waCell}</td>
           <td class="user-role-cell">${badgeHtml}</td>
           <td class="text-center">
             <span class="badge bg-light text-dark font-monospace border px-2 py-1">
@@ -233,6 +286,7 @@ export function initUsers() {
                       data-user-id="${newId}"
                       data-username="${escUsername}"
                       data-rol="${escRol}"
+                      data-whatsapp="${escWa}"
                       title="Modificar Rol de Acceso">
                 <i class="bi bi-pencil-square"></i>
               </button>
@@ -245,7 +299,63 @@ export function initUsers() {
         `;
         tablaBody.appendChild(tr);
 
-        bindEditRoleButtons();
+  bindEditRoleButtons();
+
+  // 1b. Guardado real del WhatsApp (API; admin cualquiera, resto solo propio)
+  const btnSaveWa = document.getElementById('btnGuardarWhatsapp');
+  if (btnSaveWa && !btnSaveWa.dataset.bound) {
+    btnSaveWa.dataset.bound = 'true';
+    btnSaveWa.addEventListener('click', async () => {
+      const inputUserId = document.getElementById('editRolUserId');
+      const inputWa = document.getElementById('editWhatsapp');
+      const alertBox = document.getElementById('editarRolAlert');
+      const say = (msg) => {
+        if (alertBox) {
+          alertBox.textContent = msg;
+          alertBox.classList.remove('d-none');
+        }
+      };
+      const userId = inputUserId ? inputUserId.value : '';
+      if (!userId) return;
+      const check = validateWhatsapp(inputWa ? inputWa.value : '');
+      if (!check.ok) {
+        say('WhatsApp inválido: usa entre 8 y 15 dígitos (máx. 20 caracteres) o déjalo vacío.');
+        return;
+      }
+      const token = getToken();
+      if (!token) {
+        say('Se requiere sesión activa para guardar el WhatsApp.');
+        return;
+      }
+      btnSaveWa.disabled = true;
+      try {
+        const res = await fetch(WHATSAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ id: Number(userId), whatsapp: check.value === '' ? null : check.value }),
+        });
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json || json.exito !== true) {
+          const msg = (json && json.error && json.error.mensaje) || `No se pudo guardar (HTTP ${res.status}).`;
+          say(String(msg));
+          return;
+        }
+        const saved = (json.datos && json.datos.whatsapp != null) ? String(json.datos.whatsapp) : '';
+        const targetRow = document.querySelector(`#tablaUsuarios tr[data-user-id="${userId}"]`);
+        if (targetRow) {
+          targetRow.setAttribute('data-whatsapp', saved);
+          renderWhatsappCell(targetRow.querySelector('.user-whatsapp-cell'), saved);
+          const editBtn = targetRow.querySelector('.btn-editar-rol');
+          if (editBtn) editBtn.setAttribute('data-whatsapp', saved);
+        }
+        say(saved === '' ? 'WhatsApp retirado: el checkout ocultará el botón.' : `WhatsApp guardado: ${saved}`);
+      } catch {
+        say('No se pudo contactar al servidor. Revisa tu conexión.');
+      } finally {
+        btnSaveWa.disabled = false;
+      }
+    });
+  }
         bindDeleteUserButtons();
         recalculateUserKPIs();
       }

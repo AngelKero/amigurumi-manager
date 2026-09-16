@@ -145,7 +145,7 @@ $order = $pedidoService->requestPublicOrder([
 $orderId = (int)$order['id'];
 TestHelper::assertTrue($orderId > 0, 'requestPublicOrder() registra el pedido y devuelve su ID');
 TestHelper::assertSame(40000, (int)$order['precio_final'], 'El precio final lo calcula el servidor (20000×2, R-06)');
-TestHelper::assertStringContains('wa.me/525548921039', (string)($order['enlace_whatsapp'] ?? ''), 'El enlace usa E.164 con prefijo 52');
+TestHelper::assertStringContains('wa.me/525512345678', (string)($order['enlace_whatsapp'] ?? ''), 'El enlace apunta al WhatsApp del artesano (E.164 con prefijo 52)');
 TestHelper::assertStringContains('?text=', (string)($order['enlace_whatsapp'] ?? ''), 'El enlace incluye mensaje ?text= codificado');
 TestHelper::assertSame('Pendiente', (string)$order['estado_pedido'], 'El pedido nace Pendiente');
 TestHelper::assertSame('Pendiente', (string)$order['estado_pago'], 'El pago nace Pendiente');
@@ -358,7 +358,7 @@ $httpBuy = TestHelper::curl('POST', 'http://localhost:8000/api/pedidos/solicitar
 ]));
 TestHelper::assertSame(201, $httpBuy['status'], 'HTTP solicitar público devuelve 201 Created');
 TestHelper::assertSame(40000, (int)($httpBuy['json']['datos']['precio_final'] ?? 0), 'HTTP: precio congelado 40000¢ por servidor');
-TestHelper::assertStringContains('wa.me/525511223344', (string)($httpBuy['json']['datos']['enlace_whatsapp'] ?? ''), 'HTTP: WhatsApp E.164 con prefijo 52');
+TestHelper::assertStringContains('wa.me/525512345678', (string)($httpBuy['json']['datos']['enlace_whatsapp'] ?? ''), 'HTTP: WhatsApp del artesano (E.164 con prefijo 52)');
 $httpOrderId = (int)($httpBuy['json']['datos']['id'] ?? 0);
 $httpDetail = TestHelper::curl('GET', "http://localhost:8000/api/creaciones/detalle.php?id={$httpPieceId}");
 TestHelper::assertSame(1, (int)($httpDetail['json']['datos']['cantidad_stock'] ?? -1), 'HTTP: el stock bajó de 3 a 1 (atómico)');

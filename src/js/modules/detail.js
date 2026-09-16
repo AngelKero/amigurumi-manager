@@ -108,6 +108,25 @@ function setDetailImage(item) {
   if (lightCaption) {
     lightCaption.textContent = material !== '' ? `${nombre} · ${material}` : nombre;
   }
+
+  // Contacto público con el artesano (010-3): server-side, oculto si no hay número
+  const waBtn = document.getElementById('detailArtisanWhatsappBtn');
+  const waHint = document.getElementById('detailArtisanWhatsappHint');
+  const waLink = typeof item.enlace_whatsapp_artesano === 'string' && item.enlace_whatsapp_artesano.trim() !== ''
+    ? item.enlace_whatsapp_artesano.trim()
+    : '';
+  if (waBtn) {
+    if (waLink !== '') {
+      waBtn.setAttribute('href', waLink);
+      waBtn.classList.remove('d-none');
+      waBtn.classList.add('d-flex');
+    } else {
+      waBtn.classList.add('d-none');
+      waBtn.classList.remove('d-flex');
+    }
+  }
+  if (waHint) waHint.classList.toggle('d-none', waLink === '');
+
   updateSourceBadges();
 }
 

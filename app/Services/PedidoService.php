@@ -17,21 +17,26 @@ namespace App\Services;
 use App\Core\Config;
 use App\Repositories\CreacionRepository;
 use App\Repositories\PedidoRepository;
+use App\Repositories\UsuarioRepository;
 use App\Utils\CurrencyHelper;
 use App\Utils\PaginationHelper;
+use App\Utils\WhatsAppHelper;
 use InvalidArgumentException;
 use RuntimeException;
 
 class PedidoService {
     private PedidoRepository $pedidoRepo;
     private CreacionRepository $creacionRepo;
+    private UsuarioRepository $usuarioRepo;
 
     public function __construct(
         ?PedidoRepository $pedidoRepo = null,
-        ?CreacionRepository $creacionRepo = null
+        ?CreacionRepository $creacionRepo = null,
+        ?UsuarioRepository $usuarioRepo = null
     ) {
         $this->pedidoRepo = $pedidoRepo ?? new PedidoRepository();
         $this->creacionRepo = $creacionRepo ?? new CreacionRepository();
+        $this->usuarioRepo = $usuarioRepo ?? new UsuarioRepository();
     }
 
     /**
@@ -188,6 +193,13 @@ class PedidoService {
         $pedidoId = $this->pedidoRepo->createAtomic($pedidoData, $isCustomOrder);
         $pedidoCreado = $this->pedidoRepo->findById($pedidoId);
 
+        // WhatsApp del artesano vendedor (010-4: el enlace existente cambia de
+        // destino comprador → artesano; null si no tiene número registrado)
+        $artesano = $this->usuarioRepo->findByIdSafe((int)$creacion['artesano_id']);
+        $artesanoWhatsapp = is_array($artesano) && isset($artesano['whatsapp']) && $artesano['whatsapp'] !== null
+            ? (string)$artesano['whatsapp']
+            : null;
+
         return [
             'id'                      => $pedidoId,
             'creacion_id'             => $creacionId,
@@ -198,7 +210,8 @@ class PedidoService {
             'estado_pedido'           => 'Pendiente',
             'estado_pago'             => 'Pendiente',
             'es_sobre_encargo'        => $isCustomOrder ? 1 : 0,
-            'enlace_whatsapp'         => $this->buildWhatsAppLink($clienteContacto, $clienteNombre, $pedidoId, (string)$creacion['nombre']),
+            'enlace_whatsapp'         => $this->buildWhatsAppLink($artesanoWhatsapp, $clienteNombre, $pedidoId, (string)$creacion['nombre']),
+            'enlace_whatsapp_comprador' => $this->buildBuyerWhatsAppLink($clienteContacto, $clienteNombre, $pedidoId, (string)$creacion['nombre']),
             'mensaje'                 => $isCustomOrder 
                 ? 'Encargo registrado exitosamente. El artesano se pondrá en contacto contigo para coordinar detalles y tiempos de confección.'
                 : 'Pedido registrado exitosamente. El artesano se pondrá en contacto contigo para acordar la entrega.',
@@ -433,33 +446,44 @@ class PedidoService {
 
     /**
      * Construye un enlace directo a WhatsApp (https://wa.me/...) con mensaje pre-redactado.
-     * 
-     * @param string $phone Teléfono o contacto del cliente
-     * @param string $clientName Nombre del cliente
+     * Destino: teléfono del artesano vendedor; voz del mensaje: comprador → artesano.
+     *
+     * @param string|null $phone Teléfono del artesano (null = sin número → null)
+     * @param string $clientName Nombre del cliente comprador
      * @param int $orderId Número de pedido
      * @param string $creationName Nombre de la pieza en crochet
-     * @return string|null URL de WhatsApp o null si el teléfono no es válido
+     * @return string|null URL de WhatsApp o null si el artesano no tiene número válido
      */
     public function buildWhatsAppLink(
-        string $phone,
+        ?string $phone,
         string $clientName,
         int $orderId,
         string $creationName
     ): ?string {
-        $cleanPhone = preg_replace('/[^\d]/', '', $phone);
+        $message = "¡Hola! Soy {$clientName}, te escribo por mi pedido #{$orderId} de '{$creationName}' en Crochet Manager.";
 
-        if (empty($cleanPhone) || strlen($cleanPhone) < 8) {
-            return null;
-        }
+        return WhatsAppHelper::link($phone, $message);
+    }
 
-        // Si son 10 dígitos nacionales (formato mexicano habitual sin código de país), anteponer 52
-        if (strlen($cleanPhone) === 10) {
-            $cleanPhone = '52' . $cleanPhone;
-        }
-
+    /**
+     * Construye el enlace para que el ARTESANO contacte al COMPRADOR
+     * (panel de pedidos). Voz del mensaje: artesano → comprador.
+     *
+     * @param string $buyerPhone Teléfono del comprador (cliente_contacto)
+     * @param string $clientName Nombre del cliente comprador
+     * @param int $orderId Número de pedido
+     * @param string $creationName Nombre de la pieza en crochet
+     * @return string|null URL de WhatsApp o null si el contacto no es válido
+     */
+    public function buildBuyerWhatsAppLink(
+        string $buyerPhone,
+        string $clientName,
+        int $orderId,
+        string $creationName
+    ): ?string {
         $message = "¡Hola {$clientName}! Te escribo de Crochet Manager con respecto a tu pedido #{$orderId} de '{$creationName}'.";
 
-        return 'https://wa.me/' . $cleanPhone . '?text=' . rawurlencode($message);
+        return WhatsAppHelper::link($buyerPhone, $message);
     }
 
     /**
@@ -476,6 +500,14 @@ class PedidoService {
         }
 
         $order['enlace_whatsapp'] = $this->buildWhatsAppLink(
+            isset($order['creacion']['artesano_whatsapp']) && $order['creacion']['artesano_whatsapp'] !== null
+                ? (string)$order['creacion']['artesano_whatsapp']
+                : null,
+            (string)$order['cliente_nombre'],
+            (int)$order['id'],
+            (string)($order['creacion']['nombre'] ?? 'pieza en crochet')
+        );
+        $order['enlace_whatsapp_comprador'] = $this->buildBuyerWhatsAppLink(
             (string)$order['cliente_contacto'],
             (string)$order['cliente_nombre'],
             (int)$order['id'],

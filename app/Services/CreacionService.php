@@ -19,6 +19,7 @@ use App\Repositories\CreacionRepository;
 use App\Repositories\UsuarioRepository;
 use App\Utils\CurrencyHelper;
 use App\Utils\PaginationHelper;
+use App\Utils\WhatsAppHelper;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -717,6 +718,19 @@ class CreacionService {
      */
     private function enrichCreation(array $creacion): array {
         $enriched = CurrencyHelper::enrichCreation($creacion);
+
+        // Contacto público del artesano vendedor (010-3): número crudo + enlace
+        // wa.me server-side (null cuando no hay número registrado).
+        $artesanoWhatsapp = isset($enriched['artesano']['whatsapp']) && $enriched['artesano']['whatsapp'] !== null
+            ? (string)$enriched['artesano']['whatsapp']
+            : null;
+        $enriched['artesano_whatsapp'] = $artesanoWhatsapp;
+        $enriched['enlace_whatsapp_artesano'] = $artesanoWhatsapp !== null
+            ? WhatsAppHelper::link(
+                $artesanoWhatsapp,
+                "¡Hola! Te escribo por tu creación '" . (string)($enriched['nombre'] ?? 'pieza en crochet') . "' en Crochet Manager."
+            )
+            : null;
 
         // R-09: vector temático SVG de respaldo por categoría/nombre para renders resilientes
         // (p. ej. piezas base cuya fotografía original no está presente en uploads/).

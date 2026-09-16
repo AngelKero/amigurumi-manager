@@ -131,12 +131,25 @@ export function initCheckout() {
     updateTotal();
   }
 
-  // Apertura desde catálogo (data-* reales) o detalle (data-* propagados por detail.js)
-  document.querySelectorAll('.btn-buy-product, #btnComprarDetalle, #btnDetalleCheckout').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      openWithPiece(readPieceFromButton(btn));
-    });
+  // Apertura desde catálogo (data-* reales) o detalle (data-* propagados por detail.js).
+  // Las tarjetas del catálogo se renderizan de forma asíncrona vía fetch
+  // DESPUÉS de este init, así que el binding directo por querySelectorAll
+  // nunca las alcanzaba (el modal abría vacío en /index.php). Delegación en
+  // documento + show.bs.modal con relatedTarget: cubre botones estáticos,
+  // dinámicos y aperturas programáticas de Bootstrap.
+  const BUY_SELECTOR = '.btn-buy-product, #btnComprarDetalle, #btnDetalleCheckout';
+  document.addEventListener('click', (e) => {
+    const target = e.target instanceof Element ? e.target.closest(BUY_SELECTOR) : null;
+    if (!target || target.disabled) return;
+    openWithPiece(readPieceFromButton(target));
   });
+  if (checkoutModal) {
+    checkoutModal.addEventListener('show.bs.modal', (event) => {
+      const related = event && event.relatedTarget;
+      const btn = related instanceof Element ? related.closest(BUY_SELECTOR) : null;
+      if (btn && !btn.disabled) openWithPiece(readPieceFromButton(btn));
+    });
+  }
 
   if (btnDec && btnInc && inputQty) {
     btnDec.addEventListener('click', () => {
@@ -180,7 +193,7 @@ export function initCheckout() {
     if (waHint) {
       waHint.textContent = datos.enlace_whatsapp
         ? 'Toca el botón para coordinar la entrega directamente con el artesano.'
-        : 'El artesano te contactará con los datos proporcionados.';
+        : 'El artesano aún no registra WhatsApp; te contactará con los datos que dejaste.';
     }
   }
 

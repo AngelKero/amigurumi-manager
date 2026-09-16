@@ -37,6 +37,7 @@ curl -X GET "http://localhost:8000/api/usuarios/index.php?estado=activos&pagina=
       "id": 1,
       "username": "admin",
       "rol": "admin",
+      "whatsapp": "5501112222",
       "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
       "eliminado_en": null,
@@ -46,6 +47,7 @@ curl -X GET "http://localhost:8000/api/usuarios/index.php?estado=activos&pagina=
       "id": 2,
       "username": "artesana_ana",
       "rol": "artesano",
+      "whatsapp": "5512345678",
       "activo": 1,
       "creado_en": "2026-09-11 13:30:52",
       "eliminado_en": null,
@@ -79,6 +81,7 @@ Da de alta a un nuevo usuario en la plataforma con contraseña encriptada con bc
 | `username` | `string` | Sí | Nombre alfanumérico único (3 a 50 caracteres). |
 | `password` | `string` | Sí | Contraseña inicial (mínimo 6 caracteres). |
 | `rol` | `string` | No | `admin`, `artesano` o `asistente` (defecto: `artesano`). |
+| `whatsapp` | `string` | No | WhatsApp comercial opcional (máx 20 caracteres, 8–15 dígitos; `null`/vacío = sin número). |
 
 ### Respuesta Exitosa (`HTTP 201 Created`)
 ```json
@@ -88,7 +91,8 @@ Da de alta a un nuevo usuario en la plataforma con contraseña encriptada con bc
   "datos": {
     "id": 4,
     "username": "artesano_mateo",
-    "rol": "artesano"
+    "rol": "artesano",
+    "whatsapp": "5590001111"
   }
 }
 ```
@@ -223,3 +227,30 @@ Restaura el acceso de un usuario previamente dado de baja lógica (`activo = 1`,
 ### Errores Posibles
 - **`HTTP 409 Conflict`:** La cuenta ya se encuentra activa.
 - **`HTTP 404 Not Found`:** El usuario no existe en la base de datos.
+
+---
+
+## 8. Actualizar WhatsApp Comercial (`POST /api/usuarios/actualizar-whatsapp.php`)
+
+Registra o retira el número de WhatsApp con el que los compradores coordinan con el artesano (Feature 010).
+
+- **Acceso:** Protegido (`RoleGuard::artisanOrAdmin()` + IDOR en servicio: `admin` edita cualquiera, el resto solo el propio → **`HTTP 403 Forbidden`** en otro caso).
+- **Payload:** `{"id": 2, "whatsapp": "+52 55 1234 5678"}` (`null`/vacío retira el número; el checkout oculta entonces el botón).
+
+### Respuesta Exitosa (`HTTP 200 OK`)
+```json
+{
+  "exito": true,
+  "mensaje": "WhatsApp de contacto actualizado exitosamente.",
+  "datos": {
+    "id": 2,
+    "username": "artesana_ana",
+    "whatsapp": "+52 55 1234 5678"
+  }
+}
+```
+
+### Errores Posibles
+- **`HTTP 422 Unprocessable Entity`:** Más de 20 caracteres o menos de 8 / más de 15 dígitos.
+- **`HTTP 403 Forbidden`:** Intentar modificar el número de otro usuario sin ser admin.
+- **`HTTP 404 Not Found`:** El usuario no existe.

@@ -1,7 +1,7 @@
 <?php
 /**
- * REST Controller: Register New Creator or Platform User
- * Endpoint: POST /api/usuarios/crear.php
+ * REST Controller: Update Artisan WhatsApp Contact
+ * Endpoint: POST /api/usuarios/actualizar-whatsapp.php
  * Algodón Nórdico Design System
  */
 
@@ -22,22 +22,20 @@ if (Request::method() !== 'POST') {
     Response::error('Método HTTP no permitido. Se requiere POST.', 405);
 }
 
-// 3. Control de acceso estricto: solo administradores
-RoleGuard::adminOnly();
+// 3. Control de acceso: artesanos y administradores (el servicio aplica IDOR)
+$currentUser = RoleGuard::artisanOrAdmin();
 
-// 4. Extracción de datos del cuerpo (JSON o formulario)
-$username = (string)Request::input('username', '');
-$password = (string)Request::input('password', '');
-$rol = (string)Request::input('rol', 'artesano');
+// 4. Extracción de datos del cuerpo
+$id = (int)Request::input('id', 0);
 $whatsappRaw = Request::input('whatsapp', null);
 $whatsapp = $whatsappRaw !== null ? (string)$whatsappRaw : null;
 
 // 5. Delegación a la capa de servicio
 try {
     $usuarioService = new UsuarioService();
-    $newUser = $usuarioService->createUser($username, $password, $rol, $whatsapp);
+    $updated = $usuarioService->updateWhatsapp($id, $whatsapp, $currentUser);
 
-    Response::success($newUser, 'Creador registrado exitosamente en la plataforma.', 201);
+    Response::success($updated, 'WhatsApp de contacto actualizado exitosamente.', 200);
 } catch (InvalidArgumentException $e) {
     Response::error($e->getMessage(), 422);
 } catch (RuntimeException $e) {

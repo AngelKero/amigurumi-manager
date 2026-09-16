@@ -332,7 +332,7 @@ TestHelper::assert($xssOrderId > 0, 'Pedido con payloads XSS registrado con éxi
 // Verificar que el enlace de WhatsApp está debidamente codificado con rawurlencode
 $enrichedOrder = $pedidoService->getOrderById($xssOrderId, $adminUser);
 $waLink = (string)$enrichedOrder['enlace_whatsapp'];
-TestHelper::assertStringContains('https://wa.me/525512345678?text=', $waLink, 'Enlace de WhatsApp tiene estructura E.164 segura');
+TestHelper::assertStringContains('https://wa.me/525501112222?text=', $waLink, 'Enlace de WhatsApp al artesano vendedor (E.164, destino vendedor)');
 TestHelper::assertFalse(str_contains($waLink, '<svg'), 'Enlace de WhatsApp no contiene caracteres <svg sin codificar');
 TestHelper::assertFalse(str_contains($waLink, '<script>'), 'Enlace de WhatsApp no contiene caracteres <script> sin codificar');
 TestHelper::assertStringContains('%3Csvg', $waLink, 'Caracteres <svg fueron codificados en porcentaje como %3Csvg');

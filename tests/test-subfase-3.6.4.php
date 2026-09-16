@@ -612,7 +612,7 @@ TestHelper::assertStringContains('🎁', (string)$enrichedMultibyteOrder['notas'
 // Validar enlace WhatsApp
 $waLink = $enrichedMultibyteOrder['enlace_whatsapp'];
 TestHelper::assertNotNull($waLink, 'Enlace de WhatsApp generado');
-TestHelper::assertStringContains('https://wa.me/525598765432', $waLink, 'Número de WhatsApp normalizado a E.164 (+52 10 dígitos)');
+TestHelper::assertStringContains('https://wa.me/525501112222', $waLink, 'Enlace dirigido al WhatsApp del artesano vendedor (E.164)');
 TestHelper::assertStringContains(rawurlencode('Åse Øyvindson • Häkeln Taller 🧵'), $waLink, 'Nombre del cliente codificado con rawurlencode');
 
 // Limpieza sección 4

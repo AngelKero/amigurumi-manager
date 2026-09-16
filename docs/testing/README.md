@@ -25,9 +25,10 @@
 | **4.3.2** | Contadores Correctos del Panel (Feature 006) | `tests/test-subfase-4.3.2.php` | 43 / 43 (100%) | ✅ Aprobado | [Ver Reporte 4.3.2](./subfase-4.3.2-contadores.md) |
 | **4.3.3** | Centavos Multipart & Subida Clicable (Feature 006) | `tests/test-subfase-4.3.3.php` | 22 / 22 (100%) | ✅ Aprobado | [Ver Reporte 4.3.3](./subfase-4.3.3-centavos-upload.md) |
 | **4.4** | Checkout Público, Pedidos Atómicos & WhatsApp (Feature 007) | `tests/test-subfase-4.4.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 4.4](./subfase-4.4-pedidos.md) |
+| **4.6** | WhatsApp al Artesano Vendedor (Feature 010) | `tests/test-subfase-4.6-whatsapp-artesano.php` | 64 / 64 (100%) | ✅ Aprobado | [Ver Reporte 4.6](./subfase-4.6-whatsapp-artesano.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **678 / 678 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.4)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **742 / 742 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.4 + 4.6)** · verificado con `php tests/test-fase-4-acumulado.php`.
 
 ---
 
@@ -85,6 +86,7 @@ proyecto-web/
 │   ├── subfase-4.3.2-contadores.md  # Reporte de Contadores Correctos del Panel (Fase 4)
 │   ├── subfase-4.3.3-centavos-upload.md  # Reporte de Centavos Multipart & Subida Clicable (Fase 4)
 │   ├── subfase-4.4-pedidos.md  # Reporte de Checkout Público, Pedidos Atómicos & WhatsApp (Fase 4)
+│   ├── subfase-4.6-whatsapp-artesano.md  # Reporte de WhatsApp al Artesano Vendedor (Fase 4)
 │   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
@@ -106,6 +108,7 @@ proyecto-web/
 │   ├── test-subfase-4.3.2.php         # Suite de Contadores Correctos del Panel (006)
 │   ├── test-subfase-4.3.3.php         # Suite de Centavos Multipart & Subida Clicable (006)
 │   ├── test-subfase-4.4.php           # Suite de Checkout Público & Pedidos Atómicos (007)
+│   ├── test-subfase-4.6-whatsapp-artesano.php # Suite de WhatsApp al Artesano Vendedor (010)
 │   └── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)

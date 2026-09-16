@@ -226,8 +226,12 @@ function renderCard(item) {
 
   part('clienteNombre').textContent = String(item.cliente_nombre || '');
   const waLink = part('waLink');
-  if (item.enlace_whatsapp) {
-    waLink.setAttribute('href', String(item.enlace_whatsapp));
+  // Panel del artesano: contactar al COMPRADOR (fallback al enlace legado).
+  const buyerWa = (typeof item.enlace_whatsapp_comprador === 'string' && item.enlace_whatsapp_comprador.trim() !== '')
+    ? item.enlace_whatsapp_comprador.trim()
+    : (typeof item.enlace_whatsapp === 'string' ? item.enlace_whatsapp : '');
+  if (buyerWa.trim() !== '') {
+    waLink.setAttribute('href', String(buyerWa));
     waLink.classList.remove('d-none');
   } else {
     waLink.classList.add('d-none');
