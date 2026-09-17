@@ -10,8 +10,8 @@
 
 - [x] `spec.md` de 012 creado con objetivos, matriz de subfases y criterios de aceptación.
 - [x] `plan.md` de 012 creado con secuencia paso a paso, mitigaciones de riesgos y gobernanza.
+- [x] Actualizar `spec/constitution/roadmap.md` para reflejar la descomposición de la Fase 5 en subfases 5.1–5.4 coordinadas por `012`.
 - [ ] Validación y aprobación explícita del usuario de `spec.md` y `plan.md` (**HALT inicial**).
-- [ ] Actualizar `spec/constitution/roadmap.md` para reflejar la descomposición de la Fase 5 en subfases 5.1–5.4 coordinadas por `012`.
 
 ---
 
