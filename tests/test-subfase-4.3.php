@@ -409,7 +409,7 @@ TestHelper::assertTrue($tokenAdmin !== '', 'HTTP login admin entrega token Beare
 
 $loginAna = TestHelper::curl('POST', 'http://localhost:8000/api/auth/login.php', [
     'Content-Type: application/json',
-], json_encode(['username' => 'artesana_ana', 'password' => 'artesana123']));
+], json_encode(['username' => 'artesana_ana', 'password' => 'admin123']));
 TestHelper::assertSame(200, $loginAna['status'], 'HTTP login artesana_ana devuelve 200 OK');
 $tokenAna = (string)($loginAna['json']['datos']['token'] ?? '');
 TestHelper::assertTrue($tokenAna !== '', 'HTTP login artesana_ana entrega token Bearer');

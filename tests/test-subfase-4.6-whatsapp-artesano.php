@@ -230,7 +230,7 @@ $httpOrderId = (int)($httpBuy['json']['datos']['id'] ?? 0);
 
 $loginAna = TestHelper::curl('POST', $baseUrl . '/api/auth/login.php', [
     'Content-Type' => 'application/json',
-], json_encode(['username' => 'artesana_ana', 'password' => 'artesana123']));
+], json_encode(['username' => 'artesana_ana', 'password' => 'admin123']));
 $tokenAna = (string)($loginAna['json']['datos']['token'] ?? '');
 $httpIdor = TestHelper::curl('POST', $baseUrl . '/api/usuarios/actualizar-whatsapp.php', [
     'Authorization: Bearer ' . $tokenAna,

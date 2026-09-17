@@ -222,7 +222,7 @@ TestHelper::assertTrue(in_array($cors['status'], [200, 204], true), 'Preflight C
 
 $loginAna = TestHelper::curl('POST', 'http://localhost:8000/api/auth/login.php', [
     'Content-Type: application/json',
-], json_encode(['username' => 'artesana_ana', 'password' => 'artesana123']));
+], json_encode(['username' => 'artesana_ana', 'password' => 'admin123']));
 TestHelper::assertSame(200, $loginAna['status'], 'HTTP login artesana_ana devuelve 200 OK');
 $tokenAna = (string)($loginAna['json']['datos']['token'] ?? '');
 

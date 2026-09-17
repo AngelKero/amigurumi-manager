@@ -2,6 +2,13 @@
    02-BASE: RESET & CORE LAYOUT
    ========================================================================== */
 
+:root {
+  /* Focus ring token (Algodón Nórdico) */
+  --focus-ring-width: 2.5px;
+  --focus-ring-color: var(--craft-primary);
+  --focus-ring-offset: 2px;
+}
+
 body {
   background-color: var(--craft-bg);
   color: var(--craft-text-main);
@@ -18,8 +25,18 @@ main {
   z-index: 1;
 }
 
-/* Micro Focus Outline */
+/* Focus visible & keyboard focus (idénticos para accesibilidad) */
+:focus,
 :focus-visible {
-  outline: 2.5px solid var(--craft-primary);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) dashed var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Excepción: elementos que solo usan :focus-visible por diseño (ej. links en texto) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: var(--focus-ring-width) dashed var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
 }

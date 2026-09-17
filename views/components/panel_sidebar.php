@@ -32,14 +32,14 @@ $activePage = $activePage ?? 'creaciones';
       <small class="text-muted d-block mb-1" style="font-size: 0.7rem;"><i class="bi bi-whatsapp text-success me-1"></i>Mi WhatsApp comercial</small>
       <div id="panelWhatsappView" class="d-flex align-items-center justify-content-center gap-2">
         <span class="font-monospace small text-dark" id="panelProfileWhatsapp">—</span>
-        <button type="button" class="btn btn-sm btn-craft-outline py-0 px-2" id="btnEditMiWhatsapp" title="Editar mi WhatsApp">
+        <button type="button" class="btn btn-sm btn-craft-outline py-0 px-2" id="btnEditMiWhatsapp" aria-label="Editar mi WhatsApp">
           <i class="bi bi-pencil-square"></i>
         </button>
       </div>
       <form id="formMiWhatsapp" class="d-none mt-2" novalidate>
         <div class="input-group input-group-sm">
           <input type="tel" class="form-control" id="inputMiWhatsapp" placeholder="Tu WhatsApp comercial (opcional, máx. 20 caracteres)" maxlength="20" autocomplete="off" aria-label="Mi número de WhatsApp">
-          <button type="submit" class="btn btn-craft-primary btn-sm" id="btnSaveMiWhatsapp" title="Guardar mi WhatsApp">
+          <button type="submit" class="btn btn-craft-primary btn-sm" id="btnSaveMiWhatsapp" aria-label="Guardar mi WhatsApp">
             <i class="bi bi-check-lg"></i>
           </button>
         </div>

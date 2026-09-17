@@ -18,6 +18,13 @@
   background-color: var(--craft-primary-subtle);
 }
 
+.upload-dropzone:focus {
+  outline: var(--focus-ring-width) dashed var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-color: var(--craft-primary);
+  background-color: var(--craft-primary-subtle);
+}
+
 /* Sticky Margin Calculator Card Container */
 .sticky-margin-card {
   position: -webkit-sticky;
