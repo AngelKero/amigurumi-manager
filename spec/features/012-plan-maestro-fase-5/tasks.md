@@ -11,31 +11,31 @@
 - [x] `spec.md` de 012 creado con objetivos, matriz de subfases y criterios de aceptación.
 - [x] `plan.md` de 012 creado con secuencia paso a paso, mitigaciones de riesgos y gobernanza.
 - [x] Actualizar `spec/constitution/roadmap.md` para reflejar la descomposición de la Fase 5 en subfases 5.1–5.4 coordinadas por `012`.
-- [ ] Validación y aprobación explícita del usuario de `spec.md` y `plan.md` (**HALT inicial**).
+- [x] Validación y aprobación explícita del usuario de `spec.md` y `plan.md` (**HALT inicial**).
 
 ---
 
 ## 2. Subfase 5.1: Documentación Diátaxis & Manuales Operativos
 
-- [ ] **Tutoriales (Aprendizaje):**
-  - [ ] `docs/tutorials/primera-creacion.md`: Guía para artesanas (alta, costeo, fotos y margen).
-  - [ ] `docs/tutorials/primer-encargo-whatsapp.md`: Guía de compra y coordinación con la creadora.
-- [ ] **Guías How-To (Operación):**
-  - [ ] `docs/how-to/gestion-roles-y-claves.md`: Procedimiento de roles RBAC y recuperación de acceso.
-  - [ ] `docs/how-to/cancelacion-y-restitucion-stock.md`: Manejo de devoluciones e inventario atómico.
-  - [ ] `docs/how-to/configurar-whatsapp-artesano.md`: Normalización y enlace directo E.164.
-- [ ] **Referencia Técnica (Datos & Contratos):**
-  - [ ] `docs/api/catalogo-completo-endpoints.md`: Índice consolidado de los 25 endpoints REST y códigos HTTP.
-  - [ ] `docs/database/diccionario-datos.md`: Diccionario de datos de tablas, constraints y relaciones SQLite.
-- [ ] **Explicación / Arquitectura (Comprensión profunda):**
-  - [ ] `docs/explanation/clean-architecture-sin-framework.md`: Principios SOLID y aislamiento de capas.
-  - [ ] `docs/explanation/invariantes-seguridad.md`: Los 10 Invariantes Canónicos (R-01 a R-10) explicados.
-- [ ] **Integridad Documental:**
-  - [ ] Enlazar todos los nuevos `.md` en `docs/README.md` (garantizar regla H-013).
-- [ ] **Gate 3-Tier Subfase 5.1:**
-  - [ ] Suite CLI: `php tests/test-subfase-5.1.php > logs/subfase-5.1-cli.log 2>&1` (100% verde).
-  - [ ] Comprobaciones HTTP curl registradas en `logs/subfase-5.1-http.log`.
-  - [ ] Reporte ejecutivo: `docs/testing/subfase-5.1-diataxis.md`.
+- [x] **Tutoriales (Aprendizaje):**
+  - [x] `docs/tutorials/primera-creacion.md`: Guía para artesanas (alta, costeo, fotos y margen).
+  - [x] `docs/tutorials/primer-encargo-whatsapp.md`: Guía de compra y coordinación con la creadora.
+- [x] **Guías How-To (Operación):**
+  - [x] `docs/how-to/gestion-roles-y-claves.md`: Procedimiento de roles RBAC y recuperación de acceso.
+  - [x] `docs/how-to/cancelacion-y-restitucion-stock.md`: Manejo de devoluciones e inventario atómico.
+  - [x] `docs/how-to/configurar-whatsapp-artesano.md`: Normalización y enlace directo E.164.
+- [x] **Referencia Técnica (Datos & Contratos):**
+  - [x] `docs/api/catalogo-completo-endpoints.md`: Índice consolidado de los 27 endpoints REST y códigos HTTP.
+  - [x] `docs/database/diccionario-datos.md`: Diccionario de datos de tablas, constraints y relaciones SQLite.
+- [x] **Explicación / Arquitectura (Comprensión profunda):**
+  - [x] `docs/explanation/clean-architecture-sin-framework.md`: Principios SOLID y aislamiento de capas.
+  - [x] `docs/explanation/invariantes-seguridad.md`: Los 10 Invariantes Canónicos (R-01 a R-10) explicados.
+- [x] **Integridad Documental:**
+  - [x] Enlazar todos los nuevos `.md` en `docs/README.md` (garantizar regla H-013).
+- [x] **Gate 3-Tier Subfase 5.1:**
+  - [x] Suite CLI: `php tests/test-subfase-5.1.php > logs/subfase-5.1-cli.log 2>&1` (116/116 aserciones 100% verde).
+  - [x] Comprobaciones HTTP curl registradas en `logs/subfase-5.1-http.log`.
+  - [x] Reporte ejecutivo: `docs/testing/subfase-5.1-diataxis.md`.
   - [ ] **HALT:** Aprobación explícita del usuario antes de pasar a la subfase 5.2.
 
 ---

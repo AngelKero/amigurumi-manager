@@ -31,8 +31,8 @@ Produce tres artefactos maestros: `spec.md` (este), `plan.md` y `tasks.md`, con 
 
 ## Criterios de Aceptación (Gate de Validación)
 
-- [ ] **AC-1 (Roadmap Canónico):** `spec/constitution/roadmap.md` refleja la Fase 5 descompuesta en las 4 subfases secuenciales (5.1–5.4) bajo la coordinación del maestro `012`.
-- [ ] **AC-2 (Diátaxis Completo):** La documentación en `docs/` se organiza en los 4 cuadrantes Diátaxis (Tutoriales, How-To, Referencia, Explicación) sin enlaces huérfanos (H-013).
+- [x] **AC-1 (Roadmap Canónico):** `spec/constitution/roadmap.md` refleja la Fase 5 descompuesta en las 4 subfases secuenciales (5.1–5.4) bajo la coordinación del maestro `012`.
+- [x] **AC-2 (Diátaxis Completo):** La documentación en `docs/` se organiza en los 4 cuadrantes Diátaxis (Tutoriales, How-To, Referencia, Explicación) sin enlaces huérfanos (H-013).
 - [ ] **AC-3 (Accesibilidad WCAG 2.1 AA):** Todos los componentes interactivos cumplen estándares de navegación por teclado, contraste y compatibilidad con lectores de pantalla.
 - [ ] **AC-4 (Métricas Web):** El catálogo y vitrina operan con CLS = 0 (Cumulative Layout Shift) y carga diferida optimizada sin frameworks pesados.
 - [ ] **AC-5 (Hardening de Producción):** Se audita la inviolabilidad de `.htaccess` para rutas privadas (`app/`, `database/`, `logs/`, `spec/`) y se provee un script CLI de validación pre-vuelo (`check-produccion.php`).

@@ -15,10 +15,13 @@ Toda la documentación sigue el estándar modular de **Clean Documentation & Di�
 | Dominio | Descripción | Acceso Directo |
 | :--- | :--- | :--- |
 | 🏛️ **Arquitectura & Fases** | Ciclo de vida de todas las fases (0 a 5), diseño Clean Architecture, especificación de seguridad 3.6 y 16 ADRs. | [Explorar Arquitectura](./architecture/README.md) • [Proceso de Todas las Fases](./architecture/proceso-desarrollo-fases.md) • [Plan Fase 3](./architecture/phase-3-plan.md) • [Seguridad 3.6](./architecture/subfase-3.6-auditoria-seguridad.md) • [Contratos](./architecture/contracts.md) • [Matriz de Seguridad](./architecture/security.md) • [Ver ADRs](./architecture/decisiones/README.md) |
-| 🌐 **Especificación API REST** | Estándares HTTP, envelope JSON y contratos de endpoints por recurso. | [Explorar API](./api/README.md) • [Auth](./api/auth.md) • [Creaciones](./api/creaciones.md) • [Pedidos](./api/pedidos.md) • [Usuarios](./api/usuarios.md) |
-| 🗄️ **Base de Datos & DDL** | Diagrama ERD físico en Mermaid, sentencias DDL completas y tests CLI. | [Explorar Base de Datos](./database/README.md) • [Esquema DDL](./database/schema.md) • [Pruebas](./database/testing.md) |
+| 🌐 **Especificación API REST** | Estándares HTTP, envelope JSON, catálogo consolidado y contratos de endpoints por recurso. | [Explorar API](./api/README.md) • [Catálogo Completo](./api/catalogo-completo-endpoints.md) • [Auth](./api/auth.md) • [Creaciones](./api/creaciones.md) • [Pedidos](./api/pedidos.md) • [Usuarios](./api/usuarios.md) |
+| 🗄️ **Base de Datos & DDL** | Diagrama ERD físico en Mermaid, sentencias DDL completas, diccionario de datos y tests CLI. | [Explorar Base de Datos](./database/README.md) • [Diccionario de Datos](./database/diccionario-datos.md) • [Esquema DDL](./database/schema.md) • [Pruebas](./database/testing.md) |
 | 🎨 **Sistema de Diseño** | Tokens Algodón Nórdico, tipografías, manual de marca, auditorías WCAG y heurísticas CR/QW. | [Explorar Diseño](./design-system/README.md) • [Marca](./design-system/brand-identity.md) • [SVGs](./design-system/svg-assets.md) • [Vistas](./design-system/wireframes.md) • [Auditorías & Heurísticas](./design-system/audits.md) |
-| 🧪 **Reportes de Testing** | Protocolo en 3 niveles, reportes ejecutivos de subfases 3.1–3.6.5, protocolo de divergencia CLI/HTTP, auditorías context7 y reportes de gobernanza. | [Explorar Testing](./testing/README.md) • [Core 3.1](./testing/subfase-3.1-core.md) • [Auth 3.2](./testing/subfase-3.2-auth.md) • [Usuarios 3.3](./testing/subfase-3.3-usuarios.md) • [Creaciones 3.4](./testing/subfase-3.4-creaciones.md) • [Pedidos 3.5](./testing/subfase-3.5-pedidos.md) • [IDOR 3.6.1](./testing/subfase-3.6.1-idor-access-control.md) • [Criptografía 3.6.2](./testing/subfase-3.6.2-criptografia-autenticacion.md) • [Inyección 3.6.3](./testing/subfase-3.6.3-inyeccion-medios.md) • [Precios 3.6.4](./testing/subfase-3.6.4-logica-precios.md) • [Rendimiento 3.6.5](./testing/subfase-3.6.5-rendimiento-regresion.md) • [Auth Fase 4.1](./testing/subfase-4.1-auth-sesion.md) • [Triaje CLI/HTTP](./testing/protocolo-divergencia-cli-http.md) • [QA](./testing/qa-audit-report.md) |
+| 📖 **Tutoriales (Diátaxis)** | Guías prácticas paso a paso orientadas al aprendizaje del taller textil. | [Publicar Primera Creación](./tutorials/primera-creacion.md) • [Primer Encargo y WhatsApp](./tutorials/primer-encargo-whatsapp.md) |
+| 🛠️ **Guías How-To (Diátaxis)** | Procedimientos operativos para resolución de problemas y tareas críticas. | [Gestión de Roles & Claves](./how-to/gestion-roles-y-claves.md) • [Cancelación & Restitución Stock](./how-to/cancelacion-y-restitucion-stock.md) • [Configurar WhatsApp](./how-to/configurar-whatsapp-artesano.md) |
+| 💡 **Explicación & Arquitectura** | Fundamentación técnica profunda, Clean Architecture nativa y los 10 Invariantes de Seguridad. | [Clean Architecture sin Framework](./explanation/clean-architecture-sin-framework.md) • [10 Invariantes Canónicos de Seguridad](./explanation/invariantes-seguridad.md) |
+| 🧪 **Reportes de Testing** | Protocolo en 3 niveles, reportes ejecutivos de subfases 3.1–3.6.5, subfases 4.1–4.6, 5.1, triaje CLI/HTTP y reportes de gobernanza. | [Explorar Testing](./testing/README.md) • [Core 3.1](./testing/subfase-3.1-core.md) • [Auth 3.2](./testing/subfase-3.2-auth.md) • [Usuarios 3.3](./testing/subfase-3.3-usuarios.md) • [Creaciones 3.4](./testing/subfase-3.4-creaciones.md) • [Pedidos 3.5](./testing/subfase-3.5-pedidos.md) • [IDOR 3.6.1](./testing/subfase-3.6.1-idor-access-control.md) • [Criptografía 3.6.2](./testing/subfase-3.6.2-criptografia-autenticacion.md) • [Inyección 3.6.3](./testing/subfase-3.6.3-inyeccion-medios.md) • [Precios 3.6.4](./testing/subfase-3.6.4-logica-precios.md) • [Rendimiento 3.6.5](./testing/subfase-3.6.5-rendimiento-regresion.md) • [Auth Fase 4.1](./testing/subfase-4.1-auth-sesion.md) • [Catálogo 4.2](./testing/subfase-4.2-catalogo.md) • [Creaciones 4.3](./testing/subfase-4.3-creaciones.md) • [Panel Scoping 4.3.1](./testing/subfase-4.3.1-panel-scoping.md) • [Contadores 4.3.2](./testing/subfase-4.3.2-contadores.md) • [Centavos 4.3.3](./testing/subfase-4.3.3-centavos-upload.md) • [Pedidos 4.4](./testing/subfase-4.4-pedidos.md) • [Usuarios 4.5](./testing/subfase-4.5-usuarios.md) • [WhatsApp 4.6](./testing/subfase-4.6-whatsapp-artesano.md) • [Cierre Fase 4](./testing/fase-4-cierre-maestro.md) • [Diátaxis 5.1](./testing/subfase-5.1-diataxis.md) • [Triaje CLI/HTTP](./testing/protocolo-divergencia-cli-http.md) • [QA](./testing/qa-audit-report.md) |
 | 🔐 **Seguridad & Sanitización** | Auditorías de XSS/sanitización de JavaScript y blindaje de dominio. | [Explorar Seguridad](./security/auditoria-sanitizacion-js.md) • [Auditoría Sanitización JS](./security/auditoria-sanitizacion-js.md) |
 | 📦 **Archivo Histórico** | Mockups HTML preliminares y planes anteriores de refactorización (obsoletos, no autoritativos). | [Ver Histórico](./archive/README.md) |
 
@@ -30,7 +33,20 @@ Toda la documentación sigue el estándar modular de **Clean Documentation & Di�
 docs/
 ├── README.md                              # [Este archivo] Directorio e Índice Maestro
 │
-├── architecture/                          # 🏛️ 1. Arquitectura Clean, Proceso de Fases & ADRs
+├── tutorials/                             # 📖 1. Cuadrante Tutoriales (Diátaxis)
+│   ├── primera-creacion.md                # ./tutorials/primera-creacion.md
+│   └── primer-encargo-whatsapp.md         # ./tutorials/primer-encargo-whatsapp.md
+│
+├── how-to/                                # 🛠️ 2. Cuadrante Guías How-To (Diátaxis)
+│   ├── gestion-roles-y-claves.md          # ./how-to/gestion-roles-y-claves.md
+│   ├── cancelacion-y-restitucion-stock.md # ./how-to/cancelacion-y-restitucion-stock.md
+│   └── configurar-whatsapp-artesano.md    # ./how-to/configurar-whatsapp-artesano.md
+│
+├── explanation/                           # 💡 3. Cuadrante Explicación & Arquitectura (Diátaxis)
+│   ├── clean-architecture-sin-framework.md # ./explanation/clean-architecture-sin-framework.md
+│   └── invariantes-seguridad.md           # ./explanation/invariantes-seguridad.md
+│
+├── architecture/                          # 🏛️ 4. Arquitectura Clean, Proceso de Fases & ADRs
 │   ├── README.md                          # https://… → ./architecture/README.md
 │   ├── contracts.md                       # ./architecture/contracts.md
 │   ├── phase-3-plan.md                    # ./architecture/phase-3-plan.md
@@ -42,26 +58,28 @@ docs/
 │       ├── ADR-001 … ADR-016              # ver lista completa abajo
 │       └── ADR-016-token-revocacion-y-brute-force-guard.md
 │
-├── api/                                   # 🌐 2. Especificación REST por Recursos
+├── api/                                   # 🌐 5. Especificación REST por Recursos
 │   ├── README.md                          # ./api/README.md
+│   ├── catalogo-completo-endpoints.md     # ./api/catalogo-completo-endpoints.md
 │   ├── auth.md                            # ./api/auth.md
 │   ├── creaciones.md                      # ./api/creaciones.md
 │   ├── pedidos.md                         # ./api/pedidos.md
 │   └── usuarios.md                        # ./api/usuarios.md
 │
-├── database/                              # 🗄️ 3. Modelo Físico Relacional & DDL
+├── database/                              # 🗄️ 6. Modelo Físico Relacional & DDL
 │   ├── README.md                          # ./database/README.md
+│   ├── diccionario-datos.md               # ./database/diccionario-datos.md
 │   ├── schema.md                          # ./database/schema.md
 │   └── testing.md                         # ./database/testing.md
 │
-├── design-system/                         # 🎨 4. Sistema de Diseño "Algodón Nórdico"
+├── design-system/                         # 🎨 7. Sistema de Diseño "Algodón Nórdico"
 │   ├── README.md                          # ./design-system/README.md
 │   ├── audits.md                          # ./design-system/audits.md
 │   ├── brand-identity.md                  # ./design-system/brand-identity.md
 │   ├── svg-assets.md                      # ./design-system/svg-assets.md
 │   └── wireframes.md                      # ./design-system/wireframes.md
 │
-├── testing/                               # 🧪 5. Reportes de Pruebas & Calidad
+├── testing/                               # 🧪 8. Reportes de Pruebas & Calidad
 │   ├── README.md                          # ./testing/README.md
 │   ├── subfase-3.1-core.md                # ./testing/subfase-3.1-core.md
 │   ├── subfase-3.2-auth.md                # ./testing/subfase-3.2-auth.md
@@ -74,16 +92,17 @@ docs/
 │   ├── subfase-3.6.4-logica-precios.md    # ./testing/subfase-3.6.4-logica-precios.md
 │   ├── subfase-3.6.5-rendimiento-regresion.md # ./testing/subfase-3.6.5-rendimiento-regresion.md
 │   ├── protocolo-divergencia-cli-http.md # ./testing/protocolo-divergencia-cli-http.md
-│   ├── subfase-4.1-auth-sesion.md # ./testing/subfase-4.1-auth-sesion.md
-│   ├── subfase-4.2-catalogo.md    # ./testing/subfase-4.2-catalogo.md
-│   ├── subfase-4.3-creaciones.md  # ./testing/subfase-4.3-creaciones.md
-│   ├── subfase-4.3.1-panel-scoping.md # ./testing/subfase-4.3.1-panel-scoping.md
-│   ├── subfase-4.3.2-contadores.md # ./testing/subfase-4.3.2-contadores.md
-│   ├── subfase-4.3.3-centavos-upload.md # ./testing/subfase-4.3.3-centavos-upload.md
-│   ├── subfase-4.4-pedidos.md     # ./testing/subfase-4.4-pedidos.md
-│   ├── subfase-4.5-usuarios.md    # ./testing/subfase-4.5-usuarios.md
-│   ├── subfase-4.6-whatsapp-artesano.md # ./testing/subfase-4.6-whatsapp-artesano.md
+│   ├── subfase-4.1-auth-sesion.md         # ./testing/subfase-4.1-auth-sesion.md
+│   ├── subfase-4.2-catalogo.md            # ./testing/subfase-4.2-catalogo.md
+│   ├── subfase-4.3-creaciones.md          # ./testing/subfase-4.3-creaciones.md
+│   ├── subfase-4.3.1-panel-scoping.md     # ./testing/subfase-4.3.1-panel-scoping.md
+│   ├── subfase-4.3.2-contadores.md        # ./testing/subfase-4.3.2-contadores.md
+│   ├── subfase-4.3.3-centavos-upload.md   # ./testing/subfase-4.3.3-centavos-upload.md
+│   ├── subfase-4.4-pedidos.md             # ./testing/subfase-4.4-pedidos.md
+│   ├── subfase-4.5-usuarios.md            # ./testing/subfase-4.5-usuarios.md
+│   ├── subfase-4.6-whatsapp-artesano.md   # ./testing/subfase-4.6-whatsapp-artesano.md
 │   ├── fase-4-cierre-maestro.md           # ./testing/fase-4-cierre-maestro.md
+│   ├── subfase-5.1-diataxis.md            # ./testing/subfase-5.1-diataxis.md
 │   ├── qa-audit-report.md                 # ./testing/qa-audit-report.md
 │   ├── auditoria-context7-fase-1.md       # ./testing/auditoria-context7-fase-1.md
 │   ├── auditoria-context7-fase-2.md       # ./testing/auditoria-context7-fase-2.md
@@ -95,10 +114,10 @@ docs/
 │   ├── gobernanza-accion-5-resincronizacion-docs.md # ./testing/gobernanza-accion-5-resincronizacion-docs.md
 │   └── gobernanza-accion-6-desacople-fases.md   # ./testing/gobernanza-accion-6-desacople-fases.md
 │
-├── security/                             # 🔐 7. Seguridad & Sanitización de Frontend
-│   └── auditoria-sanitizacion-js.md      # ./security/auditoria-sanitizacion-js.md
+├── security/                              # 🔐 9. Seguridad & Sanitización de Frontend
+│   └── auditoria-sanitizacion-js.md       # ./security/auditoria-sanitizacion-js.md
 │
-└── archive/                               # 📦 6. Archivo Histórico (obsoleto, no autoritativo)
+└── archive/                               # 📦 10. Archivo Histórico (obsoleto, no autoritativo)
     ├── README.md                          # ./archive/README.md
     ├── architecture-refactor-plan.md      # ./archive/architecture-refactor-plan.md
     ├── index.html                         # ./archive/index.html (mockup)
