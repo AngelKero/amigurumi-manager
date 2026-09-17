@@ -72,7 +72,7 @@
               <label class="form-label fw-bold small d-block">Cantidad (*)</label>
               <div class="qty-stepper">
                 <button type="button" id="btnCheckoutDec" aria-label="Disminuir cantidad">-</button>
-                <input type="text" id="inputCheckoutQty" value="1" readonly>
+                <input type="text" id="inputCheckoutQty" value="1" readonly aria-label="Cantidad a solicitar">
                 <button type="button" id="btnCheckoutInc" aria-label="Aumentar cantidad">+</button>
               </div>
               <small class="text-muted d-block mt-1" id="checkoutStockNote" style="font-size: 0.72rem;"></small>

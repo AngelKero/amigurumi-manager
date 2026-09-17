@@ -213,11 +213,23 @@
 
 <!-- REJILLA RESPONSIVA DE PRODUCTOS (col-12, col-md-6, col-lg-4) — poblada vía API -->
 <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5" id="productCardGrid" data-total="0" aria-live="polite">
-  <!-- Indicador de carga artesanal hasta el primer render -->
+  <!-- Indicador de carga artesanal con skeleton placeholders hasta el primer render -->
   <div class="col-12" id="catalogLoadingState">
-    <div class="d-flex flex-column align-items-center justify-content-center py-5 text-muted">
-      <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
-      <span class="small">Tejiendo el catálogo…</span>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 w-100 m-0">
+      <?php for ($i = 0; $i < 3; $i++): ?>
+        <div class="col p-2">
+          <div class="skeleton-card h-100 p-3">
+            <div class="skeleton skeleton-img mb-3"></div>
+            <div class="skeleton skeleton-text skeleton-text-title"></div>
+            <div class="skeleton skeleton-text w-50 mb-3"></div>
+            <div class="skeleton skeleton-btn w-100 mt-auto"></div>
+          </div>
+        </div>
+      <?php endfor; ?>
+    </div>
+    <div class="d-flex flex-column align-items-center justify-content-center py-4 text-muted">
+      <div class="spinner-border spinner-border-sm text-primary mb-2" role="status" aria-hidden="true"></div>
+      <span class="small font-monospace">Tejiendo el catálogo…</span>
     </div>
   </div>
 </section>

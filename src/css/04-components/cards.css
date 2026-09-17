@@ -293,3 +293,72 @@
   position: relative;
   overflow: hidden;
 }
+
+/* ==========================================================================
+   SKELETON PLACEHOLDERS & INCLUSIVE ACCESSIBILITY
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(90deg, #EDF1F5 25%, #F8F9FA 37%, #EDF1F5 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: var(--craft-radius-sm, 8px);
+}
+
+.skeleton-card {
+  background: var(--craft-surface);
+  border: 1px solid var(--craft-border);
+  border-radius: var(--craft-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--craft-shadow-sm);
+  padding: 0;
+}
+
+.skeleton-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text-title {
+  height: 22px;
+  width: 70%;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-btn {
+  height: 38px;
+  border-radius: var(--craft-radius-pill);
+}
+
+.stagger-in {
+  animation: cardFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (hover: none) {
+  .card-product:active {
+    transform: scale(0.985);
+    box-shadow: var(--craft-shadow-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none !important;
+    background: #EAEFF4 !important;
+  }
+  .stagger-in {
+    animation: none !important;
+  }
+  .card-product,
+  .card-product-img {
+    transition: none !important;
+  }
+}

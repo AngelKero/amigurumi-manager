@@ -28,7 +28,7 @@
               Ingresa tus credenciales para administrar tus creaciones y pedidos en la plataforma:
             </p>
           </div>
-          <div id="loginAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+          <div id="loginAlert" class="alert alert-danger d-none py-2 small" role="alert" aria-live="polite"></div>
 
           <div class="mb-3">
             <label for="loginUsername" class="form-label fw-bold small">Usuario (*)</label>

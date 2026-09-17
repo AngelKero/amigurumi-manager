@@ -21,7 +21,7 @@
             Actualiza los privilegios operativos del usuario o creador según las reglas de acceso RBAC de SQLite:
           </p>
 
-          <div id="editarRolAlert" class="alert alert-warning d-none py-2 small" role="alert"></div>
+          <div id="editarRolAlert" class="alert alert-warning d-none py-2 small" role="alert" aria-live="polite"></div>
 
           <!-- Usuario Seleccionado (Solo lectura) -->
           <div class="p-3 mb-3 bg-light border rounded card-stitched" style="border-radius: var(--craft-radius-sm);">

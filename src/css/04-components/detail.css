@@ -24,9 +24,10 @@
 }
 
 .breadcrumb-craft-ribbon .breadcrumb-item + .breadcrumb-item::before {
-  content: "•";
-  color: rgba(142, 91, 116, 0.4);
-  font-size: 0.9rem;
+  content: "›";
+  color: rgba(142, 91, 116, 0.45);
+  font-size: 1.1rem;
+  line-height: 1;
   padding: 0 0.25rem;
 }
 

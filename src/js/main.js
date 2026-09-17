@@ -12,8 +12,12 @@ import { initDropzone } from './modules/dropzone.js';
 import { initOrders } from './modules/orders.js';
 import { initUsers } from './modules/users.js';
 import { initCreaciones, initFormularioCreacion, initSidebarBadges } from './modules/creaciones.js';
+import { initA11y } from './modules/a11y.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicialización global de accesibilidad y foco
+  initA11y();
+
   // Inicialización global de sesión y autenticación
   initAuth();
 

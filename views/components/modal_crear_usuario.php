@@ -24,7 +24,7 @@
             Crea una nueva cuenta para que un creador publique sus piezas y gestione sus encargos en la plataforma:
           </p>
 
-          <div id="usuarioAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+          <div id="usuarioAlert" class="alert alert-danger d-none py-2 small" role="alert" aria-live="polite"></div>
 
           <!-- Nombre de Usuario -->
           <div class="mb-3">

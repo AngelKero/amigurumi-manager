@@ -189,7 +189,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
               <label for="inputPrecio" class="form-label fw-bold small text-dark mb-1">Precio Venta (*)</label>
               <div class="input-group input-group-craft">
                 <span class="input-group-text">$</span>
-                <input type="number" step="0.01" min="1" max="9999999" class="form-control fw-bold" id="inputPrecio" placeholder="0.00" value="<?= $valPrecio !== null ? number_format($valPrecio, 2, '.', '') : '' ?>" required>
+                <input type="number" step="0.01" min="1" max="9999999" inputmode="decimal" class="form-control fw-bold" id="inputPrecio" placeholder="0.00" value="<?= $valPrecio !== null ? number_format($valPrecio, 2, '.', '') : '' ?>" required>
               </div>
               <div class="form-text text-muted" style="font-size: 0.7rem;">En pesos MXN</div>
             </div>
@@ -197,7 +197,7 @@ $isFormComplete = $isSpecsComplete && $isParamsComplete && $isLaborComplete;
               <label for="inputCosto" class="form-label fw-bold small text-dark mb-1">Costo Materiales (*)</label>
               <div class="input-group input-group-craft">
                 <span class="input-group-text">$</span>
-                <input type="number" step="0.01" min="0" max="9999999" class="form-control" id="inputCosto" placeholder="0.00" value="<?= $valCosto !== null ? number_format($valCosto, 2, '.', '') : '' ?>" required>
+                <input type="number" step="0.01" min="0" max="9999999" inputmode="decimal" class="form-control" id="inputCosto" placeholder="0.00" value="<?= $valCosto !== null ? number_format($valCosto, 2, '.', '') : '' ?>" required>
               </div>
               <div class="form-text text-muted" style="font-size: 0.7rem;">Hilazas, ojos, relleno</div>
             </div>

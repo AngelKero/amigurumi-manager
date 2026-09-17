@@ -148,11 +148,14 @@
 
     <!-- ESTADO VACÍO -->
     <div id="emptyStateUsuarios" class="text-center py-5 d-none">
-      <div class="mb-3 text-muted" style="font-size: 2.5rem;">
-        <i class="bi bi-people"></i>
+      <div class="mb-3">
+        <?= svg('empty-basket', ['width' => 100, 'height' => 90, 'class' => 'mx-auto mb-2']) ?>
       </div>
-      <h5 class="fw-bold text-dark font-theme-display">No se encontraron creadores</h5>
-      <p class="text-muted small mb-0">No hay cuentas registradas que coincidan con el estado seleccionado.</p>
+      <h5 class="fw-bold text-dark font-theme-display mb-1">No se encontraron creadores</h5>
+      <p class="text-muted small mb-3">No hay cuentas registradas que coincidan con el estado seleccionado.</p>
+      <button type="button" class="btn btn-craft-primary btn-craft-stitched btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario" id="btnCrearUsuarioEmpty">
+        <i class="bi bi-person-plus-fill me-1"></i> Registrar Creador
+      </button>
     </div>
 
     <!-- PAGINACIÓN -->

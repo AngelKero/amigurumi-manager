@@ -197,11 +197,11 @@
       <div class="card-order-footer">
         <div data-part="estadoBadge"></div>
         <div class="d-flex align-items-center gap-1">
-          <button type="button" class="btn btn-sm btn-craft-outline btn-inspect-order" data-part="inspectBtn" title="Ver ficha y notas completas">
+          <button type="button" class="btn btn-sm btn-craft-outline btn-inspect-order" data-part="inspectBtn" title="Ver ficha y notas completas" aria-label="Ver ficha del pedido">
             <i class="bi bi-eye"></i>
           </button>
           <div class="btn-group btn-group-sm">
-            <button class="btn btn-sm btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cambiar fase de confección">
+            <button class="btn btn-sm btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cambiar fase de confección" aria-label="Cambiar estado de confección">
               Estado
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: var(--craft-radius-sm);">
@@ -233,7 +233,12 @@
 
 <!-- Estado Vacío Cuando Ningún Pedido Coincide con la Búsqueda o Filtros -->
 <div id="emptyOrdersGrid" class="p-5 text-center bg-white card-stitched rounded-4 border d-none mb-5" style="border-radius: var(--craft-radius);">
-  <i class="bi bi-inbox text-muted fs-1 mb-2 d-block"></i>
-  <h5 class="fw-bold font-theme-display text-dark">No se encontraron pedidos</h5>
-  <p class="text-muted small mb-0">No hay encargos que coincidan con los filtros o el término de búsqueda ingresado.</p>
+  <div class="mb-3">
+    <?= svg('empty-basket', ['width' => 100, 'height' => 90, 'class' => 'mx-auto mb-2']) ?>
+  </div>
+  <h5 class="fw-bold font-theme-display text-dark mb-1">No se encontraron pedidos</h5>
+  <p class="text-muted small mb-3">No hay encargos que coincidan con los filtros o el término de búsqueda ingresado.</p>
+  <button type="button" class="btn btn-craft-primary btn-craft-stitched btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoPedido" id="btnNuevoPedidoEmpty">
+    <i class="bi bi-plus-circle me-1"></i> Registrar Encargo Manual
+  </button>
 </div>

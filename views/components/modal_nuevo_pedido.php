@@ -24,7 +24,7 @@
             Registra un pedido recibido directamente (WhatsApp, feria o en persona) para reservar inventario y coordinar la entrega:
           </p>
 
-          <div id="nuevoPedidoAlert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+          <div id="nuevoPedidoAlert" class="alert alert-danger d-none py-2 small" role="alert" aria-live="polite"></div>
 
           <!-- Selección de Creación (piezas propias vía mias.php) -->
           <div class="mb-3">

@@ -221,9 +221,9 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3 mt-auto pt-2 border-top">
           <div class="quick-stock-control">
-            <button type="button" class="quick-stock-btn btn-stock-dec" data-part="stockDec" title="Disminuir 1 unidad">-</button>
+            <button type="button" class="quick-stock-btn btn-stock-dec" data-part="stockDec" title="Disminuir 1 unidad" aria-label="Disminuir stock en 1 unidad">-</button>
             <span class="quick-stock-val" data-part="stockVal"></span>
-            <button type="button" class="quick-stock-btn btn-stock-inc" data-part="stockInc" title="Aumentar 1 unidad">+</button>
+            <button type="button" class="quick-stock-btn btn-stock-inc" data-part="stockInc" title="Aumentar 1 unidad" aria-label="Aumentar stock en 1 unidad">+</button>
           </div>
           <div data-part="stockBadge"></div>
         </div>
@@ -234,20 +234,21 @@
             <small class="text-dark fw-bold text-truncate" style="font-size: 0.74rem;" data-part="authorName"></small>
           </div>
           <div class="d-inline-flex gap-1">
-            <button type="button" class="artisan-action-btn btn-inspect-creacion" data-part="inspectBtn" title="Ver Ficha Técnica">
+            <button type="button" class="artisan-action-btn btn-inspect-creacion" data-part="inspectBtn" title="Ver Ficha Técnica" aria-label="Ver ficha técnica">
               <i class="bi bi-eye"></i>
             </button>
-            <a href="#" class="artisan-action-btn" data-part="editLink" title="Editar Creación">
+            <a href="#" class="artisan-action-btn" data-part="editLink" title="Editar Creación" aria-label="Editar creación">
               <i class="bi bi-pencil-square text-primary"></i>
             </a>
-            <button type="button" class="artisan-action-btn btn-card-restore" data-bs-toggle="modal" data-bs-target="#modalRestaurarCreacion" data-part="restoreBtn" title="Restaurar pieza dada de baja">
+            <button type="button" class="artisan-action-btn btn-card-restore" data-bs-toggle="modal" data-bs-target="#modalRestaurarCreacion" data-part="restoreBtn" title="Restaurar pieza dada de baja" aria-label="Restaurar pieza dada de baja">
               <i class="bi bi-arrow-counterclockwise text-success"></i>
             </button>
             <button type="button" class="artisan-action-btn btn-delete btn-card-delete"
                     data-bs-toggle="modal"
                     data-bs-target="#modalEliminarCreacion"
                     data-part="deleteBtn"
-                    title="Eliminar creación">
+                    title="Eliminar creación"
+                    aria-label="Eliminar creación">
               <i class="bi bi-trash text-danger"></i>
             </button>
           </div>

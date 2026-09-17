@@ -10,7 +10,7 @@
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
 | **Fase 4** · Cableado Fullstack (features 004–008 & 010) | 4.1 → 4.6 (6 subfases coordinadas por maestro `009-plan-maestro-fase-4`: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5, 010=4.6) | ✅ **Hecho** · **841/841** aserciones de Fase 4 en verde (100% OK) · Reporte de cierre `docs/testing/fase-4-cierre-maestro.md` · **4.1 ✅** (64/64) · **4.2 ✅** (136/136) · **4.3 ✅** (212/212 + correctivos 4.3.1/4.3.2/4.3.3) · **4.4 ✅** (139/139) · **4.5 ✅** (99/99) · **4.6 ✅** (64/64) |
-| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | 5.1 → 5.4 (coordinadas por maestro `012-plan-maestro-fase-5`) | 🔄 **En curso (Plan Maestro)** · **5.1 ✅** (116/116) · 5.2 Accesibilidad (011) · 5.3 Rendimiento · 5.4 Release |
+| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | 5.1 → 5.4 (coordinadas por maestro `012-plan-maestro-fase-5`) | 🔄 **En curso (Plan Maestro)** · **5.1 ✅** (116/116) · **5.2 ✅** (69/69) · 5.3 Rendimiento · 5.4 Release |
 
 ## Hecho ✅
 
@@ -25,6 +25,7 @@
 9. **010 · WhatsApp al Artesano Vendedor (Fase 4.6)** — Campo opcional `usuarios.whatsapp`, `enlace_whatsapp` al artesano con mensaje en voz del comprador, `enlace_whatsapp_comprador` para el panel, exposición pública en ficha, alta/edición admin + autoservicio. Suite `tests/test-subfase-4.6-whatsapp-artesano.php` **64/64**, HTTP en vivo sin divergencia; reporte `docs/testing/subfase-4.6-whatsapp-artesano.md`.
 10. **009 · Plan Maestro de la Fase 4 (Cierre Formal)** — Coordinación transversal y cierre formal del ciclo fullstack de Fase 4 (subfases 4.1 a 4.6, features 004–008 y 010). Cobertura total de **841 / 841 aserciones** en verde, 0 fallos de regresión, integración SweetAlert2 para reemplazo de alertas nativas y reporte maestro en `docs/testing/fase-4-cierre-maestro.md`.
 11. **Subfase 5.1 · Documentación Diátaxis & Manuales Operativos (Fase 5 · Feature 012)** — Implementación de los 4 cuadrantes Diátaxis (Tutoriales, How-To, Referencia Técnica y Explicación), 9 manuales operativos exhaustivos (>= 1,200 bytes, sin placeholders), catálogo consolidado de los 27 endpoints REST, diccionario de datos SQLite de 5 tablas, explicación de Clean Architecture sin Composer y fundamentación de los 10 Invariantes Canónicos (R-01 a R-10). Cero enlaces huérfanos en `docs/` (H-013). Suite `tests/test-subfase-5.1.php` **116/116** en verde (100% OK); reporte `docs/testing/subfase-5.1-diataxis.md`.
+12. **Subfase 5.2 · Accesibilidad WCAG 2.1 AA & Refinamiento Visual (Fase 5 · Feature 011/012)** — Foco visible accesible (`--focus-ring-width/color`), teclado en dropzone (`Enter`/`Espacio`) y stepper (`ArrowUp`/`Down`), módulo client `a11y.js` con focus restoration en modales de Bootstrap (`show`/`hidden.bs.modal`), `aria-label` en controles y botones de acción, `aria-live="polite"` en alertas y feedback, skeletons de carga (`.skeleton-card`, `skeleton-shimmer`) con `prefers-reduced-motion`, empty states ilustrados con vector artesanal y botón primario en las 4 vistas, `inputmode="decimal"` en moneda y micro-interacciones móviles. Suite `tests/test-subfase-5.2.php` **69/69** en verde (100% OK); reporte `docs/testing/subfase-5.2-a11y-ux.md`.
 
 ## Gobernanza ✅
 
@@ -37,7 +38,6 @@
 
 ## Siguiente 🔜
 
-- **Subfase 5.2 · Accesibilidad WCAG 2.1 AA & Refinamiento Visual (Feature 011)** — Contornos `:focus-visible` con pespunte `--craft-primary`, navegación por teclado en dropzone y 7 modales con focus trap, atributos `aria-label` en steppers e iconos, regiones `role="alert"` y empty states SVG.
 - **Subfase 5.3 · Rendimiento Web & Optimización Core Web Vitals** — CLS = 0, dimensiones explícitas en fotos y SVGs, auditoría de layouts e imágenes WebP.
 - **Subfase 5.4 · Hardening de Producción, Auditoría de Despliegue & Release Candidate** — Verificación pre-vuelo `.htaccess` (HTTP 403 en carpetas privadas), checklist de producción y corte de versión formal.
 - **Backlog / Futura Extensión · Baneo Total de Creadores con Cascada de Bajas Lógicas** — Posibilidad de que un administrador inhabilite o banee completamente a un usuario y, en una sola transacción atómica, dé de baja lógica a todas sus piezas del catálogo público protegiendo compras activas y respetando las invariantes R-01 (baja lógica universal), R-02 (preservación de fotos) y R-05 (salvaguarda admin #1).

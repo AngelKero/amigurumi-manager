@@ -36,25 +36,25 @@
   - [x] Suite CLI: `php tests/test-subfase-5.1.php > logs/subfase-5.1-cli.log 2>&1` (116/116 aserciones 100% verde).
   - [x] Comprobaciones HTTP curl registradas en `logs/subfase-5.1-http.log`.
   - [x] Reporte ejecutivo: `docs/testing/subfase-5.1-diataxis.md`.
-  - [ ] **HALT:** Aprobación explícita del usuario antes de pasar a la subfase 5.2.
+  - [x] **HALT:** Aprobación explícita del usuario antes de pasar a la subfase 5.2.
 
 ---
 
 ## 3. Subfase 5.2: Accesibilidad WCAG 2.1 AA & Refinamiento Visual (011)
 
-- [ ] **Foco & Navegación por Teclado:**
-  - [ ] Contorno `:focus` y `:focus-visible` accesible y consistente con pespunte `--craft-primary`.
-  - [ ] Navegabilidad por teclado en `.upload-dropzone` (`Enter` / `Space`).
-- [ ] **Modales & Feedback Asistivo:**
-  - [ ] Focus trap y restauración de foco al trigger al cerrar cualquiera de los 7 modales.
-  - [ ] Atributos `aria-label` en steppers `[ - ] [ + ]` y botones solo-icono (WhatsApp, cerrar, editar, eliminar).
-  - [ ] Regiones `role="alert"` y `aria-live="polite"` en alertas dinámicas y toasts SweetAlert2.
-- [ ] **Percepción de Velocidad & Estados:**
-  - [ ] Skeletons de carga ligeros durante `fetch` en catálogo, pedidos y creaciones.
-  - [ ] Empty states con ilustraciones SVG artesanales y botones CTA primarios.
-- [ ] **Gate 3-Tier Subfase 5.2:**
-  - [ ] Suite CLI: `php tests/test-subfase-5.2.php > logs/subfase-5.2-cli.log 2>&1` (100% verde).
-  - [ ] Trazas HTTP y reporte ejecutivo `docs/testing/subfase-5.2-a11y-ux.md`.
+- [x] **Foco & Navegación por Teclado:**
+  - [x] Contorno `:focus` y `:focus-visible` accesible y consistente con pespunte `--craft-primary`.
+  - [x] Navegabilidad por teclado en `.upload-dropzone` (`Enter` / `Space`).
+- [x] **Modales & Feedback Asistivo:**
+  - [x] Focus trap y restauración de foco al trigger al cerrar cualquiera de los 7 modales (`src/js/modules/a11y.js`).
+  - [x] Atributos `aria-label` en steppers `[ - ] [ + ]` y botones solo-icono (WhatsApp, cerrar, editar, eliminar).
+  - [x] Regiones `role="alert"` y `aria-live="polite"` en alertas dinámicas y modales.
+- [x] **Percepción de Velocidad & Estados:**
+  - [x] Skeletons de carga ligeros durante `fetch` en catálogo con soporte `prefers-reduced-motion`.
+  - [x] Empty states con ilustraciones SVG artesanales y botones CTA primarios en las 4 vistas principales.
+- [x] **Gate 3-Tier Subfase 5.2:**
+  - [x] Suite CLI: `php tests/test-subfase-5.2.php > logs/subfase-5.2-cli.log 2>&1` (69/69 aserciones 100% verde).
+  - [x] Trazas HTTP en `logs/subfase-5.2-http.log` y reporte ejecutivo `docs/testing/subfase-5.2-a11y-ux.md`.
   - [ ] **HALT:** Aprobación explícita del usuario antes de pasar a la subfase 5.3.
 
 ---

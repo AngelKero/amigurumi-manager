@@ -266,6 +266,7 @@ export function initUsers() {
     btnEdit.setAttribute('data-username', u.username);
     btnEdit.setAttribute('data-rol', u.rol);
     btnEdit.setAttribute('data-whatsapp', u.whatsapp || '');
+    btnEdit.setAttribute('aria-label', `Modificar rol de @${u.username}`);
     btnEdit.title = 'Modificar Rol de Acceso';
     const iconEdit = document.createElement('i');
     iconEdit.className = 'bi bi-pencil-square';
@@ -280,6 +281,7 @@ export function initUsers() {
     btnReset.setAttribute('data-bs-target', '#modalRestablecerPassword');
     btnReset.setAttribute('data-user-id', String(u.id));
     btnReset.setAttribute('data-username', u.username);
+    btnReset.setAttribute('aria-label', `Restablecer contraseña de @${u.username}`);
     btnReset.title = 'Restablecer Contraseña';
     const iconKey = document.createElement('i');
     iconKey.className = 'bi bi-key';
