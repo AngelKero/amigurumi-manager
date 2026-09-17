@@ -42,10 +42,12 @@ class UsuarioService {
 
         $paginationEnvelope = PaginationHelper::build($totalUsers, $page, $limit);
         $pagination = $paginationEnvelope['paginacion'] ?? $paginationEnvelope;
+        $roleCounts = $this->usuarioRepo->getRoleCounts($onlyActive);
 
         return [
             'usuarios'   => $users,
             'paginacion' => $pagination,
+            'resumen'    => $roleCounts,
         ];
     }
 

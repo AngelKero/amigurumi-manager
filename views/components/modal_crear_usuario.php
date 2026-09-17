@@ -18,7 +18,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
 
-      <form id="formCrearUsuario">
+      <form id="formCrearUsuario" novalidate>
         <div class="modal-body p-4">
           <p class="text-muted small mb-3">
             Crea una nueva cuenta para que un creador publique sus piezas y gestione sus encargos en la plataforma:
@@ -69,7 +69,7 @@
 
         <div class="modal-footer border-top py-3" style="background-color: var(--craft-surface-muted);">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm">
+          <button type="submit" class="btn btn-craft-primary btn-craft-stitched btn-sm" id="btnSubmitCrearUsuario">
             <i class="bi bi-check-circle me-1"></i> Guardar y Habilitar Acceso
           </button>
         </div>

@@ -15,7 +15,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
 
-      <form id="formEditarRolUsuario">
+      <form id="formEditarRolUsuario" novalidate>
         <div class="modal-body p-4">
           <p class="text-muted small mb-3">
             Actualiza los privilegios operativos del usuario o creador según las reglas de acceso RBAC de SQLite:

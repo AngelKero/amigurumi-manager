@@ -398,5 +398,42 @@ class UsuarioRepository {
         $stmt->execute([':user_id' => $userId]);
         return (int)$stmt->fetchColumn();
     }
+
+    /**
+     * Obtiene el conteo global y desglosado por rol de usuarios para los KPIs del panel.
+     *
+     * @param bool|null $onlyActive true para activos, false para inactivos, null para todos
+     * @return array{total: int, admin: int, artesano: int, asistente: int}
+     */
+    public function getRoleCounts(?bool $onlyActive = true): array {
+        $sql = 'SELECT rol, COUNT(*) as count FROM usuarios';
+        if ($onlyActive === true) {
+            $sql .= ' WHERE activo = 1';
+        } elseif ($onlyActive === false) {
+            $sql .= ' WHERE activo = 0';
+        }
+        $sql .= ' GROUP BY rol';
+
+        $stmt = $this->pdo->query($sql);
+        $rows = $stmt->fetchAll();
+
+        $counts = [
+            'total'     => 0,
+            'admin'     => 0,
+            'artesano'  => 0,
+            'asistente' => 0,
+        ];
+
+        foreach ($rows as $row) {
+            $rol = (string)$row['rol'];
+            $cnt = (int)$row['count'];
+            $counts['total'] += $cnt;
+            if (isset($counts[$rol])) {
+                $counts[$rol] = $cnt;
+            }
+        }
+
+        return $counts;
+    }
 }
 

@@ -31,7 +31,7 @@
 - [x] `005` · Catálogo Dinámico & Filtros Textiles (4.2) — spec/plan/tasks creados y aprobados.
 - [x] `006` · Gestión de Creaciones & Subida Multipart (4.3) — spec/plan/tasks creados y aprobados.
 - [x] `007` · Checkout Público, Pedidos Atómicos & WhatsApp (4.4) — spec/plan/tasks creados y aprobados.
-- [ ] `008` · Directorio de Creadores & Roles RBAC (4.5) — spec/plan/tasks creados y aprobados.
+- [x] `008` · Directorio de Creadores & Roles RBAC (4.5) — spec/plan/tasks creados y aprobados.
 - [x] Actualizar `roadmap.md` al estado "planificado" de 005–008.
 
 ## 4. Ejecución de subfases 4.1–4.5 (en features hijas · gate 3-tier)

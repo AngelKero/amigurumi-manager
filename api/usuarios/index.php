@@ -45,7 +45,10 @@ try {
         $result['usuarios'],
         'Directorio de creadores obtenido exitosamente.',
         200,
-        ['paginacion' => $result['paginacion']]
+        [
+            'paginacion' => $result['paginacion'],
+            'resumen'    => $result['resumen'] ?? null,
+        ]
     );
 } catch (InvalidArgumentException $e) {
     Response::error($e->getMessage(), 422);
