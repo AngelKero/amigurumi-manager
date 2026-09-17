@@ -83,6 +83,7 @@ docs/
 │   ├── subfase-4.4-pedidos.md     # ./testing/subfase-4.4-pedidos.md
 │   ├── subfase-4.5-usuarios.md    # ./testing/subfase-4.5-usuarios.md
 │   ├── subfase-4.6-whatsapp-artesano.md # ./testing/subfase-4.6-whatsapp-artesano.md
+│   ├── fase-4-cierre-maestro.md           # ./testing/fase-4-cierre-maestro.md
 │   ├── qa-audit-report.md                 # ./testing/qa-audit-report.md
 │   ├── auditoria-context7-fase-1.md       # ./testing/auditoria-context7-fase-1.md
 │   ├── auditoria-context7-fase-2.md       # ./testing/auditoria-context7-fase-2.md

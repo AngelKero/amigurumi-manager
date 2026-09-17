@@ -1,6 +1,7 @@
 # 009 · Plan Maestro de la Fase 4 — Tareas
 
-**Estado:** propuesto (sin código) · derivado de `plan.md`
+**Estado:** completado (Fase 4 concluida al 100% · 841/841 aserciones en verde · Reporte docs/testing/fase-4-cierre-maestro.md)
+
 
 > `009` es coordinación: este `tasks.md` registra el avance de TODO el esqueleto de Fase 4 y
 > deriva las subfases 4.1–4.5 hacia sus **features hijas 004–008**. Cada subfase se ejecuta en
@@ -83,8 +84,7 @@
 
 ## 6. Verificación & Cierre
 
-- [ ] Criterios de aceptación de `spec.md` de 009 al 100% (`- [x]`).
-- [ ] `spec/constitution/roadmap.md`: Fase 4 movida a **Hecho ✅** (4.1–4.5 cerradas).
-- [ ] Reporte de cierre de la fase con resumen de "Fallos Detectados & Correcciones Quirúrgicas".
-- [ ] **HALT:** aprobación explícita del usuario antes de iniciar cualquier otra feature
-      (p.ej. Fase 5).
+- [x] Criterios de aceptación de `spec.md` de 009 al 100% (`- [x]`).
+- [x] `spec/constitution/roadmap.md`: Fase 4 movida a **Hecho ✅** (4.1–4.6 cerradas).
+- [x] Reporte de cierre de la fase con resumen de "Fallos Detectados & Correcciones Quirúrgicas" (`docs/testing/fase-4-cierre-maestro.md`).
+- [x] **HALT:** aprobación explícita del usuario obtenida para formalizar el cierre de Fase 4 y transicionar a Fase 5.

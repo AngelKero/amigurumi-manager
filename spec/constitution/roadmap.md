@@ -9,8 +9,8 @@
 | **Fase 1** · Base de Datos, DDL & Concurrencia SQLite | — | ✅ Hecho |
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
-| **Fase 4** · Cableado Fullstack (features 004–008) | 4.1 → 4.5 (master `009-plan-maestro-fase-4` coordina: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5) | 🔄 **En curso** · **4.1 ✅ completada** (64/64) · **4.2 ✅ completada** (136/136) · **4.3 ✅ completada** (212/212 + correctivos 4.3.1/4.3.2/4.3.3) · **4.4 ✅ completada** (139/139) · **4.5 ✅ completada** (99/99, reporte `docs/testing/subfase-4.5-usuarios.md`) · **4.6 ✅ completada** (64/64) · **841/841** aserciones de Fase 4 en verde |
-| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔄 Continua |
+| **Fase 4** · Cableado Fullstack (features 004–008 & 010) | 4.1 → 4.6 (6 subfases coordinadas por maestro `009-plan-maestro-fase-4`: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5, 010=4.6) | ✅ **Hecho** · **841/841** aserciones de Fase 4 en verde (100% OK) · Reporte de cierre `docs/testing/fase-4-cierre-maestro.md` · **4.1 ✅** (64/64) · **4.2 ✅** (136/136) · **4.3 ✅** (212/212 + correctivos 4.3.1/4.3.2/4.3.3) · **4.4 ✅** (139/139) · **4.5 ✅** (99/99) · **4.6 ✅** (64/64) |
+| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔜 **Siguiente Hito** (En preparación tras cierre formal de Fase 4) |
 
 ## Hecho ✅
 
@@ -23,6 +23,7 @@
 7. **007 · Checkout Público, Pedidos Atómicos & WhatsApp (Fase 4.4)** — Modal de compra con datos reales y `creacion_id` propagado, reserva atómica con precio congelado en servidor, panel de pedidos server-driven (alta manual, estados, cancelación idempotente con restitución) y WhatsApp solo-servidor. Suite `tests/test-subfase-4.4.php` **139/139**, HTTP en vivo; reporte `docs/testing/subfase-4.4-pedidos.md`.
 8. **008 · Directorio de Creadores & Roles RBAC (Fase 4.5)** — Panel de administración server-driven en `usuarios.php`, actualización reactiva de roles con salvaguarda ID #1 (R-05), reseteo de claves y baja lógica (R-01) con reactivación. Suite `tests/test-subfase-4.5.php` **99/99**, HTTP en vivo sin divergencia, regresión acumulada Fase 4 (**841/841**) y Fase 3 (**1,287**) en verde; reporte `docs/testing/subfase-4.5-usuarios.md`.
 9. **010 · WhatsApp al Artesano Vendedor (Fase 4.6)** — Campo opcional `usuarios.whatsapp`, `enlace_whatsapp` al artesano con mensaje en voz del comprador, `enlace_whatsapp_comprador` para el panel, exposición pública en ficha, alta/edición admin + autoservicio. Suite `tests/test-subfase-4.6-whatsapp-artesano.php` **64/64**, HTTP en vivo sin divergencia; reporte `docs/testing/subfase-4.6-whatsapp-artesano.md`.
+10. **009 · Plan Maestro de la Fase 4 (Cierre Formal)** — Coordinación transversal y cierre formal del ciclo fullstack de Fase 4 (subfases 4.1 a 4.6, features 004–008 y 010). Cobertura total de **841 / 841 aserciones** en verde, 0 fallos de regresión, integración SweetAlert2 para reemplazo de alertas nativas y reporte maestro en `docs/testing/fase-4-cierre-maestro.md`.
 
 ## Gobernanza ✅
 
@@ -35,9 +36,9 @@
 
 ## Siguiente 🔜
 
-- **009 · Plan Maestro de la Fase 4 (cierre formal · `spec/features/009-plan-maestro-fase-4/`)** — Cierre documental de la Fase 4 una vez culminadas las 6 subfases (4.1–4.6) y verificación de los criterios de aceptación globales.
-- **011 · Siguientes extensiones o hito de Fase 5** — Documentación Diátaxis, optimización y preparación de release.
+- **011 · Inicio de Fase 5: Documentación Diátaxis, Rendimiento & Entrega** — Preparación de guías de usuario/artesano bajo el framework Diátaxis, auditoría integral de Core Web Vitals, pruebas de contraste accesibles y empaquetado de producción.
 - **Backlog / Futura Extensión · Baneo Total de Creadores con Cascada de Bajas Lógicas** — Posibilidad de que un administrador inhabilite o banee completamente a un usuario y, en una sola transacción atómica, dé de baja lógica a todas sus piezas del catálogo público protegiendo compras activas y respetando las invariantes R-01 (baja lógica universal), R-02 (preservación de fotos) y R-05 (salvaguarda admin #1).
 
 > Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código. Las features 004–008 han concluido su implementación bajo el maestro `009`.
+
 

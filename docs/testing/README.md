@@ -27,9 +27,11 @@
 | **4.4** | Checkout Público, Pedidos Atómicos & WhatsApp (Feature 007) | `tests/test-subfase-4.4.php` | 139 / 139 (100%) | ✅ Aprobado | [Ver Reporte 4.4](./subfase-4.4-pedidos.md) |
 | **4.5** | Directorio de Creadores & Roles RBAC (Feature 008) | `tests/test-subfase-4.5.php` | 99 / 99 (100%) | ✅ Aprobado | [Ver Reporte 4.5](./subfase-4.5-usuarios.md) |
 | **4.6** | WhatsApp al Artesano Vendedor (Feature 010) | `tests/test-subfase-4.6-whatsapp-artesano.php` | 64 / 64 (100%) | ✅ Aprobado | [Ver Reporte 4.6](./subfase-4.6-whatsapp-artesano.md) |
+| **Cierre** | **Cierre Maestro de la Fase 4 (Fullstack)** | `tests/test-fase-4-acumulado.php` | 841 / 841 (100%) | ✅ Aprobado | [Ver Cierre Maestro Fase 4](./fase-4-cierre-maestro.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
-**Total Acumulado Fase 4:** **841 / 841 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.6)** · verificado con `php tests/test-fase-4-acumulado.php`.
+**Total Acumulado Fase 4:** **841 / 841 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.6)** · verificado con `php tests/test-fase-4-acumulado.php` · [Reporte Ejecutivo de Cierre](./fase-4-cierre-maestro.md).
+
 
 ---
 
@@ -89,6 +91,7 @@ proyecto-web/
 │   ├── subfase-4.4-pedidos.md  # Reporte de Checkout Público, Pedidos Atómicos & WhatsApp (Fase 4)
 │   ├── subfase-4.5-usuarios.md # Reporte de Directorio de Creadores & Roles RBAC (Fase 4)
 │   ├── subfase-4.6-whatsapp-artesano.md  # Reporte de WhatsApp al Artesano Vendedor (Fase 4)
+│   ├── fase-4-cierre-maestro.md       # Reporte Ejecutivo de Cierre Maestro de Fase 4
 │   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
