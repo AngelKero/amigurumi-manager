@@ -1,6 +1,6 @@
 # 008 · Directorio de Creadores & Roles RBAC (Subfase 4.5)
 
-**Estado:** propuesto (solo spec · sin código)
+**Estado:** completado (código verificado · gate 3-tier superado)
 
 > 🧭 **Feature hija del plan maestro de la Fase 4 (`spec/features/009-plan-maestro-fase-4/`).**  
 > Cubre la **subfase 4.5** con su gate 3-tier (suite CLI + logs CLI/HTTP + reporte) conforme a `009/tasks.md` y `spec/constitution/roadmap.md`.
@@ -43,18 +43,18 @@ La Feature 008 (Subfase 4.5) es el cierre del cableado fullstack esencial de la 
 
 ## Criterios de aceptación
 
-- [ ] **Acceso y Protección RBAC en Cliente:** si no hay sesión activa o el usuario autenticado no posee el rol `admin`, la página `usuarios.php` redirige a `index.php` (o login) impidiendo el acceso a la interfaz de administración; la API rechaza peticiones no admin con `HTTP 401/403`.
-- [ ] **Carga Asíncrona Server-Driven:** la tabla de creadores y los 4 KPIs superiores se cargan desde `GET /api/usuarios/index.php` enviando el Bearer token activo. Se descarta `$usuariosList` hardcodeado en la vista PHP.
-- [ ] **Filtro de Estado de Cuentas:** la interfaz provee control para alternar entre creadores `activos` (por defecto), `inactivos` y `todos`, consultando el endpoint con el parámetro `?estado=` correspondiente y reflejando visualmente el estado del registro.
-- [ ] **Alta Exitosa de Creador:** el formulario `#formCrearUsuario` envía `POST /api/usuarios/crear.php` (`username`, `password`, `rol`, `whatsapp`); ante respuesta exitosa `201`, cierra el modal, limpia los campos, inserta la nueva fila en la tabla y actualiza los KPIs; ante error (`422/409`), muestra el mensaje del servidor en `#usuarioAlert` con `role="alert"` sin recargar.
-- [ ] **Modificación Reactiva de Rol:** `#formEditarRolUsuario` envía `POST /api/usuarios/cambiar-rol.php` (`id`, `rol`); ante `200`, actualiza el badge y atributos de la fila, recalcula los KPIs de roles y cierra el modal; ante fallo (`422/403`), presenta la alerta correspondiente.
-- [ ] **Salvaguarda Inviolable de ID #1 (R-05):** en la interfaz, la fila correspondiente al usuario con `id === 1` o `@admin` muestra controles de edición de rol deshabilitados o restringidos (con tooltip/alerta explicativa) y botón de baja desactivado; cualquier intento forzado vía API es rechazado con `HTTP 403`.
-- [ ] **Restablecimiento Seguro de Contraseña:** se implementa la acción/modal para restablecer la contraseña mediante `POST /api/usuarios/restablecer-password.php` (`id`, `nueva_password` opcional); ante `200`, presenta feedback accesible con la contraseña establecida o generada.
-- [ ] **Baja Lógica Persistente (R-01):** la acción de dar de baja ejecuta `POST /api/usuarios/eliminar.php` (`id`); ante `200`, actualiza la UI mostrando el usuario como inactivo o retirándolo de la vista de activos (sin ejecutar sentencias `DELETE` físicas en SQLite). Ante error por creaciones asociadas (`HTTP 409/422`), muestra el motivo al usuario.
-- [ ] **Reactivación de Creador:** para usuarios en estado inactivo, se expone la acción de reactivación vía `POST /api/usuarios/reactivar.php` (`id`); ante `200`, restaura la cuenta como activa (`activo = 1`) y actualiza la lista y contadores.
-- [ ] **Seguridad DOM (H-004):** todas las inserciones y mutaciones en el DOM de `users.js` emplean `escapeHtml`, `textContent` o nodos seguros; cero concatenación de datos no confiables en `innerHTML`.
-- [ ] **Suite de Pruebas Automatizada (Tier 1 & 2):** se crea y ejecuta la suite CLI `tests/test-subfase-4.5.php` con el 100% de aserciones en verde (`logs/subfase-4.5-cli.log`), y se realizan las validaciones HTTP curl documentadas en `logs/subfase-4.5-http.log` sin divergencia.
-- [ ] **Regresión Acumulada y Reporte (Tier 3):** se genera el reporte `docs/testing/subfase-4.5-usuarios.md`, la suite de regresión de fase `php tests/test-fase-4-acumulado.php` pasa al 100% integrando las subfases 4.1 a 4.5, y la regresión de Fase 3 se mantiene en **1,287** aserciones (H-006).
+- [x] **Acceso y Protección RBAC en Cliente:** si no hay sesión activa o el usuario autenticado no posee el rol `admin`, la página `usuarios.php` redirige a `index.php` (o login) impidiendo el acceso a la interfaz de administración; la API rechaza peticiones no admin con `HTTP 401/403`.
+- [x] **Carga Asíncrona Server-Driven:** la tabla de creadores y los 4 KPIs superiores se cargan desde `GET /api/usuarios/index.php` enviando el Bearer token activo. Se descarta `$usuariosList` hardcodeado en la vista PHP.
+- [x] **Filtro de Estado de Cuentas:** la interfaz provee control para alternar entre creadores `activos` (por defecto), `inactivos` y `todos`, consultando el endpoint con el parámetro `?estado=` correspondiente y reflejando visualmente el estado del registro.
+- [x] **Alta Exitosa de Creador:** el formulario `#formCrearUsuario` envía `POST /api/usuarios/crear.php` (`username`, `password`, `rol`, `whatsapp`); ante respuesta exitosa `201`, cierra el modal, limpia los campos, inserta la nueva fila en la tabla y actualiza los KPIs; ante error (`422/409`), muestra el mensaje del servidor en `#usuarioAlert` con `role="alert"` sin recargar.
+- [x] **Modificación Reactiva de Rol:** `#formEditarRolUsuario` envía `POST /api/usuarios/cambiar-rol.php` (`id`, `rol`); ante `200`, actualiza el badge y atributos de la fila, recalcula los KPIs de roles y cierra el modal; ante fallo (`422/403`), presenta la alerta correspondiente.
+- [x] **Salvaguarda Inviolable de ID #1 (R-05):** en la interfaz, la fila correspondiente al usuario con `id === 1` o `@admin` muestra controles de edición de rol deshabilitados o restringidos (con tooltip/alerta explicativa) y botón de baja desactivado; cualquier intento forzado vía API es rechazado con `HTTP 403`.
+- [x] **Restablecimiento Seguro de Contraseña:** se implementa la acción/modal para restablecer la contraseña mediante `POST /api/usuarios/restablecer-password.php` (`id`, `nueva_password` opcional); ante `200`, presenta feedback accesible con la contraseña establecida o generada.
+- [x] **Baja Lógica Persistente (R-01):** la acción de dar de baja ejecuta `POST /api/usuarios/eliminar.php` (`id`); ante `200`, actualiza la UI mostrando el usuario como inactivo o retirándolo de la vista de activos (sin ejecutar sentencias `DELETE` físicas en SQLite). Ante error por creaciones asociadas (`HTTP 409/422`), muestra el motivo al usuario.
+- [x] **Reactivación de Creador:** para usuarios en estado inactivo, se expone la acción de reactivación vía `POST /api/usuarios/reactivar.php` (`id`); ante `200`, restaura la cuenta como activa (`activo = 1`) y actualiza la lista y contadores.
+- [x] **Seguridad DOM (H-004):** todas las inserciones y mutaciones en el DOM de `users.js` emplean `escapeHtml`, `textContent` o nodos seguros; cero concatenación de datos no confiables en `innerHTML`.
+- [x] **Suite de Pruebas Automatizada (Tier 1 & 2):** se crea y ejecuta la suite CLI `tests/test-subfase-4.5.php` con el 100% de aserciones en verde (`logs/subfase-4.5-cli.log`), y se realizan las validaciones HTTP curl documentadas en `logs/subfase-4.5-http.log` sin divergencia.
+- [x] **Regresión Acumulada y Reporte (Tier 3):** se genera el reporte `docs/testing/subfase-4.5-usuarios.md`, la suite de regresión de fase `php tests/test-fase-4-acumulado.php` pasa al 100% integrando las subfases 4.1 a 4.5, y la regresión de Fase 3 se mantiene en **1,287** aserciones (H-006).
 
 ---
 

@@ -158,6 +158,11 @@
     <!-- PAGINACIÓN -->
     <nav id="paginacionUsuarios" class="d-flex justify-content-center mt-4" aria-label="Paginación de usuarios"></nav>
 
+    <!-- Template para renderizado dinámico de filas (H-004) -->
+    <template id="usuarioRowTemplate">
+      <tr data-user-id="" data-username="" data-rol="" data-activo="" data-whatsapp=""></tr>
+    </template>
+
     <!-- Nota de Integridad Referencial SQLite -->
     <div class="alert alert-light border mt-4 mb-0 small text-muted d-flex align-items-center gap-2" style="border-radius: var(--craft-radius-sm);">
       <i class="bi bi-shield-lock-fill text-primary fs-5"></i>

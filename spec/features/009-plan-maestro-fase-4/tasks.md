@@ -67,17 +67,18 @@
       precio congelado + WhatsApp, 422/404/409, panel Bearer con scoping, manual/estados/
       cancelar+restituir, sin divergencia); reporte `docs/testing/subfase-4.4-pedidos.md` con
       **validación AC 10/10** · **HALT** (aprobación pendiente para 4.5).
-- [ ] **4.5** Directorio de Creadores & RBAC (`008`): suite `tests/test-subfase-4.5.php` →
-      `logs/subfase-4.5-cli.log`; HTTP → `logs/subfase-4.5-http.log`; reporte
-      `docs/testing/subfase-4.5-usuarios.md` · **HALT**.
+- [x] **4.5** Directorio de Creadores & RBAC (`008`): suite `tests/test-subfase-4.5.php` → **99/99**
+      (`logs/subfase-4.5-cli.log`); HTTP → `logs/subfase-4.5-http.log` (sin divergencia); reporte
+      `docs/testing/subfase-4.5-usuarios.md` con **validación AC 12/12** · **HALT**.
 
 ## 5. Regresión por fase (obligatorio, H-020)
 
 - [x] Tras **cada** subfase: `php tests/test-fase-4-acumulado.php > logs/fase-4-acumulado.log 2>&1`
       (tras 4.3: **412/412** — 64 + 136 + 212, EXIT 0; tras 4.3.1/4.3.2: **517/517** —
       64 + 136 + 212 + 62 + 43, EXIT 0; tras 4.3.3: **539/539** — 64 + 136 + 212 + 62 + 43 + 22,
-      EXIT 0; tras 4.4: **678/678** — 64 + 136 + 212 + 62 + 43 + 22 + 139, EXIT 0).
-- [ ] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
+      EXIT 0; tras 4.4: **678/678** — 64 + 136 + 212 + 62 + 43 + 22 + 139, EXIT 0;
+      tras 4.5 + 4.6: **841/841** — 64 + 136 + 212 + 62 + 43 + 22 + 139 + 99 + 64, EXIT 0).
+- [x] Tras la última subfase: regresión acumulada completa + Fase 3 (`test-subfase-3.6.5.php`)
       + `php tests/cuenta-aserciones.php` (**1,287**) en verde.
 
 ## 6. Verificación & Cierre

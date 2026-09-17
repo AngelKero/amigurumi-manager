@@ -217,12 +217,12 @@ $testUsername = "test_usr_{$suffix}";
 $testPassword = "Password!{$suffix}";
 
 // A. Alta exitosa (POST /api/usuarios/crear.php)
-$createRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$createRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'username' => $testUsername,
     'password' => $testPassword,
     'rol'      => 'artesano',
     'whatsapp' => '5599887766',
-]);
+]));
 $logTrace('Alta de nuevo creador (POST /api/usuarios/crear.php)', $createRes);
 
 TestHelper::assertSame(201, $createRes['status'], 'Creación de usuario responde 201 Created');
@@ -235,48 +235,48 @@ TestHelper::assertSame('artesano', $createdUser['rol'] ?? '', 'Rol asignado es a
 TestHelper::assertSame('5599887766', $createdUser['whatsapp'] ?? '', 'WhatsApp comercial asignado');
 
 // A2. Validaciones de esquema en alta
-$dupRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$dupRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'username' => $testUsername,
     'password' => '123456',
     'rol'      => 'artesano',
-]);
+]));
 TestHelper::assertSame(409, $dupRes['status'], 'Intento de crear usuario con username duplicado responde 409 Conflict');
 
-$shortRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$shortRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/crear.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'username' => "short_{$suffix}",
     'password' => '123',
     'rol'      => 'artesano',
-]);
+]));
 TestHelper::assertSame(422, $shortRes['status'], 'Intento de crear usuario con clave menor a 6 caracteres responde 422 Unprocessable Entity');
 
 // B. Modificación de rol (POST /api/usuarios/cambiar-rol.php)
-$roleRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/cambiar-rol.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$roleRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/cambiar-rol.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id'  => $testUserId,
     'rol' => 'asistente',
-]);
+]));
 $logTrace('Modificación de rol a asistente', $roleRes);
 TestHelper::assertSame(200, $roleRes['status'], 'Cambio de rol responde 200 OK');
 TestHelper::assertSame('asistente', $roleRes['json']['datos']['rol'] ?? '', 'Rol actualizado a asistente');
 
 // B2. Salvaguarda ID #1 contra degradación
-$adminDegradeRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/cambiar-rol.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$adminDegradeRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/cambiar-rol.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id'  => 1,
     'rol' => 'artesano',
-]);
+]));
 TestHelper::assertSame(403, $adminDegradeRes['status'], 'Intento de degradar rol de ID #1 responde 403 Forbidden (R-05)');
 
 // C. Restablecimiento de contraseña manual y autogenerada
-$resetManualRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/restablecer-password.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$resetManualRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/restablecer-password.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id'              => $testUserId,
     'nueva_password'  => "NuevaClave!{$suffix}",
-]);
+]));
 $logTrace('Restablecimiento de clave manual', $resetManualRes);
 TestHelper::assertSame(200, $resetManualRes['status'], 'Restablecimiento de clave manual responde 200 OK');
 TestHelper::assertFalse($resetManualRes['json']['datos']['es_autogenerada'] ?? true, 'Marca es_autogenerada: false con clave provista');
 
-$resetAutoRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/restablecer-password.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$resetAutoRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/restablecer-password.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 $logTrace('Restablecimiento de clave autogenerada', $resetAutoRes);
 TestHelper::assertSame(200, $resetAutoRes['status'], 'Restablecimiento con clave autogenerada responde 200 OK');
 TestHelper::assertTrue($resetAutoRes['json']['datos']['es_autogenerada'] ?? false, 'Marca es_autogenerada: true');
@@ -285,49 +285,49 @@ TestHelper::assertTrue(str_starts_with($tempPwd, 'Crochet!'), 'Clave temporal au
 
 // D. Baja lógica (POST /api/usuarios/eliminar.php) (R-01)
 // D1. Intento contra ID #1
-$delAdminRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$delAdminRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => 1,
-]);
+]));
 TestHelper::assertSame(403, $delAdminRes['status'], 'Intento de baja de ID #1 responde 403 Forbidden (R-05)');
 
 // D2. Intento contra usuario con creaciones activas (artesana_ana = ID 2)
-$delAnaRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$delAnaRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => 2,
-]);
+]));
 TestHelper::assertSame(409, $delAnaRes['status'], 'Intento de baja de usuario con creaciones activas responde 409 Conflict (integridad referencial)');
 
 // D3. Baja lógica exitosa de usuario sin creaciones
-$delUserRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$delUserRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 $logTrace('Baja lógica de usuario de prueba', $delUserRes);
 TestHelper::assertSame(200, $delUserRes['status'], 'Baja lógica de usuario responde 200 OK');
 TestHelper::assertSame(0, $delUserRes['json']['datos']['activo'] ?? 1, 'Respuesta confirma activo: 0');
 
 // D4. Segundo intento de baja sobre usuario ya inactivo -> 409
-$delTwiceRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$delTwiceRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 TestHelper::assertSame(409, $delTwiceRes['status'], 'Segundo intento de baja sobre usuario inactivo responde 409 Conflict');
 
 // E. Reactivación de cuenta (POST /api/usuarios/reactivar.php)
-$reactivateRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/reactivar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$reactivateRes = TestHelper::curl('POST', $baseUrl . '/api/usuarios/reactivar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 $logTrace('Reactivación de cuenta dada de baja', $reactivateRes);
 TestHelper::assertSame(200, $reactivateRes['status'], 'Reactivación de cuenta responde 200 OK');
 TestHelper::assertSame(1, $reactivateRes['json']['datos']['activo'] ?? 0, 'Respuesta confirma activo: 1 tras reactivación');
 
 // E2. Segundo intento de reactivación sobre usuario ya activo -> 409
-$reactivateTwice = TestHelper::curl('POST', $baseUrl . '/api/usuarios/reactivar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+$reactivateTwice = TestHelper::curl('POST', $baseUrl . '/api/usuarios/reactivar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 TestHelper::assertSame(409, $reactivateTwice['status'], 'Intento de reactivar cuenta ya activa responde 409 Conflict');
 
 // Limpieza final del usuario de prueba (baja lógica)
-TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), [
+TestHelper::curl('POST', $baseUrl . '/api/usuarios/eliminar.php', array_merge($adminHeaders, ['Content-Type: application/json']), json_encode([
     'id' => $testUserId,
-]);
+]));
 
 // =============================================================================
 // 5. PRUEBAS HTTP EN VIVO Y CABECERAS CSP
@@ -355,13 +355,7 @@ TestHelper::assertSame(200, $listTodosHttp['status'], 'GET /api/usuarios/index.p
 // Vista usuarios.php con CSP
 $pageRes = TestHelper::curl('GET', $baseUrl . '/usuarios.php');
 TestHelper::assertSame(200, $pageRes['status'], 'usuarios.php responde HTTP 200 OK');
-$cspHeader = '';
-foreach ($pageRes['headers'] as $h) {
-    if (stripos($h, 'Content-Security-Policy:') === 0) {
-        $cspHeader = $h;
-        break;
-    }
-}
+$cspHeader = $pageRes['headers']['content-security-policy'] ?? '';
 TestHelper::assertTrue(!empty($cspHeader), 'usuarios.php emite cabecera Content-Security-Policy estricta');
 TestHelper::assertStringContains("script-src 'self'", $cspHeader, 'CSP permite script-src self');
 TestHelper::assertStringContains("frame-ancestors 'none'", $cspHeader, 'CSP protege contra clickjacking (frame-ancestors none)');

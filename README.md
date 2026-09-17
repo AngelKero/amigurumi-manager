@@ -4,7 +4,7 @@
 [![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![Design System](https://img.shields.io/badge/Design%20System-Algodón%20Nórdico-8E5B74)](docs/design-system/README.md)
-[![Tests](https://img.shields.io/badge/Tests-393%20%2F%20393%20Passing%20(100%25)-52857C)](docs/testing/README.md)
+[![Tests](<https://img.shields.io/badge/Tests-393%20%2F%20393%20Passing%20(100%25)-52857C>)](docs/testing/README.md)
 [![Architecture](https://img.shields.io/badge/Clean%20Architecture-SOLID-235048)](docs/architecture/README.md)
 [![License](https://img.shields.io/badge/Dependencies-Zero%20External-D99C52)]()
 
@@ -25,7 +25,7 @@ php -S localhost:8000
 Luego, abre tu navegador web en:
 👉 **[http://localhost:8000](http://localhost:8000)**
 
-*(Opcionalmente, si utilizas otra dirección local como `127.0.0.1:8000`, también es totalmente compatible).*
+_(Opcionalmente, si utilizas otra dirección local como `127.0.0.1:8000`, también es totalmente compatible)._
 
 ---
 
@@ -48,26 +48,26 @@ php setup.php
 
 La base de datos incluye 3 usuarios semilla para probar los diferentes niveles de privilegios:
 
-| Usuario | Contraseña | Rol del Sistema | Alcance y Privilegios |
-| :--- | :--- | :--- | :--- |
-| **`admin`** | `admin123` | `admin` | **Administrador Global & Artesano Titular**: Control total de plataforma, directorio de usuarios, cambio de roles RBAC, restablecimiento de claves, y gestión de piezas propias o de terceros. *(Protegido contra bloqueo en ID #1)*. |
-| **`artesana_ana`** | `artesana123` | `artesano` | **Creadora Textil Independiente**: Registro y edición de creaciones propias, gestión de stock e inventario, ajuste de precios/costos, y control de encargos de clientes. *(Protegido contra IDOR)*. |
-| **`asistente_leo`** | `asistente123` | `asistente` | **Asistente de Plataforma**: Consulta de inventarios, apoyo operativo en logística y seguimiento de entregas sin facultades de alteración de catálogo ni privilegios RBAC. |
+| Usuario             | Contraseña        | Rol del Sistema | Alcance y Privilegios                                                                                                                                                                                                                 |
+| :------------------ | :---------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`admin`**         | `admin123`        | `admin`         | **Administrador Global & Artesano Titular**: Control total de plataforma, directorio de usuarios, cambio de roles RBAC, restablecimiento de claves, y gestión de piezas propias o de terceros. _(Protegido contra bloqueo en ID #1)_. |
+| **`artesana_ana`**  | `Crochet!9cc83b!` | `artesano`      | **Creadora Textil Independiente**: Registro y edición de creaciones propias, gestión de stock e inventario, ajuste de precios/costos, y control de encargos de clientes. _(Protegido contra IDOR)_.                                   |
+| **`asistente_leo`** | `asistente123`    | `asistente`     | **Asistente de Plataforma**: Consulta de inventarios, apoyo operativo en logística y seguimiento de entregas sin facultades de alteración de catálogo ni privilegios RBAC.                                                            |
 
-*El inicio de sesión se realiza cómodamente desde el botón **"Iniciar Sesión"** en la barra de navegación superior o haciendo clic en el sello del creador autenticado.*
+_El inicio de sesión se realiza cómodamente desde el botón **"Iniciar Sesión"** en la barra de navegación superior o haciendo clic en el sello del creador autenticado._
 
 ---
 
 ## 📱 Módulos & Vistas del Sistema
 
-| Vista / Archivo | Tipo de Acceso | Descripción Funcional |
-| :--- | :---: | :--- |
-| **[`index.php`](index.php)** | 🌐 Público | **Catálogo Colectivo**: Cuadrícula responsiva de creaciones con filtros textiles, selector de categoría, rango dinámico de precios (Min/Max), filtro por autor artesano, badges de disponibilidad inmediata y etiquetas de *"Bajo Encargo"*. |
-| **[`detalle.php`](detalle.php?id=1)** | 🌐 Público | **Ficha Técnica & Solicitud de Pedido**: Especificación detallada de medidas, fibras textiles, cuidados, sello de creador verificado y modal interactivo de compra/encargo con stepper acotado. |
-| **[`creaciones.php`](creaciones.php)** | 🔒 Artesano / Admin | **Taller de Inventario & Creaciones**: Panel con métricas KPI en vivo, ajuste in-situ de existencias, toggle interactivo de encargo, ficha de inspección técnica modal y baja lógica con salvaguarda referencial. |
-| **[`formulario.php`](formulario.php)** | 🔒 Artesano / Admin | **Alta & Edición de Creaciones**: Formulario de 10 campos con subida de fotografías reales, fallback vectorial SVG y simulador de margen de beneficio con **escudo protector y desenfoque** hasta completar campos obligatorios. |
-| **[`pedidos.php`](pedidos.php)** | 🔒 Artesano / Admin | **Control de Pedidos & Encargos**: Cuadrícula de tarjetas responsivas 3x/2x pespunteadas, badges de cobro tri-estado (*Pendiente*, *Anticipo 50%*, *Liquidado*), enlace directo a WhatsApp y cancelación con restitución de inventario. |
-| **[`usuarios.php`](usuarios.php)** | 🔒 Solo Admin | **Directorio de Creadores & Roles**: Gestión del equipo con filtros de estado (*activos*, *inactivos*, *todos*), modificación de roles con salvaguarda en ID #1, recuperación de contraseñas y reactivación de cuentas. |
+| Vista / Archivo                        |   Tipo de Acceso    | Descripción Funcional                                                                                                                                                                                                                        |
+| :------------------------------------- | :-----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[`index.php`](index.php)**           |     🌐 Público      | **Catálogo Colectivo**: Cuadrícula responsiva de creaciones con filtros textiles, selector de categoría, rango dinámico de precios (Min/Max), filtro por autor artesano, badges de disponibilidad inmediata y etiquetas de _"Bajo Encargo"_. |
+| **[`detalle.php`](detalle.php?id=1)**  |     🌐 Público      | **Ficha Técnica & Solicitud de Pedido**: Especificación detallada de medidas, fibras textiles, cuidados, sello de creador verificado y modal interactivo de compra/encargo con stepper acotado.                                              |
+| **[`creaciones.php`](creaciones.php)** | 🔒 Artesano / Admin | **Taller de Inventario & Creaciones**: Panel con métricas KPI en vivo, ajuste in-situ de existencias, toggle interactivo de encargo, ficha de inspección técnica modal y baja lógica con salvaguarda referencial.                            |
+| **[`formulario.php`](formulario.php)** | 🔒 Artesano / Admin | **Alta & Edición de Creaciones**: Formulario de 10 campos con subida de fotografías reales, fallback vectorial SVG y simulador de margen de beneficio con **escudo protector y desenfoque** hasta completar campos obligatorios.             |
+| **[`pedidos.php`](pedidos.php)**       | 🔒 Artesano / Admin | **Control de Pedidos & Encargos**: Cuadrícula de tarjetas responsivas 3x/2x pespunteadas, badges de cobro tri-estado (_Pendiente_, _Anticipo 50%_, _Liquidado_), enlace directo a WhatsApp y cancelación con restitución de inventario.      |
+| **[`usuarios.php`](usuarios.php)**     |    🔒 Solo Admin    | **Directorio de Creadores & Roles**: Gestión del equipo con filtros de estado (_activos_, _inactivos_, _todos_), modificación de roles con salvaguarda en ID #1, recuperación de contraseñas y reactivación de cuentas.                      |
 
 ---
 
@@ -117,18 +117,18 @@ proyecto-web/
 
 ## 🗺️ Ciclo de Vida del Proyecto: Hoja de Ruta de Fases
 
-El desarrollo se rige por **5 fases secuenciales estrictas** bajo el protocolo de compuertas de calidad (*Quality Gates*):
+El desarrollo se rige por **5 fases secuenciales estrictas** bajo el protocolo de compuertas de calidad (_Quality Gates_):
 
 👉 **[Consulta la Documentación Completa de Todas las Fases](docs/architecture/proceso-desarrollo-fases.md)**
 
-| Fase | Denominación | Estado | Enfoque Principal |
-| :---: | :--- | :---: | :--- |
-| **Fase 0** | **Descubrimiento & Modelo Conceptual** | ✅ **Completada** | Plataforma colaborativa multi-artesano, autonomía operativa y modelo relacional tripartito. |
-| **Fase 1** | **Base de Datos & Seguridad CLI** | ✅ **Completada** | DDL SQLite con restricciones CHECK y FKs estrictas, script CLI `setup.php` y blindaje `.htaccess`. |
-| **Fase 2** | **Layout, UI & Sistema de Componentes** | ✅ **Completada** | Sistema de diseño "Algodón Nórdico", componentes PHP desacoplados, ITCSS, ES Modules, rediseño de pedidos con WhatsApp y generalización a crochet integral. Score QA: 98.5/100. |
-| **Fase 3** | **Backend & Clean Architecture (`app/`)** | 🔄 **En Curso** | Aislamiento en `app/`, 6 subfases secuenciales con compuertas de testing en 3 niveles: <br>• **3.1 Infraestructura Nuclear:** ✅ Aprobado (93/93 aserciones) <br>• **3.2 Autenticación Stateless:** ✅ Aprobado (69/69 aserciones) <br>• **3.3 Gestión de Usuarios & RBAC:** ✅ Aprobado (105/105 aserciones) <br>• **3.4 Catálogo & Creaciones:** ✅ Aprobado (126/126 aserciones) <br>• **3.5 Pedidos & Transacciones Atómicas:** ⏳ *En desarrollo* <br>• **3.6 Seguridad & Regresión:** ⏳ *Pendiente* |
-| **Fase 4** | **Cableado Fullstack Asíncrono** | ⏳ **Pendiente** | Integración reactiva AJAX `fetch()` entre `src/js/modules/` y la API REST, con Bearer tokens y feedback visual. |
-| **Fase 5** | **Documentación, Rendimiento & Entrega** | 🔄 **En Curso** | Mantenimiento de Clean Documentation (Zero Monoliths), catálogo de 15 ADRs, auditoría WCAG 2.1 AA y empaquetado final. |
+|    Fase    | Denominación                              |      Estado       | Enfoque Principal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| :--------: | :---------------------------------------- | :---------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Fase 0** | **Descubrimiento & Modelo Conceptual**    | ✅ **Completada** | Plataforma colaborativa multi-artesano, autonomía operativa y modelo relacional tripartito.                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Fase 1** | **Base de Datos & Seguridad CLI**         | ✅ **Completada** | DDL SQLite con restricciones CHECK y FKs estrictas, script CLI `setup.php` y blindaje `.htaccess`.                                                                                                                                                                                                                                                                                                                                                                                                         |
+| **Fase 2** | **Layout, UI & Sistema de Componentes**   | ✅ **Completada** | Sistema de diseño "Algodón Nórdico", componentes PHP desacoplados, ITCSS, ES Modules, rediseño de pedidos con WhatsApp y generalización a crochet integral. Score QA: 98.5/100.                                                                                                                                                                                                                                                                                                                            |
+| **Fase 3** | **Backend & Clean Architecture (`app/`)** |  🔄 **En Curso**  | Aislamiento en `app/`, 6 subfases secuenciales con compuertas de testing en 3 niveles: <br>• **3.1 Infraestructura Nuclear:** ✅ Aprobado (93/93 aserciones) <br>• **3.2 Autenticación Stateless:** ✅ Aprobado (69/69 aserciones) <br>• **3.3 Gestión de Usuarios & RBAC:** ✅ Aprobado (105/105 aserciones) <br>• **3.4 Catálogo & Creaciones:** ✅ Aprobado (126/126 aserciones) <br>• **3.5 Pedidos & Transacciones Atómicas:** ⏳ _En desarrollo_ <br>• **3.6 Seguridad & Regresión:** ⏳ _Pendiente_ |
+| **Fase 4** | **Cableado Fullstack Asíncrono**          | ⏳ **Pendiente**  | Integración reactiva AJAX `fetch()` entre `src/js/modules/` y la API REST, con Bearer tokens y feedback visual.                                                                                                                                                                                                                                                                                                                                                                                            |
+| **Fase 5** | **Documentación, Rendimiento & Entrega**  |  🔄 **En Curso**  | Mantenimiento de Clean Documentation (Zero Monoliths), catálogo de 15 ADRs, auditoría WCAG 2.1 AA y empaquetado final.                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ---
 
@@ -148,6 +148,7 @@ php tests/test-subfase-3.1.php && php tests/test-subfase-3.2.php && php tests/te
 ```
 
 Los reportes ejecutivos formales con evidencias JSON y estado de SQLite se encuentran en:
+
 - [`docs/testing/subfase-3.1-core.md`](docs/testing/subfase-3.1-core.md)
 - [`docs/testing/subfase-3.2-auth.md`](docs/testing/subfase-3.2-auth.md)
 - [`docs/testing/subfase-3.3-usuarios.md`](docs/testing/subfase-3.3-usuarios.md)
@@ -159,6 +160,7 @@ Los reportes ejecutivos formales con evidencias JSON y estado de SQLite se encue
 ## 🎨 Sistema de Diseño: "Algodón Nórdico"
 
 El frontend implementa una estética textil escandinava cálida y de alta gama:
+
 - **Paleta Cromática Oficial:**
   - **Ciruela Nórdico** (`#8E5B74` / `--craft-primary`): Botones primarios, enlaces activos y acentos de marca.
   - **Abeto Glaciar** (`#52857C` / `--craft-secondary`) con texto de alto contraste (`#235048` / `--craft-secondary-text`): Badges de stock disponible con ratio $>6.2:1$.
@@ -174,7 +176,7 @@ El frontend implementa una estética textil escandinava cálida y de alta gama:
   - **Fraunces** (`600`, `700`, `800`): Display artesanal con serifa cálida para títulos principales y cabeceras de marca.
   - **Outfit** (`600`, `700`, `800`): Subtítulos geométricos, métricas KPI y cifras destacadas.
   - **Plus Jakarta Sans** (`400`, `500`, `600`): Lectura fluida para párrafos, fichas técnicas, tablas y formularios.
-- **Accesibilidad:** Ratio de contraste verificado superior a 4.5:1 (alcanzando hasta 14.2:1), navegación responsiva *mobile-first* con tarjetas adaptativas en pantallas pequeñas.
+- **Accesibilidad:** Ratio de contraste verificado superior a 4.5:1 (alcanzando hasta 14.2:1), navegación responsiva _mobile-first_ con tarjetas adaptativas en pantallas pequeñas.
 
 ---
 
