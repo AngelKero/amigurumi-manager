@@ -44,6 +44,8 @@ $modals = $modals ?? [];
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- SweetAlert2 CDN (Modales Accesibles) -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   
   <!-- Master Stylesheet (Modular ITCSS Architecture) -->
   <link href="src/css/styles.css" rel="stylesheet">
@@ -103,6 +105,8 @@ $modals = $modals ?? [];
 
   <!-- Bootstrap 5.3 Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Frontend Scripting: ES Modules Native Orchestrator -->
   <script type="module" src="src/js/main.js"></script>
 </body>

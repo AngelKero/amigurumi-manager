@@ -48,13 +48,15 @@ php setup.php
 
 La base de datos incluye 3 usuarios semilla para probar los diferentes niveles de privilegios:
 
-| Usuario             | Contraseña        | Rol del Sistema | Alcance y Privilegios                                                                                                                                                                                                                 |
-| :------------------ | :---------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **`admin`**         | `admin123`        | `admin`         | **Administrador Global & Artesano Titular**: Control total de plataforma, directorio de usuarios, cambio de roles RBAC, restablecimiento de claves, y gestión de piezas propias o de terceros. _(Protegido contra bloqueo en ID #1)_. |
-| **`artesana_ana`**  | `Crochet!9cc83b!` | `artesano`      | **Creadora Textil Independiente**: Registro y edición de creaciones propias, gestión de stock e inventario, ajuste de precios/costos, y control de encargos de clientes. _(Protegido contra IDOR)_.                                   |
-| **`asistente_leo`** | `asistente123`    | `asistente`     | **Asistente de Plataforma**: Consulta de inventarios, apoyo operativo en logística y seguimiento de entregas sin facultades de alteración de catálogo ni privilegios RBAC.                                                            |
+| Usuario             | Contraseña     | Rol del Sistema | Alcance y Privilegios                                                                                                                                                                                                                 |
+| :------------------ | :------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`admin`**         | `admin123`     | `admin`         | **Administrador Global & Artesano Titular**: Control total de plataforma, directorio de usuarios, cambio de roles RBAC, restablecimiento de claves, y gestión de piezas propias o de terceros. _(Protegido contra bloqueo en ID #1)_. |
+| **`artesana_ana`**  | `artesana123`  | `artesano`      | **Creadora Textil Independiente**: Registro y edición de creaciones propias, gestión de stock e inventario, ajuste de precios/costos, y control de encargos de clientes. _(Protegido contra IDOR)_.                                   |
+| **`asistente_leo`** | `asistente123` | `asistente`     | **Asistente de Plataforma**: Consulta de inventarios, apoyo operativo en logística y seguimiento de entregas sin facultades de alteración de catálogo ni privilegios RBAC.                                                            |
 
 _El inicio de sesión se realiza cómodamente desde el botón **"Iniciar Sesión"** en la barra de navegación superior o haciendo clic en el sello del creador autenticado._
+
+> 💡 **Nota de Arquitectura & Evolución Futura (Backlog):** La plataforma cuenta con protección de integridad que bloquea la eliminación de un usuario si aún tiene piezas en el catálogo (HTTP 409). Como evolución futura documentada en [`docs/api/usuarios.md`](docs/api/usuarios.md#9-especificación-futura--backlog-baneo-total-de-usuario--cascada-de-bajas-lógicas), se incorporará la función de **Baneo Total de Creadores**, permitiendo al administrador suspender al usuario y, en cascada atómica en SQLite, retirar automáticamente todas sus creaciones activas del catálogo público respetando las invariantes [R-01](AGENTS.md) (baja lógica universal) y [R-02](AGENTS.md) (preservación histórica de imágenes).
 
 ---
 

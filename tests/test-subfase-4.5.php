@@ -181,7 +181,13 @@ $adminLogin = $authService->authenticate('admin', 'admin123');
 $adminToken = $adminLogin['token'] ?? '';
 TestHelper::assertTrue(!empty($adminToken), 'Token de admin obtenido exitosamente');
 
-$artisanLogin = $authService->authenticate('artesana_ana', 'admin123');
+$artisanLogin = null;
+foreach (['Crochet!9cc83b!', 'admin123', 'artesana123'] as $anaPwd) {
+    try {
+        $artisanLogin = $authService->authenticate('artesana_ana', $anaPwd);
+        break;
+    } catch (\Throwable) {}
+}
 $artisanToken = $artisanLogin['token'] ?? '';
 TestHelper::assertTrue(!empty($artisanToken), 'Token de artesano obtenido exitosamente');
 

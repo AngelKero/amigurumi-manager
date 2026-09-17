@@ -9,6 +9,7 @@
 
 import { escapeHtml } from './dom-safe.js';
 import { getToken, getUser, isAuthenticated, clearSession } from './auth.js';
+import { confirmModal, showSuccessModal, showErrorModal, showToastAlert } from './dialog.js';
 
 const INDEX_URL = '/api/usuarios/index.php';
 const CREAR_URL = '/api/usuarios/crear.php';
@@ -115,8 +116,11 @@ function createRoleBadge(rol) {
   return badge;
 }
 
-/** Alerta global en el panel */
+/** Alerta global en el panel (Toast modal con SweetAlert2 + feedback DOM) */
 function showGlobalAlert(message, type = 'info') {
+  const toastType = type === 'danger' ? 'error' : (type === 'success' ? 'success' : 'info');
+  showToastAlert(message, toastType);
+
   const alertBox = document.getElementById('usuariosGlobalAlert');
   if (!alertBox) return;
   alertBox.className = `alert alert-${type} py-2 px-3 mb-3 small`;
@@ -621,6 +625,10 @@ export function initUsers() {
 
       // Salvaguarda ID #1 en cliente (R-05)
       if (userId === 1 && newRol !== 'admin') {
+        showErrorModal({
+          title: 'Acción Restringida (R-05)',
+          text: 'La cuenta principal de administrador titular (ID #1) está protegida y no puede ser degradada.',
+        });
         if (alertBox) {
           alertBox.textContent = 'Acción Restringida: La cuenta principal de administrador titular (ID #1) no puede ser degradada.';
           alertBox.classList.remove('d-none');
@@ -795,6 +803,15 @@ export function initUsers() {
           resultBox.classList.remove('d-none');
         }
 
+        if (datos.es_autogenerada && datos.password_temporal) {
+          showSuccessModal({
+            title: 'Contraseña Temporal Generada',
+            html: `Se generó una clave temporal para el usuario:<br><br>` +
+                  `<div class="p-3 bg-light border rounded font-monospace fs-5 text-primary text-center fw-bold select-all" style="letter-spacing: 0.08em;">${escapeHtml(datos.password_temporal)}</div>` +
+                  `<br><small class="text-muted">Proporciona esta clave al colaborador para que pueda acceder.</small>`,
+          });
+        }
+
         if (inputPwd) inputPwd.value = '';
         showGlobalAlert('Contraseña restablecida exitosamente.', 'success');
       } catch {
@@ -818,11 +835,24 @@ export function initUsers() {
       const creaciones = Number(delBtn.getAttribute('data-creaciones') || 0);
 
       if (userId === 1) {
+        showErrorModal({
+          title: 'Acción Restringida (R-05)',
+          text: 'La cuenta principal de administrador titular (ID #1) no puede ser eliminada bajo ninguna circunstancia.',
+        });
         showGlobalAlert('Operación denegada: La cuenta del administrador titular (ID #1) no puede ser eliminada (R-05).', 'danger');
         return;
       }
 
-      if (!window.confirm(`¿Confirmas la baja lógica de la cuenta @${username}?`)) {
+      const confirmed = await confirmModal({
+        title: 'Confirmar Baja Lógica',
+        html: `¿Estás seguro de que deseas dar de baja la cuenta <strong>@${escapeHtml(username)}</strong>?<br><small class="text-muted">La cuenta pasará a estado inactivo y podrá ser reactivada en cualquier momento.</small>`,
+        icon: 'warning',
+        confirmText: 'Sí, dar de baja',
+        cancelText: 'Conservar cuenta',
+        danger: true,
+      });
+
+      if (!confirmed) {
         return;
       }
 
@@ -832,6 +862,10 @@ export function initUsers() {
 
         if (!ok || !json || !json.exito) {
           const msg = (json && json.error && json.error.mensaje) || `No se pudo eliminar al usuario (HTTP ${status}).`;
+          showErrorModal({
+            title: status === 409 ? 'Protección de Integridad Referencial' : 'Error al Procesar Baja',
+            text: msg,
+          });
           showGlobalAlert(msg, 'danger');
           return;
         }
@@ -839,6 +873,10 @@ export function initUsers() {
         showGlobalAlert(`Usuario @${username} dado de baja de forma lógica en SQLite.`, 'success');
         await fetchUsers();
       } catch {
+        showErrorModal({
+          title: 'Error de Comunicación',
+          text: 'Ocurrió un error al comunicarse con el servidor al procesar la baja.',
+        });
         showGlobalAlert('Error de comunicación con el servidor al procesar la baja.', 'danger');
       } finally {
         delBtn.disabled = false;
@@ -852,7 +890,15 @@ export function initUsers() {
       const userId = Number(reactBtn.getAttribute('data-user-id'));
       const username = reactBtn.getAttribute('data-username') || 'usuario';
 
-      if (!window.confirm(`¿Confirmas la reactivación de la cuenta @${username}?`)) {
+      const confirmed = await confirmModal({
+        title: 'Reactivar Creador',
+        html: `¿Deseas restaurar la cuenta de <strong>@${escapeHtml(username)}</strong> a estado activo?<br><small class="text-muted">El usuario podrá volver a iniciar sesión en la plataforma.</small>`,
+        icon: 'question',
+        confirmText: 'Sí, reactivar',
+        cancelText: 'Cancelar',
+      });
+
+      if (!confirmed) {
         return;
       }
 
@@ -862,6 +908,10 @@ export function initUsers() {
 
         if (!ok || !json || !json.exito) {
           const msg = (json && json.error && json.error.mensaje) || `No se pudo reactivar al usuario (HTTP ${status}).`;
+          showErrorModal({
+            title: 'Error al Reactivar',
+            text: msg,
+          });
           showGlobalAlert(msg, 'danger');
           return;
         }
@@ -869,6 +919,10 @@ export function initUsers() {
         showGlobalAlert(`Cuenta @${username} reactivada exitosamente.`, 'success');
         await fetchUsers();
       } catch {
+        showErrorModal({
+          title: 'Error de Comunicación',
+          text: 'Ocurrió un error al comunicarse con el servidor al reactivar la cuenta.',
+        });
         showGlobalAlert('Error de comunicación con el servidor al reactivar la cuenta.', 'danger');
       } finally {
         reactBtn.disabled = false;

@@ -254,3 +254,38 @@ Registra o retira el número de WhatsApp con el que los compradores coordinan co
 - **`HTTP 422 Unprocessable Entity`:** Más de 20 caracteres o menos de 8 / más de 15 dígitos.
 - **`HTTP 403 Forbidden`:** Intentar modificar el número de otro usuario sin ser admin.
 - **`HTTP 404 Not Found`:** El usuario no existe.
+
+---
+
+## 9. Especificación Futura / Backlog: Baneo Total de Usuario & Cascada de Bajas Lógicas
+
+> **Nota de Diseño & Backlog:** Esta funcionalidad queda documentada para implementación futura como extensión de la administración de usuarios y mitigación de infractores o desvinculaciones totales.
+
+### 9.1 Problema Operativo Actual
+En el flujo actual de `POST /api/usuarios/eliminar.php`, si un artesano posee creaciones activas en el catálogo, el backend bloquea la eliminación con `HTTP 409 Conflict`:
+`No se puede eliminar al usuario 'X' porque tiene N creación(es) asociada(s) en el catálogo. Reasigne o elimine sus piezas antes de continuar.`
+
+Esto obliga al administrador a retirar manualmente cada creación una por una antes de poder suspender la cuenta.
+
+### 9.2 Propuesta Funcional: Baneo Total (`POST /api/usuarios/banear.php` o flag `cascada: true`)
+La funcionalidad de **Baneo Total** permitirá al administrador suspender a un usuario en una sola operación atómica, aplicando una cascada de bajas lógicas:
+
+1. **Inactivación de la Cuenta:**
+   - La cuenta del usuario se marca como inactiva (`activo = 0`, `eliminado_en = datetime('now', 'localtime')`).
+   - Se revoca inmediatamente cualquier token Bearer activo en la denylist (`tokens_revocados`), cerrando sus sesiones activas de inmediato (H-002).
+2. **Cascada de Baja Lógica sobre Creaciones (Invariante R-01):**
+   - Dentro de una transacción atómica SQLite (`BEGIN IMMEDIATE TRANSACTION`), se da de baja lógica a todas las creaciones asociadas al artesano:
+     ```sql
+     UPDATE creaciones 
+     SET activo = 0, eliminado_en = datetime('now', 'localtime') 
+     WHERE artesano_id = :id AND activo = 1;
+     ```
+   - Las piezas desaparecen de forma inmediata de la vitrina pública del catálogo (`index.php`), protegiendo a los clientes.
+3. **Preservación Estricta de Assets Multimedia (Invariante R-02 / ADR-008):**
+   - **CERO `unlink()`:** Las fotos de los productos en `uploads/` se conservan intactas en disco para mantener la validez visual de los pedidos históricos ya facturados.
+4. **Tratamiento de Pedidos Existentes:**
+   - Ningún registro de la tabla `pedidos` se elimina físicamente (prohibido `DELETE FROM`).
+   - Los pedidos previos permanecen con su `creacion_id` original apuntando a la fila inactiva de la creación, resguardando la auditoría contable (precio en centavos, comprobantes, pagos).
+   - Opcionalmente, pedidos en estado `Pendiente` o `En Proceso` podrán alertar al administrador para su reasignación o cancelación manual con restitución de inventario.
+5. **Salvaguarda Inviolable del Administrador Raíz (Invariante R-05):**
+   - El administrador raíz (`id: 1`, `@admin`) **nunca podrá ser baneado** bajo ninguna circunstancia (`HTTP 403 Forbidden`).

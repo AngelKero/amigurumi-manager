@@ -37,5 +37,7 @@
 
 - **009 · Plan Maestro de la Fase 4 (cierre formal · `spec/features/009-plan-maestro-fase-4/`)** — Cierre documental de la Fase 4 una vez culminadas las 6 subfases (4.1–4.6) y verificación de los criterios de aceptación globales.
 - **011 · Siguientes extensiones o hito de Fase 5** — Documentación Diátaxis, optimización y preparación de release.
+- **Backlog / Futura Extensión · Baneo Total de Creadores con Cascada de Bajas Lógicas** — Posibilidad de que un administrador inhabilite o banee completamente a un usuario y, en una sola transacción atómica, dé de baja lógica a todas sus piezas del catálogo público protegiendo compras activas y respetando las invariantes R-01 (baja lógica universal), R-02 (preservación de fotos) y R-05 (salvaguarda admin #1).
 
 > Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código. Las features 004–008 han concluido su implementación bajo el maestro `009`.
+

@@ -1,0 +1,99 @@
+/* ==========================================================================
+   SWEETALERT2 & MODAL DIALOGS ("Algodón Nórdico" Theme)
+   Custom styling for SweetAlert2 popups, buttons, icons, and focus states
+   ========================================================================== */
+
+.swal2-popup.craft-swal-popup {
+  border-radius: var(--craft-radius, 18px) !important;
+  font-family: var(--craft-font-body, 'Plus Jakarta Sans', sans-serif) !important;
+  border: 1.5px dashed rgba(142, 91, 116, 0.28) !important;
+  background-color: var(--craft-surface, #FFFFFF) !important;
+  box-shadow: 0 18px 48px -10px rgba(142, 91, 116, 0.22) !important;
+  padding: 2rem !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-title {
+  font-family: var(--craft-font-display, 'Fraunces', serif) !important;
+  font-weight: 700 !important;
+  color: var(--craft-text-main, #1E252D) !important;
+  font-size: 1.35rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-html-container {
+  color: var(--craft-text-muted, #505963) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Iconos temáticos */
+.swal2-popup.craft-swal-popup .swal2-icon.swal2-warning {
+  border-color: var(--craft-accent-gold, #D99C52) !important;
+  color: var(--craft-accent-gold, #D99C52) !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-icon.swal2-success {
+  border-color: var(--craft-secondary, #52857C) !important;
+  color: var(--craft-secondary, #52857C) !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-icon.swal2-error {
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-icon.swal2-question {
+  border-color: var(--craft-primary, #8E5B74) !important;
+  color: var(--craft-primary, #8E5B74) !important;
+}
+
+.swal2-popup.craft-swal-popup .swal2-icon.swal2-info {
+  border-color: var(--craft-secondary, #52857C) !important;
+  color: var(--craft-secondary, #52857C) !important;
+}
+
+/* Botones con estilo Algodón Nórdico */
+.craft-swal-confirm-btn {
+  background-color: var(--craft-primary, #8E5B74) !important;
+  border: 1.5px solid var(--craft-primary, #8E5B74) !important;
+  color: #ffffff !important;
+  border-radius: var(--craft-radius-pill, 50px) !important;
+  font-weight: 600 !important;
+  padding: 0.55rem 1.6rem !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 4px 14px rgba(142, 91, 116, 0.28) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+}
+
+.craft-swal-confirm-btn:hover {
+  background-color: var(--craft-primary-hover, #75475E) !important;
+  border-color: var(--craft-primary-hover, #75475E) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(142, 91, 116, 0.35) !important;
+}
+
+.craft-swal-cancel-btn {
+  background-color: transparent !important;
+  border: 1.5px solid var(--craft-border, #E4E8ED) !important;
+  color: var(--craft-text-muted, #505963) !important;
+  border-radius: var(--craft-radius-pill, 50px) !important;
+  font-weight: 600 !important;
+  padding: 0.55rem 1.35rem !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.craft-swal-cancel-btn:hover {
+  background-color: var(--craft-surface-muted, #F1F4F8) !important;
+  color: var(--craft-text-main, #1E252D) !important;
+}
+
+/* Toast flotante */
+.swal2-toast.craft-swal-toast {
+  border-radius: var(--craft-radius, 18px) !important;
+  font-family: var(--craft-font-body, 'Plus Jakarta Sans', sans-serif) !important;
+  box-shadow: 0 8px 24px rgba(30, 37, 45, 0.12) !important;
+  border: 1px solid var(--craft-border, #E4E8ED) !important;
+}
