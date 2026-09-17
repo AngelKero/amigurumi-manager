@@ -10,7 +10,7 @@
 | **Fase 2** · Layout, UI & Sistema Algodón Nórdico | — | ✅ Hecho |
 | **Fase 3** · Backend Clean Architecture, API REST & Blindaje | 3.1–3.6 (10 suites CLI) | ✅ Hecho · **1,287** aserciones en verde (regenerable: `php tests/cuenta-aserciones.php`, H-006) · agrupación 3.6.x = **755/755** sobre semilla limpia |
 | **Fase 4** · Cableado Fullstack (features 004–008 & 010) | 4.1 → 4.6 (6 subfases coordinadas por maestro `009-plan-maestro-fase-4`: 004=4.1, 005=4.2, 006=4.3, 007=4.4, 008=4.5, 010=4.6) | ✅ **Hecho** · **841/841** aserciones de Fase 4 en verde (100% OK) · Reporte de cierre `docs/testing/fase-4-cierre-maestro.md` · **4.1 ✅** (64/64) · **4.2 ✅** (136/136) · **4.3 ✅** (212/212 + correctivos 4.3.1/4.3.2/4.3.3) · **4.4 ✅** (139/139) · **4.5 ✅** (99/99) · **4.6 ✅** (64/64) |
-| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | — | 🔜 **Siguiente Hito** (En preparación tras cierre formal de Fase 4) |
+| **Fase 5** · Documentación Diátaxis, Rendimiento & Entrega | 5.1 → 5.4 (coordinadas por maestro `012-plan-maestro-fase-5`) | 🔄 **En curso (Plan Maestro)** · 5.1 Diátaxis · 5.2 Accesibilidad (011) · 5.3 Rendimiento · 5.4 Release |
 
 ## Hecho ✅
 
@@ -36,9 +36,11 @@
 
 ## Siguiente 🔜
 
-- **011 · Inicio de Fase 5: Documentación Diátaxis, Rendimiento & Entrega** — Preparación de guías de usuario/artesano bajo el framework Diátaxis, auditoría integral de Core Web Vitals, pruebas de contraste accesibles y empaquetado de producción.
+- **012 · Plan Maestro de la Fase 5 (Subfases 5.1 a 5.4)** — Coordinación y despliegue secuencial de producción: Documentación Diátaxis (5.1), Accesibilidad WCAG 2.1 AA & UX Polish (5.2 / `011`), Rendimiento CWV (5.3) y Hardening/Release (5.4).
+- **Subfase 5.1 · Documentación Diátaxis & Manuales de Taller** — Redacción de los 4 cuadrantes (Tutoriales, How-To, Referencia y Explicación) con integridad de enlaces (H-013).
 - **Backlog / Futura Extensión · Baneo Total de Creadores con Cascada de Bajas Lógicas** — Posibilidad de que un administrador inhabilite o banee completamente a un usuario y, en una sola transacción atómica, dé de baja lógica a todas sus piezas del catálogo público protegiendo compras activas y respetando las invariantes R-01 (baja lógica universal), R-02 (preservación de fotos) y R-05 (salvaguarda admin #1).
 
 > Cada feature nueva se crea en `spec/features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código. Las features 004–008 han concluido su implementación bajo el maestro `009`.
+
 
 
