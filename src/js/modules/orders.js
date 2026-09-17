@@ -204,6 +204,10 @@ function renderCard(item) {
   const sources = orderImageSources(item);
   img.setAttribute('src', sources[0]);
   img.setAttribute('alt', String(creacion.nombre || 'Pieza del pedido'));
+  img.setAttribute('loading', 'lazy');
+  img.setAttribute('decoding', 'async');
+  img.setAttribute('width', '120');
+  img.setAttribute('height', '90');
   let attempt = 0;
   img.addEventListener('error', () => {
     attempt += 1;

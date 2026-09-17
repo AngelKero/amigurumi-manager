@@ -66,7 +66,11 @@
           <img src="assets/img/hero_crochet.jpg" 
                id="heroCraftedImg"
                alt="Colección Artesanal de Creaciones en Crochet" 
-               class="img-fluid hero-crafted-img">
+               class="img-fluid hero-crafted-img"
+               width="560"
+               height="380"
+               fetchpriority="high"
+               decoding="async">
           
           <!-- Fallback SVG Ilustrado Mejorado -->
           <div class="d-none bg-white p-4 text-center" id="heroFallback">
@@ -242,7 +246,7 @@
         <div class="card-product-badge-float">
           <span class="badge shadow-sm" data-part="stockBadge"></span>
         </div>
-        <img class="card-product-img" data-part="productImg" alt="" style="object-fit: cover;">
+        <img class="card-product-img" data-part="productImg" alt="" style="object-fit: cover;" width="400" height="300" loading="lazy" decoding="async">
       </a>
 
       <div class="card-body d-flex flex-column p-4" style="position: relative; z-index: 2;">

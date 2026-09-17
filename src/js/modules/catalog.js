@@ -182,6 +182,10 @@ function renderCard(item) {
   sources.push(GENERIC_FALLBACK);
   img.setAttribute('src', sources[0]);
   img.setAttribute('alt', String(item.nombre || 'Pieza artesanal'));
+  img.setAttribute('loading', 'lazy');
+  img.setAttribute('decoding', 'async');
+  img.setAttribute('width', '400');
+  img.setAttribute('height', '300');
   let attempt = 0;
   img.addEventListener('error', () => {
     attempt += 1;

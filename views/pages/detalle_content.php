@@ -46,7 +46,7 @@
         <!-- Fotografía principal con fallback R-09 + lightbox -->
         <figure class="product-photo-stitched-frame mb-3">
           <button type="button" id="detailImageZoomBtn" class="detail-photo-zoom-trigger card-product-img-wrapper rounded shadow-sm" style="aspect-ratio: 1 / 1; max-height: 480px;" aria-haspopup="dialog" aria-label="Ampliar fotografía de la creación">
-            <img id="detailMainImage" src="assets/svg/piezas/ovillo-generico.svg" alt="Fotografía de la creación artesanal" class="card-product-img" style="object-fit: cover;" fetchpriority="high">
+            <img id="detailMainImage" src="assets/svg/piezas/ovillo-generico.svg" alt="Fotografía de la creación artesanal" class="card-product-img" style="object-fit: cover;" width="600" height="600" decoding="async" fetchpriority="high">
             <span class="detail-photo-zoom-hint" aria-hidden="true"><i class="bi bi-arrows-fullscreen me-1"></i>Ampliar</span>
             <span class="badge badge-textile-tag detail-photo-source-badge d-none" id="detailImageSourceBadge"><i class="bi bi-card-image me-1"></i><span id="detailImageSourceLabel">Ilustración temática</span></span>
           </button>

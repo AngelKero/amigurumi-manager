@@ -30,11 +30,13 @@
 | **Cierre** | **Cierre Maestro de la Fase 4 (Fullstack)** | `tests/test-fase-4-acumulado.php` | 841 / 841 (100%) | ✅ Aprobado | [Ver Cierre Maestro Fase 4](./fase-4-cierre-maestro.md) |
 | **5.1** | Documentación Diátaxis & Manuales Operativos (Feature 012) | `tests/test-subfase-5.1.php` | 116 / 116 (100%) | ✅ Aprobado | [Ver Reporte 5.1](./subfase-5.1-diataxis.md) |
 | **5.2** | Accesibilidad WCAG 2.1 AA & Refinamiento Visual (Feature 011/012) | `tests/test-subfase-5.2.php` | 69 / 69 (100%) | ✅ Aprobado | [Ver Reporte 5.2](./subfase-5.2-a11y-ux.md) |
+| **5.3** | Rendimiento Web, Core Web Vitals & Carga (Feature 012) | `tests/test-subfase-5.3.php` | 101 / 101 (100%) | ✅ Aprobado | [Ver Reporte 5.3](./subfase-5.3-rendimiento.md) |
 
 **Total Acumulado Fase 3:** **1,287 / 1,287 Aserciones Aprobadas (100% OK en verde — Fase 3 Completa)** · verificado sobre semilla limpia con `php tests/cuenta-aserciones.php` (H-006).
 **Total Acumulado Fase 4:** **841 / 841 Aserciones Aprobadas (100% OK en verde — Subfases 4.1–4.6)** · verificado con `php tests/test-fase-4-acumulado.php` · [Reporte Ejecutivo de Cierre](./fase-4-cierre-maestro.md).
 **Subfase 5.1:** **116 / 116 Aserciones Aprobadas (100% OK en verde)** · verificado con `php tests/test-subfase-5.1.php`.
 **Subfase 5.2:** **69 / 69 Aserciones Aprobadas (100% OK en verde)** · verificado con `php tests/test-subfase-5.2.php`.
+**Subfase 5.3:** **101 / 101 Aserciones Aprobadas (100% OK en verde)** · verificado con `php tests/test-subfase-5.3.php`.
 
 
 ---
@@ -97,6 +99,8 @@ proyecto-web/
 │   ├── subfase-4.6-whatsapp-artesano.md  # Reporte de WhatsApp al Artesano Vendedor (Fase 4)
 │   ├── fase-4-cierre-maestro.md       # Reporte Ejecutivo de Cierre Maestro de Fase 4
 │   ├── subfase-5.1-diataxis.md        # Reporte de Documentación Diátaxis & Manuales (Fase 5)
+│   ├── subfase-5.2-a11y-ux.md         # Reporte de Accesibilidad WCAG 2.1 AA & UX (Fase 5)
+│   ├── subfase-5.3-rendimiento.md     # Reporte de Rendimiento Web & Core Web Vitals (Fase 5)
 │   └── protocolo-divergencia-cli-http.md # Triaje CLI vs. HTTP (H-015)
 │
 ├── tests/                             # 🧪 NIVEL 2: SCRIPTS DE PRUEBA CLI (PHP Nativo, versionados)
@@ -120,7 +124,10 @@ proyecto-web/
 │   ├── test-subfase-4.4.php           # Suite de Checkout Público & Pedidos Atómicos (007)
 │   ├── test-subfase-4.5.php           # Suite de Directorio de Creadores & Roles RBAC (008)
 │   ├── test-subfase-4.6-whatsapp-artesano.php # Suite de WhatsApp al Artesano Vendedor (010)
-│   └── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
+│   ├── test-fase-4-acumulado.php      # Regresión acumulada dinámica de Fase 4 (004-008)
+│   ├── test-subfase-5.1.php           # Suite de Documentación Diátaxis (012)
+│   ├── test-subfase-5.2.php           # Suite de Accesibilidad WCAG 2.1 AA (011/012)
+│   └── test-subfase-5.3.php           # Suite de Rendimiento Web & Core Web Vitals (012)
 │
 └── logs/                              # 🪵 NIVEL 3: LOGS CRUDOS Y TRAZAS (Archivos temporales, fuera de Git)
     ├── .gitignore                     # Ignora *.log, preserva la carpeta

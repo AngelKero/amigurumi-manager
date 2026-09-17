@@ -190,7 +190,7 @@
           <button type="button" class="btn-toggle-encargo" data-part="encargoToggle" title="Cambiar modalidad"></button>
         </div>
         <div class="admin-card-photo-frame mb-3">
-          <img class="admin-card-photo-img" data-part="photo" alt="" style="object-fit: cover;">
+          <img class="admin-card-photo-img" data-part="photo" alt="" style="object-fit: cover;" width="300" height="225" loading="lazy" decoding="async">
         </div>
       </div>
 

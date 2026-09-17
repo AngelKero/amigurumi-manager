@@ -206,6 +206,10 @@ function renderCard(item) {
   const sources = imageSources(item);
   img.setAttribute('src', sources[0]);
   img.setAttribute('alt', String(item.nombre || 'Pieza artesanal'));
+  img.setAttribute('loading', 'lazy');
+  img.setAttribute('decoding', 'async');
+  img.setAttribute('width', '300');
+  img.setAttribute('height', '225');
   let attempt = 0;
   img.addEventListener('error', () => {
     attempt += 1;

@@ -53,12 +53,12 @@ $detailUrl = 'detalle.php?id=' . urlencode($item['id']);
       </div>
 
       <?php if (!empty($item['imagen_url'])): ?>
-        <img src="<?= htmlspecialchars($item['imagen_url']) ?>" alt="<?= htmlspecialchars($item['nombre']) ?>" class="card-product-img" style="object-fit: cover;">
+        <img src="<?= htmlspecialchars($item['imagen_url']) ?>" alt="<?= htmlspecialchars($item['nombre']) ?>" class="card-product-img" style="object-fit: cover;" width="400" height="300" loading="lazy" decoding="async">
       <?php elseif (!empty($item['svg_illustration'])): ?>
         <?= $item['svg_illustration'] ?>
       <?php else: ?>
         <!-- Default Craft Fallback Illustration -->
-        <?= svg('decorations/craft-placeholder', ['class' => 'card-product-img']) ?>
+        <?= svg('decorations/craft-placeholder', ['class' => 'card-product-img', 'width' => 400, 'height' => 300]) ?>
       <?php endif; ?>
     </a>
 

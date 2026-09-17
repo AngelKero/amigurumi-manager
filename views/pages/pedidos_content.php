@@ -149,7 +149,7 @@
       </div>
 
       <div class="order-card-photo-frame">
-        <img class="order-card-photo-img" data-part="photo" alt="" style="object-fit: cover;">
+        <img class="order-card-photo-img" data-part="photo" alt="" style="object-fit: cover;" width="120" height="90" loading="lazy" decoding="async">
       </div>
 
       <div class="card-order-body">
